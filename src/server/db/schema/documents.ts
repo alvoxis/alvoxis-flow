@@ -136,6 +136,8 @@ export const documents = pgTable(
     taxSummary: jsonb("tax_summary").$type<TaxSummaryRow[]>(),
     snapshot: jsonb("snapshot").$type<DocumentDraft & Record<string, unknown>>(),
     contentHash: text("content_hash"),
+    /** SHA-256 of the PDF this draft was imported from (duplicate detection). */
+    sourceFileSha256: text("source_file_sha256"),
     version: integer("version").notNull().default(1),
     createdByUserId: uuid("created_by_user_id").references(() => users.id, {
       onDelete: "restrict",
@@ -149,6 +151,7 @@ export const documents = pgTable(
     unique("documents_company_type_number_uq").on(t.companyId, t.type, t.number),
     index("documents_company_issue_date_idx").on(t.companyId, t.issueDate),
     index("documents_related_idx").on(t.relatedDocumentId),
+    index("documents_company_source_file_idx").on(t.companyId, t.sourceFileSha256),
     foreignKey({
       name: "documents_series_same_company_fk",
       columns: [t.seriesId, t.companyId],

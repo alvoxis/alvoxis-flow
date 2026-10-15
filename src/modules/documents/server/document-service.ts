@@ -97,14 +97,15 @@ async function insertDraft(
   companyId: string,
   draft: DocumentDraft,
   action: string,
-  seriesId?: string,
+  opts: { seriesId?: string; sourceFileSha256?: string } = {},
 ) {
   const [row] = await tx
     .insert(documents)
     .values({
       companyId,
       ...draftToRowValues(draft),
-      seriesId: seriesId ?? null,
+      seriesId: opts.seriesId ?? null,
+      sourceFileSha256: opts.sourceFileSha256 ?? null,
       createdByUserId: actor.userId,
     })
     .returning({ id: documents.id });
@@ -135,7 +136,7 @@ export async function createDraft(
   actor: Actor,
   companyId: string,
   input: unknown,
-  opts: { seriesId?: string } = {},
+  opts: { seriesId?: string; sourceFileSha256?: string; auditAction?: string } = {},
 ) {
   const draft = parseDraftInput(input, randomUUID);
   if (draft.type === "credit_note") {
@@ -151,8 +152,8 @@ export async function createDraft(
       actor,
       companyId,
       draft,
-      "document.draft_created",
-      opts.seriesId,
+      opts.auditAction ?? "document.draft_created",
+      opts,
     );
     return toStored(await loadRow(tx, companyId, id));
   });
