@@ -1,6 +1,7 @@
 import {
   type DocumentDraft,
   type DocumentLine,
+  type IssuedDocument,
   type TaxCategorySnapshot,
 } from "@/modules/documents/domain";
 
@@ -80,4 +81,25 @@ export function invoiceDraft(overrides: Partial<DocumentDraft> = {}): DocumentDr
     ],
     ...overrides,
   };
+}
+
+export function issued(
+  draft: DocumentDraft,
+  id = "doc-1",
+  number = "INV-2026-0001",
+): IssuedDocument {
+  return {
+    ...draft,
+    id,
+    number,
+    status: "issued",
+    issuedAt: `${draft.issueDate}T10:00:00Z`,
+    totals: null,
+    contentHash: "fixture",
+  };
+}
+
+export function idGenerator(prefix = "n"): () => string {
+  let i = 0;
+  return () => `${prefix}${++i}`;
 }
