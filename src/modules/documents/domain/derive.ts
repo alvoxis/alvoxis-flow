@@ -62,7 +62,6 @@ export function buildCreditNote(
   }
 
   const originalLines = new Map(original.lines.map((l) => [l.id, l]));
-  const requestedPerLine = new Map<string, { qty: Decimal; net: Decimal }>();
 
   const lines: DocumentLine[] = requests.map((req) => {
     const src = originalLines.get(req.sourceLineId);
@@ -99,37 +98,10 @@ export function buildCreditNote(
       taxCategory: src.taxCategory,
       sourceLineId: src.id,
     };
-    const net = lineNet(creditLine, original).toDecimalString();
-    const acc = requestedPerLine.get(src.id) ?? { qty: new Decimal(0), net: new Decimal(0) };
-    requestedPerLine.set(src.id, {
-      qty: acc.qty.plus(qty),
-      net: acc.net.plus(new Decimal(net).abs()),
-    });
     return creditLine;
   });
 
-  for (const [srcId, req] of requestedPerLine) {
-    const src = originalLines.get(srcId)!;
-    const prev = previousCreditLines.filter((l) => l.sourceLineId === srcId);
-    const prevQty = prev.reduce((a, l) => a.plus(new Decimal(l.quantity).abs()), new Decimal(0));
-    const prevNet = prev.reduce(
-      (a, l) => a.plus(new Decimal(lineNet(l, original).toDecimalString()).abs()),
-      new Decimal(0),
-    );
-    const origNet = new Decimal(lineNet(src, original).toDecimalString());
-    if (prevQty.plus(req.qty).gt(new Decimal(src.quantity))) {
-      throw new DocumentRuleError(
-        "creditNote.quantity.exceedsRemaining",
-        `Credited quantity exceeds remaining quantity on line ${srcId}`,
-      );
-    }
-    if (prevNet.plus(req.net).gt(origNet)) {
-      throw new DocumentRuleError(
-        "creditNote.amount.exceedsRemaining",
-        `Credited amount exceeds remaining amount on line ${srcId}`,
-      );
-    }
-  }
+  assertCreditWithinRemaining(original, lines, previousCreditLines);
 
   return {
     type: "credit_note",
@@ -150,6 +122,49 @@ export function buildCreditNote(
     },
     ...(original.exchangeRate ? { exchangeRate: original.exchangeRate } : {}),
   };
+}
+
+/**
+ * Ensures that `creditLines` together with `previousCreditLines` (issued credit notes for the same
+ * invoice) do not exceed any original line's quantity or net amount. Used both when building a
+ * credit note and again when issuing it, because several drafts may exist concurrently.
+ */
+export function assertCreditWithinRemaining(
+  original: Pick<IssuedDocument, "lines" | "currency">,
+  creditLines: readonly DocumentLine[],
+  previousCreditLines: readonly DocumentLine[],
+): void {
+  const originalLines = new Map(original.lines.map((l) => [l.id, l]));
+  const all = [...previousCreditLines, ...creditLines];
+  const perSource = new Map<string, { qty: Decimal; net: Decimal }>();
+  for (const l of all) {
+    const src = l.sourceLineId ? originalLines.get(l.sourceLineId) : undefined;
+    if (!src)
+      throw new DocumentRuleError(
+        "creditNote.sourceLine.unknown",
+        `Credit line ${l.id} has no valid source line`,
+      );
+    const acc = perSource.get(src.id) ?? { qty: new Decimal(0), net: new Decimal(0) };
+    perSource.set(src.id, {
+      qty: acc.qty.plus(new Decimal(l.quantity).abs()),
+      net: acc.net.plus(new Decimal(lineNet(l, original).toDecimalString()).abs()),
+    });
+  }
+  for (const [srcId, sum] of perSource) {
+    const src = originalLines.get(srcId)!;
+    if (sum.qty.gt(new Decimal(src.quantity))) {
+      throw new DocumentRuleError(
+        "creditNote.quantity.exceedsRemaining",
+        `Credited quantity exceeds remaining quantity on line ${srcId}`,
+      );
+    }
+    if (sum.net.gt(new Decimal(lineNet(src, original).toDecimalString()))) {
+      throw new DocumentRuleError(
+        "creditNote.amount.exceedsRemaining",
+        `Credited amount exceeds remaining amount on line ${srcId}`,
+      );
+    }
+  }
 }
 
 /** Credits everything that remains on the invoice. */
