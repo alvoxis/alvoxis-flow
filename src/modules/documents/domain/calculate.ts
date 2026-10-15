@@ -120,14 +120,16 @@ export function calculateTotals(
     if (rate.from !== currency) {
       throw new Error(`Exchange rate converts from ${rate.from}, document currency is ${currency}`);
     }
-    // Each figure is converted from the document-currency amount; converted totals are for
-    // information and may differ by rounding from converting line by line.
+    // Net and tax are converted separately and gross is their sum, so the converted figures
+    // always add up. Converting line by line could differ by rounding; this is informational.
+    const convertedNet = convert(netTotal, rate, rounding);
+    const convertedTax = convert(taxTotal, rate, rounding);
     totals.converted = {
       currency: rate.to,
       rate,
-      netTotal: convert(netTotal, rate, rounding).toFixed(),
-      taxTotal: convert(taxTotal, rate, rounding).toFixed(),
-      grossTotal: convert(grossTotal, rate, rounding).toFixed(),
+      netTotal: convertedNet.toFixed(),
+      taxTotal: convertedTax.toFixed(),
+      grossTotal: convertedNet.add(convertedTax).toFixed(),
     };
   }
 

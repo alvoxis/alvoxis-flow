@@ -165,6 +165,24 @@ describe("calculateTotals", () => {
       expect(t.converted?.rate).toEqual(rate);
     });
 
+    it("keeps converted totals internally consistent (gross = net + tax)", () => {
+      const t = calculateTotals(
+        invoiceDraft({
+          exchangeRate: rate,
+          lines: [
+            line({ id: "a", unitPrice: "1102.50" }),
+            line({ id: "b", unitPrice: "100.00", taxCategory: FIXTURE_TAX.exempt }),
+          ],
+        }),
+      );
+      // 1202.50 × 4.25 = 5110.625 → 5110.63; 220.50 × 4.25 = 937.125 → 937.13; gross = their sum
+      expect(t.converted).toMatchObject({
+        netTotal: "5110.63",
+        taxTotal: "937.13",
+        grossTotal: "6047.76",
+      });
+    });
+
     it("rejects a rate that does not start from the document currency", () => {
       expect(() => calculateTotals(invoiceDraft({ currency: "PLN", exchangeRate: rate }))).toThrow(
         /converts from EUR/,

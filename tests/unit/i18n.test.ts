@@ -48,7 +48,15 @@ describe("message catalogs", () => {
     (locale) => {
       const target = flatten(load(locale));
       // Brand names and identical technical terms are allowed to match.
-      const allowed = new Set(["metadata.title", "dashboard.recent.number"]);
+      const allowed = new Set([
+        "metadata.title",
+        "dashboard.recent.number",
+        // Identical internationally used terms and pure placeholders.
+        "documentPdf.iban",
+        "documentPdf.bic",
+        "documentPdf.lineNo",
+        "documentPdf.taxKind.standard",
+      ]);
       const copied = Object.keys(source).filter((k) => !allowed.has(k) && target[k] === source[k]);
       expect(copied).toEqual([]);
     },

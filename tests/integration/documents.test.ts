@@ -254,16 +254,14 @@ describe("immutability", () => {
       db.delete(documentLines).where(eq(documentLines.documentId, doc.id)),
     ).rejects.toThrow();
     await expect(
-      db
-        .insert(documentLines)
-        .values({
-          companyId,
-          documentId: doc.id,
-          position: 99,
-          description: "x",
-          quantity: "1",
-          unitPrice: "1",
-        }),
+      db.insert(documentLines).values({
+        companyId,
+        documentId: doc.id,
+        position: 99,
+        description: "x",
+        quantity: "1",
+        unitPrice: "1",
+      }),
     ).rejects.toThrow();
     await expect(updateDraft(db, actor, companyId, doc.id, 1, input())).rejects.toThrow(
       /cannot be edited/,
