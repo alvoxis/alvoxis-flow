@@ -3,7 +3,7 @@
 Business management SaaS for small and medium businesses in **Latvia, Lithuania, Estonia and Poland**:
 invoicing, customers & suppliers, products, inventory, production, payroll and analytics.
 
-> **Status: Stage 1 — foundation.** The repository contains the application skeleton, data model for
+> **Status: Stage 1 — foundation, plus the document foundation (stage 6a).** The repository contains the application skeleton, data model for
 > identity/tenancy/permissions, an internationalised responsive UI shell with a _sample-data_ dashboard,
 > tests and CI. There is **no authentication, no real business data, no payments and no external
 > integrations yet.** See [docs/ROADMAP.md](docs/ROADMAP.md).
@@ -72,6 +72,7 @@ pnpm test               # unit tests (money, env, permissions, i18n catalog pari
 pnpm test:integration   # PostgreSQL tests: tenant isolation, authorization, constraints, audit log
 pnpm build && pnpm test:e2e   # Playwright on desktop, tablet and mobile viewports
 pnpm check              # format check + lint + typecheck + unit tests
+pnpm docs:samples       # render the fictitious sample documents to tmp/sample-documents
 ```
 
 If Playwright's bundled browser is not installed, either run `pnpm exec playwright install chromium` or
@@ -89,11 +90,13 @@ src/
   components/          UI (layout shell, dashboard, primitives)
   config/env.ts        server environment schema
   features/            feature logic usable by UI (dashboard summary, sample data)
+  modules/documents/   documents: domain model, server services, PDF rendering, PDF import
   i18n/                locales, routing, request config
   lib/money/           decimal money, currencies, exchange-rate provenance
   server/              server-only code: db, auth/permissions, tenancy, audit
   proxy.ts             locale negotiation (Next.js 16 "proxy", formerly middleware)
 messages/              translation catalogs (en is the source of truth)
+assets/fonts/          Noto Sans for PDFs (SIL Open Font License, see OFL.txt)
 drizzle/               SQL migrations
 tests/                 unit, integration, e2e
 ```
