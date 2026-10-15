@@ -24,6 +24,16 @@ Rules:
   first obtain a `CompanyContext` from `requireCompanyAccess(db, actor, companyId, permission)`.
 - Secrets are read only through `getServerEnv()`; nothing secret uses `NEXT_PUBLIC_`.
 
+## Feature modules
+
+Larger features live in `src/modules/<name>/` with a fixed internal layout:
+`domain/` (pure, framework-free logic usable anywhere), `server/` (server-only services that call
+`requireCompanyAccess` and write audit entries), and feature-specific folders (e.g. `pdf/`,
+`import/`). The first module is `documents` — see [documents/DOCUMENT-SYSTEM.md](documents/DOCUMENT-SYSTEM.md).
+
+The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
+entry points.
+
 ## Multi-tenancy
 
 - `companies` is the tenant root; tenant-owned tables carry `company_id`.
@@ -76,12 +86,14 @@ icons. Business data and HTML pages are deliberately not cached on devices.
 
 ## Key dependency decisions
 
-| Decision                 | Why                                                                                                                                                     | Trade-off                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Next.js 16 App Router    | Server Components keep data and secrets on the server; one deployable                                                                                   | Framework churn; `middleware` renamed to `proxy`                      |
-| Drizzle 0.45 over Prisma | Plain, reviewable SQL migrations; easy custom SQL (triggers, RLS); no binary engine. Prisma's `latest` tag currently points to an 8.0 release candidate | Smaller ecosystem; Drizzle 1.0 is in RC — upgrade planned when stable |
-| TypeScript 5.9 (not 7)   | typescript-eslint supports `<6.1`                                                                                                                       | Revisit when tooling supports TS 7                                    |
-| ESLint 9                 | `eslint-config-next` and plugins are validated on 9                                                                                                     | ESLint 10 later                                                       |
-| next-intl 4              | Mature App Router support, ICU, typed messages                                                                                                          | —                                                                     |
-| decimal.js               | Correct decimal arithmetic, no native deps                                                                                                              | Slower than integers-in-minor-units; acceptable at document scale     |
-| Auth: not yet chosen     | Will be selected in stage 2 (candidates: Better Auth or Auth.js) after verifying 2FA/TOTP, Google OAuth and session revocation support                  | —                                                                     |
+| Decision                         | Why                                                                                                                                                     | Trade-off                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Next.js 16 App Router            | Server Components keep data and secrets on the server; one deployable                                                                                   | Framework churn; `middleware` renamed to `proxy`                                                  |
+| Drizzle 0.45 over Prisma         | Plain, reviewable SQL migrations; easy custom SQL (triggers, RLS); no binary engine. Prisma's `latest` tag currently points to an 8.0 release candidate | Smaller ecosystem; Drizzle 1.0 is in RC — upgrade planned when stable                             |
+| TypeScript 5.9 (not 7)           | typescript-eslint supports `<6.1`                                                                                                                       | Revisit when tooling supports TS 7                                                                |
+| ESLint 9                         | `eslint-config-next` and plugins are validated on 9                                                                                                     | ESLint 10 later                                                                                   |
+| next-intl 4                      | Mature App Router support, ICU, typed messages                                                                                                          | —                                                                                                 |
+| decimal.js                       | Correct decimal arithmetic, no native deps                                                                                                              | Slower than integers-in-minor-units; acceptable at document scale                                 |
+| @react-pdf/renderer 4.9 for PDFs | Server-side, pure JS, React components, embedded fonts                                                                                                  | A page-level `lineHeight` with custom fonts drops page numbers (worked around; covered by a test) |
+| unpdf (pdf.js) for PDF text      | Same engine for import and for testing our own output                                                                                                   | Text layer only — scanned PDFs need OCR later                                                     |
+| Auth: not yet chosen             | Will be selected in stage 2 (candidates: Better Auth or Auth.js) after verifying 2FA/TOTP, Google OAuth and session revocation support                  | —                                                                                                 |

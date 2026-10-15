@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   output: "standalone",
+  // PDF rendering reads fonts from disk at runtime; ship them with the standalone server.
+  outputFileTracingIncludes: { "/**": ["./assets/fonts/**"] },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

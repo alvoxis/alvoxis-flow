@@ -2,7 +2,8 @@
   "name": "alvoxis-flow",
   "version": "0.1.0",
   "private": true,
-  "description": "ALVOXIS Flow — business management SaaS for SMBs in Latvia, Lithuania, Estonia and Poland",
+  "type": "module",
+  "description": "ALVOXIS Flow \u2014 business management SaaS for SMBs in Latvia, Lithuania, Estonia and Poland",
   "packageManager": "pnpm@10.28.0",
   "engines": {
     "node": ">=22.12.0"
@@ -23,9 +24,11 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed-permissions.ts",
     "db:studio": "drizzle-kit studio",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "docs:samples": "tsx scripts/render-sample-documents.ts"
   },
   "dependencies": {
+    "@react-pdf/renderer": "4.9.0",
     "clsx": "^2.1.1",
     "decimal.js": "10.6.0",
     "drizzle-orm": "0.45.4",
@@ -35,6 +38,7 @@
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "server-only": "^0.0.1",
+    "unpdf": "1.9.0",
     "zod": "4.3.3"
   },
   "devDependencies": {
