@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "ALVOXIS Flow",
+    "description": "Rēķini, noliktava, ražošana un algas mazajiem un vidējiem uzņēmumiem Baltijā un Polijā."
+  },
+  "nav": {
+    "main": "Galvenā navigācija",
+    "dashboard": "Pārskats",
+    "documents": "Dokumenti",
+    "customers": "Klienti",
+    "suppliers": "Piegādātāji",
+    "products": "Produkti",
+    "inventory": "Noliktava",
+    "production": "Ražošana",
+    "payroll": "Algas",
+    "analytics": "Analītika",
+    "settings": "Iestatījumi",
+    "soon": "Drīzumā",
+    "openMenu": "Atvērt izvēlni",
+    "closeMenu": "Aizvērt izvēlni"
+  },
+  "topbar": {
+    "noCompany": "Uzņēmums nav izvēlēts",
+    "language": "Valoda",
+    "account": "Konts",
+    "notSignedIn": "Nav pieteicies"
+  },
+  "dashboard": {
+    "title": "Pārskats",
+    "subtitle": "Jūsu uzņēmuma dokumentu un darbību kopsavilkums.",
+    "demoBanner": "Priekšskatījums ar parauga datiem. Nekas šeit vēl nav saistīts ar reālu uzņēmumu.",
+    "demoBadge": "Parauga dati",
+    "kpi": {
+      "revenue": "Izrakstīts šomēnes",
+      "revenueHint": "Apstiprinātie rēķini, katrs savā dokumenta valūtā",
+      "outstanding": "Neapmaksāts",
+      "outstandingHint": "{count, plural, zero {# neapmaksātu rēķinu} one {# neapmaksāts rēķins} other {# neapmaksāti rēķini}}",
+      "overdue": "Kavēts",
+      "overdueHint": "{count, plural, zero {# rēķinu ar nokavētu termiņu} one {# rēķins ar nokavētu termiņu} other {# rēķini ar nokavētu termiņu}}",
+      "documents": "Dokumenti šomēnes",
+      "documentsHint": "Rēķini, avansa rēķini, kredītrēķini un pavadzīmes"
+    },
+    "currencyNote": "Katrs dokuments saglabā savu valūtu. Summas dažādās valūtās nekad netiek saskaitītas kopā.",
+    "recent": {
+      "title": "Jaunākie dokumenti",
+      "description": "Pēdējie visu veidu dokumenti",
+      "number": "Numurs",
+      "type": "Veids",
+      "customer": "Klients",
+      "date": "Datums",
+      "status": "Statuss",
+      "amount": "Summa",
+      "creditsInvoice": "Koriģē {number}",
+      "noAmount": "Nav piemērojams"
+    },
+    "nextSteps": {
+      "title": "Darba sākšana",
+      "createCompany": "Izveidojiet uzņēmuma profilu",
+      "inviteTeam": "Uzaiciniet komandu un piešķiriet lomas",
+      "addCustomers": "Pievienojiet klientus un produktus",
+      "firstInvoice": "Izrakstiet pirmo rēķinu"
+    }
+  },
+  "documentType": {
+    "invoice": "Rēķins",
+    "proforma": "Avansa rēķins",
+    "creditNote": "Kredītrēķins",
+    "deliveryNote": "Pavadzīme"
+  },
+  "documentStatus": {
+    "draft": "Melnraksts",
+    "approved": "Apstiprināts",
+    "sent": "Nosūtīts",
+    "paid": "Apmaksāts",
+    "overdue": "Kavēts",
+    "delivered": "Piegādāts"
+  },
+  "roles": {
+    "owner": "Īpašnieks",
+    "administrator": "Administrators",
+    "accountant": "Grāmatvedis",
+    "manager": "Vadītājs",
+    "warehouse_employee": "Noliktavas darbinieks",
+    "production_employee": "Ražošanas darbinieks"
+  },
+  "notFound": {
+    "title": "Lapa nav atrasta",
+    "description": "Meklētā lapa neeksistē vai ir pārvietota.",
+    "backHome": "Atpakaļ uz pārskatu"
+  },
+  "offline": {
+    "title": "Nav interneta savienojuma",
+    "description": "Pārbaudiet interneta savienojumu. Jūsu dati šajā ierīcē netiek glabāti."
+  }
+}

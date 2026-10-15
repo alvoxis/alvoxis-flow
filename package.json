@@ -1,0 +1,59 @@
+{
+  "name": "alvoxis-flow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ALVOXIS Flow — business management SaaS for SMBs in Latvia, Lithuania, Estonia and Poland",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:watch": "vitest --project unit",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:seed": "tsx scripts/seed-permissions.ts",
+    "db:studio": "drizzle-kit studio",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "decimal.js": "10.6.0",
+    "drizzle-orm": "0.45.4",
+    "next": "16.4.1",
+    "next-intl": "4.14.9",
+    "pg": "8.23.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "^0.0.1",
+    "zod": "4.3.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "dotenv": "^18.0.8",
+    "drizzle-kit": "0.31.11",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vitest": "4.1.5"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "ALVOXIS Flow",
+    "description": "Arved, ladu, tootmine ja palgad väikestele ja keskmistele ettevõtetele Baltimaades ja Poolas."
+  },
+  "nav": {
+    "main": "Põhinavigatsioon",
+    "dashboard": "Ülevaade",
+    "documents": "Dokumendid",
+    "customers": "Kliendid",
+    "suppliers": "Tarnijad",
+    "products": "Tooted",
+    "inventory": "Ladu",
+    "production": "Tootmine",
+    "payroll": "Palgad",
+    "analytics": "Analüütika",
+    "settings": "Seaded",
+    "soon": "Tulekul",
+    "openMenu": "Ava menüü",
+    "closeMenu": "Sulge menüü"
+  },
+  "topbar": {
+    "noCompany": "Ettevõtet pole valitud",
+    "language": "Keel",
+    "account": "Konto",
+    "notSignedIn": "Pole sisse logitud"
+  },
+  "dashboard": {
+    "title": "Ülevaade",
+    "subtitle": "Teie ettevõtte dokumentide ja tegevuste kokkuvõte.",
+    "demoBanner": "Eelvaade näidisandmetega. Midagi siin pole veel päris ettevõttega seotud.",
+    "demoBadge": "Näidisandmed",
+    "kpi": {
+      "revenue": "Selle kuu arved",
+      "revenueHint": "Kinnitatud arved, iga dokumendi enda valuutas",
+      "outstanding": "Tasumata",
+      "outstandingHint": "{count, plural, one {# tasumata arve} other {# tasumata arvet}}",
+      "overdue": "Tähtaeg ületatud",
+      "overdueHint": "{count, plural, one {# arve tähtaeg on ületatud} other {# arve tähtaeg on ületatud}}",
+      "documents": "Selle kuu dokumendid",
+      "documentsHint": "Arved, ettemaksuarved, kreeditarved ja saatelehed"
+    },
+    "currencyNote": "Iga dokument säilitab oma valuuta. Eri valuutades summasid kunagi kokku ei liideta.",
+    "recent": {
+      "title": "Viimased dokumendid",
+      "description": "Kõige uuemad igat tüüpi dokumendid",
+      "number": "Number",
+      "type": "Tüüp",
+      "customer": "Klient",
+      "date": "Kuupäev",
+      "status": "Olek",
+      "amount": "Summa",
+      "creditsInvoice": "Korrigeerib {number}",
+      "noAmount": "Ei kohaldu"
+    },
+    "nextSteps": {
+      "title": "Alustamine",
+      "createCompany": "Looge ettevõtte profiil",
+      "inviteTeam": "Kutsuge meeskond ja määrake rollid",
+      "addCustomers": "Lisage kliendid ja tooted",
+      "firstInvoice": "Koostage esimene arve"
+    }
+  },
+  "documentType": {
+    "invoice": "Arve",
+    "proforma": "Ettemaksuarve",
+    "creditNote": "Kreeditarve",
+    "deliveryNote": "Saateleht"
+  },
+  "documentStatus": {
+    "draft": "Mustand",
+    "approved": "Kinnitatud",
+    "sent": "Saadetud",
+    "paid": "Tasutud",
+    "overdue": "Tähtaeg ületatud",
+    "delivered": "Tarnitud"
+  },
+  "roles": {
+    "owner": "Omanik",
+    "administrator": "Administraator",
+    "accountant": "Raamatupidaja",
+    "manager": "Juht",
+    "warehouse_employee": "Laotöötaja",
+    "production_employee": "Tootmistöötaja"
+  },
+  "notFound": {
+    "title": "Lehte ei leitud",
+    "description": "Otsitavat lehte ei ole olemas või see on teisaldatud.",
+    "backHome": "Tagasi ülevaatesse"
+  },
+  "offline": {
+    "title": "Võrguühendus puudub",
+    "description": "Kontrollige internetiühendust. Teie andmeid sellesse seadmesse ei salvestata."
+  }
+}
