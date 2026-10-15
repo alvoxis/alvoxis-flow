@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "ALVOXIS Flow",
+    "description": "Sąskaitos, sandėlis, gamyba ir darbo užmokestis mažoms ir vidutinėms įmonėms Baltijos šalyse ir Lenkijoje."
+  },
+  "nav": {
+    "main": "Pagrindinė navigacija",
+    "dashboard": "Apžvalga",
+    "documents": "Dokumentai",
+    "customers": "Klientai",
+    "suppliers": "Tiekėjai",
+    "products": "Produktai",
+    "inventory": "Sandėlis",
+    "production": "Gamyba",
+    "payroll": "Darbo užmokestis",
+    "analytics": "Analitika",
+    "settings": "Nustatymai",
+    "soon": "Netrukus",
+    "openMenu": "Atidaryti meniu",
+    "closeMenu": "Uždaryti meniu"
+  },
+  "topbar": {
+    "noCompany": "Įmonė nepasirinkta",
+    "language": "Kalba",
+    "account": "Paskyra",
+    "notSignedIn": "Neprisijungta"
+  },
+  "dashboard": {
+    "title": "Apžvalga",
+    "subtitle": "Jūsų įmonės dokumentų ir veiklos suvestinė.",
+    "demoBanner": "Peržiūra su pavyzdiniais duomenimis. Niekas čia dar nesusieta su tikra įmone.",
+    "demoBadge": "Pavyzdiniai duomenys",
+    "kpi": {
+      "revenue": "Išrašyta šį mėnesį",
+      "revenueHint": "Patvirtintos sąskaitos, kiekviena savo dokumento valiuta",
+      "outstanding": "Neapmokėta",
+      "outstandingHint": "{count, plural, one {# neapmokėta sąskaita} few {# neapmokėtos sąskaitos} many {# neapmokėtos sąskaitos} other {# neapmokėtų sąskaitų}}",
+      "overdue": "Vėluojančios",
+      "overdueHint": "{count, plural, one {# sąskaita su praleistu terminu} few {# sąskaitos su praleistu terminu} many {# sąskaitos su praleistu terminu} other {# sąskaitų su praleistu terminu}}",
+      "documents": "Dokumentai šį mėnesį",
+      "documentsHint": "Sąskaitos, išankstinės sąskaitos, kreditinės sąskaitos ir važtaraščiai"
+    },
+    "currencyNote": "Kiekvienas dokumentas išlaiko savo valiutą. Sumos skirtingomis valiutomis niekada nesumuojamos.",
+    "recent": {
+      "title": "Naujausi dokumentai",
+      "description": "Paskutiniai visų tipų dokumentai",
+      "number": "Numeris",
+      "type": "Tipas",
+      "customer": "Klientas",
+      "date": "Data",
+      "status": "Būsena",
+      "amount": "Suma",
+      "creditsInvoice": "Koreguoja {number}",
+      "noAmount": "Netaikoma"
+    },
+    "nextSteps": {
+      "title": "Pradžia",
+      "createCompany": "Sukurkite įmonės profilį",
+      "inviteTeam": "Pakvieskite komandą ir priskirkite roles",
+      "addCustomers": "Pridėkite klientus ir produktus",
+      "firstInvoice": "Išrašykite pirmąją sąskaitą"
+    }
+  },
+  "documentType": {
+    "invoice": "Sąskaita faktūra",
+    "proforma": "Išankstinė sąskaita",
+    "creditNote": "Kreditinė sąskaita",
+    "deliveryNote": "Važtaraštis"
+  },
+  "documentStatus": {
+    "draft": "Juodraštis",
+    "approved": "Patvirtinta",
+    "sent": "Išsiųsta",
+    "paid": "Apmokėta",
+    "overdue": "Vėluoja",
+    "delivered": "Pristatyta"
+  },
+  "roles": {
+    "owner": "Savininkas",
+    "administrator": "Administratorius",
+    "accountant": "Buhalteris",
+    "manager": "Vadybininkas",
+    "warehouse_employee": "Sandėlio darbuotojas",
+    "production_employee": "Gamybos darbuotojas"
+  },
+  "notFound": {
+    "title": "Puslapis nerastas",
+    "description": "Ieškomas puslapis neegzistuoja arba buvo perkeltas.",
+    "backHome": "Grįžti į apžvalgą"
+  },
+  "offline": {
+    "title": "Nėra interneto ryšio",
+    "description": "Patikrinkite interneto ryšį. Jūsų duomenys šiame įrenginyje nesaugomi."
+  }
+}

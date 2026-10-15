@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "ALVOXIS Flow",
+    "description": "Invoicing, inventory, production and payroll for small and medium businesses in the Baltics and Poland."
+  },
+  "nav": {
+    "main": "Main navigation",
+    "dashboard": "Dashboard",
+    "documents": "Documents",
+    "customers": "Customers",
+    "suppliers": "Suppliers",
+    "products": "Products",
+    "inventory": "Inventory",
+    "production": "Production",
+    "payroll": "Payroll",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "soon": "Soon",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "topbar": {
+    "noCompany": "No company selected",
+    "language": "Language",
+    "account": "Account",
+    "notSignedIn": "Not signed in"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your company's documents and operations.",
+    "demoBanner": "Preview with sample data. Nothing shown here is connected to a real company yet.",
+    "demoBadge": "Sample data",
+    "kpi": {
+      "revenue": "Invoiced this month",
+      "revenueHint": "Approved invoices, shown per document currency",
+      "outstanding": "Outstanding",
+      "outstandingHint": "{count, plural, one {# unpaid invoice} other {# unpaid invoices}}",
+      "overdue": "Overdue",
+      "overdueHint": "{count, plural, one {# invoice past due date} other {# invoices past due date}}",
+      "documents": "Documents this month",
+      "documentsHint": "Invoices, proformas, credit notes and delivery notes"
+    },
+    "currencyNote": "Each document keeps its own currency. Totals in different currencies are never added together.",
+    "recent": {
+      "title": "Recent documents",
+      "description": "Latest documents across all types",
+      "number": "Number",
+      "type": "Type",
+      "customer": "Customer",
+      "date": "Date",
+      "status": "Status",
+      "amount": "Amount",
+      "creditsInvoice": "Credits {number}",
+      "noAmount": "Not applicable"
+    },
+    "nextSteps": {
+      "title": "Getting started",
+      "createCompany": "Create your company profile",
+      "inviteTeam": "Invite your team and assign roles",
+      "addCustomers": "Add customers and products",
+      "firstInvoice": "Issue your first invoice"
+    }
+  },
+  "documentType": {
+    "invoice": "Invoice",
+    "proforma": "Proforma invoice",
+    "creditNote": "Credit note",
+    "deliveryNote": "Delivery note"
+  },
+  "documentStatus": {
+    "draft": "Draft",
+    "approved": "Approved",
+    "sent": "Sent",
+    "paid": "Paid",
+    "overdue": "Overdue",
+    "delivered": "Delivered"
+  },
+  "roles": {
+    "owner": "Owner",
+    "administrator": "Administrator",
+    "accountant": "Accountant",
+    "manager": "Manager",
+    "warehouse_employee": "Warehouse employee",
+    "production_employee": "Production employee"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to dashboard"
+  },
+  "offline": {
+    "title": "You are offline",
+    "description": "Check your internet connection. Your data is not stored on this device."
+  }
+}
