@@ -1,10 +1,10 @@
 import { createHmac } from "node:crypto";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { APIError, createAuthMiddleware, getSessionFromCtx } from "better-auth/api";
+import { APIError, createAuthMiddleware, getIP, getSessionFromCtx } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { twoFactor } from "better-auth/plugins/two-factor";
-import { and, eq, gt, lt, ne } from "drizzle-orm";
+import { and, eq, gt, lt, ne, sql } from "drizzle-orm";
 import { type ServerEnv } from "@/config/env";
 import { LOCALES } from "@/i18n/config";
 import { recordAudit } from "@/server/audit/audit-log";
@@ -29,6 +29,33 @@ export const SESSION_UPDATE_AGE = 60 * 60; // refresh (and record activity) at m
 export const PASSWORD_MIN_LENGTH = 12;
 export const RESET_TOKEN_EXPIRES_IN = 60 * 60; // 1 hour
 const TOTP_REPLAY_WINDOW_SECONDS = 120; // covers the ±1 step tolerance of a 30s TOTP
+/** Failed password sign-ins per account (any IP) before further attempts are refused. */
+export const ACCOUNT_SIGN_IN_LIMIT = { max: 10, windowMs: 15 * 60 * 1000 };
+
+/**
+ * Endpoints a session that still owes its second factor may call. Everything else that acts on the
+ * current session (reading the TOTP URI, regenerating recovery codes, changing the password or
+ * profile, linking accounts…) is refused until the challenge is passed. Without this, a session
+ * created by Google sign-in — which the 2FA plugin does not intercept — could read the TOTP secret.
+ */
+const PENDING_TWO_FACTOR_ALLOWED = [
+  "/two-factor/verify-totp",
+  "/two-factor/verify-backup-code",
+  "/get-session",
+  "/sign-out",
+];
+/** Endpoints that do not act on an existing session (starting a new sign-in, email links). */
+const SESSIONLESS_PREFIXES = [
+  "/sign-in/",
+  "/sign-up/",
+  "/callback/",
+  "/request-password-reset",
+  "/reset-password",
+  "/verify-email",
+  "/send-verification-email",
+  "/error",
+  "/ok",
+];
 
 export interface AuthDeps {
   db: Database;
@@ -39,6 +66,8 @@ export interface AuthDeps {
 /** Errors this app adds on top of the library's error codes (translated in the UI). */
 export const APP_AUTH_ERRORS = {
   TWO_FACTOR_REQUIRED_FOR_ROLE: "TWO_FACTOR_REQUIRED_FOR_ROLE",
+  TWO_FACTOR_CHALLENGE_REQUIRED: "TWO_FACTOR_CHALLENGE_REQUIRED",
+  TOO_MANY_ATTEMPTS: "TOO_MANY_ATTEMPTS",
   CODE_ALREADY_USED: "CODE_ALREADY_USED",
   ACCOUNT_DISABLED: "ACCOUNT_DISABLED",
 } as const;
@@ -87,6 +116,8 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
             prompt: "select_account" as const,
+            // A Google account whose address Google has not verified gets no session.
+            requireEmailVerification: true,
           },
         }
       : {};
@@ -96,6 +127,13 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
     createHmac("sha256", env.BETTER_AUTH_SECRET)
       .update(`totp:${userId}:${code}`)
       .digest("base64url");
+
+  const accountKey = (email: string) =>
+    `sign-in-account:${createHmac("sha256", env.BETTER_AUTH_SECRET)
+      .update(email.trim().toLowerCase())
+      .digest("base64url")}`;
+  const clearAccountFailures = (email: string) =>
+    db.delete(authRateLimits).where(eq(authRateLimits.key, accountKey(email)));
 
   const audit = (
     action: string,
@@ -152,6 +190,9 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
     baseURL: appUrl,
     basePath: AUTH_BASE_PATH,
     secret: env.BETTER_AUTH_SECRET,
+    // Explicit so key rotation is configured only through the validated env (the library would
+    // otherwise read process.env.BETTER_AUTH_SECRETS on its own).
+    secrets: env.BETTER_AUTH_SECRETS,
     trustedOrigins: [appUrl],
     telemetry: { enabled: false },
     logger: { level: env.LOG_LEVEL === "debug" ? "debug" : "warn" },
@@ -202,7 +243,12 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
       useSecureCookies: secureCookies,
       defaultCookieAttributes: { httpOnly: true, sameSite: "lax", secure: secureCookies },
       database: { generateId: "uuid" },
-      ipAddress: { ipAddressHeaders: env.TRUSTED_IP_HEADER ? [env.TRUSTED_IP_HEADER] : [] },
+      ipAddress: {
+        ipAddressHeaders: env.TRUSTED_IP_HEADER ? [env.TRUSTED_IP_HEADER] : [],
+        trustedProxies: env.TRUSTED_PROXIES,
+      },
+      // The library skips origin/callbackURL validation when NODE_ENV=test; keep it on everywhere.
+      disableOriginCheck: false,
     },
     // Session management goes through the app's audited service (no tokens sent to browsers);
     // email/SMS one-time codes are not offered (TOTP + recovery codes only).
@@ -233,6 +279,7 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
         await audit("auth.sign_up_existing_email", user.id);
       },
       onPasswordReset: async ({ user }) => {
+        await clearAccountFailures(user.email);
         await audit("auth.password_reset_completed", user.id);
         await sendSecurityEmail("passwordChanged", user.id, {
           link: accountLink((user as { locale?: string }).locale ?? "en", "/forgot-password"),
@@ -281,8 +328,8 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
         create: {
           before: async (session) => {
             const user = await findUser(session.userId);
-            // Disabled users cannot obtain sessions by any method (password, Google, 2FA).
-            if (!user || user.disabledAt) return false;
+            // Disabled or unverified users cannot obtain sessions by any method (password, Google, 2FA).
+            if (!user || user.disabledAt || !user.emailVerified) return false;
           },
           after: async (session, ctx) => {
             const path = ctx?.path ?? "";
@@ -313,6 +360,53 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
       before: createAuthMiddleware(async (ctx) => {
         const path = ctx.path;
         const body = (ctx.body ?? {}) as Record<string, unknown>;
+
+        // A session of a 2FA user that has not passed the second factor may only complete it.
+        if (
+          !PENDING_TWO_FACTOR_ALLOWED.includes(path) &&
+          !SESSIONLESS_PREFIXES.some((prefix) => path.startsWith(prefix))
+        ) {
+          const token = await ctx.getSignedCookie(
+            ctx.context.authCookies.sessionToken.name,
+            ctx.context.secret,
+          );
+          if (token) {
+            const [row] = await db
+              .select({
+                verifiedAt: authSessions.twoFactorVerifiedAt,
+                twoFactorEnabled: users.twoFactorEnabled,
+              })
+              .from(authSessions)
+              .innerJoin(users, eq(users.id, authSessions.userId))
+              .where(eq(authSessions.token, token))
+              .limit(1);
+            if (row?.twoFactorEnabled && !row.verifiedAt) {
+              throw new APIError("FORBIDDEN", {
+                code: APP_AUTH_ERRORS.TWO_FACTOR_CHALLENGE_REQUIRED,
+                message: "Complete two-factor authentication first",
+              });
+            }
+          }
+        }
+
+        // Password guessing is limited per account as well as per IP, so spoofed or rotating
+        // client IPs do not help. Unknown addresses are counted the same way (no enumeration).
+        if (path === "/sign-in/email" && typeof body.email === "string") {
+          const [entry] = await db
+            .select()
+            .from(authRateLimits)
+            .where(eq(authRateLimits.key, accountKey(body.email)));
+          if (
+            entry &&
+            entry.count >= ACCOUNT_SIGN_IN_LIMIT.max &&
+            Date.now() - entry.lastRequest < ACCOUNT_SIGN_IN_LIMIT.windowMs
+          ) {
+            throw new APIError("TOO_MANY_REQUESTS", {
+              code: APP_AUTH_ERRORS.TOO_MANY_ATTEMPTS,
+              message: "Too many failed attempts. Try again later.",
+            });
+          }
+        }
 
         if (path === "/change-password") {
           // Policy: changing the password always signs out every other session.
@@ -365,15 +459,32 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
         const path = ctx.path;
         const returned = ctx.context.returned;
         const failed = isApiError(returned);
-        const ip = ctx.request?.headers.get(env.TRUSTED_IP_HEADER ?? "x-forwarded-for") ?? null;
+        // Same resolution as rate limiting and sessions (trusted header/proxies only).
+        const ip = ctx.request ? getIP(ctx.request, ctx.context.options) : null;
         const ua = ctx.request?.headers.get("user-agent") ?? null;
 
         if (path === "/sign-in/email") {
+          const email =
+            typeof (ctx.body as { email?: unknown })?.email === "string"
+              ? String((ctx.body as { email: string }).email).toLowerCase()
+              : null;
+          if (email && failed && errorCode(returned) === "INVALID_EMAIL_OR_PASSWORD") {
+            const now = Date.now();
+            const expired = sql`${authRateLimits.lastRequest} < ${now - ACCOUNT_SIGN_IN_LIMIT.windowMs}`;
+            await db
+              .insert(authRateLimits)
+              .values({ key: accountKey(email), count: 1, lastRequest: now })
+              .onConflictDoUpdate({
+                target: authRateLimits.key,
+                set: {
+                  count: sql`case when ${expired} then 1 else ${authRateLimits.count} + 1 end`,
+                  lastRequest: sql`case when ${expired} then ${now} else ${authRateLimits.lastRequest} end`,
+                },
+              });
+          } else if (email && !failed) {
+            await clearAccountFailures(email);
+          }
           if (failed) {
-            const email =
-              typeof (ctx.body as { email?: unknown })?.email === "string"
-                ? String((ctx.body as { email: string }).email).toLowerCase()
-                : null;
             const [user] = email
               ? await db.select({ id: users.id }).from(users).where(eq(users.email, email)).limit(1)
               : [];

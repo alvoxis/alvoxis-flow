@@ -320,15 +320,16 @@ describe("company access requires every authentication step", () => {
     const { email, c, companyId } = await ownerWithCompany();
     await enrol(c);
     const id = await userId(email);
-    await expect(operatorResetTwoFactor(db, email, "")).rejects.toThrow(/reason/);
-    expect(await operatorResetTwoFactor(db, "missing@example.test", "TICKET-1")).toBeNull();
+    const op = (input: { email: string; reason: string; operator?: string }) =>
+      operatorResetTwoFactor(db, h.mailer, { operator: "Test Operator", ...input }, h.env.APP_URL);
+    await expect(op({ email, reason: "" })).rejects.toThrow(/reason/);
+    await expect(op({ email, reason: "TICKET-1", operator: "" })).rejects.toThrow(/operator/);
+    expect(await op({ email: "missing@example.test", reason: "TICKET-1" })).toBeNull();
 
-    const result = await operatorResetTwoFactor(
-      db,
-      email.toUpperCase(),
-      "TICKET-42 identity checked",
-    );
-    expect(result).toMatchObject({ userId: id, revokedSessions: 1 });
+    const result = await op({ email: email.toUpperCase(), reason: "TICKET-42 identity checked" });
+    expect(result).toMatchObject({ userId: id, revokedSessions: 1, notified: true });
+    // The account owner is told, so a social-engineered reset does not go unnoticed.
+    expect(h.mailer.outbox.at(-1)).toMatchObject({ to: email, kind: "twoFactorDisabled" });
     expect(await db.select().from(twoFactors).where(eq(twoFactors.userId, id))).toHaveLength(0);
     await expect(current(c)).rejects.toThrow(UnauthenticatedError);
 
@@ -343,6 +344,11 @@ describe("company access requires every authentication step", () => {
       .where(
         and(eq(auditLogs.entityId, id), eq(auditLogs.action, "auth.two_factor_reset_by_operator")),
       );
-    expect(entry!.metadata).toEqual({ reason: "TICKET-42 identity checked", revokedSessions: 1 });
+    expect(entry!.metadata).toEqual({
+      reason: "TICKET-42 identity checked",
+      operator: "Test Operator",
+      revokedSessions: 1,
+      notified: true,
+    });
   });
 });

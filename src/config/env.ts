@@ -23,6 +23,37 @@ const baseSchema = z.object({
 
   /** Signs/encrypts session cookies, 2FA secrets and backup codes. ≥ 32 random characters. */
   BETTER_AUTH_SECRET: z.string().min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
+  /**
+   * Optional key rotation: "<version>:<secret>,…", newest first (e.g. "2:new…,1:old…"). New data
+   * is encrypted with the first entry; older entries stay readable. BETTER_AUTH_SECRET is still
+   * used to read data written before rotation was enabled. See docs/auth/AUTHENTICATION.md.
+   */
+  BETTER_AUTH_SECRETS: optionalNonEmpty.transform((v, ctx) => {
+    if (!v) return undefined;
+    const entries = v.split(",").map((raw) => {
+      const entry = raw.trim();
+      const idx = entry.indexOf(":");
+      const version = Number(entry.slice(0, idx));
+      const value = entry.slice(idx + 1).trim();
+      return { version, value, ok: idx > 0 && Number.isInteger(version) && version >= 0 };
+    });
+    const versions = new Set(entries.map((e) => e.version));
+    if (entries.some((e) => !e.ok) || versions.size !== entries.length) {
+      ctx.addIssue({
+        code: "custom",
+        message: 'BETTER_AUTH_SECRETS must be "<version>:<secret>" entries with unique versions',
+      });
+      return z.NEVER;
+    }
+    if (entries.some((e) => e.value.length < 32)) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Every BETTER_AUTH_SECRETS entry needs ≥ 32 characters",
+      });
+      return z.NEVER;
+    }
+    return entries.map(({ version, value }) => ({ version, value }));
+  }),
 
   /** Google OAuth (optional). Both values must be set together; never exposed to the browser. */
   GOOGLE_CLIENT_ID: optionalNonEmpty,
@@ -46,6 +77,27 @@ const baseSchema = z.object({
    * rate limiting and the session device list. Leave unset when not behind a proxy.
    */
   TRUSTED_IP_HEADER: optionalNonEmpty,
+  /**
+   * Comma-separated IPs/CIDR ranges of your reverse proxies. When set, a multi-hop
+   * TRUSTED_IP_HEADER (e.g. x-forwarded-for "client, proxy") is read from the right, skipping these
+   * hops, so a client-supplied left-most value is ignored. Unset: only single-value headers count.
+   */
+  TRUSTED_PROXIES: optionalNonEmpty.transform((v, ctx) => {
+    if (!v) return undefined;
+    const list = v
+      .split(",")
+      .map((e) => e.trim())
+      .filter(Boolean);
+    const cidr = /^(\d{1,3}(\.\d{1,3}){3}|[0-9a-fA-F:]+)(\/\d{1,3})?$/;
+    if (list.length === 0 || list.some((e) => !cidr.test(e))) {
+      ctx.addIssue({
+        code: "custom",
+        message: "TRUSTED_PROXIES must be IP addresses or CIDR ranges",
+      });
+      return z.NEVER;
+    }
+    return list;
+  }),
 });
 
 /** True for http(s)://localhost / 127.0.0.1 — local runs and CI of a production build, never a real deployment. */

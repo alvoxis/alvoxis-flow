@@ -24,7 +24,8 @@ export interface RequireUserOptions {
 
 /**
  * Resolves the current user from request headers and re-checks the database on every call:
- * the session must exist and be unexpired, the user must exist and not be disabled. Users with
+ * the session must exist and be unexpired, the user must exist, not be disabled and have a
+ * verified email address. Users with
  * 2FA enabled must have passed a second factor in THIS session.
  */
 export async function requireUser(
@@ -50,6 +51,8 @@ export async function requireUser(
     await db.delete(authSessions).where(eq(authSessions.userId, row.user.id));
     throw new UnauthenticatedError("Account disabled");
   }
+  // Defence in depth: sessions are only issued to verified addresses; never honour one otherwise.
+  if (!row.user.emailVerified) throw new UnauthenticatedError("Email address not verified");
 
   const twoFactorVerified = row.session.twoFactorVerifiedAt !== null;
   if (row.user.twoFactorEnabled && !twoFactorVerified && !options.allowPendingTwoFactor) {

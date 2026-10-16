@@ -15,7 +15,8 @@ can also build the repository directly.
 - `APP_URL` — public HTTPS origin.
 - `BETTER_AUTH_SECRET` — ≥ 32 random characters, kept stable (rotating it signs everyone out and makes
   enrolled 2FA unreadable).
-- `TRUSTED_IP_HEADER` — the client-IP header set by the reverse proxy.
+- `TRUSTED_IP_HEADER` — the client-IP header set by the reverse proxy, plus `TRUSTED_PROXIES` (proxy
+  CIDRs) when the proxy appends to it. The app must only be reachable through that proxy.
 - `EMAIL_TRANSPORT=smtp` with `EMAIL_FROM` and `SMTP_*`; optionally `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`.
   Details and the operator 2FA-reset procedure: [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md).
 - Secrets are stored in the hosting platform's secret manager, never in the repository.

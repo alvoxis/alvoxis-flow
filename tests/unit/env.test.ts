@@ -90,4 +90,35 @@ describe("parseServerEnv", () => {
       expect((err as Error).message).not.toContain("s3cret");
     }
   });
+
+  it("parses BETTER_AUTH_SECRETS for key rotation and rejects weak or malformed entries", () => {
+    const other = "another-test-secret-another-test-secret-99";
+    expect(
+      parseServerEnv({ ...base, BETTER_AUTH_SECRETS: `2:${other}, 1:${SECRET}` })
+        .BETTER_AUTH_SECRETS,
+    ).toEqual([
+      { version: 2, value: other },
+      { version: 1, value: SECRET },
+    ]);
+    expect(parseServerEnv(base).BETTER_AUTH_SECRETS).toBeUndefined();
+    for (const bad of [`2:short`, `x:${SECRET}`, `${SECRET}`, `1:${SECRET},1:${other}`]) {
+      expect(() => parseServerEnv({ ...base, BETTER_AUTH_SECRETS: bad })).toThrow(
+        /BETTER_AUTH_SECRETS/,
+      );
+    }
+    // Secret values never appear in the error.
+    expect(() => parseServerEnv({ ...base, BETTER_AUTH_SECRETS: "2:tooshort-value" })).toThrow(
+      expect.objectContaining({ message: expect.not.stringContaining("tooshort-value") }),
+    );
+  });
+
+  it("parses TRUSTED_PROXIES as IP/CIDR entries", () => {
+    expect(
+      parseServerEnv({ ...base, TRUSTED_PROXIES: "10.0.0.0/8, 192.168.1.10,2001:db8::/32" })
+        .TRUSTED_PROXIES,
+    ).toEqual(["10.0.0.0/8", "192.168.1.10", "2001:db8::/32"]);
+    expect(() => parseServerEnv({ ...base, TRUSTED_PROXIES: "proxy.internal" })).toThrow(
+      /TRUSTED_PROXIES/,
+    );
+  });
 });

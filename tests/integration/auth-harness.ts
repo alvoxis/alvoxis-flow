@@ -6,14 +6,17 @@ import { MemoryMailer } from "@/server/notifications/mailer";
 
 export const TEST_APP_URL = "http://localhost:3000";
 
-export function createTestAuth(db: Database) {
+export const TEST_AUTH_SECRET = "integration-test-secret-not-for-production-0001";
+
+export function createTestAuth(db: Database, overrides: Record<string, string | undefined> = {}) {
   const env = parseServerEnv({
     NODE_ENV: "test",
     DATABASE_URL: process.env.TEST_DATABASE_URL,
     APP_URL: TEST_APP_URL,
     // Fixture secret for the disposable test database only.
-    BETTER_AUTH_SECRET: "integration-test-secret-not-for-production-0001",
+    BETTER_AUTH_SECRET: TEST_AUTH_SECRET,
     TRUSTED_IP_HEADER: "x-forwarded-for",
+    ...overrides,
   });
   const mailer = new MemoryMailer();
   return { auth: createAuth({ db, env, mailer }), mailer, env };
