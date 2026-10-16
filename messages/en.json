@@ -419,7 +419,6 @@
     "lineN": "Line {n}",
     "addLine": "Add line",
     "removeLine": "Remove line {n}",
-    "noTax": "No tax category",
     "save": "Save draft",
     "saved": "Draft saved.",
     "unsaved": "You have unsaved changes. Save the draft before issuing it.",
@@ -564,6 +563,77 @@
       "total": {
         "mustBePositive": "The total must be greater than zero."
       }
-    }
+    },
+    "taxCategory": "Tax category",
+    "chooseTaxCategory": "Choose a tax category…",
+    "archivedOption": "{name} (archived)",
+    "archivedWarning": "This category is archived. Choose an active category before issuing.",
+    "legacyWarning": "Tax details entered before the company's category list: {details}. They are kept when you save, but choose a category from the list before issuing.",
+    "restoreLegacy": "Restore previous value",
+    "noCategoriesManage": "This company has no tax categories yet. Add the categories confirmed by your company or accountant before issuing documents with prices.",
+    "setUpCategories": "Set up tax categories",
+    "noCategoriesAsk": "This company has no tax categories yet. Ask an owner, administrator or accountant to add them.",
+    "creditNoteTax": "taken from the original invoice"
+  },
+  "taxCategories": {
+    "title": "Tax categories",
+    "description": "Tax categories this company uses on documents.",
+    "open": "Tax categories",
+    "noRatesProvided": "ALVOXIS Flow does not supply tax rates or rules. Enter only the categories confirmed by your company or accountant.",
+    "readOnly": "You can view the tax categories. Owners, administrators and accountants can change them.",
+    "empty": "No tax categories yet.",
+    "colCode": "Code",
+    "colLabel": "Name on documents",
+    "colTreatment": "Treatment and rate",
+    "colStatus": "Status",
+    "colActions": "Actions",
+    "fields": {
+      "code": "Code",
+      "codeHint": "Short identifier. It cannot be changed later.",
+      "kind": "Tax treatment",
+      "ratePercent": "Rate, %",
+      "rateHint": "Use 0 for treatments other than the standard rate. The rate cannot be changed later; a different rate needs a new category.",
+      "label": "Name on documents",
+      "note": "Note on documents",
+      "noteHint": "For example the basis of an exemption, as provided by your accountant."
+    },
+    "kind": {
+      "standard": "Standard rate",
+      "zero_rated": "Zero-rated",
+      "exempt": "Exempt",
+      "reverse_charge": "Reverse charge",
+      "outside_scope": "Outside the scope of tax"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "create": "Add category",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "immutableHint": "Code, treatment and rate cannot be changed. For a different rate or treatment, add a new category and archive this one.",
+    "archive": "Archive",
+    "restore": "Restore",
+    "archiveConfirmTitle": "Archive this category?",
+    "archiveConfirmBody": "It will no longer be offered for new lines. Drafts that already use it cannot be issued until another category is chosen. Issued documents do not change.",
+    "archiveConfirm": "Archive",
+    "done": {
+      "created": "Category added.",
+      "saved": "Changes saved.",
+      "archived": "Category archived.",
+      "restored": "Category restored."
+    },
+    "outcome": {
+      "invalid": "Please check the highlighted fields.",
+      "codeTaken": "This code is already used by a category of this company (archived ones included).",
+      "conflict": "This category was changed elsewhere. Reload to see the latest version.",
+      "signedOut": "Your session has ended. Please sign in again.",
+      "twoFactor": "Your role requires two-factor authentication for this action.",
+      "forbidden": "You do not have permission for this action, or the company is no longer active.",
+      "notFound": "This category no longer exists.",
+      "error": "Something went wrong. Please try again."
+    },
+    "reload": "Reload"
   }
 }

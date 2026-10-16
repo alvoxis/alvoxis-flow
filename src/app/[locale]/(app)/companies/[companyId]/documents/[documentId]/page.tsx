@@ -77,6 +77,8 @@ export default async function DocumentPage({ params }: Params) {
           document={document}
           canEdit={permissions.canEdit}
           canIssue={permissions.canIssue}
+          taxCategories={data.taxCategories}
+          canManageTaxCategories={permissions.canManageTaxCategories}
         />
       )}
     </Card>

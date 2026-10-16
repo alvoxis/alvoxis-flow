@@ -33,7 +33,25 @@ export default async function DocumentsPage({ params }: Params) {
           <Link href="/account/two-factor">{tCompany("setUpTwoFactor")}</Link>
         </Alert>
       ) : (
-        <DocumentList companyId={companyId} rows={data.documents} />
+        <div className="space-y-4">
+          {data.hasTaxCategories ? null : (
+            <div data-testid="no-tax-categories">
+              <Alert tone="info">
+                {data.permissions.canManageTaxCategories ? (
+                  <>
+                    {t("noCategoriesManage")}{" "}
+                    <Link href={`/companies/${companyId}/tax-categories`} className="underline">
+                      {t("setUpCategories")}
+                    </Link>
+                  </>
+                ) : (
+                  t("noCategoriesAsk")
+                )}
+              </Alert>
+            </div>
+          )}
+          <DocumentList companyId={companyId} rows={data.documents} />
+        </div>
       )}
     </Card>
   );

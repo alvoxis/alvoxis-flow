@@ -419,7 +419,6 @@
     "lineN": "Rinda {n}",
     "addLine": "Pievienot rindu",
     "removeLine": "Dzēst rindu {n}",
-    "noTax": "Bez nodokļu kategorijas",
     "save": "Saglabāt melnrakstu",
     "saved": "Melnraksts saglabāts.",
     "unsaved": "Ir nesaglabātas izmaiņas. Saglabājiet melnrakstu pirms izrakstīšanas.",
@@ -564,6 +563,77 @@
       "total": {
         "mustBePositive": "Summai jābūt lielākai par nulli."
       }
-    }
+    },
+    "taxCategory": "Nodokļu kategorija",
+    "chooseTaxCategory": "Izvēlieties nodokļu kategoriju…",
+    "archivedOption": "{name} (arhivēta)",
+    "archivedWarning": "Šī kategorija ir arhivēta. Pirms izrakstīšanas izvēlieties aktīvu kategoriju.",
+    "legacyWarning": "Nodokļu dati ievadīti pirms uzņēmuma kategoriju saraksta izveides: {details}. Saglabājot tie tiek saglabāti, taču pirms izrakstīšanas izvēlieties kategoriju no saraksta.",
+    "restoreLegacy": "Atjaunot iepriekšējo vērtību",
+    "noCategoriesManage": "Uzņēmumam vēl nav nodokļu kategoriju. Pirms dokumentu ar cenām izrakstīšanas pievienojiet uzņēmuma vai grāmatveža apstiprinātas kategorijas.",
+    "setUpCategories": "Iestatīt nodokļu kategorijas",
+    "noCategoriesAsk": "Uzņēmumam vēl nav nodokļu kategoriju. Lūdziet īpašniekam, administratoram vai grāmatvedim tās pievienot.",
+    "creditNoteTax": "no sākotnējā rēķina"
+  },
+  "taxCategories": {
+    "title": "Nodokļu kategorijas",
+    "description": "Nodokļu kategorijas, ko uzņēmums izmanto dokumentos.",
+    "open": "Nodokļu kategorijas",
+    "noRatesProvided": "ALVOXIS Flow nenodrošina nodokļu likmes vai noteikumus. Ievadiet tikai uzņēmuma vai grāmatveža apstiprinātas kategorijas.",
+    "readOnly": "Jūs varat skatīt nodokļu kategorijas. Tās var mainīt īpašnieki, administratori un grāmatveži.",
+    "empty": "Nodokļu kategoriju vēl nav.",
+    "colCode": "Kods",
+    "colLabel": "Nosaukums dokumentos",
+    "colTreatment": "Režīms un likme",
+    "colStatus": "Statuss",
+    "colActions": "Darbības",
+    "fields": {
+      "code": "Kods",
+      "codeHint": "Īss identifikators. Vēlāk to mainīt nevar.",
+      "kind": "Nodokļu režīms",
+      "ratePercent": "Likme, %",
+      "rateHint": "Režīmiem, kas nav standarta likme, norādiet 0. Likmi vēlāk mainīt nevar; citai likmei nepieciešama jauna kategorija.",
+      "label": "Nosaukums dokumentos",
+      "note": "Piezīme dokumentos",
+      "noteHint": "Piemēram, atbrīvojuma pamatojums, ko sniedzis grāmatvedis."
+    },
+    "kind": {
+      "standard": "Standarta likme",
+      "zero_rated": "Nulles likme",
+      "exempt": "Atbrīvots",
+      "reverse_charge": "Apgrieztā maksāšana",
+      "outside_scope": "Ārpus nodokļa piemērošanas jomas"
+    },
+    "status": {
+      "active": "Aktīva",
+      "archived": "Arhivēta"
+    },
+    "create": "Pievienot kategoriju",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "immutableHint": "Kodu, režīmu un likmi mainīt nevar. Citai likmei vai režīmam pievienojiet jaunu kategoriju un arhivējiet šo.",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "archiveConfirmTitle": "Arhivēt šo kategoriju?",
+    "archiveConfirmBody": "Tā vairs netiks piedāvāta jaunām rindām. Melnrakstus, kuros tā jau norādīta, nevar izrakstīt, kamēr nav izvēlēta cita kategorija. Izrakstītie dokumenti nemainās.",
+    "archiveConfirm": "Arhivēt",
+    "done": {
+      "created": "Kategorija pievienota.",
+      "saved": "Izmaiņas saglabātas.",
+      "archived": "Kategorija arhivēta.",
+      "restored": "Kategorija atjaunota."
+    },
+    "outcome": {
+      "invalid": "Pārbaudiet iezīmētos laukus.",
+      "codeTaken": "Šo kodu jau izmanto šī uzņēmuma kategorija (ieskaitot arhivētās).",
+      "conflict": "Kategorija tika mainīta citur. Pārlādējiet, lai redzētu jaunāko versiju.",
+      "signedOut": "Sesija ir beigusies. Lūdzu, pierakstieties vēlreiz.",
+      "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
+      "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
+      "notFound": "Šī kategorija vairs nepastāv.",
+      "error": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz."
+    },
+    "reload": "Pārlādēt"
   }
 }

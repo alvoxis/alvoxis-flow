@@ -204,11 +204,27 @@ numbers are always the server's; the editor shows `issues` translated by code
 messages (a version conflict offers a reload). Non-members, archived companies and missing
 `documents.view` get 404; roles that need 2FA without it see the 2FA notice.
 
+### Tax categories in the UI
+
+`/{locale}/companies/{companyId}/tax-categories` lists the catalog (a table on wide screens, cards
+on phones) and, with `tax_categories.manage`, lets the user add categories, edit `label`/`note`
+and archive (with confirmation) or restore them; code, treatment and rate are read-only after
+creation. It offers no categories or rates of its own. Other roles with `documents.view` see it
+read-only; without access the page is a 404. Links come from the company list and from the
+empty-catalog hints on the documents list and in the editor.
+
+In the editor, each invoice/proforma line has a picker of **active** categories with no default;
+new lines start without a category (the server blocks issuing until one is chosen). Credit-note
+lines show the invoice's category and cannot change it. Lines with an archived category or with
+pre-catalog tax data show a warning. Pre-catalog data is never lost on save: when a line is
+resubmitted with its own id and no category, `updateDraft` keeps the snapshot stored on that line
+of the same draft (read from the database, not the request); ids of other drafts are ignored.
+"Restore previous value" undoes a choice before saving; an explicit choice that is saved replaces
+the old snapshot, and the server never rolls it back.
+
 ## Not implemented yet
 
-Creating or deleting drafts in the UI, the tax-category settings screen and choosing a category
-on a line in the editor (stage C2; until then lines can be added only to delivery notes and
-existing lines keep their category), the buyer in the document list, bank-account snapshots from
+Creating or deleting drafts in the UI, the buyer in the document list, bank-account snapshots from
 company settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.

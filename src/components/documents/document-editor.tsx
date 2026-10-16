@@ -9,9 +9,14 @@ import {
   type ApiDocument,
   type ApiIssue,
   type ApiOutcome,
+  type CategoryOption,
+  chooseCategory,
   hasErrorAt,
   interpretResponse,
+  legacySnapshots,
+  lineTaxState,
   newLine,
+  restoreLegacy,
   toDraftInput,
 } from "@/features/documents/editor-model";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -27,6 +32,10 @@ export interface DocumentEditorProps {
   document: ApiDocument;
   canEdit: boolean;
   canIssue: boolean;
+  /** Active company tax categories offered on lines (never a default). */
+  taxCategories: CategoryOption[];
+  /** May add categories in the catalog (decides which empty-catalog hint is shown). */
+  canManageTaxCategories: boolean;
 }
 
 type Notice =
@@ -50,10 +59,18 @@ async function send(url: string, method: string, body: unknown): Promise<ApiOutc
  * only authority on access, validation, totals and numbering; this component just shows its
  * answers. Remount it (key = version) to load a newer server version.
  */
-export function DocumentEditor({ companyId, document, canEdit, canIssue }: DocumentEditorProps) {
+export function DocumentEditor({
+  companyId,
+  document,
+  canEdit,
+  canIssue,
+  taxCategories,
+  canManageTaxCategories,
+}: DocumentEditorProps) {
   const t = useTranslations("documents");
   const tPdf = useTranslations("documentPdf");
   const tCompany = useTranslations("company");
+  const tCat = useTranslations("taxCategories");
   const router = useRouter();
   const confirmId = useId();
   const [draft, setDraft] = useState<DocumentDraft>(document.draft);
@@ -64,13 +81,16 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
   const [pending, setPending] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
+  // Pre-catalog tax data as last saved, so a line can be put back before the next save.
+  const [legacy, setLegacy] = useState(() => legacySnapshots(document.draft.lines));
 
   const url = `/api/companies/${companyId}/documents/${document.id}`;
   const priced = isPricedDocument(draft.type);
   // Credit-note lines map to invoice lines by position, so their set of lines is fixed.
   const fixedLines = draft.type === "credit_note";
-  // Without a tax-category source in the API, new lines are only possible where there is no tax.
-  const canAddLines = canEdit && !fixedLines && !priced;
+  // New lines never get a category automatically; priced ones need an explicit choice.
+  const canAddLines = canEdit && !fixedLines;
+  const choosesCategories = priced && !fixedLines;
   const readOnly = !canEdit || pending;
 
   const update = (patch: Partial<DocumentDraft>) => {
@@ -84,6 +104,9 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
     updateBuyer({ address: { lines: [], ...draft.buyer.address, ...patch } });
   const updateLine = (index: number, patch: Partial<DocumentLine>) =>
     update({ lines: draft.lines.map((l, i) => (i === index ? { ...l, ...patch } : l)) });
+  /** Replaces a whole line (a merge could not remove a field such as a chosen category). */
+  const replaceLine = (index: number, next: DocumentLine) =>
+    update({ lines: draft.lines.map((l, i) => (i === index ? next : l)) });
 
   function apply(outcome: ApiOutcome, onInvalid: "invalid" | "issueBlocked") {
     if (outcome.kind === "invalid") {
@@ -107,6 +130,7 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
       setVersion(outcome.document.version);
       setIssues(outcome.document.issues);
       setTotals(outcome.document.totals);
+      setLegacy(legacySnapshots(outcome.document.draft.lines));
       setDirty(false);
       setNotice({ kind: "saved" });
       return;
@@ -161,6 +185,67 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
   );
 
   const err = (field: string, line?: number) => hasErrorAt(issues, field, line);
+
+  const optionText = (c: Pick<CategoryOption, "label" | "code" | "kind" | "ratePercent">) =>
+    `${c.label} · ${c.code} · ${c.kind === "standard" ? `${c.ratePercent}%` : tCat(`kind.${c.kind}`)}`;
+
+  /** Category picker and its warnings for one line of an invoice or proforma. */
+  const lineTax = (line: DocumentLine, i: number) => {
+    const state = lineTaxState(line, taxCategories);
+    const previous = legacy.get(line.id);
+    const invalid = err("lines.taxCategory", i) || err("lines.taxCategoryId", i);
+    return (
+      <div className="mt-3 space-y-2" data-testid="line-tax" data-state={state}>
+        <label className="block space-y-1.5">
+          <span className="block text-sm font-medium text-text">{t("taxCategory")}</span>
+          <select
+            name={`lines.${i}.taxCategoryId`}
+            value={line.taxCategoryId ?? ""}
+            disabled={readOnly}
+            aria-invalid={invalid || undefined}
+            onChange={(e) => {
+              const chosen = taxCategories.find((c) => c.id === e.target.value);
+              if (chosen) replaceLine(i, chooseCategory(line, chosen));
+            }}
+            className={`w-full rounded-lg border bg-surface-2 px-3 py-2.5 text-sm text-text focus:border-accent focus:outline-none ${invalid ? "border-red-500" : "border-border"}`}
+          >
+            <option value="" disabled>
+              {t("chooseTaxCategory")}
+            </option>
+            {taxCategories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {optionText(c)}
+              </option>
+            ))}
+            {state === "archived" && line.taxCategory ? (
+              <option value={line.taxCategoryId} disabled>
+                {t("archivedOption", { name: optionText(line.taxCategory) })}
+              </option>
+            ) : null}
+          </select>
+        </label>
+        {state === "archived" ? <Alert tone="warning">{t("archivedWarning")}</Alert> : null}
+        {state === "legacy" && line.taxCategory ? (
+          <div data-testid="legacy-warning">
+            <Alert tone="warning">
+              {t("legacyWarning", { details: optionText(line.taxCategory) })}
+            </Alert>
+          </div>
+        ) : null}
+        {previous && state !== "legacy" && canEdit ? (
+          <Button
+            type="button"
+            variant="ghost"
+            className="px-0 py-1"
+            disabled={pending}
+            onClick={() => replaceLine(i, restoreLegacy(line, previous))}
+          >
+            {t("restoreLegacy")}
+          </Button>
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <form
@@ -269,6 +354,22 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
 
       <fieldset className="space-y-3">
         <legend className="mb-2 text-sm font-semibold text-text">{t("sections.lines")}</legend>
+        {choosesCategories && taxCategories.length === 0 ? (
+          <div data-testid="no-tax-categories">
+            <Alert tone="warning">
+              {canManageTaxCategories ? (
+                <>
+                  {t("noCategoriesManage")}{" "}
+                  <Link href={`/companies/${companyId}/tax-categories`} className="underline">
+                    {t("setUpCategories")}
+                  </Link>
+                </>
+              ) : (
+                t("noCategoriesAsk")
+              )}
+            </Alert>
+          </div>
+        ) : null}
         <ol className="space-y-3">
           {draft.lines.map((line, i) => (
             <li
@@ -278,7 +379,11 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
             >
               <div className="mb-2 flex items-center justify-between gap-2 text-xs text-muted">
                 <span>{t("lineN", { n: i + 1 })}</span>
-                <span>{priced ? (line.taxCategory?.label ?? t("noTax")) : null}</span>
+                <span>
+                  {fixedLines && line.taxCategory
+                    ? `${line.taxCategory.label} · ${t("creditNoteTax")}`
+                    : null}
+                </span>
               </div>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
                 {text(
@@ -326,6 +431,7 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
                     )
                   : null}
               </div>
+              {choosesCategories ? lineTax(line, i) : null}
               {canEdit && !fixedLines ? (
                 <Button
                   type="button"

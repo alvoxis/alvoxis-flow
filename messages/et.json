@@ -419,7 +419,6 @@
     "lineN": "Rida {n}",
     "addLine": "Lisa rida",
     "removeLine": "Eemalda rida {n}",
-    "noTax": "Maksukategooriata",
     "save": "Salvesta mustand",
     "saved": "Mustand salvestatud.",
     "unsaved": "Teil on salvestamata muudatusi. Salvestage mustand enne väljastamist.",
@@ -564,6 +563,77 @@
       "total": {
         "mustBePositive": "Summa peab olema suurem kui null."
       }
-    }
+    },
+    "taxCategory": "Maksukategooria",
+    "chooseTaxCategory": "Valige maksukategooria…",
+    "archivedOption": "{name} (arhiveeritud)",
+    "archivedWarning": "See kategooria on arhiveeritud. Valige enne väljastamist aktiivne kategooria.",
+    "legacyWarning": "Maksuandmed sisestati enne ettevõtte kategooriate loendi loomist: {details}. Salvestamisel need säilivad, kuid enne väljastamist valige loendist kategooria.",
+    "restoreLegacy": "Taasta eelmine väärtus",
+    "noCategoriesManage": "Ettevõttel pole veel maksukategooriaid. Lisage ettevõtte või raamatupidaja kinnitatud kategooriad enne hindadega dokumentide väljastamist.",
+    "setUpCategories": "Seadista maksukategooriad",
+    "noCategoriesAsk": "Ettevõttel pole veel maksukategooriaid. Paluge omanikul, administraatoril või raamatupidajal need lisada.",
+    "creditNoteTax": "algselt arvelt"
+  },
+  "taxCategories": {
+    "title": "Maksukategooriad",
+    "description": "Maksukategooriad, mida ettevõte dokumentidel kasutab.",
+    "open": "Maksukategooriad",
+    "noRatesProvided": "ALVOXIS Flow ei paku maksumäärasid ega -reegleid. Sisestage ainult ettevõtte või raamatupidaja kinnitatud kategooriad.",
+    "readOnly": "Saate maksukategooriaid vaadata. Neid saavad muuta omanikud, administraatorid ja raamatupidajad.",
+    "empty": "Maksukategooriaid veel pole.",
+    "colCode": "Kood",
+    "colLabel": "Nimetus dokumentidel",
+    "colTreatment": "Kohtlemine ja määr",
+    "colStatus": "Olek",
+    "colActions": "Toimingud",
+    "fields": {
+      "code": "Kood",
+      "codeHint": "Lühike tunnus. Hiljem seda muuta ei saa.",
+      "kind": "Maksukohtlemine",
+      "ratePercent": "Määr, %",
+      "rateHint": "Muude kui standardmäära puhul sisestage 0. Määra hiljem muuta ei saa; teise määra jaoks on vaja uut kategooriat.",
+      "label": "Nimetus dokumentidel",
+      "note": "Märkus dokumentidel",
+      "noteHint": "Näiteks maksuvabastuse alus, mille esitas raamatupidaja."
+    },
+    "kind": {
+      "standard": "Standardmäär",
+      "zero_rated": "Nullmäär",
+      "exempt": "Maksuvaba",
+      "reverse_charge": "Pöördmaksustamine",
+      "outside_scope": "Maksu kohaldamisalast väljas"
+    },
+    "status": {
+      "active": "Aktiivne",
+      "archived": "Arhiveeritud"
+    },
+    "create": "Lisa kategooria",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "immutableHint": "Koodi, kohtlemist ja määra muuta ei saa. Teise määra või kohtlemise jaoks lisage uus kategooria ja arhiveerige see.",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "archiveConfirmTitle": "Kas arhiveerida see kategooria?",
+    "archiveConfirmBody": "Seda ei pakuta enam uutele ridadele. Mustandeid, kus see juba on, ei saa väljastada enne teise kategooria valimist. Väljastatud dokumendid ei muutu.",
+    "archiveConfirm": "Arhiveeri",
+    "done": {
+      "created": "Kategooria lisatud.",
+      "saved": "Muudatused salvestatud.",
+      "archived": "Kategooria arhiveeritud.",
+      "restored": "Kategooria taastatud."
+    },
+    "outcome": {
+      "invalid": "Kontrollige esiletõstetud välju.",
+      "codeTaken": "Seda koodi kasutab juba selle ettevõtte kategooria (ka arhiveeritud).",
+      "conflict": "Kategooriat muudeti mujal. Laadige uuesti, et näha viimast versiooni.",
+      "signedOut": "Seanss on lõppenud. Logige uuesti sisse.",
+      "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
+      "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
+      "notFound": "Seda kategooriat enam ei ole.",
+      "error": "Midagi läks valesti. Proovige uuesti."
+    },
+    "reload": "Laadi uuesti"
   }
 }
