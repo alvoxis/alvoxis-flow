@@ -33,12 +33,21 @@ const party = z.object({
   contactName: optText(200),
 });
 
-const taxCategory = z.object({
+/** A new company tax category (`code`, `kind` and `ratePercent` cannot change later). */
+export const taxCategoryCreateSchema = z.strictObject({
   code: text(30).min(1),
   kind: z.enum(TAX_TREATMENT_KINDS),
   ratePercent: decimalString,
   label: text(100).min(1),
   note: optText(1000),
+});
+
+/** Editable fields of a company tax category, with optimistic locking. */
+export const taxCategoryUpdateSchema = z.strictObject({
+  expectedVersion: z.number().int().positive(),
+  label: text(100).min(1).optional(),
+  note: text(1000).nullable().optional(),
+  archived: z.boolean().optional(),
 });
 
 const lineInput = z.object({
@@ -49,7 +58,12 @@ const lineInput = z.object({
   unit: optText(20),
   unitPrice: decimalString.nullable(),
   discountPercent: decimalString.optional(),
-  taxCategory: taxCategory.nullable(),
+  /**
+   * A category from the company catalog; the server builds the snapshot. Inline category objects
+   * are refused so a client cannot submit a category the company has not defined.
+   */
+  taxCategoryId: z.uuid().nullable().default(null),
+  taxCategory: z.never().optional(),
   weightKg: decimalString.optional(),
 });
 
@@ -97,11 +111,20 @@ export const draftInputSchema = z.object({
 
 export type DraftInput = z.input<typeof draftInputSchema>;
 
-/** Parses untrusted input into a DocumentDraft (relations are never accepted from input). */
+/**
+ * Parses untrusted input into a DocumentDraft (relations are never accepted from input). Lines
+ * carry only `taxCategoryId`; the server resolves it against the company catalog and fills in
+ * the snapshot (`taxCategory` is null until then).
+ */
 export function parseDraftInput(input: unknown, newLineId: () => string): DocumentDraft {
   const parsed = draftInputSchema.parse(input);
   return {
     ...parsed,
-    lines: parsed.lines.map((l) => ({ ...l, id: newLineId() })),
+    lines: parsed.lines.map(({ taxCategoryId, taxCategory: _never, ...l }) => ({
+      ...l,
+      id: newLineId(),
+      taxCategory: null,
+      ...(taxCategoryId ? { taxCategoryId } : {}),
+    })),
   };
 }

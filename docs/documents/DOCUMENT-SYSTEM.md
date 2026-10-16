@@ -125,6 +125,37 @@ Untrusted input is shape-checked with Zod (`draftInputSchema`) before business v
 
 Scanned PDFs without a text layer are reported as unreadable (OCR is not implemented).
 
+## Tax categories (company catalog)
+
+Each company keeps its own catalog in `tax_categories` (`code`, `kind`, `ratePercent`, `label`,
+`note`). New companies start with an **empty** catalog: ALVOXIS Flow ships no categories or rates
+and no country rules (LV/LT/EE/PL) — which treatment and rate apply is the company's decision.
+Creating and editing needs `tax_categories.manage` (owner, administrator, accountant; migration
+0011 grants it to those system roles of existing companies); listing needs `documents.view`.
+
+- `code`, `kind` and `ratePercent` never change after creation; a new rate or treatment is a new
+  category. Only `label` and `note` can be edited (with `expectedVersion`). Codes are unique per
+  company, archived ones included. Categories are archived, never deleted.
+- Checks on create are the existing technical consistency rules (`validateTaxCategory`: known
+  kind, rate 0–<100 with ≤ 2 decimals, `standard` > 0 %, other kinds 0 %, note recommended), also
+  enforced by a database check. They are not country tax rules.
+- Draft lines send `taxCategoryId`; the server builds the line snapshot from the catalog. Inline
+  category objects, unknown ids and other companies' ids are refused (422,
+  `line.taxCategory.unknown`); a database foreign key `(tax_category_id, company_id)` also keeps
+  categories within the company. Archived categories cannot be newly assigned (422,
+  `line.taxCategory.archived`); a draft that already uses one keeps it but cannot be issued until
+  an active category is chosen.
+- Issuing locks the referenced categories (`FOR SHARE`; archiving takes `FOR UPDATE`), refreshes
+  `label`/`note` from the catalog into the snapshot and refuses archived categories and lines from
+  before the catalog (`line.taxCategory.unlinked`, an explicit choice is required) — in the same
+  transaction, before a number is allocated. The catalog link is not part of the issued snapshot.
+- Issued documents are never affected by later catalog changes (frozen snapshot, hash, triggers).
+- Credit notes keep the original invoice lines' snapshots: categories in the request are ignored,
+  and issuing refuses lines that differ from the invoice (`creditNote.taxCategoryMismatch`).
+  Invoices derived from a proforma or replacing an invoice keep the source line's category while
+  it is active; otherwise they need an explicit choice.
+- Import decisions name categories by id (`defaultTaxCategoryId`, per-line `taxCategoryId`).
+
 ## HTTP API
 
 Thin route handlers over `document-service` (session → `requireUser` → `requireCompanyAccess`
@@ -138,6 +169,15 @@ inside the service; no business logic in the routes):
 | `PATCH …/documents/{documentId}`                          | `documents.create`  | `{ expectedVersion, draft }` |
 | `DELETE …/documents/{documentId}` (drafts only)           | `documents.create`  | —                            |
 | `POST …/documents/{documentId}/issue`                     | `documents.approve` | `{ expectedVersion }`        |
+
+| Method and path (`/api/companies/{companyId}/tax-categories…`) | Permission              | Body                                            |
+| -------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
+| `GET …/tax-categories` (`?includeArchived=1`)                  | `documents.view`        | —                                               |
+| `POST …/tax-categories` (201)                                  | `tax_categories.manage` | `{ code, kind, ratePercent, label, note? }`     |
+| `PATCH …/tax-categories/{categoryId}`                          | `tax_categories.manage` | `{ expectedVersion, label?, note?, archived? }` |
+
+Tax categories add `409 code_taken` (duplicate code) and `404 not_found` (no such category in
+this company); changing `code`, `kind` or `ratePercent` is a 422.
 
 Responses: `400 invalid_request` (malformed path or non-JSON body), `401 unauthenticated` /
 `two_factor_challenge_required`, `403 forbidden` (non-member, archived company, missing
@@ -166,8 +206,9 @@ messages (a version conflict offers a reload). Non-members, archived companies a
 
 ## Not implemented yet
 
-Creating or deleting drafts in the UI, choosing tax categories (until the API offers a category source, lines can be
-added only to delivery notes; existing lines keep their category), the buyer in the document list, bank-account snapshots and tax categories from company
-settings, payment status, importing historical issued documents
+Creating or deleting drafts in the UI, the tax-category settings screen and choosing a category
+on a line in the editor (stage C2; until then lines can be added only to delivery notes and
+existing lines keep their category), the buyer in the document list, bank-account snapshots from
+company settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.

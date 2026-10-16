@@ -36,3 +36,26 @@ export class DocumentVersionConflictError extends Error {
     this.name = "DocumentVersionConflictError";
   }
 }
+
+export class TaxCategoryNotFoundError extends Error {
+  constructor() {
+    super("Tax category not found");
+    this.name = "TaxCategoryNotFoundError";
+  }
+}
+
+/** Codes are unique per company, archived categories included. */
+export class TaxCategoryCodeTakenError extends Error {
+  constructor() {
+    super("A tax category with this code already exists");
+    this.name = "TaxCategoryCodeTakenError";
+  }
+}
+
+/** Optimistic concurrency: the category changed since the caller loaded it. */
+export class TaxCategoryVersionConflictError extends Error {
+  constructor() {
+    super("The tax category was changed by someone else; reload and try again");
+    this.name = "TaxCategoryVersionConflictError";
+  }
+}

@@ -1,6 +1,6 @@
 import { type Page } from "@playwright/test";
 import { secretFromOtpauthUri } from "../support/totp";
-import { invoiceDraft } from "../support/document-fixtures";
+import { FIXTURE_TAX, invoiceDraft } from "../support/document-fixtures";
 import {
   alertOf,
   createVerifiedUser,
@@ -12,10 +12,19 @@ import {
   totp,
 } from "./support";
 
-/** Draft API input built from the synthetic fixture (no real customer data). */
-function draftInput() {
+/**
+ * Draft API input built from the synthetic fixture (no real customer data). Lines reference the
+ * company's own tax category by id; the fixture rate is arbitrary, not a real country rate.
+ */
+function draftInput(taxCategoryId: string | null) {
   const { lines, relation: _r, ...rest } = invoiceDraft({ buyer: { name: "Testa Pircējs SIA" } });
-  return { ...rest, lines: lines.map(({ id: _id, sourceLineId: _s, ...l }) => l) };
+  return {
+    ...rest,
+    lines: lines.map(({ id: _id, sourceLineId: _s, taxCategory: _t, ...l }) => ({
+      ...l,
+      taxCategoryId,
+    })),
+  };
 }
 
 /** Owner of a new company with a complete seller profile, 2FA (optional) and one draft. */
@@ -55,12 +64,21 @@ async function ownerWithDraft(page: Page, baseURL: string, withTwoFactor = true)
     });
     expect(profile.status()).toBe(200);
   }
+  let taxCategoryId: string | null = null;
+  if (withTwoFactor) {
+    const category = await page.request.post(`/api/companies/${companyId}/tax-categories`, {
+      data: FIXTURE_TAX.standard20,
+      headers,
+    });
+    expect(category.status()).toBe(201);
+    taxCategoryId = String((await category.json()).taxCategory.id);
+  }
   const created = await page.request.post(`/api/companies/${companyId}/documents`, {
-    data: draftInput(),
+    data: draftInput(taxCategoryId),
     headers,
   });
   const documentId = withTwoFactor ? String((await created.json()).document.id) : null;
-  return { companyId, documentsUrl, documentId, headers };
+  return { companyId, documentsUrl, documentId, headers, taxCategoryId };
 }
 
 test("list → edit draft → validation on issue → confirm issue → numbered and read-only", async ({
@@ -140,14 +158,17 @@ test("a change made elsewhere is reported as a conflict; reload shows the newer 
   page,
   baseURL,
 }) => {
-  const { companyId, documentId, headers } = await ownerWithDraft(page, baseURL!);
+  const { companyId, documentId, headers, taxCategoryId } = await ownerWithDraft(page, baseURL!);
   await page.goto(`/en/companies/${companyId}/documents/${documentId}`);
   const editor = page.getByTestId("document-editor");
   await expect(editor.locator('input[name="buyer.name"]')).toHaveValue("Testa Pircējs SIA");
 
   // Another tab saves first (version 1 → 2).
   const other = await page.request.patch(`/api/companies/${companyId}/documents/${documentId}`, {
-    data: { expectedVersion: 1, draft: { ...draftInput(), notes: "Saved in another tab" } },
+    data: {
+      expectedVersion: 1,
+      draft: { ...draftInput(taxCategoryId), notes: "Saved in another tab" },
+    },
     headers,
   });
   expect(other.status()).toBe(200);

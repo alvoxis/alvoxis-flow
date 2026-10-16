@@ -469,7 +469,10 @@
           "invalid": "Enter a valid weight."
         },
         "taxCategory": {
-          "required": "Choose a tax category."
+          "required": "Choose a tax category.",
+          "unknown": "This tax category does not exist in the company's list.",
+          "archived": "This tax category is archived. Choose an active category.",
+          "unlinked": "This line's tax category was entered before the company's tax category list existed. Choose a category from the list."
         },
         "id": {
           "duplicate": "Two lines have the same identifier."

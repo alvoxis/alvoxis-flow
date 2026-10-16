@@ -210,3 +210,92 @@ describe("upgrading an existing stage-1 database", () => {
     }
   });
 });
+
+describe("upgrading to the tax-category catalog (0010–0011)", () => {
+  const BEFORE_CATALOG = 9; // 0009_company_profile_address
+
+  it("leaves issued documents untouched and grants tax_categories.manage only to system roles", async () => {
+    const pool = await freshDatabase("taxcat");
+    try {
+      const db = drizzle(pool);
+      await migrate(db, { migrationsFolder: migrationsFolder((i) => i <= BEFORE_CATALOG) });
+      const company = (
+        await pool.query<{ id: string }>(
+          `INSERT INTO companies (name, country) VALUES ('Catalog Upgrade SIA', 'LV') RETURNING id`,
+        )
+      ).rows[0]!.id;
+      for (const [key, isSystem] of [
+        ["owner", true],
+        ["administrator", true],
+        ["accountant", true],
+        ["manager", true],
+        ["auditor", false],
+      ] as const) {
+        await pool.query(
+          `INSERT INTO roles (company_id, key, name, is_system) VALUES ($1, $2, $2, $3)`,
+          [company, key, isSystem],
+        );
+      }
+      // An issued document with an inline (pre-catalog) tax snapshot; fictitious values.
+      const docId = (
+        await pool.query<{ id: string }>(
+          `INSERT INTO documents (company_id, type, language, currency, issue_date, seller, buyer)
+           VALUES ($1, 'invoice', 'en', 'EUR', '2026-01-05', '{"name":"S"}', '{"name":"B"}')
+           RETURNING id`,
+          [company],
+        )
+      ).rows[0]!.id;
+      await pool.query(
+        `INSERT INTO document_lines (company_id, document_id, position, description, quantity, unit_price, tax_category)
+         VALUES ($1, $2, 1, 'Fixture item', 1, 10, '{"code":"T20","kind":"standard","ratePercent":"20","label":"Fixture 20%"}')`,
+        [company, docId],
+      );
+      await pool.query(
+        `UPDATE documents SET status = 'issued', number = 'INV-2026-0001', issued_at = now(),
+           content_hash = 'fixture-hash', snapshot = '{"number":"INV-2026-0001"}' WHERE id = $1`,
+        [docId],
+      );
+      const snapshot = async () =>
+        (
+          await pool.query<{ doc: object; line: Record<string, unknown> }>(
+            `SELECT to_jsonb(d) AS doc, to_jsonb(l) AS line FROM documents d
+             JOIN document_lines l ON l.document_id = d.id WHERE d.id = $1`,
+            [docId],
+          )
+        ).rows[0]!;
+      const before = await snapshot();
+
+      await migrate(db, { migrationsFolder: MIGRATIONS });
+      const after = await snapshot();
+      expect(after.doc).toEqual(before.doc);
+      const { tax_category_id: linkId, ...lineAfter } = after.line;
+      expect(linkId).toBeNull();
+      expect(lineAfter).toEqual(before.line);
+      // Still immutable after the upgrade.
+      await expect(
+        pool.query(`UPDATE document_lines SET tax_category_id = NULL WHERE document_id = $1`, [
+          docId,
+        ]),
+      ).rejects.toThrow();
+
+      const grants = async () =>
+        (
+          await pool.query<{ key: string }>(
+            `SELECT r.key FROM role_permissions rp JOIN roles r ON r.id = rp.role_id
+             WHERE rp.permission_key = 'tax_categories.manage' ORDER BY r.key`,
+          )
+        ).rows.map((r) => r.key);
+      expect(await grants()).toEqual(["accountant", "administrator", "owner"]);
+      // The grant migration is idempotent.
+      const grantSql = readFileSync(
+        path.join(MIGRATIONS, "0011_grant_tax_categories_manage.sql"),
+        "utf8",
+      );
+      for (const stmt of grantSql.split("--> statement-breakpoint")) await pool.query(stmt);
+      expect(await grants()).toEqual(["accountant", "administrator", "owner"]);
+      expect(await count(pool, `SELECT count(*) AS n FROM tax_categories`)).toBe(0); // no presets
+    } finally {
+      await pool.end();
+    }
+  });
+});

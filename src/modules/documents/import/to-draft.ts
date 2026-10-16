@@ -2,12 +2,7 @@ import Decimal from "decimal.js";
 import { type AppLocale } from "@/i18n/config";
 import { type CurrencyCode } from "@/lib/money";
 import { type DraftInput } from "../domain/schema";
-import {
-  type BankAccountSnapshot,
-  type DocumentType,
-  type PartySnapshot,
-  type TaxCategorySnapshot,
-} from "../domain/types";
+import { type BankAccountSnapshot, type DocumentType, type PartySnapshot } from "../domain/types";
 import { type ImportReview } from "./review";
 
 export class ImportDecisionError extends Error {
@@ -25,8 +20,8 @@ export interface ReviewedLine {
   quantity: string;
   unit?: string;
   unitPrice: string;
-  /** Tax category chosen by the user for this line; overrides the default. */
-  taxCategory?: TaxCategorySnapshot;
+  /** Company tax category (id) chosen by the user for this line; overrides the default. */
+  taxCategoryId?: string;
 }
 
 /**
@@ -45,8 +40,11 @@ export interface ImportDecisions {
   buyerReference?: string;
   paymentTerms?: string;
   notes?: string;
-  /** Applied to every line without its own category. Required. */
-  defaultTaxCategory: TaxCategorySnapshot;
+  /**
+   * Company tax category (id) applied to every line without its own. Required; the server
+   * resolves it against the company catalog when the draft is created.
+   */
+  defaultTaxCategoryId: string;
   /** Edited lines; when omitted, extracted lines are used as-is (must be complete). */
   lines?: ReviewedLine[];
   /** Codes of warning/error flags the user has looked at and accepted. */
@@ -120,7 +118,7 @@ export function toDraftInput(review: ImportReview, d: ImportDecisions): DraftInp
       quantity: l.quantity,
       ...(l.unit ? { unit: l.unit } : {}),
       unitPrice: l.unitPrice,
-      taxCategory: l.taxCategory ?? d.defaultTaxCategory,
+      taxCategoryId: l.taxCategoryId ?? d.defaultTaxCategoryId,
     })),
   };
 }

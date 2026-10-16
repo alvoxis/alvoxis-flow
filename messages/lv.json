@@ -469,7 +469,10 @@
           "invalid": "Ievadiet derīgu svaru."
         },
         "taxCategory": {
-          "required": "Izvēlieties nodokļu kategoriju."
+          "required": "Izvēlieties nodokļu kategoriju.",
+          "unknown": "Šīs nodokļu kategorijas nav uzņēmuma sarakstā.",
+          "archived": "Šī nodokļu kategorija ir arhivēta. Izvēlieties aktīvu kategoriju.",
+          "unlinked": "Šīs rindas nodokļu kategorija ievadīta pirms uzņēmuma nodokļu kategoriju saraksta izveides. Izvēlieties kategoriju no saraksta."
         },
         "id": {
           "duplicate": "Divām rindām ir vienāds identifikators."

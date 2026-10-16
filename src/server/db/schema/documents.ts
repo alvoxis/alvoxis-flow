@@ -52,6 +52,51 @@ export const documentRelationKind = pgEnum("document_relation_kind", [
 export const currencyCode = pgEnum("currency_code", ["EUR", "PLN"]);
 export const numberingResetPolicy = pgEnum("numbering_reset_policy", ["never", "yearly"]);
 export const lineKind = pgEnum("document_line_kind", ["item", "charge"]);
+export const taxTreatmentKind = pgEnum("tax_treatment_kind", [
+  "standard",
+  "zero_rated",
+  "exempt",
+  "reverse_charge",
+  "outside_scope",
+]);
+
+/**
+ * Company tax categories. Lines of drafts reference one by id; the server builds the line's
+ * snapshot from it, so a client cannot submit a category the company has not defined. `code`,
+ * `kind` and `rate_percent` never change after creation (a new rate is a new category); only
+ * `label` and `note` can be edited. Categories are archived, never deleted. Issued documents keep
+ * their own frozen snapshots and are never affected by changes here.
+ */
+export const taxCategories = pgTable(
+  "tax_categories",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    code: text("code").notNull(),
+    kind: taxTreatmentKind("kind").notNull(),
+    ratePercent: numeric("rate_percent", { precision: 5, scale: 2 }).notNull(),
+    label: text("label").notNull(),
+    note: text("note"),
+    version: integer("version").notNull().default(1),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("tax_categories_id_company_uq").on(t.id, t.companyId),
+    // Codes are never reused within a company, archived ones included.
+    unique("tax_categories_company_code_uq").on(t.companyId, t.code),
+    check(
+      "tax_categories_rate_ck",
+      sql`${t.ratePercent} >= 0 and ${t.ratePercent} < 100 and ((${t.kind} = 'standard') = (${t.ratePercent} > 0))`,
+    ),
+    check("tax_categories_version_ck", sql`${t.version} > 0`),
+  ],
+);
 
 export const documentNumberSeries = pgTable(
   "document_number_series",
@@ -195,6 +240,8 @@ export const documentLines = pgTable(
     unitPrice: numeric("unit_price", { precision: 18, scale: 4 }),
     discountPercent: numeric("discount_percent", { precision: 5, scale: 2 }),
     taxCategory: jsonb("tax_category").$type<TaxCategorySnapshot>(),
+    /** Company category the draft line was assigned from (null for credit notes and legacy lines). */
+    taxCategoryId: uuid("tax_category_id"),
     weightKg: numeric("weight_kg", { precision: 14, scale: 3 }),
     sourceLineId: uuid("source_line_id"),
     netAmount: numeric("net_amount", { precision: 18, scale: 2 }),
@@ -208,6 +255,13 @@ export const documentLines = pgTable(
       columns: [t.documentId, t.companyId],
       foreignColumns: [documents.id, documents.companyId],
     }).onDelete("cascade"),
+    index("document_lines_tax_category_idx").on(t.taxCategoryId),
+    // Composite key: a line can only reference a category of its own company.
+    foreignKey({
+      name: "document_lines_tax_category_same_company_fk",
+      columns: [t.taxCategoryId, t.companyId],
+      foreignColumns: [taxCategories.id, taxCategories.companyId],
+    }).onDelete("restrict"),
     foreignKey({
       name: "document_lines_source_same_company_fk",
       columns: [t.sourceLineId, t.companyId],

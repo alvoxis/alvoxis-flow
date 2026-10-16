@@ -9,7 +9,7 @@ import {
 describe("permission catalog", () => {
   it("has unique keys in module.action form", () => {
     expect(new Set(PERMISSIONS).size).toBe(PERMISSIONS.length);
-    for (const p of PERMISSIONS) expect(p).toMatch(/^[a-z]+\.[a-z_]+$/);
+    for (const p of PERMISSIONS) expect(p).toMatch(/^[a-z_]+\.[a-z_]+$/);
   });
 
   it("defines a template for every system role using only known permissions", () => {

@@ -5,6 +5,9 @@ import {
   DocumentStateError,
   DocumentValidationError,
   DocumentVersionConflictError,
+  TaxCategoryCodeTakenError,
+  TaxCategoryNotFoundError,
+  TaxCategoryVersionConflictError,
 } from "@/modules/documents/server/errors";
 import {
   ForbiddenError,
@@ -26,7 +29,10 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof TwoFactorRequiredError) return json(403, "two_factor_enrollment_required");
   if (err instanceof ForbiddenError) return json(403, "forbidden");
   if (err instanceof DocumentNotFoundError) return json(404, "not_found");
-  if (err instanceof DocumentVersionConflictError) return json(409, "version_conflict");
+  if (err instanceof TaxCategoryNotFoundError) return json(404, "not_found");
+  if (err instanceof DocumentVersionConflictError || err instanceof TaxCategoryVersionConflictError)
+    return json(409, "version_conflict");
+  if (err instanceof TaxCategoryCodeTakenError) return json(409, "code_taken");
   if (err instanceof DocumentStateError) return json(409, "invalid_state", { code: err.code });
   if (err instanceof DocumentValidationError)
     return json(422, "validation_failed", { issues: err.issues });

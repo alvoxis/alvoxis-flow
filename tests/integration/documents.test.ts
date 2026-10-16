@@ -37,6 +37,11 @@ import {
 } from "@/modules/documents/server/numbering-service";
 import { DocumentRuleError, type DraftInput } from "@/modules/documents/domain";
 import { FIXTURE_TAX, invoiceDraft, FIXTURE_SELLER_PROFILE } from "../support/document-fixtures";
+import {
+  addFixtureTaxCategories,
+  withCategoryIds,
+  type FixtureCategoryIds,
+} from "../support/tax-category-fixtures";
 import { openTestDb } from "./test-db";
 
 let db: Database;
@@ -45,6 +50,9 @@ beforeAll(() => ({ db, pool } = openTestDb()));
 afterAll(async () => pool.end());
 
 const actorOf = (userId: string): Actor => ({ userId, twoFactorVerified: true });
+
+/** Catalog of the most recently created company (inputs reference it by id). */
+let cats: FixtureCategoryIds = {};
 
 async function newCompany() {
   const [owner] = await db
@@ -58,6 +66,7 @@ async function newCompany() {
   });
   await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, actor, companyId);
+  cats = await addFixtureTaxCategories(db, actor, companyId);
   return { actor, companyId };
 }
 
@@ -77,7 +86,13 @@ async function addMember(companyId: string, roleKey: string) {
 /** Domain fixture → untrusted input shape (no ids). */
 function input(overrides: Parameters<typeof invoiceDraft>[0] = {}): DraftInput {
   const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
-  return { ...rest, lines: lines.map(({ id: _id, sourceLineId: _s, ...l }) => l) };
+  return {
+    ...rest,
+    lines: withCategoryIds(
+      lines.map(({ id: _id, sourceLineId: _s, ...l }) => l),
+      cats,
+    ),
+  };
 }
 
 async function issuedInvoice(
@@ -371,8 +386,12 @@ describe("credit notes and derived documents", () => {
     const edited = await updateDraft(db, actor, companyId, cn.id, 1, {
       ...rest,
       currency: "PLN",
-      lines: lines.map(({ id: _i, sourceLineId: _s, ...l }) => l),
+      lines: lines.map(({ id: _i, sourceLineId: _s, taxCategory: _t, ...l }) => l),
     });
+    // Credit-note lines keep the invoice's tax snapshots even though the request carried none.
+    expect(edited.draft.lines.map((l) => l.taxCategory)).toEqual(
+      inv.draft.lines.map((l) => l.taxCategory),
+    );
     await expect(issueDocument(db, actor, companyId, cn.id, edited.version)).rejects.toThrow(
       /currency must match/,
     );
@@ -442,8 +461,9 @@ describe("authorization and tenant isolation", () => {
   });
 
   it("never exposes or links documents across companies", async () => {
-    const a = await newCompany();
+    // `input()` uses the most recent company's catalog, so company A is created last.
     const b = await newCompany();
+    const a = await newCompany();
     const invA = await issuedInvoice(a.companyId, a.actor);
 
     await expect(getDocument(db, b.actor, a.companyId, invA.id)).rejects.toThrow(ForbiddenError);

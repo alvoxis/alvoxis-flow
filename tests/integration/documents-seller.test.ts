@@ -18,6 +18,11 @@ import { ForbiddenError, TwoFactorRequiredError } from "@/server/errors";
 import { updateCompanyProfile } from "@/server/tenancy/company-profile";
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
 import { FIXTURE_SELLER_PROFILE, invoiceDraft } from "../support/document-fixtures";
+import {
+  addFixtureTaxCategories,
+  withCategoryIds,
+  type FixtureCategoryIds,
+} from "../support/tax-category-fixtures";
 import { openTestDb } from "./test-db";
 
 /** Seller on documents = company profile at issue time. Synthetic data only. */
@@ -36,6 +41,9 @@ async function newUser() {
   return u!;
 }
 
+/** Catalog of the most recently created company (inputs reference it by id). */
+let cats: FixtureCategoryIds = {};
+
 async function newCompany() {
   const owner = await newUser();
   const actor = actorOf(owner.id);
@@ -45,6 +53,7 @@ async function newCompany() {
   });
   await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, actor, companyId);
+  cats = await addFixtureTaxCategories(db, actor, companyId);
   return { actor, owner, companyId };
 }
 
@@ -60,7 +69,13 @@ async function member(companyId: string, roleKey: string) {
 
 function input(overrides: Parameters<typeof invoiceDraft>[0] = {}) {
   const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
-  return { ...rest, lines: lines.map(({ id: _id, sourceLineId: _s, ...l }) => l) };
+  return {
+    ...rest,
+    lines: withCategoryIds(
+      lines.map(({ id: _id, sourceLineId: _s, ...l }) => l),
+      cats,
+    ),
+  };
 }
 
 const FIXTURE_SELLER = {

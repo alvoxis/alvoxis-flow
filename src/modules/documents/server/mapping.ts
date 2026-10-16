@@ -23,6 +23,7 @@ export function rowToLine(row: LineRow): DocumentLine {
     discountPercent:
       row.discountPercent === null ? undefined : normalizeDecimal(row.discountPercent),
     taxCategory: row.taxCategory,
+    taxCategoryId: opt(row.taxCategoryId),
     weightKg: row.weightKg === null ? undefined : normalizeDecimal(row.weightKg),
     sourceLineId: opt(row.sourceLineId),
   };
@@ -109,6 +110,7 @@ export function lineToRowValues(
     unitPrice: line.unitPrice,
     discountPercent: line.discountPercent ?? null,
     taxCategory: line.taxCategory,
+    taxCategoryId: line.taxCategoryId ?? null,
     weightKg: line.weightKg ?? null,
     sourceLineId: line.sourceLineId ?? null,
   };
