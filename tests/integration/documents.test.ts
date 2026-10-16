@@ -36,6 +36,7 @@ import {
   ensureDefaultNumberSeries,
 } from "@/modules/documents/server/numbering-service";
 import { DocumentRuleError, type DraftInput } from "@/modules/documents/domain";
+import { addFixtureBankAccount } from "../support/bank-account-fixtures";
 import { FIXTURE_TAX, invoiceDraft, FIXTURE_SELLER_PROFILE } from "../support/document-fixtures";
 import {
   addFixtureTaxCategories,
@@ -53,6 +54,7 @@ const actorOf = (userId: string): Actor => ({ userId, twoFactorVerified: true })
 
 /** Catalog of the most recently created company (inputs reference it by id). */
 let cats: FixtureCategoryIds = {};
+let bankId = "";
 
 async function newCompany() {
   const [owner] = await db
@@ -67,6 +69,7 @@ async function newCompany() {
   await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, actor, companyId);
   cats = await addFixtureTaxCategories(db, actor, companyId);
+  bankId = await addFixtureBankAccount(db, actor, companyId);
   return { actor, companyId };
 }
 
@@ -85,9 +88,10 @@ async function addMember(companyId: string, roleKey: string) {
 
 /** Domain fixture → untrusted input shape (no ids). */
 function input(overrides: Parameters<typeof invoiceDraft>[0] = {}): DraftInput {
-  const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
+  const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft(overrides);
   return {
     ...rest,
+    bankAccountId: bankId,
     lines: withCategoryIds(
       lines.map(({ id: _id, sourceLineId: _s, ...l }) => l),
       cats,
@@ -382,7 +386,7 @@ describe("credit notes and derived documents", () => {
     const cn = await createCreditNoteDraft(db, actor, companyId, inv.id, "full", {
       issueDate: "2026-03-10",
     });
-    const { relation: _r, lines, ...rest } = cn.draft;
+    const { relation: _r, bankAccounts: _b, lines, ...rest } = cn.draft;
     const edited = await updateDraft(db, actor, companyId, cn.id, 1, {
       ...rest,
       currency: "PLN",

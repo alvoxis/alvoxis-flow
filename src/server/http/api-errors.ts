@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import {
+  BankAccountIbanTakenError,
+  BankAccountNotFoundError,
+  BankAccountVersionConflictError,
   DocumentNotFoundError,
   DocumentStateError,
   DocumentValidationError,
@@ -29,10 +32,16 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof TwoFactorRequiredError) return json(403, "two_factor_enrollment_required");
   if (err instanceof ForbiddenError) return json(403, "forbidden");
   if (err instanceof DocumentNotFoundError) return json(404, "not_found");
-  if (err instanceof TaxCategoryNotFoundError) return json(404, "not_found");
-  if (err instanceof DocumentVersionConflictError || err instanceof TaxCategoryVersionConflictError)
+  if (err instanceof TaxCategoryNotFoundError || err instanceof BankAccountNotFoundError)
+    return json(404, "not_found");
+  if (
+    err instanceof DocumentVersionConflictError ||
+    err instanceof TaxCategoryVersionConflictError ||
+    err instanceof BankAccountVersionConflictError
+  )
     return json(409, "version_conflict");
   if (err instanceof TaxCategoryCodeTakenError) return json(409, "code_taken");
+  if (err instanceof BankAccountIbanTakenError) return json(409, "iban_taken");
   if (err instanceof DocumentStateError) return json(409, "invalid_state", { code: err.code });
   if (err instanceof DocumentValidationError)
     return json(422, "validation_failed", { issues: err.issues });

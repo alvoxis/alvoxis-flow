@@ -179,6 +179,16 @@ inside the service; no business logic in the routes):
 Tax categories add `409 code_taken` (duplicate code) and `404 not_found` (no such category in
 this company); changing `code`, `kind` or `ratePercent` is a 422.
 
+| Method and path (`/api/companies/{companyId}/bank-accounts…`) | Permission       | Body                                                                  |
+| ------------------------------------------------------------- | ---------------- | --------------------------------------------------------------------- |
+| `GET …/bank-accounts` (`?includeArchived=1`)                  | `documents.view` | —                                                                     |
+| `POST …/bank-accounts` (201)                                  | `company.manage` | `{ iban, label?, bankName?, bic?, isDefault? }`                       |
+| `PATCH …/bank-accounts/{accountId}`                           | `company.manage` | `{ expectedVersion, label?, bankName?, bic?, isDefault?, archived? }` |
+
+Bank accounts add `409 iban_taken` (another active account of the company has this IBAN) and
+`404 not_found`; an invalid IBAN (ISO 13616 checksum) or BIC (8 or 11 characters, format only) is
+a 422 (`bankAccount.iban.invalid`, `bankAccount.bic.invalid`); changing the IBAN is a 422.
+
 `GET …/documents` returns `{ documents: [{ id, type, status, number, issueDate, currency,
 grossTotal, buyerName }] }`, ordered by issue date. `buyerName` is the buyer's name stored on the
 document row (`buyer->>'name'`); issued rows are immutable, so it is the name in the frozen
@@ -223,6 +233,33 @@ from their list row, each after a confirmation; afterwards the list shows a conf
 Issued documents never show the action, and the API refuses it anyway (409; another company's
 document is a 404). Both actions are hidden without `documents.create` and enforced by the API.
 
+### Bank accounts
+
+A company keeps several bank accounts (`company_bank_accounts`, migration 0012): IBAN (stored
+normalized, the account's identity — never changed), optional BIC, bank name and label, a default
+flag (at most one per company) and `archived_at` (accounts are archived, never deleted; one active
+account per IBAN). The database enforces these with partial unique indexes and format checks.
+
+Documents reference an account by id (`documents.bank_account_id`, composite FK to the same
+company). The draft input takes `bankAccountId` (an id, `null` for none, or omitted to keep the
+current choice); inline `bankAccounts` input is refused. The server copies the account's details
+into the draft's `bankAccounts`, refreshes them on issue under a `FOR SHARE` lock (archiving takes
+`FOR UPDATE`) and freezes them in the snapshot; the link itself is not part of the snapshot, so
+editing or archiving an account never changes issued documents. Another company's or an unknown
+id is a 422 `bankAccount.unknown`; newly choosing an archived account is a 422
+`bankAccount.archived`; a draft whose account was archived since is kept but cannot be issued
+(blocking issue `bankAccount.archived`, no number used). Drafts with details entered before
+accounts existed keep them unlinked until an account is chosen. Invoices derived from a proforma
+or a replaced invoice link the source's account if it is still active; credit notes keep the
+invoice's details.
+
+`/{locale}/companies/{companyId}/bank-accounts` lists the accounts (table on wide screens, cards on
+phones). With `company.manage` (owner, administrator) users add accounts, edit label/bank
+name/BIC, set the default and archive (with confirmation) or restore; other roles with
+`documents.view` see it read-only. The "New document" form (not for delivery notes) and the
+editor offer the active accounts with the default preselected for new documents and a "No bank
+details" option; the document page shows the bank details.
+
 ### Tax categories in the UI
 
 `/{locale}/companies/{companyId}/tax-categories` lists the catalog (a table on wide screens, cards
@@ -243,7 +280,6 @@ the old snapshot, and the server never rolls it back.
 
 ## Not implemented yet
 
-Bank-account snapshots from
-company settings, payment status, importing historical issued documents
+Payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.

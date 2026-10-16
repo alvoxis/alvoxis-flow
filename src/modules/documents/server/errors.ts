@@ -59,3 +59,26 @@ export class TaxCategoryVersionConflictError extends Error {
     this.name = "TaxCategoryVersionConflictError";
   }
 }
+
+export class BankAccountNotFoundError extends Error {
+  constructor() {
+    super("Bank account not found");
+    this.name = "BankAccountNotFoundError";
+  }
+}
+
+/** An IBAN is listed once among a company's active bank accounts. */
+export class BankAccountIbanTakenError extends Error {
+  constructor() {
+    super("This IBAN is already one of the company's active bank accounts");
+    this.name = "BankAccountIbanTakenError";
+  }
+}
+
+/** Optimistic concurrency: the bank account changed since the caller loaded it. */
+export class BankAccountVersionConflictError extends Error {
+  constructor() {
+    super("The bank account was changed by someone else; reload and try again");
+    this.name = "BankAccountVersionConflictError";
+  }
+}

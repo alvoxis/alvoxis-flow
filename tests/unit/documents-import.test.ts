@@ -278,7 +278,6 @@ describe("toDraftInput", () => {
       address: { lines: ["Example iela 1"], city: "Rīga", countryCode: "LV" },
     },
     buyer: { name: "MV EXAMPLE STAR" },
-    bankAccounts: [{ iban: "LV80BANK0000435195001" }],
     defaultTaxCategoryId: "00000000-0000-4000-8000-000000000000",
     acknowledgedFlags: ["identifier.labelMismatch", "tax.zeroRateUnexplained"],
   };

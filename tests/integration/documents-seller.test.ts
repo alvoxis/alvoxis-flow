@@ -68,7 +68,7 @@ async function member(companyId: string, roleKey: string) {
 }
 
 function input(overrides: Parameters<typeof invoiceDraft>[0] = {}) {
-  const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
+  const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft(overrides);
   return {
     ...rest,
     lines: withCategoryIds(

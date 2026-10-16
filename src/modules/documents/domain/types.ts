@@ -136,6 +136,11 @@ export interface DocumentDraft {
   /** Ship-to party for delivery notes, when different from the buyer. */
   deliverTo?: PartySnapshot;
   bankAccounts: BankAccountSnapshot[];
+  /**
+   * Drafts only: the company bank account `bankAccounts` was built from. Never part of an issued
+   * snapshot; absent when there is no account or the snapshot predates the account catalog.
+   */
+  bankAccountId?: string;
   /** Buyer's order / PO reference. */
   buyerReference?: string;
   paymentTerms?: string;

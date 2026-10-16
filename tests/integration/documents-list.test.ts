@@ -73,7 +73,12 @@ async function newCompany() {
 }
 
 function input(cats: FixtureCategoryIds, buyerName: string) {
-  const { lines, relation: _r, ...rest } = invoiceDraft({ buyer: { name: buyerName } });
+  const {
+    lines,
+    relation: _r,
+    bankAccounts: _b,
+    ...rest
+  } = invoiceDraft({ buyer: { name: buyerName } });
   return {
     ...rest,
     lines: withCategoryIds(

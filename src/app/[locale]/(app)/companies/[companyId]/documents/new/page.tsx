@@ -7,7 +7,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Alert } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
 import { requirePageUser } from "@/server/auth/page-session";
-import { documentsListData } from "@/server/documents/page-data";
+import { newDocumentPageData } from "@/server/documents/page-data";
 
 type Params = { params: Promise<{ locale: Locale; companyId: string }> };
 
@@ -20,8 +20,7 @@ export default async function NewDocumentPage({ params }: Params) {
   const { locale, companyId } = await params;
   setRequestLocale(locale);
   const user = await requirePageUser(locale);
-  // Same access check as the list (documents.view); creating needs documents.create (API-enforced).
-  const data = await documentsListData(user, companyId);
+  const data = await newDocumentPageData(user, companyId);
   if (data.status === "not_found") notFound();
   const t = await getTranslations("documents");
   const tCompany = await getTranslations("company");
@@ -42,7 +41,7 @@ export default async function NewDocumentPage({ params }: Params) {
           <Link href="/account/two-factor">{tCompany("setUpTwoFactor")}</Link>
         </Alert>
       ) : data.permissions.canEdit ? (
-        <NewDocumentForm companyId={companyId} />
+        <NewDocumentForm companyId={companyId} bankAccounts={data.bankAccounts} />
       ) : (
         <Alert tone="info">{t("new.cannotCreate")}</Alert>
       )}

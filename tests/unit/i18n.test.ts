@@ -54,6 +54,10 @@ describe("message catalogs", () => {
         // Identical internationally used terms and pure placeholders.
         "documentPdf.iban",
         "documentPdf.bic",
+        "bankAccounts.colIban",
+        "bankAccounts.colBic",
+        "bankAccounts.fields.iban",
+        "bankAccounts.fields.bic",
         "documentPdf.lineNo",
         "documentPdf.taxKind.standard",
       ]);

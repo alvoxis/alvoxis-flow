@@ -411,7 +411,8 @@
       "buyer": "Ostja",
       "lines": "Read",
       "other": "Maksmine ja märkused",
-      "totals": "Kokku"
+      "totals": "Kokku",
+      "bank": "Pangarekvisiidid"
     },
     "name": "Nimi",
     "addressLine": "Tänav ja maja",
@@ -551,7 +552,12 @@
         "iban": {
           "invalid": "Pangakonto IBAN on vigane."
         },
-        "missing": "Dokumendil pole pangakontot."
+        "missing": "Dokumendil pole pangakontot.",
+        "unknown": "Valitud pangakontot selles ettevõttes ei leitud.",
+        "archived": "Selle mustandi pangakonto on arhiveeritud. Enne väljastamist valige teine konto või ilma rekvisiitideta.",
+        "bic": {
+          "invalid": "BIC/SWIFT-kood ei ole kehtiv (8 või 11 tähte ja numbrit)."
+        }
       },
       "lines": {
         "required": "Lisage vähemalt üks rida.",
@@ -592,7 +598,8 @@
     "deleteConfirm": "Kustuta jäädavalt",
     "deleted": "Mustand kustutatud.",
     "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa.",
-    "colBuyer": "Ostja"
+    "colBuyer": "Ostja",
+    "creditNoteBank": "Kreeditarve säilitab algse arve pangarekvisiidid."
   },
   "taxCategories": {
     "title": "Maksukategooriad",
@@ -654,5 +661,71 @@
       "error": "Midagi läks valesti. Proovige uuesti."
     },
     "reload": "Laadi uuesti"
+  },
+  "bankAccounts": {
+    "title": "Pangakontod",
+    "description": "Ettevõtte pangakontod, mida saab dokumentidel näidata.",
+    "open": "Pangakontod",
+    "snapshotHint": "Dokumendi väljastamisel salvestatakse valitud konto rekvisiidid dokumendis. Hilisemad muudatused siin väljastatud dokumente ei muuda.",
+    "readOnly": "Saate pangakontosid vaadata. Muuta saavad neid omanikud ja administraatorid.",
+    "empty": "Pangakontosid veel pole.",
+    "colName": "Nimetus",
+    "colIban": "IBAN",
+    "colBic": "BIC/SWIFT",
+    "colStatus": "Olek",
+    "colActions": "Toimingud",
+    "fields": {
+      "iban": "IBAN",
+      "ibanHint": "Kontrollitakse IBAN-i kontrollsumma järgi. Hiljem muuta ei saa.",
+      "bic": "BIC/SWIFT",
+      "bicHint": "Valikuline, 8 või 11 märki.",
+      "bankName": "Panga nimi",
+      "label": "Silt",
+      "labelHint": "Valikuline, näiteks „Põhikonto“. Näidatakse ainult rakenduses.",
+      "isDefault": "Kasuta uutel dokumentidel vaikimisi"
+    },
+    "status": {
+      "active": "Aktiivne",
+      "archived": "Arhiveeritud",
+      "default": "Vaikimisi"
+    },
+    "create": "Lisa konto",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "immutableHint": "IBAN-i muuta ei saa. Teise IBAN-i jaoks lisage uus konto ja arhiveerige see.",
+    "makeDefault": "Määra vaikimisi",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "archiveConfirmTitle": "Kas arhiveerida see konto?",
+    "archiveConfirmBody": "Seda ei pakuta enam dokumentidele. Mustandeid, kus see on juba valitud, ei saa väljastada enne, kui on valitud teine konto. Väljastatud dokumendid ei muutu.",
+    "archiveConfirm": "Arhiveeri",
+    "done": {
+      "created": "Konto lisatud.",
+      "saved": "Muudatused salvestatud.",
+      "archived": "Konto arhiveeritud.",
+      "restored": "Konto taastatud.",
+      "defaultSet": "Vaikekonto muudetud."
+    },
+    "outcome": {
+      "invalid": "Palun kontrollige esiletõstetud välju.",
+      "ibanTaken": "Seda IBAN-i kasutab juba selle ettevõtte aktiivne konto.",
+      "conflict": "Seda kontot muudeti mujal. Laadige uuesti, et näha uusimat versiooni.",
+      "signedOut": "Teie seanss on lõppenud. Palun logige uuesti sisse.",
+      "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
+      "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
+      "notFound": "Seda kontot enam ei ole.",
+      "error": "Midagi läks valesti. Palun proovige uuesti."
+    },
+    "reload": "Laadi uuesti",
+    "picker": {
+      "label": "Pangakonto",
+      "none": "Ilma pangarekvisiitideta",
+      "hint": "Konto rekvisiidid kopeeritakse dokumenti ja salvestatakse väljastamisel.",
+      "empty": "Ettevõttel pole veel pangakontosid.",
+      "manage": "Halda pangakontosid",
+      "archived": "Arhiveeritud konto {iban}",
+      "unlinked": "Salvestatud rekvisiidid {iban} (kontoga sidumata)"
+    }
   }
 }

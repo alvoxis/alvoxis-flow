@@ -2,10 +2,12 @@
 
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
+import { BankAccountSelect } from "@/components/documents/bank-account-select";
 import { DeleteDraftButton } from "@/components/documents/delete-draft-button";
-import { Totals } from "@/components/documents/document-view";
+import { BankDetails, Totals } from "@/components/documents/document-view";
 import { IssueList } from "@/components/documents/issue-list";
 import { Alert, Button, Field } from "@/components/ui/form";
+import { type BankAccountItem, formatIban } from "@/features/bank-accounts/model";
 import {
   type ApiDocument,
   type ApiIssue,
@@ -37,7 +39,12 @@ export interface DocumentEditorProps {
   taxCategories: CategoryOption[];
   /** May add categories in the catalog (decides which empty-catalog hint is shown). */
   canManageTaxCategories: boolean;
+  /** Active company bank accounts offered in the account picker, default first. */
+  bankAccounts: BankAccountItem[];
 }
+
+/** Picker value for saved details that are not linked to an account (entered before accounts). */
+const SAVED_DETAILS = "saved";
 
 type Notice =
   { kind: "saved" | "invalid" | "issueBlocked" } | Exclude<ApiOutcome, { kind: "ok" | "invalid" }>;
@@ -67,11 +74,13 @@ export function DocumentEditor({
   canIssue,
   taxCategories,
   canManageTaxCategories,
+  bankAccounts,
 }: DocumentEditorProps) {
   const t = useTranslations("documents");
   const tPdf = useTranslations("documentPdf");
   const tCompany = useTranslations("company");
   const tCat = useTranslations("taxCategories");
+  const tBank = useTranslations("bankAccounts");
   const router = useRouter();
   const confirmId = useId();
   const [draft, setDraft] = useState<DocumentDraft>(document.draft);
@@ -84,6 +93,9 @@ export function DocumentEditor({
   const [notice, setNotice] = useState<Notice | null>(null);
   // Pre-catalog tax data as last saved, so a line can be put back before the next save.
   const [legacy, setLegacy] = useState(() => legacySnapshots(document.draft.lines));
+  // Bank account chosen since the last save: undefined = unchanged (the saved details stay as
+  // they are, linked or not), null = none, otherwise an account id.
+  const [bankChoice, setBankChoice] = useState<string | null | undefined>(undefined);
 
   const url = `/api/companies/${companyId}/documents/${document.id}`;
   const priced = isPricedDocument(draft.type);
@@ -123,7 +135,10 @@ export function DocumentEditor({
     setConfirming(false);
     const outcome = await send(url, "PATCH", {
       expectedVersion: version,
-      draft: toDraftInput(draft),
+      draft: toDraftInput(
+        draft,
+        bankChoice === undefined ? undefined : { bankAccountId: bankChoice },
+      ),
     });
     setPending(false);
     if (outcome.kind === "ok") {
@@ -132,6 +147,7 @@ export function DocumentEditor({
       setIssues(outcome.document.issues);
       setTotals(outcome.document.totals);
       setLegacy(legacySnapshots(outcome.document.draft.lines));
+      setBankChoice(undefined);
       setDirty(false);
       setNotice({ kind: "saved" });
       return;
@@ -186,6 +202,41 @@ export function DocumentEditor({
   );
 
   const err = (field: string, line?: number) => hasErrorAt(issues, field, line);
+
+  // Bank account picker. The saved details may belong to an account that is archived since, or
+  // to no account at all (entered before company accounts existed); both stay until changed.
+  const savedIban = draft.bankAccounts[0]?.iban;
+  const linkedActive = bankAccounts.some((a) => a.id === draft.bankAccountId);
+  const savedValue = draft.bankAccountId ?? (savedIban ? SAVED_DETAILS : "");
+  const bankValue = bankChoice === undefined ? savedValue : (bankChoice ?? "");
+  const bankExtra =
+    draft.bankAccountId && !linkedActive
+      ? {
+          value: draft.bankAccountId,
+          label: tBank("picker.archived", { iban: savedIban ? formatIban(savedIban) : "—" }),
+        }
+      : !draft.bankAccountId && savedIban
+        ? { value: SAVED_DETAILS, label: tBank("picker.unlinked", { iban: formatIban(savedIban) }) }
+        : undefined;
+  const chosenAccount =
+    bankChoice === undefined ? undefined : bankAccounts.find((a) => a.id === bankChoice);
+  const shownBank =
+    bankChoice === undefined
+      ? draft.bankAccounts
+      : chosenAccount
+        ? [
+            {
+              iban: chosenAccount.iban,
+              bankName: chosenAccount.bankName ?? undefined,
+              bic: chosenAccount.bic ?? undefined,
+            },
+          ]
+        : [];
+  const chooseBank = (value: string) => {
+    setBankChoice(value === savedValue ? undefined : value === "" ? null : value);
+    setDirty(true);
+    setNotice(null);
+  };
 
   const optionText = (c: Pick<CategoryOption, "label" | "code" | "kind" | "ratePercent">) =>
     `${c.label} · ${c.code} · ${c.kind === "standard" ? `${c.ratePercent}%` : tCat(`kind.${c.kind}`)}`;
@@ -458,6 +509,27 @@ export function DocumentEditor({
           </Button>
         ) : null}
       </fieldset>
+
+      {priced ? (
+        <fieldset className="space-y-3" data-testid="document-bank">
+          <legend className="mb-2 text-sm font-semibold text-text">{t("sections.bank")}</legend>
+          {fixedLines ? (
+            <p className="text-xs text-muted">{t("creditNoteBank")}</p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2">
+              <BankAccountSelect
+                companyId={companyId}
+                accounts={bankAccounts}
+                value={bankValue}
+                onChange={chooseBank}
+                disabled={readOnly}
+                extra={bankExtra}
+              />
+            </div>
+          )}
+          <BankDetails accounts={shownBank} />
+        </fieldset>
+      ) : null}
 
       <fieldset className="space-y-3">
         <legend className="mb-2 text-sm font-semibold text-text">{t("sections.other")}</legend>

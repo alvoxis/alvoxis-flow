@@ -2,7 +2,7 @@ import Decimal from "decimal.js";
 import { type AppLocale } from "@/i18n/config";
 import { type CurrencyCode } from "@/lib/money";
 import { type DraftInput } from "../domain/schema";
-import { type BankAccountSnapshot, type DocumentType, type PartySnapshot } from "../domain/types";
+import { type DocumentType, type PartySnapshot } from "../domain/types";
 import { type ImportReview } from "./review";
 
 export class ImportDecisionError extends Error {
@@ -36,7 +36,8 @@ export interface ImportDecisions {
   dueDate?: string;
   seller: PartySnapshot;
   buyer: PartySnapshot;
-  bankAccounts: BankAccountSnapshot[];
+  /** Company bank account (id) to print on the draft, if any. */
+  bankAccountId?: string;
   buyerReference?: string;
   paymentTerms?: string;
   notes?: string;
@@ -108,7 +109,7 @@ export function toDraftInput(review: ImportReview, d: ImportDecisions): DraftInp
     ...(d.dueDate ? { dueDate: d.dueDate } : {}),
     seller: d.seller,
     buyer: d.buyer,
-    bankAccounts: d.bankAccounts,
+    ...(d.bankAccountId ? { bankAccountId: d.bankAccountId } : {}),
     ...(d.buyerReference ? { buyerReference: d.buyerReference } : {}),
     ...(d.paymentTerms ? { paymentTerms: d.paymentTerms } : {}),
     ...(d.notes ? { notes: d.notes } : {}),

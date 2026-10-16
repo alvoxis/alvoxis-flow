@@ -2,8 +2,10 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { useId, useState, useSyncExternalStore } from "react";
+import { BankAccountSelect } from "@/components/documents/bank-account-select";
 import { IssueList } from "@/components/documents/issue-list";
 import { Alert, Button, Field } from "@/components/ui/form";
+import { type BankAccountItem } from "@/features/bank-accounts/model";
 import {
   localToday,
   NEW_DOCUMENT_TYPES,
@@ -27,9 +29,17 @@ const selectClass =
 /**
  * Creates a draft with `POST …/documents` and opens it in the editor. Sends only what the user
  * chose: type, language, currency (no default), issue date and buyer name. The seller comes from
- * the company profile on the server; lines and tax categories are added in the editor.
+ * the company profile on the server; lines and tax categories are added in the editor. The bank
+ * account (default preselected) is sent as an id; the server copies its details.
  */
-export function NewDocumentForm({ companyId }: { companyId: string }) {
+export function NewDocumentForm({
+  companyId,
+  bankAccounts,
+}: {
+  companyId: string;
+  /** Active company accounts, default first. */
+  bankAccounts: BankAccountItem[];
+}) {
   const t = useTranslations("documents");
   const tType = useTranslations("documentPdf.title");
   const tPdf = useTranslations("documentPdf");
@@ -43,6 +53,7 @@ export function NewDocumentForm({ companyId }: { companyId: string }) {
     currency: "",
     issueDate: "",
     buyerName: "",
+    bankAccountId: bankAccounts.find((a) => a.isDefault)?.id ?? "",
   });
   // Until the user edits it, the date is the browser's calendar day: read on the client only
   // (the server snapshot is empty), so the server's clock or time zone never decides it.
@@ -158,6 +169,14 @@ export function NewDocumentForm({ companyId }: { companyId: string }) {
           maxLength={300}
           onChange={(e) => set({ buyerName: e.target.value })}
         />
+        {form.type !== "delivery_note" ? (
+          <BankAccountSelect
+            companyId={companyId}
+            accounts={bankAccounts}
+            value={form.bankAccountId ?? ""}
+            onChange={(bankAccountId) => set({ bankAccountId })}
+          />
+        ) : null}
       </div>
       <p className="text-xs text-muted">{t("new.hint")}</p>
       <IssueList issues={issues} />

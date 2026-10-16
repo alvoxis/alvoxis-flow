@@ -411,7 +411,8 @@
       "buyer": "Buyer",
       "lines": "Lines",
       "other": "Payment and notes",
-      "totals": "Totals"
+      "totals": "Totals",
+      "bank": "Bank details"
     },
     "name": "Name",
     "addressLine": "Street and number",
@@ -551,7 +552,12 @@
         "iban": {
           "invalid": "A bank account IBAN is not valid."
         },
-        "missing": "No bank account is shown on the document."
+        "missing": "No bank account is shown on the document.",
+        "unknown": "The chosen bank account does not exist in this company.",
+        "archived": "The bank account of this draft is archived. Choose another account or none before issuing.",
+        "bic": {
+          "invalid": "The BIC/SWIFT code is not valid (8 or 11 letters and digits)."
+        }
       },
       "lines": {
         "required": "Add at least one line.",
@@ -592,7 +598,8 @@
     "deleteConfirm": "Delete permanently",
     "deleted": "Draft deleted.",
     "deleteConfirmBodyEditor": "The draft is deleted permanently and cannot be restored. All unsaved changes in this editor will be lost. Issued documents cannot be deleted.",
-    "colBuyer": "Buyer"
+    "colBuyer": "Buyer",
+    "creditNoteBank": "Credit notes keep the bank details of the original invoice."
   },
   "taxCategories": {
     "title": "Tax categories",
@@ -654,5 +661,71 @@
       "error": "Something went wrong. Please try again."
     },
     "reload": "Reload"
+  },
+  "bankAccounts": {
+    "title": "Bank accounts",
+    "description": "Company bank accounts that can be printed on documents.",
+    "open": "Bank accounts",
+    "snapshotHint": "When a document is issued, the chosen account's details are saved in it. Later changes here do not change issued documents.",
+    "readOnly": "You can view the bank accounts. Owners and administrators can change them.",
+    "empty": "No bank accounts yet.",
+    "colName": "Name",
+    "colIban": "IBAN",
+    "colBic": "BIC/SWIFT",
+    "colStatus": "Status",
+    "colActions": "Actions",
+    "fields": {
+      "iban": "IBAN",
+      "ibanHint": "Checked with the IBAN checksum. It cannot be changed later.",
+      "bic": "BIC/SWIFT",
+      "bicHint": "Optional, 8 or 11 characters.",
+      "bankName": "Bank name",
+      "label": "Label",
+      "labelHint": "Optional, for example “Main account”. Shown only in the app.",
+      "isDefault": "Use by default for new documents"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived",
+      "default": "Default"
+    },
+    "create": "Add account",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "immutableHint": "The IBAN cannot be changed. For a different IBAN, add a new account and archive this one.",
+    "makeDefault": "Make default",
+    "archive": "Archive",
+    "restore": "Restore",
+    "archiveConfirmTitle": "Archive this account?",
+    "archiveConfirmBody": "It will no longer be offered for documents. Drafts that already use it cannot be issued until another account is chosen. Issued documents do not change.",
+    "archiveConfirm": "Archive",
+    "done": {
+      "created": "Account added.",
+      "saved": "Changes saved.",
+      "archived": "Account archived.",
+      "restored": "Account restored.",
+      "defaultSet": "Default account changed."
+    },
+    "outcome": {
+      "invalid": "Please check the highlighted fields.",
+      "ibanTaken": "This IBAN is already used by an active account of this company.",
+      "conflict": "This account was changed elsewhere. Reload to see the latest version.",
+      "signedOut": "Your session has ended. Please sign in again.",
+      "twoFactor": "Your role requires two-factor authentication for this action.",
+      "forbidden": "You do not have permission for this action, or the company is no longer active.",
+      "notFound": "This account no longer exists.",
+      "error": "Something went wrong. Please try again."
+    },
+    "reload": "Reload",
+    "picker": {
+      "label": "Bank account",
+      "none": "No bank details",
+      "hint": "The account's details are copied into the document and saved when it is issued.",
+      "empty": "The company has no bank accounts yet.",
+      "manage": "Manage bank accounts",
+      "archived": "Archived account {iban}",
+      "unlinked": "Saved details {iban} (not linked to an account)"
+    }
   }
 }

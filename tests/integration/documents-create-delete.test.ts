@@ -130,7 +130,7 @@ const auditActions = async (entityId: string) =>
 /** An issued invoice of the company (lines with fixture catalog categories). */
 async function issuedInvoice(owner: Actor, companyId: string) {
   const cats = await addFixtureTaxCategories(db, owner, companyId);
-  const { lines, relation: _r, ...rest } = invoiceDraft();
+  const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft();
   const draft = await createDraft(db, owner, companyId, {
     ...rest,
     lines: withCategoryIds(

@@ -77,11 +77,18 @@ async function createDraft(
   companyId: string,
   headers: Record<string, string>,
   taxCategoryId: string | null,
+  bankAccountId?: string,
 ) {
-  const { lines, relation: _r, ...rest } = invoiceDraft({ buyer: { name: "Testa Pircējs SIA" } });
+  const {
+    lines,
+    relation: _r,
+    bankAccounts: _b,
+    ...rest
+  } = invoiceDraft({ buyer: { name: "Testa Pircējs SIA" } });
   const res = await page.request.post(`/api/companies/${companyId}/documents`, {
     data: {
       ...rest,
+      ...(bankAccountId ? { bankAccountId } : {}),
       lines: lines.map(({ id: _i, sourceLineId: _s, taxCategory: _t, ...l }) => ({
         ...l,
         taxCategoryId,
@@ -179,7 +186,14 @@ test("invoice: choose categories explicitly, add a line, save, reopen and issue"
     data: { expectedVersion: 1, archived: true },
     headers,
   });
-  const documentId = await createDraft(page, companyId, headers, null);
+  // A company bank account, so the issued invoice has no findings at all.
+  const account = await page.request.post(`/api/companies/${companyId}/bank-accounts`, {
+    data: { iban: "LV80BANK0000435195001", isDefault: true },
+    headers,
+  });
+  expect(account.status()).toBe(201);
+  const bankAccountId = String((await account.json()).bankAccount.id);
+  const documentId = await createDraft(page, companyId, headers, null, bankAccountId);
   await page.goto(`/en/companies/${companyId}/documents/${documentId}`);
   const editor = page.getByTestId("document-editor");
   const select = (i: number) => editor.locator(`select[name="lines.${i}.taxCategoryId"]`);

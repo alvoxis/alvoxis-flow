@@ -17,6 +17,8 @@ export interface NewDocumentForm {
   currency: CurrencyCode | "";
   issueDate: string;
   buyerName: string;
+  /** Company bank account printed on the document ("" = none). Not offered for delivery notes. */
+  bankAccountId?: string;
 }
 
 /**
@@ -29,16 +31,19 @@ export function localToday(now: Date = new Date()): string {
 }
 
 /**
- * Minimal POST body for a new draft. No seller (the server takes it from the company profile)
- * and no lines (lines and their tax categories are chosen in the editor).
+ * Minimal POST body for a new draft. No seller (the server takes it from the company profile),
+ * no lines (lines and their tax categories are chosen in the editor) and no bank details: only
+ * the chosen account's id, from which the server copies the details.
  */
 export function toCreateDraftBody(form: NewDocumentForm) {
+  const bankAccountId = form.type !== "delivery_note" ? form.bankAccountId : undefined;
   return {
     type: form.type,
     language: form.language,
     currency: form.currency,
     issueDate: form.issueDate,
     buyer: { name: form.buyerName.trim() },
+    ...(bankAccountId ? { bankAccountId } : {}),
     lines: [],
   };
 }

@@ -78,6 +78,7 @@ export default async function DocumentPage({ params }: Params) {
           canEdit={permissions.canEdit}
           canIssue={permissions.canIssue}
           taxCategories={data.taxCategories}
+          bankAccounts={data.bankAccounts}
           canManageTaxCategories={permissions.canManageTaxCategories}
         />
       )}
