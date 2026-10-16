@@ -419,7 +419,6 @@
     "lineN": "Eilutė {n}",
     "addLine": "Pridėti eilutę",
     "removeLine": "Pašalinti eilutę {n}",
-    "noTax": "Be mokesčių kategorijos",
     "save": "Išsaugoti juodraštį",
     "saved": "Juodraštis išsaugotas.",
     "unsaved": "Yra neišsaugotų pakeitimų. Prieš išrašydami išsaugokite juodraštį.",
@@ -564,6 +563,77 @@
       "total": {
         "mustBePositive": "Suma turi būti didesnė už nulį."
       }
-    }
+    },
+    "taxCategory": "Mokesčių kategorija",
+    "chooseTaxCategory": "Pasirinkite mokesčių kategoriją…",
+    "archivedOption": "{name} (archyvuota)",
+    "archivedWarning": "Ši kategorija archyvuota. Prieš išrašydami pasirinkite aktyvią kategoriją.",
+    "legacyWarning": "Mokesčių duomenys įvesti prieš sukuriant įmonės kategorijų sąrašą: {details}. Išsaugant jie išlieka, tačiau prieš išrašydami pasirinkite kategoriją iš sąrašo.",
+    "restoreLegacy": "Grąžinti ankstesnę reikšmę",
+    "noCategoriesManage": "Įmonė dar neturi mokesčių kategorijų. Prieš išrašydami dokumentus su kainomis pridėkite įmonės ar buhalterio patvirtintas kategorijas.",
+    "setUpCategories": "Nustatyti mokesčių kategorijas",
+    "noCategoriesAsk": "Įmonė dar neturi mokesčių kategorijų. Paprašykite savininko, administratoriaus ar buhalterio jas pridėti.",
+    "creditNoteTax": "iš pradinės sąskaitos"
+  },
+  "taxCategories": {
+    "title": "Mokesčių kategorijos",
+    "description": "Mokesčių kategorijos, kurias įmonė naudoja dokumentuose.",
+    "open": "Mokesčių kategorijos",
+    "noRatesProvided": "ALVOXIS Flow nepateikia mokesčių tarifų ar taisyklių. Įveskite tik įmonės ar buhalterio patvirtintas kategorijas.",
+    "readOnly": "Galite peržiūrėti mokesčių kategorijas. Jas keisti gali savininkai, administratoriai ir buhalteriai.",
+    "empty": "Mokesčių kategorijų dar nėra.",
+    "colCode": "Kodas",
+    "colLabel": "Pavadinimas dokumentuose",
+    "colTreatment": "Režimas ir tarifas",
+    "colStatus": "Būsena",
+    "colActions": "Veiksmai",
+    "fields": {
+      "code": "Kodas",
+      "codeHint": "Trumpas identifikatorius. Vėliau jo pakeisti negalima.",
+      "kind": "Mokesčių režimas",
+      "ratePercent": "Tarifas, %",
+      "rateHint": "Režimams, kurie nėra standartinis tarifas, nurodykite 0. Tarifo vėliau pakeisti negalima; kitam tarifui reikia naujos kategorijos.",
+      "label": "Pavadinimas dokumentuose",
+      "note": "Pastaba dokumentuose",
+      "noteHint": "Pavyzdžiui, atleidimo pagrindas, kurį pateikė buhalteris."
+    },
+    "kind": {
+      "standard": "Standartinis tarifas",
+      "zero_rated": "Nulinis tarifas",
+      "exempt": "Neapmokestinama",
+      "reverse_charge": "Atvirkštinis apmokestinimas",
+      "outside_scope": "Už mokesčio taikymo ribų"
+    },
+    "status": {
+      "active": "Aktyvi",
+      "archived": "Archyvuota"
+    },
+    "create": "Pridėti kategoriją",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "immutableHint": "Kodo, režimo ir tarifo pakeisti negalima. Kitam tarifui ar režimui pridėkite naują kategoriją ir archyvuokite šią.",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "archiveConfirmTitle": "Archyvuoti šią kategoriją?",
+    "archiveConfirmBody": "Ji nebebus siūloma naujoms eilutėms. Juodraščių, kuriuose ji jau nurodyta, negalima išrašyti, kol nepasirinkta kita kategorija. Išrašyti dokumentai nesikeičia.",
+    "archiveConfirm": "Archyvuoti",
+    "done": {
+      "created": "Kategorija pridėta.",
+      "saved": "Pakeitimai išsaugoti.",
+      "archived": "Kategorija archyvuota.",
+      "restored": "Kategorija atkurta."
+    },
+    "outcome": {
+      "invalid": "Patikrinkite pažymėtus laukus.",
+      "codeTaken": "Šį kodą jau naudoja šios įmonės kategorija (įskaitant archyvuotas).",
+      "conflict": "Kategorija buvo pakeista kitur. Įkelkite iš naujo, kad pamatytumėte naujausią versiją.",
+      "signedOut": "Sesija baigėsi. Prisijunkite dar kartą.",
+      "twoFactor": "Šiam veiksmui jūsų vaidmeniui reikalingas dviejų veiksnių autentifikavimas.",
+      "forbidden": "Neturite teisės atlikti šio veiksmo arba įmonė nebėra aktyvi.",
+      "notFound": "Šios kategorijos nebėra.",
+      "error": "Kažkas nepavyko. Bandykite dar kartą."
+    },
+    "reload": "Įkelti iš naujo"
   }
 }

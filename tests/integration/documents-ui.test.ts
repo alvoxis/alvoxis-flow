@@ -143,7 +143,11 @@ describe("documents UI", () => {
     as(owner);
 
     const loaded = await pageDoc(owner, companyId, created.id);
-    expect(loaded.permissions).toEqual({ canEdit: true, canIssue: true });
+    expect(loaded.permissions).toEqual({
+      canEdit: true,
+      canIssue: true,
+      canManageTaxCategories: true,
+    });
     const edited = {
       ...loaded.document.draft,
       buyer: { ...loaded.document.draft.buyer, name: "Jauns Pircējs SIA", vatNumber: "" },
@@ -229,11 +233,20 @@ describe("documents UI", () => {
     expect(await flags(await member(companyId, "accountant"))).toEqual({
       canEdit: true,
       canIssue: true,
+      canManageTaxCategories: true,
     });
     const manager = await member(companyId, "manager");
-    expect(await flags(manager)).toEqual({ canEdit: true, canIssue: false });
+    expect(await flags(manager)).toEqual({
+      canEdit: true,
+      canIssue: false,
+      canManageTaxCategories: false,
+    });
     const warehouse = await member(companyId, "warehouse_employee");
-    expect(await flags(warehouse)).toEqual({ canEdit: false, canIssue: false });
+    expect(await flags(warehouse)).toEqual({
+      canEdit: false,
+      canIssue: false,
+      canManageTaxCategories: false,
+    });
 
     as(manager);
     expect(await issue(companyId, id, 1)).toEqual({ kind: "forbidden" });

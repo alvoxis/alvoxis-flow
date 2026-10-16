@@ -6,6 +6,10 @@ import {
   type StoredDocument,
 } from "@/modules/documents/server/document-service";
 import { DocumentNotFoundError } from "@/modules/documents/server/errors";
+import {
+  listTaxCategories,
+  type TaxCategoryView,
+} from "@/modules/documents/server/tax-category-service";
 import { hasPermission, requireCompanyAccess } from "@/server/auth/authorization";
 import { type AuthenticatedUser, toActor } from "@/server/auth/session";
 import { getDb } from "@/server/db/client";
@@ -15,6 +19,8 @@ import { ForbiddenError, TwoFactorRequiredError } from "@/server/errors";
 export interface DocumentPermissions {
   canEdit: boolean;
   canIssue: boolean;
+  /** tax_categories.manage: may open the catalog to add categories (links in hints). */
+  canManageTaxCategories: boolean;
 }
 
 export type DocumentListItem = Awaited<ReturnType<typeof listDocuments>>[number];
@@ -22,16 +28,31 @@ export type DocumentListItem = Awaited<ReturnType<typeof listDocuments>>[number]
 type Denied = { status: "two_factor_required" } | { status: "not_found" };
 
 export type DocumentsListPageData =
-  { status: "ok"; documents: DocumentListItem[]; permissions: DocumentPermissions } | Denied;
+  | {
+      status: "ok";
+      documents: DocumentListItem[];
+      permissions: DocumentPermissions;
+      /** Whether the company has at least one active tax category (empty-catalog hint). */
+      hasTaxCategories: boolean;
+    }
+  | Denied;
 
 export type DocumentPageData =
-  { status: "ok"; document: StoredDocument; permissions: DocumentPermissions } | Denied;
+  | {
+      status: "ok";
+      document: StoredDocument;
+      permissions: DocumentPermissions;
+      /** Active categories offered in the line picker (archived ones are never offered). */
+      taxCategories: TaxCategoryView[];
+    }
+  | Denied;
 
 async function permissionsFor(user: AuthenticatedUser, companyId: string) {
   const ctx = await requireCompanyAccess(getDb(), toActor(user), companyId, "documents.view");
   return {
     canEdit: hasPermission(ctx, "documents.create"),
     canIssue: hasPermission(ctx, "documents.approve"),
+    canManageTaxCategories: hasPermission(ctx, "tax_categories.manage"),
   };
 }
 
@@ -52,7 +73,9 @@ export async function documentsListData(
   try {
     const permissions = await permissionsFor(user, companyId);
     const documents = (await listDocuments(getDb(), toActor(user), companyId)).reverse();
-    return { status: "ok", documents, permissions };
+    const hasTaxCategories =
+      (await listTaxCategories(getDb(), toActor(user), companyId)).length > 0;
+    return { status: "ok", documents, permissions, hasTaxCategories };
   } catch (err) {
     return denied(err);
   }
@@ -69,7 +92,8 @@ export async function documentPageData(
   try {
     const permissions = await permissionsFor(user, companyId);
     const document = await getDocument(getDb(), toActor(user), companyId, documentId);
-    return { status: "ok", document, permissions };
+    const taxCategories = await listTaxCategories(getDb(), toActor(user), companyId);
+    return { status: "ok", document, permissions, taxCategories };
   } catch (err) {
     return denied(err);
   }

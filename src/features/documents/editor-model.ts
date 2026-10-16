@@ -2,6 +2,7 @@ import {
   type DocumentDraft,
   type DocumentLine,
   type PartySnapshot,
+  type TaxCategorySnapshot,
 } from "@/modules/documents/domain/types";
 
 /**
@@ -143,9 +144,68 @@ export function toDraftInput(draft: DocumentDraft) {
 }
 
 /**
- * A new empty line for an unpriced document (delivery note). It never gets a tax category: the
- * API offers no category source yet, so priced documents cannot add lines in the editor.
+ * A new empty line. It never gets a tax category automatically: on priced documents the user
+ * must choose one from the company catalog (the server refuses to issue until then).
  */
 export function newLine(id: string): DocumentLine {
   return { id, kind: "item", description: "", quantity: "1", unitPrice: null, taxCategory: null };
+}
+
+/** A company category as the editor's picker shows it (from the catalog API / page loader). */
+export interface CategoryOption {
+  id: string;
+  code: string;
+  kind: TaxCategorySnapshot["kind"];
+  ratePercent: string;
+  label: string;
+  note: string | null;
+}
+
+/**
+ * How a line's tax category relates to the catalog, for display only (the server decides):
+ * - linked:   an active catalog category
+ * - archived: a category archived since it was chosen (blocks issuing)
+ * - legacy:   tax data entered before the catalog existed, without a link (blocks issuing)
+ * - none:     no category yet
+ */
+export type LineTaxState = "linked" | "archived" | "legacy" | "none";
+
+export function lineTaxState(line: DocumentLine, active: readonly CategoryOption[]): LineTaxState {
+  if (line.taxCategoryId)
+    return active.some((c) => c.id === line.taxCategoryId) ? "linked" : "archived";
+  return line.taxCategory ? "legacy" : "none";
+}
+
+/**
+ * Explicit choice of a catalog category. The snapshot set here is for display only — the request
+ * sends just the id and the server builds the stored snapshot from its own catalog.
+ */
+export function chooseCategory(line: DocumentLine, category: CategoryOption): DocumentLine {
+  return {
+    ...line,
+    taxCategoryId: category.id,
+    taxCategory: {
+      code: category.code,
+      kind: category.kind,
+      ratePercent: category.ratePercent,
+      label: category.label,
+      ...(category.note ? { note: category.note } : {}),
+    },
+  };
+}
+
+/**
+ * Pre-catalog tax data of the lines as last saved, by line id. "Restore previous value" puts it
+ * back before saving; a save then keeps it on the server because the line is resubmitted with the
+ * same id and no category. Nothing is restored after a save.
+ */
+export function legacySnapshots(lines: readonly DocumentLine[]) {
+  return new Map(
+    lines.flatMap((l) => (!l.taxCategoryId && l.taxCategory ? [[l.id, l.taxCategory]] : [])),
+  );
+}
+
+export function restoreLegacy(line: DocumentLine, snapshot: TaxCategorySnapshot): DocumentLine {
+  const { taxCategoryId: _chosen, ...rest } = line;
+  return { ...rest, taxCategory: snapshot };
 }

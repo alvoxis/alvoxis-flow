@@ -158,6 +158,37 @@ async function insertDraft(
   return row!.id;
 }
 
+/** Line ids as submitted (parseDraftInput assigns fresh ids; the input already passed its shape). */
+function submittedLineIds(input: unknown): (string | undefined)[] {
+  const lines = (input as { lines?: unknown }).lines;
+  return Array.isArray(lines)
+    ? lines.map((l) =>
+        typeof (l as { id?: unknown })?.id === "string" ? (l as { id: string }).id : undefined,
+      )
+    : [];
+}
+
+/**
+ * Lines saved before the company catalog existed carry a snapshot without a catalog link. When a
+ * save resubmits such a line unchanged in its category (same line id of THIS draft, no category
+ * chosen), the stored snapshot is kept — taken from the database, never from the request — so a
+ * save cannot silently lose the previous tax data. The line stays unlinked and issuing remains
+ * blocked until a category is chosen explicitly; choosing one replaces the snapshot.
+ */
+function keepLegacySnapshots(
+  lines: DocumentLine[],
+  submittedIds: readonly (string | undefined)[],
+  currentLines: readonly DocumentLine[],
+): DocumentLine[] {
+  const legacy = new Map(
+    currentLines.flatMap((l) => (!l.taxCategoryId && l.taxCategory ? [[l.id, l.taxCategory]] : [])),
+  );
+  return lines.map((line, i) => {
+    const snapshot = legacy.get(submittedIds[i] ?? "");
+    return !line.taxCategoryId && snapshot ? { ...line, taxCategory: snapshot } : line;
+  });
+}
+
 /** Creates a draft from untrusted input. Credit notes must use createCreditNoteDraft. */
 export async function createDraft(
   db: Database,
@@ -231,7 +262,11 @@ export async function updateDraft(
     } else {
       // Categories already on the draft may stay even if archived since; new ones must be active.
       const keep = new Set(referencedCategoryIds(current.draft.lines));
-      lines = await assignTaxCategories(tx, companyId, next.lines, keep);
+      lines = keepLegacySnapshots(
+        await assignTaxCategories(tx, companyId, next.lines, keep),
+        submittedLineIds(input),
+        current.draft.lines,
+      );
     }
 
     await tx.delete(documentLines).where(eq(documentLines.documentId, documentId));
