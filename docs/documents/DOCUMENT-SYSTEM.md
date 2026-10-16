@@ -179,6 +179,12 @@ inside the service; no business logic in the routes):
 Tax categories add `409 code_taken` (duplicate code) and `404 not_found` (no such category in
 this company); changing `code`, `kind` or `ratePercent` is a 422.
 
+`GET …/documents` returns `{ documents: [{ id, type, status, number, issueDate, currency,
+grossTotal, buyerName }] }`, ordered by issue date. `buyerName` is the buyer's name stored on the
+document row (`buyer->>'name'`); issued rows are immutable, so it is the name in the frozen
+snapshot. `grossTotal` is stored for issued documents only (`null` for drafts). There is no search,
+filter or sort by buyer.
+
 Responses: `400 invalid_request` (malformed path or non-JSON body), `401 unauthenticated` /
 `two_factor_challenge_required`, `403 forbidden` (non-member, archived company, missing
 permission — identical whether or not the company exists) or `two_factor_enrollment_required`,
@@ -191,7 +197,7 @@ that keeps the original number.
 
 ## UI
 
-`/{locale}/companies/{companyId}/documents` lists the company's documents (number, type, status,
+`/{locale}/companies/{companyId}/documents` lists the company's documents (number, buyer — cut with an ellipsis, full name in the tooltip — type, status,
 issue date, total — the total is stored for issued documents only). A document page shows issued
 documents read-only from their snapshot, with the assigned number. Drafts open in an editor
 (dates, buyer, lines, payment terms and notes) that saves with `PATCH` and issues with
@@ -237,7 +243,7 @@ the old snapshot, and the server never rolls it back.
 
 ## Not implemented yet
 
-The buyer in the document list, bank-account snapshots from
+Bank-account snapshots from
 company settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.

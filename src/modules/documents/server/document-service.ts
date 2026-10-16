@@ -1,6 +1,6 @@
 import "server-only";
 import { createHash, randomUUID } from "node:crypto";
-import { and, asc, eq, ne } from "drizzle-orm";
+import { and, asc, eq, ne, sql } from "drizzle-orm";
 import { recordAudit } from "@/server/audit/audit-log";
 import { type Actor, requireCompanyAccess } from "@/server/auth/authorization";
 import { type Database, type DbOrTx } from "@/server/db/client";
@@ -341,6 +341,8 @@ export async function listDocuments(db: DbOrTx, actor: Actor, companyId: string)
       issueDate: documents.issueDate,
       currency: documents.currency,
       grossTotal: documents.grossTotal,
+      // The buyer as stored on the row; issued rows are immutable and match their snapshot.
+      buyerName: sql<string | null>`${documents.buyer}->>'name'`,
     })
     .from(documents)
     .where(tenantFilter(documents.companyId, ctx))

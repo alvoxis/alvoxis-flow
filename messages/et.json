@@ -591,7 +591,8 @@
     "deleteConfirmBody": "Mustand kustutatakse jäädavalt. Väljastatud dokumente kustutada ei saa.",
     "deleteConfirm": "Kustuta jäädavalt",
     "deleted": "Mustand kustutatud.",
-    "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa."
+    "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa.",
+    "colBuyer": "Ostja"
   },
   "taxCategories": {
     "title": "Maksukategooriad",
