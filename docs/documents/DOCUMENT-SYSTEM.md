@@ -125,9 +125,33 @@ Untrusted input is shape-checked with Zod (`draftInputSchema`) before business v
 
 Scanned PDFs without a text layer are reported as unreadable (OCR is not implemented).
 
+## HTTP API
+
+Thin route handlers over `document-service` (session → `requireUser` → `requireCompanyAccess`
+inside the service; no business logic in the routes):
+
+| Method and path (`/api/companies/{companyId}/documents…`) | Permission          | Body                         |
+| --------------------------------------------------------- | ------------------- | ---------------------------- |
+| `GET …/documents`                                         | `documents.view`    | —                            |
+| `POST …/documents` (create draft, 201)                    | `documents.create`  | draft input                  |
+| `GET …/documents/{documentId}`                            | `documents.view`    | —                            |
+| `PATCH …/documents/{documentId}`                          | `documents.create`  | `{ expectedVersion, draft }` |
+| `DELETE …/documents/{documentId}` (drafts only)           | `documents.create`  | —                            |
+| `POST …/documents/{documentId}/issue`                     | `documents.approve` | `{ expectedVersion }`        |
+
+Responses: `400 invalid_request` (malformed path or non-JSON body), `401 unauthenticated` /
+`two_factor_challenge_required`, `403 forbidden` (non-member, archived company, missing
+permission — identical whether or not the company exists) or `two_factor_enrollment_required`,
+`404 not_found` (no such document in this company), `409 version_conflict` (stale
+`expectedVersion`), `409 invalid_state` with a `code` (e.g. `document.alreadyIssued`,
+`document.notDraft`), `422 validation_failed` with `issues` (`{ code, severity, path }`; shape
+errors use `input.*` codes, blocking business rules use the `validateDocument` codes). Issuing is
+one transaction, so a refused or failed issue never uses a number, and a repeated issue is a 409
+that keeps the original number.
+
 ## Not implemented yet
 
-UI and HTTP endpoints for documents, bank-account snapshots and tax categories from company
+UI for documents, bank-account snapshots and tax categories from company
 settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.
