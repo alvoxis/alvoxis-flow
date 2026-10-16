@@ -573,7 +573,24 @@
     "noCategoriesManage": "Uzņēmumam vēl nav nodokļu kategoriju. Pirms dokumentu ar cenām izrakstīšanas pievienojiet uzņēmuma vai grāmatveža apstiprinātas kategorijas.",
     "setUpCategories": "Iestatīt nodokļu kategorijas",
     "noCategoriesAsk": "Uzņēmumam vēl nav nodokļu kategoriju. Lūdziet īpašniekam, administratoram vai grāmatvedim tās pievienot.",
-    "creditNoteTax": "no sākotnējā rēķina"
+    "creditNoteTax": "no sākotnējā rēķina",
+    "new": {
+      "title": "Jauns dokuments",
+      "type": "Dokumenta veids",
+      "language": "Dokumenta valoda",
+      "currency": "Valūta",
+      "chooseCurrency": "Izvēlieties valūtu…",
+      "buyerName": "Pircēja nosaukums",
+      "hint": "Pārdevēja dati tiek ņemti no uzņēmuma profila. Rindas un nodokļu kategorijas pievieno redaktorā pēc melnraksta izveides.",
+      "create": "Izveidot melnrakstu",
+      "invalid": "Melnraksts netika izveidots. Lūdzu, pārbaudiet laukus.",
+      "cannotCreate": "Jūsu loma neļauj veidot dokumentus."
+    },
+    "deleteDraft": "Dzēst melnrakstu",
+    "deleteConfirmTitle": "Dzēst šo melnrakstu?",
+    "deleteConfirmBody": "Melnraksts tiks dzēsts neatgriezeniski. Izrakstītus dokumentus dzēst nevar.",
+    "deleteConfirm": "Dzēst neatgriezeniski",
+    "deleted": "Melnraksts dzēsts."
   },
   "taxCategories": {
     "title": "Nodokļu kategorijas",

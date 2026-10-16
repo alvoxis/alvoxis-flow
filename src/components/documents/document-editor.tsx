@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
+import { DeleteDraftButton } from "@/components/documents/delete-draft-button";
 import { Totals } from "@/components/documents/document-view";
 import { IssueList } from "@/components/documents/issue-list";
 import { Alert, Button, Field } from "@/components/ui/form";
@@ -509,6 +510,12 @@ export function DocumentEditor({
           </Button>
         ) : null}
       </div>
+
+      {canEdit ? (
+        <div className="border-t border-border pt-4">
+          <DeleteDraftButton companyId={companyId} documentId={document.id} />
+        </div>
+      ) : null}
 
       {confirming ? (
         <div

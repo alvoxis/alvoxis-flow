@@ -573,7 +573,24 @@
     "noCategoriesManage": "This company has no tax categories yet. Add the categories confirmed by your company or accountant before issuing documents with prices.",
     "setUpCategories": "Set up tax categories",
     "noCategoriesAsk": "This company has no tax categories yet. Ask an owner, administrator or accountant to add them.",
-    "creditNoteTax": "taken from the original invoice"
+    "creditNoteTax": "taken from the original invoice",
+    "new": {
+      "title": "New document",
+      "type": "Document type",
+      "language": "Document language",
+      "currency": "Currency",
+      "chooseCurrency": "Choose currency…",
+      "buyerName": "Buyer name",
+      "hint": "The seller details come from the company profile. Lines and tax categories are added in the editor after the draft is created.",
+      "create": "Create draft",
+      "invalid": "The draft was not created. Please check the fields.",
+      "cannotCreate": "Your role cannot create documents."
+    },
+    "deleteDraft": "Delete draft",
+    "deleteConfirmTitle": "Delete this draft?",
+    "deleteConfirmBody": "The draft is deleted permanently. Issued documents cannot be deleted.",
+    "deleteConfirm": "Delete permanently",
+    "deleted": "Draft deleted."
   },
   "taxCategories": {
     "title": "Tax categories",

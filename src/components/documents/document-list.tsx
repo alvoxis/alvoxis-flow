@@ -1,4 +1,5 @@
 import { useLocale, useTranslations } from "next-intl";
+import { DeleteDraftButton } from "@/components/documents/delete-draft-button";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { Link } from "@/i18n/navigation";
 import { type AppLocale } from "@/i18n/config";
@@ -15,8 +16,19 @@ export interface DocumentListRow {
   grossTotal: string | null;
 }
 
-/** Rows as returned by the list API; the stored total exists only for issued documents. */
-export function DocumentList({ companyId, rows }: { companyId: string; rows: DocumentListRow[] }) {
+/**
+ * Rows as returned by the list API; the stored total exists only for issued documents. Drafts get
+ * a delete action for users with documents.create (`canDelete`); issued documents never do.
+ */
+export function DocumentList({
+  companyId,
+  rows,
+  canDelete,
+}: {
+  companyId: string;
+  rows: DocumentListRow[];
+  canDelete: boolean;
+}) {
   const t = useTranslations("documents");
   const tType = useTranslations("documentPdf.title");
   const locale = useLocale() as AppLocale;
@@ -58,6 +70,11 @@ export function DocumentList({ companyId, rows }: { companyId: string; rows: Doc
                 {d.grossTotal ? formatMoney(d.grossTotal, d.currency as CurrencyCode, locale) : "—"}
               </span>
             </Link>
+            {canDelete && d.status === "draft" ? (
+              <div className="px-1 pb-3">
+                <DeleteDraftButton companyId={companyId} documentId={d.id} compact />
+              </div>
+            ) : null}
           </li>
         ))}
       </ul>
