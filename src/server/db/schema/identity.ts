@@ -39,7 +39,11 @@ export const users = pgTable(
     email: text("email").notNull(),
     displayName: text("display_name"),
     locale: localeCode("locale").notNull().default("en"),
+    /** Required by the auth library; kept in sync with email_verified_at by the auth hooks. */
+    emailVerified: boolean("email_verified").notNull().default(false),
     emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
+    /** Avatar URL from an identity provider (e.g. Google). Display only. */
+    image: text("image"),
     twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
     disabledAt: timestamp("disabled_at", { withTimezone: true }),
     ...timestamps,

@@ -51,6 +51,14 @@ entry points.
 - **Planned defence in depth (stage 3):** PostgreSQL Row-Level Security on tenant data tables, with the
   application connecting as a non-owner role and setting `app.company_id` per transaction.
 
+## Authentication
+
+Better Auth serves `/api/auth/*`; every page, server action and API route resolves the user with
+`requireUser` (`src/server/auth/session.ts`), which validates the database session, rejects disabled
+users and requires a 2FA-verified session for users with 2FA enabled. Company access then goes through
+the unchanged `requireCompanyAccess`, which receives the session's 2FA state. Details, policies and
+residual risks: [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md).
+
 ## Roles and permissions
 
 Permission keys are defined in code (`src/server/auth/permissions.ts`) and mirrored in the
@@ -86,14 +94,14 @@ icons. Business data and HTML pages are deliberately not cached on devices.
 
 ## Key dependency decisions
 
-| Decision                         | Why                                                                                                                                                     | Trade-off                                                                                         |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Next.js 16 App Router            | Server Components keep data and secrets on the server; one deployable                                                                                   | Framework churn; `middleware` renamed to `proxy`                                                  |
-| Drizzle 0.45 over Prisma         | Plain, reviewable SQL migrations; easy custom SQL (triggers, RLS); no binary engine. Prisma's `latest` tag currently points to an 8.0 release candidate | Smaller ecosystem; Drizzle 1.0 is in RC — upgrade planned when stable                             |
-| TypeScript 5.9 (not 7)           | typescript-eslint supports `<6.1`                                                                                                                       | Revisit when tooling supports TS 7                                                                |
-| ESLint 9                         | `eslint-config-next` and plugins are validated on 9                                                                                                     | ESLint 10 later                                                                                   |
-| next-intl 4                      | Mature App Router support, ICU, typed messages                                                                                                          | —                                                                                                 |
-| decimal.js                       | Correct decimal arithmetic, no native deps                                                                                                              | Slower than integers-in-minor-units; acceptable at document scale                                 |
-| @react-pdf/renderer 4.9 for PDFs | Server-side, pure JS, React components, embedded fonts                                                                                                  | A page-level `lineHeight` with custom fonts drops page numbers (worked around; covered by a test) |
-| unpdf (pdf.js) for PDF text      | Same engine for import and for testing our own output                                                                                                   | Text layer only — scanned PDFs need OCR later                                                     |
-| Auth: not yet chosen             | Will be selected in stage 2 (candidates: Better Auth or Auth.js) after verifying 2FA/TOTP, Google OAuth and session revocation support                  | —                                                                                                 |
+| Decision                         | Why                                                                                                                                                                         | Trade-off                                                                                             |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Next.js 16 App Router            | Server Components keep data and secrets on the server; one deployable                                                                                                       | Framework churn; `middleware` renamed to `proxy`                                                      |
+| Drizzle 0.45 over Prisma         | Plain, reviewable SQL migrations; easy custom SQL (triggers, RLS); no binary engine. Prisma's `latest` tag currently points to an 8.0 release candidate                     | Smaller ecosystem; Drizzle 1.0 is in RC — upgrade planned when stable                                 |
+| TypeScript 5.9 (not 7)           | typescript-eslint supports `<6.1`                                                                                                                                           | Revisit when tooling supports TS 7                                                                    |
+| ESLint 9                         | `eslint-config-next` and plugins are validated on 9                                                                                                                         | ESLint 10 later                                                                                       |
+| next-intl 4                      | Mature App Router support, ICU, typed messages                                                                                                                              | —                                                                                                     |
+| decimal.js                       | Correct decimal arithmetic, no native deps                                                                                                                                  | Slower than integers-in-minor-units; acceptable at document scale                                     |
+| @react-pdf/renderer 4.9 for PDFs | Server-side, pure JS, React components, embedded fonts                                                                                                                      | A page-level `lineHeight` with custom fonts drops page numbers (worked around; covered by a test)     |
+| unpdf (pdf.js) for PDF text      | Same engine for import and for testing our own output                                                                                                                       | Text layer only — scanned PDFs need OCR later                                                         |
+| Better Auth 1.7                  | Email/password, verification, reset, Google OAuth, DB sessions, TOTP 2FA and rate limiting built in; Drizzle adapter — see [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md) | Library gaps (2FA bypass via OAuth, TOTP replay, plain recovery codes) closed in our hooks and tested |

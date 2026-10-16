@@ -66,6 +66,14 @@ export async function ensureDefaultNumberSeries(
   companyId: string,
 ): Promise<void> {
   await requireCompanyAccess(db, actor, companyId, "company.manage");
+  await insertDefaultNumberSeries(db, companyId);
+}
+
+/**
+ * Internal: default series for a company that trusted server code has JUST created (the new
+ * owner may not have completed 2FA yet, so no access check is possible). Idempotent.
+ */
+export async function insertDefaultNumberSeries(db: DbOrTx, companyId: string): Promise<void> {
   for (const [documentType, def] of Object.entries(DEFAULT_SERIES) as [
     DocumentType,
     (typeof DEFAULT_SERIES)[DocumentType],

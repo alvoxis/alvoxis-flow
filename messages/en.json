@@ -162,5 +162,191 @@
     "page": "Page {page} of {total}",
     "totalQuantity": "Total quantity",
     "totalWeight": "Total weight, kg"
+  },
+  "email": {
+    "footer": "This message was sent by ALVOXIS Flow. If you did not expect it, you can ignore it.",
+    "greeting": "Hello {name},",
+    "verify": {
+      "subject": "Confirm your email address",
+      "body": "Please confirm your email address for ALVOXIS Flow by opening this link:\n{link}\n\nThe link expires in 24 hours."
+    },
+    "reset": {
+      "subject": "Reset your password",
+      "body": "We received a request to reset your ALVOXIS Flow password. Open this link to choose a new password:\n{link}\n\nThe link expires in 1 hour and can be used once. If you did not request this, ignore this email — your password stays unchanged."
+    },
+    "existingAccount": {
+      "subject": "Sign-up attempt with your email address",
+      "body": "Someone tried to create a new ALVOXIS Flow account with this email address, but you already have an account. If this was you, sign in or reset your password here:\n{link}"
+    },
+    "newSignIn": {
+      "subject": "New sign-in to your account",
+      "body": "Your ALVOXIS Flow account was signed in on {time} (UTC) from {device}.\nIf this was not you, change your password and sign out other sessions:\n{link}"
+    },
+    "passwordChanged": {
+      "subject": "Your password was changed",
+      "body": "Your ALVOXIS Flow password was changed on {time} (UTC) and your other sessions were signed out. If you did not do this, reset your password immediately:\n{link}"
+    },
+    "twoFactorEnabled": {
+      "subject": "Two-factor authentication enabled",
+      "body": "Two-factor authentication was enabled for your ALVOXIS Flow account on {time} (UTC). Keep your recovery codes in a safe place. If this was not you, contact your administrator immediately."
+    },
+    "twoFactorDisabled": {
+      "subject": "Two-factor authentication disabled",
+      "body": "Two-factor authentication was disabled for your ALVOXIS Flow account on {time} (UTC). If this was not you, change your password immediately:\n{link}"
+    },
+    "unknownDevice": "an unknown device",
+    "signInLocked": {
+      "subject": "Several failed sign-in attempts",
+      "body": "Password sign-in to your ALVOXIS Flow account was paused for 15 minutes after several failed attempts on {time} (UTC). Devices you have signed in from before can still sign in. If this was not you, reset your password:\n{link}"
+    }
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "or": "or",
+    "backToSignIn": "Back to sign in",
+    "signIn": {
+      "title": "Sign in",
+      "subtitle": "Welcome back to ALVOXIS Flow.",
+      "submit": "Sign in",
+      "forgot": "Forgot password?",
+      "noAccount": "No account yet?",
+      "createAccount": "Create one",
+      "google": "Continue with Google",
+      "verified": "Your email address is confirmed. You can sign in now.",
+      "verifyFailed": "The confirmation link is invalid or has expired. Sign in to request a new one.",
+      "resetDone": "Your password was changed. Sign in with the new password.",
+      "resend": "Send the confirmation email again",
+      "resent": "If the account exists and is not yet confirmed, a new confirmation email has been sent."
+    },
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Start using ALVOXIS Flow.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "passwordHint": "At least {min} characters. A long passphrase is easiest to remember."
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "body": "If {email} can be used for a new account, we have sent a confirmation link to it. Open the link to activate your account. It expires in 24 hours."
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we will send you a reset link.",
+      "submit": "Send reset link",
+      "sent": "If an account exists for this email, a reset link has been sent. It expires in 1 hour."
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "newPassword": "New password",
+      "confirm": "Confirm new password",
+      "submit": "Change password",
+      "mismatch": "The passwords do not match.",
+      "invalid": "This reset link is invalid or has expired.",
+      "requestNew": "Request a new link"
+    },
+    "twoFactor": {
+      "title": "Two-factor verification",
+      "subtitle": "Enter the 6-digit code from your authenticator app.",
+      "stepUp": "Your account uses two-factor authentication. Confirm this session to continue.",
+      "code": "Authentication code",
+      "submit": "Verify",
+      "useRecovery": "Use a recovery code instead",
+      "useTotp": "Use a code from the authenticator app",
+      "recoveryCode": "Recovery code",
+      "recoverySubtitle": "Enter one of the recovery codes you saved when setting up two-factor authentication. Each code works once.",
+      "lostAccess": "Lost both your authenticator and your recovery codes? Contact ALVOXIS Flow support; your identity will be verified before two-factor authentication is reset.",
+      "signOut": "Sign out"
+    },
+    "setup": {
+      "title": "Set up two-factor authentication",
+      "intro": "A code from an authenticator app (for example Google Authenticator, Microsoft Authenticator or 1Password) will be required when you sign in.",
+      "required": "Your role requires two-factor authentication before you can access company data.",
+      "step1": "Confirm your password to start",
+      "start": "Continue",
+      "step2": "Scan this QR code with your authenticator app",
+      "manual": "Cannot scan it? Enter this key manually:",
+      "step3": "Enter the 6-digit code shown in the app",
+      "verify": "Activate two-factor authentication",
+      "recoveryTitle": "Save your recovery codes",
+      "recoveryBody": "Each code can be used once if you lose access to your authenticator. Store them somewhere safe and private — they will not be shown again.",
+      "copy": "Copy codes",
+      "copied": "Copied",
+      "done": "I have saved my codes",
+      "qrAlt": "QR code for your authenticator app"
+    },
+    "security": {
+      "title": "Security",
+      "subtitle": "Password, two-factor authentication and active sessions.",
+      "passwordTitle": "Change password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "changePassword": "Change password",
+      "passwordChanged": "Password changed. All other sessions were signed out.",
+      "twoFactorTitle": "Two-factor authentication",
+      "twoFactorOn": "Enabled",
+      "twoFactorOff": "Not enabled",
+      "enable": "Set up",
+      "disable": "Disable",
+      "disableHelp": "Enter your password to disable two-factor authentication.",
+      "requiredForRole": "Required for your role — it cannot be disabled.",
+      "regenerate": "Generate new recovery codes",
+      "regenerateHelp": "Enter your password. The current recovery codes will stop working.",
+      "regenerated": "Your new recovery codes (the previous ones no longer work):",
+      "sessionsTitle": "Active sessions",
+      "sessionsSubtitle": "Devices currently signed in to your account.",
+      "thisDevice": "This device",
+      "signedIn": "Signed in",
+      "lastActive": "Last active",
+      "ipAddress": "IP address",
+      "unknownDevice": "Unknown device",
+      "secondFactor": "Second factor verified",
+      "revoke": "Sign out",
+      "revokeOthers": "Sign out all other sessions",
+      "revokedOthers": "{count, plural, one {# session was signed out.} other {# sessions were signed out.}}",
+      "revoked": "The session was signed out.",
+      "noOthers": "No other active sessions.",
+      "emailNotConfigured": "Email delivery is not configured on this server, so security notifications such as new sign-in alerts are not being sent. An administrator must configure email delivery."
+    },
+    "errors": {
+      "invalidCredentials": "Incorrect email or password.",
+      "emailNotVerified": "Please confirm your email address first — check your inbox for the confirmation link.",
+      "passwordTooShort": "The password must be at least {min} characters.",
+      "passwordTooLong": "The password is too long.",
+      "invalidEmail": "Enter a valid email address.",
+      "invalidToken": "This link is invalid or has expired.",
+      "invalidCode": "The code is not correct. Check that the time on your device is correct and try again.",
+      "codeUsed": "This code has already been used. Wait for the next code.",
+      "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
+      "locked": "Too many failed attempts. Try again later.",
+      "requiredForRole": "Your role requires two-factor authentication, so it cannot be disabled.",
+      "invalidPassword": "The password is not correct.",
+      "emailNotConfigured": "Email delivery is not configured on this server, so confirmation and password-reset emails cannot be sent. Please contact the administrator.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "account": {
+    "security": "Security",
+    "signOut": "Sign out"
+  },
+  "onboarding": {
+    "createCompanyTitle": "Create your company",
+    "createCompanyBody": "Add your company to start working with documents. You will become its owner.",
+    "companyName": "Company name",
+    "country": "Country",
+    "countries": {
+      "LV": "Latvia",
+      "LT": "Lithuania",
+      "EE": "Estonia",
+      "PL": "Poland"
+    },
+    "create": "Create company",
+    "created": "The company was created.",
+    "yourCompanies": "Your companies",
+    "twoFactorRequiredTitle": "Two-factor authentication required",
+    "twoFactorRequiredBody": "Owners and administrators must set up two-factor authentication before they can access company data.",
+    "setUpNow": "Set up now"
   }
 }

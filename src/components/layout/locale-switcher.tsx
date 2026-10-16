@@ -18,7 +18,7 @@ export function LocaleSwitcher() {
       <svg
         aria-hidden="true"
         viewBox="0 0 24 24"
-        className="size-4"
+        className="hidden size-4 sm:block"
         fill="none"
         stroke="currentColor"
         strokeWidth={1.6}

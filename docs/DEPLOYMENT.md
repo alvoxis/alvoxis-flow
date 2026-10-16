@@ -13,6 +13,12 @@ can also build the repository directly.
 
 - `DATABASE_URL` — managed PostgreSQL 16 with TLS, automated backups and point-in-time recovery (PITR).
 - `APP_URL` — public HTTPS origin.
+- `BETTER_AUTH_SECRET` — ≥ 32 random characters, kept stable (rotating it signs everyone out and makes
+  enrolled 2FA unreadable).
+- `TRUSTED_IP_HEADER` — the client-IP header set by the reverse proxy, plus `TRUSTED_PROXIES` (proxy
+  CIDRs) when the proxy appends to it. The app must only be reachable through that proxy.
+- `EMAIL_TRANSPORT=smtp` with `EMAIL_FROM` and `SMTP_*`; optionally `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`.
+  Details and the operator 2FA-reset procedure: [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md).
 - Secrets are stored in the hosting platform's secret manager, never in the repository.
 
 ## Release procedure (target)
@@ -33,6 +39,11 @@ contract over separate releases), so the application can be rolled back without 
 - Database: forward-fix migrations are preferred. For data loss/corruption, restore via PITR to a new
   instance, verify, then switch `DATABASE_URL`. Restore drills must be performed and documented before
   launch.
+- Before every migration run, in addition to the platform snapshot:
+  `pg_dump -Fc -d "$DATABASE_URL" -f pre-release.dump` (keep it encrypted, with the release).
+  Restore into a **new** database: `createdb <new> && pg_restore -d <new> pre-release.dump`, check row
+  counts and `drizzle.__drizzle_migrations`, then switch `DATABASE_URL`. A failed `pnpm db:migrate`
+  needs no restore — it runs in one transaction and leaves the schema unchanged (tested).
 - `audit_logs` is append-only by design; it is never modified during recovery.
 
 ## Health checks

@@ -162,5 +162,191 @@
     "page": "{page}. lpp. no {total}",
     "totalQuantity": "Kopējais daudzums",
     "totalWeight": "Kopējais svars, kg"
+  },
+  "email": {
+    "footer": "Šo ziņojumu nosūtīja ALVOXIS Flow. Ja to negaidījāt, varat to ignorēt.",
+    "greeting": "Labdien, {name}!",
+    "verify": {
+      "subject": "Apstipriniet e-pasta adresi",
+      "body": "Lūdzu, apstipriniet savu e-pasta adresi ALVOXIS Flow, atverot šo saiti:\n{link}\n\nSaite ir derīga 24 stundas."
+    },
+    "reset": {
+      "subject": "Paroles atiestatīšana",
+      "body": "Saņēmām pieprasījumu atiestatīt jūsu ALVOXIS Flow paroli. Atveriet šo saiti, lai izvēlētos jaunu paroli:\n{link}\n\nSaite ir derīga 1 stundu un izmantojama vienu reizi. Ja to nepieprasījāt, ignorējiet šo e-pastu — parole netiks mainīta."
+    },
+    "existingAccount": {
+      "subject": "Reģistrācijas mēģinājums ar jūsu e-pastu",
+      "body": "Kāds mēģināja izveidot jaunu ALVOXIS Flow kontu ar šo e-pasta adresi, taču jums jau ir konts. Ja tas bijāt jūs, pierakstieties vai atiestatiet paroli šeit:\n{link}"
+    },
+    "newSignIn": {
+      "subject": "Jauna pierakstīšanās jūsu kontā",
+      "body": "Jūsu ALVOXIS Flow kontā pierakstījās {time} (UTC) no ierīces: {device}.\nJa tas nebijāt jūs, nomainiet paroli un izrakstiet citas sesijas:\n{link}"
+    },
+    "passwordChanged": {
+      "subject": "Jūsu parole ir nomainīta",
+      "body": "Jūsu ALVOXIS Flow parole tika nomainīta {time} (UTC), un pārējās sesijas tika izrakstītas. Ja tas nebijāt jūs, nekavējoties atiestatiet paroli:\n{link}"
+    },
+    "twoFactorEnabled": {
+      "subject": "Divu faktoru autentifikācija ieslēgta",
+      "body": "Jūsu ALVOXIS Flow kontam tika ieslēgta divu faktoru autentifikācija ({time}, UTC). Glabājiet atkopšanas kodus drošā vietā. Ja tas nebijāt jūs, nekavējoties sazinieties ar administratoru."
+    },
+    "twoFactorDisabled": {
+      "subject": "Divu faktoru autentifikācija izslēgta",
+      "body": "Jūsu ALVOXIS Flow kontam tika izslēgta divu faktoru autentifikācija ({time}, UTC). Ja tas nebijāt jūs, nekavējoties nomainiet paroli:\n{link}"
+    },
+    "unknownDevice": "nezināma ierīce",
+    "signInLocked": {
+      "subject": "Vairāki neveiksmīgi pieteikšanās mēģinājumi",
+      "body": "Pēc vairākiem neveiksmīgiem mēģinājumiem {time} (UTC) pieteikšanās ar paroli jūsu ALVOXIS Flow kontā ir apturēta uz 15 minūtēm. No ierīcēm, no kurām jau esat pieteicies, pieteikties joprojām var. Ja tas nebijāt jūs, atiestatiet paroli:\n{link}"
+    }
+  },
+  "auth": {
+    "email": "E-pasts",
+    "password": "Parole",
+    "name": "Vārds un uzvārds",
+    "or": "vai",
+    "backToSignIn": "Atpakaļ uz pierakstīšanos",
+    "signIn": {
+      "title": "Pierakstīties",
+      "subtitle": "Laipni lūdzam atpakaļ ALVOXIS Flow.",
+      "submit": "Pierakstīties",
+      "forgot": "Aizmirsāt paroli?",
+      "noAccount": "Vēl nav konta?",
+      "createAccount": "Izveidot",
+      "google": "Turpināt ar Google",
+      "verified": "Jūsu e-pasta adrese ir apstiprināta. Tagad varat pierakstīties.",
+      "verifyFailed": "Apstiprinājuma saite nav derīga vai ir novecojusi. Pierakstieties, lai pieprasītu jaunu.",
+      "resetDone": "Parole ir nomainīta. Pierakstieties ar jauno paroli.",
+      "resend": "Nosūtīt apstiprinājuma e-pastu vēlreiz",
+      "resent": "Ja konts pastāv un vēl nav apstiprināts, ir nosūtīts jauns apstiprinājuma e-pasts."
+    },
+    "signUp": {
+      "title": "Izveidojiet kontu",
+      "subtitle": "Sāciet lietot ALVOXIS Flow.",
+      "submit": "Izveidot kontu",
+      "haveAccount": "Jau ir konts?",
+      "signIn": "Pierakstīties",
+      "passwordHint": "Vismaz {min} rakstzīmes. Garu paroles frāzi ir vieglāk atcerēties."
+    },
+    "checkEmail": {
+      "title": "Pārbaudiet e-pastu",
+      "body": "Ja adresi {email} var izmantot jaunam kontam, uz to ir nosūtīta apstiprinājuma saite. Atveriet to, lai aktivizētu kontu. Saite ir derīga 24 stundas."
+    },
+    "forgot": {
+      "title": "Paroles atiestatīšana",
+      "subtitle": "Ievadiet e-pastu, un mēs nosūtīsim atiestatīšanas saiti.",
+      "submit": "Nosūtīt saiti",
+      "sent": "Ja šim e-pastam ir konts, atiestatīšanas saite ir nosūtīta. Tā ir derīga 1 stundu."
+    },
+    "reset": {
+      "title": "Izvēlieties jaunu paroli",
+      "newPassword": "Jaunā parole",
+      "confirm": "Atkārtojiet jauno paroli",
+      "submit": "Nomainīt paroli",
+      "mismatch": "Paroles nesakrīt.",
+      "invalid": "Šī atiestatīšanas saite nav derīga vai ir novecojusi.",
+      "requestNew": "Pieprasīt jaunu saiti"
+    },
+    "twoFactor": {
+      "title": "Divu faktoru pārbaude",
+      "subtitle": "Ievadiet 6 ciparu kodu no autentifikatora lietotnes.",
+      "stepUp": "Jūsu kontam ir ieslēgta divu faktoru autentifikācija. Apstipriniet šo sesiju, lai turpinātu.",
+      "code": "Autentifikācijas kods",
+      "submit": "Apstiprināt",
+      "useRecovery": "Izmantot atkopšanas kodu",
+      "useTotp": "Izmantot kodu no autentifikatora lietotnes",
+      "recoveryCode": "Atkopšanas kods",
+      "recoverySubtitle": "Ievadiet vienu no atkopšanas kodiem, ko saglabājāt, iestatot divu faktoru autentifikāciju. Katrs kods darbojas vienu reizi.",
+      "lostAccess": "Pazaudējāt gan autentifikatoru, gan atkopšanas kodus? Sazinieties ar ALVOXIS Flow atbalstu; pirms divu faktoru autentifikācijas atiestatīšanas tiks pārbaudīta jūsu identitāte.",
+      "signOut": "Izrakstīties"
+    },
+    "setup": {
+      "title": "Divu faktoru autentifikācijas iestatīšana",
+      "intro": "Pierakstoties būs nepieciešams kods no autentifikatora lietotnes (piemēram, Google Authenticator, Microsoft Authenticator vai 1Password).",
+      "required": "Jūsu lomai ir nepieciešama divu faktoru autentifikācija, lai piekļūtu uzņēmuma datiem.",
+      "step1": "Apstipriniet paroli, lai sāktu",
+      "start": "Turpināt",
+      "step2": "Noskenējiet šo QR kodu ar autentifikatora lietotni",
+      "manual": "Nevarat noskenēt? Ievadiet šo atslēgu manuāli:",
+      "step3": "Ievadiet 6 ciparu kodu, ko rāda lietotne",
+      "verify": "Ieslēgt divu faktoru autentifikāciju",
+      "recoveryTitle": "Saglabājiet atkopšanas kodus",
+      "recoveryBody": "Katru kodu var izmantot vienu reizi, ja zaudējat piekļuvi autentifikatoram. Glabājiet tos drošā un privātā vietā — tie vairs netiks parādīti.",
+      "copy": "Kopēt kodus",
+      "copied": "Nokopēts",
+      "done": "Esmu saglabājis kodus",
+      "qrAlt": "QR kods autentifikatora lietotnei"
+    },
+    "security": {
+      "title": "Drošība",
+      "subtitle": "Parole, divu faktoru autentifikācija un aktīvās sesijas.",
+      "passwordTitle": "Paroles maiņa",
+      "currentPassword": "Pašreizējā parole",
+      "newPassword": "Jaunā parole",
+      "changePassword": "Nomainīt paroli",
+      "passwordChanged": "Parole nomainīta. Visas pārējās sesijas tika izrakstītas.",
+      "twoFactorTitle": "Divu faktoru autentifikācija",
+      "twoFactorOn": "Ieslēgta",
+      "twoFactorOff": "Nav ieslēgta",
+      "enable": "Iestatīt",
+      "disable": "Izslēgt",
+      "disableHelp": "Ievadiet paroli, lai izslēgtu divu faktoru autentifikāciju.",
+      "requiredForRole": "Obligāta jūsu lomai — to nevar izslēgt.",
+      "regenerate": "Ģenerēt jaunus atkopšanas kodus",
+      "regenerateHelp": "Ievadiet paroli. Pašreizējie atkopšanas kodi vairs nedarbosies.",
+      "regenerated": "Jūsu jaunie atkopšanas kodi (iepriekšējie vairs nedarbojas):",
+      "sessionsTitle": "Aktīvās sesijas",
+      "sessionsSubtitle": "Ierīces, kurās pašlaik esat pierakstījies savā kontā.",
+      "thisDevice": "Šī ierīce",
+      "signedIn": "Pierakstījās",
+      "lastActive": "Pēdējā aktivitāte",
+      "ipAddress": "IP adrese",
+      "unknownDevice": "Nezināma ierīce",
+      "secondFactor": "Otrais faktors apstiprināts",
+      "revoke": "Izrakstīt",
+      "revokeOthers": "Izrakstīt visas pārējās sesijas",
+      "revokedOthers": "{count, plural, zero {Izrakstītas # sesijas.} one {Izrakstīta # sesija.} other {Izrakstītas # sesijas.}}",
+      "revoked": "Sesija tika izrakstīta.",
+      "noOthers": "Citu aktīvu sesiju nav.",
+      "emailNotConfigured": "Šajā serverī nav konfigurēta e-pasta sūtīšana, tāpēc drošības paziņojumi, piemēram, par jaunām pierakstīšanās reizēm, netiek sūtīti. Administratoram jākonfigurē e-pasta sūtīšana."
+    },
+    "errors": {
+      "invalidCredentials": "Nepareizs e-pasts vai parole.",
+      "emailNotVerified": "Vispirms apstipriniet e-pasta adresi — meklējiet apstiprinājuma saiti savā pastkastē.",
+      "passwordTooShort": "Parolē jābūt vismaz {min} rakstzīmēm.",
+      "passwordTooLong": "Parole ir pārāk gara.",
+      "invalidEmail": "Ievadiet derīgu e-pasta adresi.",
+      "invalidToken": "Šī saite nav derīga vai ir novecojusi.",
+      "invalidCode": "Kods nav pareizs. Pārbaudiet, vai ierīces laiks ir pareizs, un mēģiniet vēlreiz.",
+      "codeUsed": "Šis kods jau ir izmantots. Pagaidiet nākamo kodu.",
+      "tooManyRequests": "Pārāk daudz mēģinājumu. Lūdzu, brīdi uzgaidiet un mēģiniet vēlreiz.",
+      "locked": "Pārāk daudz neveiksmīgu mēģinājumu. Mēģiniet vēlāk.",
+      "requiredForRole": "Jūsu lomai ir nepieciešama divu faktoru autentifikācija, tāpēc to nevar izslēgt.",
+      "invalidPassword": "Parole nav pareiza.",
+      "emailNotConfigured": "Šajā serverī nav konfigurēta e-pasta sūtīšana, tāpēc apstiprinājuma un paroles atiestatīšanas e-pastus nevar nosūtīt. Lūdzu, sazinieties ar administratoru.",
+      "generic": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz."
+    }
+  },
+  "account": {
+    "security": "Drošība",
+    "signOut": "Izrakstīties"
+  },
+  "onboarding": {
+    "createCompanyTitle": "Izveidojiet savu uzņēmumu",
+    "createCompanyBody": "Pievienojiet savu uzņēmumu, lai sāktu darbu ar dokumentiem. Jūs kļūsiet par tā īpašnieku.",
+    "companyName": "Uzņēmuma nosaukums",
+    "country": "Valsts",
+    "countries": {
+      "LV": "Latvija",
+      "LT": "Lietuva",
+      "EE": "Igaunija",
+      "PL": "Polija"
+    },
+    "create": "Izveidot uzņēmumu",
+    "created": "Uzņēmums izveidots.",
+    "yourCompanies": "Jūsu uzņēmumi",
+    "twoFactorRequiredTitle": "Nepieciešama divu faktoru autentifikācija",
+    "twoFactorRequiredBody": "Īpašniekiem un administratoriem pirms piekļuves uzņēmuma datiem jāiestata divu faktoru autentifikācija.",
+    "setUpNow": "Iestatīt tagad"
   }
 }

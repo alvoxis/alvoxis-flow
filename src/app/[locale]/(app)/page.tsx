@@ -1,13 +1,18 @@
 import { type Metadata } from "next";
-import { type Locale, useLocale, useTranslations } from "next-intl";
+import { type Locale, useLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { use } from "react";
+import { CreateCompanyForm } from "@/components/dashboard/create-company-form";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { NextSteps } from "@/components/dashboard/next-steps";
 import { RecentDocuments } from "@/components/dashboard/recent-documents";
 import { SAMPLE_DOCUMENTS, SAMPLE_MONTH } from "@/features/dashboard/sample-data";
 import { computeDashboardSummary, type CurrencyTotal } from "@/features/dashboard/summary";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/format";
+import { requirePageUser } from "@/server/auth/page-session";
+import { dashboardData } from "@/server/account/page-data";
 
 export async function generateMetadata({
   params,
@@ -29,10 +34,14 @@ function Totals({ totals }: { totals: CurrencyTotal[] }) {
   ));
 }
 
-export default function DashboardPage({ params }: { params: Promise<{ locale: Locale }> }) {
-  const { locale } = use(params);
+export default async function DashboardPage({ params }: { params: Promise<{ locale: Locale }> }) {
+  const { locale } = await params;
   setRequestLocale(locale);
-  const t = useTranslations("dashboard");
+  const t = await getTranslations("dashboard");
+  const tOn = await getTranslations("onboarding");
+  const tRoles = await getTranslations("roles");
+  const user = await requirePageUser(locale);
+  const { companies, twoFactorMissing } = await dashboardData(user);
 
   // Sample data until the documents module and authentication exist (see docs/ROADMAP.md).
   const summary = computeDashboardSummary(SAMPLE_DOCUMENTS, SAMPLE_MONTH);
@@ -47,6 +56,44 @@ export default function DashboardPage({ params }: { params: Promise<{ locale: Lo
           <p className="mt-1 text-sm text-muted">{t("subtitle")}</p>
         </div>
       </div>
+
+      {twoFactorMissing ? (
+        <div
+          role="alert"
+          data-testid="two-factor-required"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent/50 bg-accent-soft/70 px-4 py-3"
+        >
+          <div>
+            <p className="text-sm font-semibold text-violet-100">{tOn("twoFactorRequiredTitle")}</p>
+            <p className="text-sm text-violet-200/90">{tOn("twoFactorRequiredBody")}</p>
+          </div>
+          <Link
+            href="/account/two-factor"
+            className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-accent"
+          >
+            {tOn("setUpNow")}
+          </Link>
+        </div>
+      ) : null}
+
+      {companies.length === 0 ? (
+        <CreateCompanyForm />
+      ) : (
+        <Card>
+          <CardHeader title={tOn("yourCompanies")} />
+          <ul className="divide-y divide-border" data-testid="company-list">
+            {companies.map((c) => (
+              <li key={c.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
+                <span className="font-medium text-text">{c.name}</span>
+                <span className="flex items-center gap-2 text-muted">
+                  {tOn(`countries.${c.country}`)}
+                  <Badge tone="accent">{tRoles(c.roleKey as "owner")}</Badge>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
 
       <div
         role="note"

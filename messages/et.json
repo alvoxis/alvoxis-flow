@@ -162,5 +162,191 @@
     "page": "Lk {page} / {total}",
     "totalQuantity": "Kogus kokku",
     "totalWeight": "Kaal kokku, kg"
+  },
+  "email": {
+    "footer": "Selle sõnumi saatis ALVOXIS Flow. Kui te seda ei oodanud, võite selle tähelepanuta jätta.",
+    "greeting": "Tere, {name}!",
+    "verify": {
+      "subject": "Kinnitage oma e-posti aadress",
+      "body": "Palun kinnitage oma ALVOXIS Flow e-posti aadress, avades selle lingi:\n{link}\n\nLink kehtib 24 tundi."
+    },
+    "reset": {
+      "subject": "Parooli lähtestamine",
+      "body": "Saime taotluse lähtestada teie ALVOXIS Flow parool. Uue parooli valimiseks avage see link:\n{link}\n\nLink kehtib 1 tunni ja seda saab kasutada ühe korra. Kui te seda ei taotlenud, jätke see kiri tähelepanuta — parool ei muutu."
+    },
+    "existingAccount": {
+      "subject": "Registreerimiskatse teie e-posti aadressiga",
+      "body": "Keegi proovis luua selle e-posti aadressiga uut ALVOXIS Flow kontot, kuid teil on juba konto. Kui see olite teie, logige sisse või lähtestage parool siin:\n{link}"
+    },
+    "newSignIn": {
+      "subject": "Uus sisselogimine teie kontole",
+      "body": "Teie ALVOXIS Flow kontole logiti sisse {time} (UTC) seadmest: {device}.\nKui see ei olnud teie, muutke parooli ja logige teised seansid välja:\n{link}"
+    },
+    "passwordChanged": {
+      "subject": "Teie parool on muudetud",
+      "body": "Teie ALVOXIS Flow parool muudeti {time} (UTC) ja teised seansid logiti välja. Kui see ei olnud teie, lähtestage parool kohe:\n{link}"
+    },
+    "twoFactorEnabled": {
+      "subject": "Kaheastmeline autentimine on sisse lülitatud",
+      "body": "Teie ALVOXIS Flow kontol lülitati sisse kaheastmeline autentimine ({time}, UTC). Hoidke taastekoode turvalises kohas. Kui see ei olnud teie, võtke kohe ühendust administraatoriga."
+    },
+    "twoFactorDisabled": {
+      "subject": "Kaheastmeline autentimine on välja lülitatud",
+      "body": "Teie ALVOXIS Flow kontol lülitati kaheastmeline autentimine välja ({time}, UTC). Kui see ei olnud teie, muutke parooli kohe:\n{link}"
+    },
+    "unknownDevice": "tundmatu seade",
+    "signInLocked": {
+      "subject": "Mitu ebaõnnestunud sisselogimiskatset",
+      "body": "Pärast mitut ebaõnnestunud katset {time} (UTC) on teie ALVOXIS Flow konto parooliga sisselogimine 15 minutiks peatatud. Seadmetest, kust olete varem sisse loginud, saab endiselt sisse logida. Kui see polnud teie, lähtestage parool:\n{link}"
+    }
+  },
+  "auth": {
+    "email": "E-post",
+    "password": "Parool",
+    "name": "Ees- ja perekonnanimi",
+    "or": "või",
+    "backToSignIn": "Tagasi sisselogimise juurde",
+    "signIn": {
+      "title": "Logi sisse",
+      "subtitle": "Tere tulemast tagasi ALVOXIS Flow'sse.",
+      "submit": "Logi sisse",
+      "forgot": "Unustasid parooli?",
+      "noAccount": "Pole veel kontot?",
+      "createAccount": "Loo konto",
+      "google": "Jätka Google'iga",
+      "verified": "Teie e-posti aadress on kinnitatud. Nüüd saate sisse logida.",
+      "verifyFailed": "Kinnituslink on kehtetu või aegunud. Logige sisse, et uus link taotleda.",
+      "resetDone": "Teie parool on muudetud. Logige sisse uue parooliga.",
+      "resend": "Saada kinnituskiri uuesti",
+      "resent": "Kui konto on olemas ja seda pole veel kinnitatud, saadeti uus kinnituskiri."
+    },
+    "signUp": {
+      "title": "Looge konto",
+      "subtitle": "Alustage ALVOXIS Flow kasutamist.",
+      "submit": "Loo konto",
+      "haveAccount": "Kas teil on juba konto?",
+      "signIn": "Logi sisse",
+      "passwordHint": "Vähemalt {min} tähemärki. Pikka paroolifraasi on kõige lihtsam meeles pidada."
+    },
+    "checkEmail": {
+      "title": "Kontrollige e-posti",
+      "body": "Kui aadressi {email} saab uue konto jaoks kasutada, saatsime sellele kinnituslingi. Konto aktiveerimiseks avage link. Link kehtib 24 tundi."
+    },
+    "forgot": {
+      "title": "Parooli lähtestamine",
+      "subtitle": "Sisestage oma e-post ja me saadame lähtestamislingi.",
+      "submit": "Saada link",
+      "sent": "Kui selle e-posti jaoks on konto olemas, saadeti lähtestamislink. See kehtib 1 tunni."
+    },
+    "reset": {
+      "title": "Valige uus parool",
+      "newPassword": "Uus parool",
+      "confirm": "Korrake uut parooli",
+      "submit": "Muuda parooli",
+      "mismatch": "Paroolid ei ühti.",
+      "invalid": "See lähtestamislink on kehtetu või aegunud.",
+      "requestNew": "Taotle uus link"
+    },
+    "twoFactor": {
+      "title": "Kaheastmeline kontroll",
+      "subtitle": "Sisestage autentimisrakenduse 6-kohaline kood.",
+      "stepUp": "Teie kontol on kaheastmeline autentimine. Jätkamiseks kinnitage see seanss.",
+      "code": "Autentimiskood",
+      "submit": "Kinnita",
+      "useRecovery": "Kasuta taastekoodi",
+      "useTotp": "Kasuta autentimisrakenduse koodi",
+      "recoveryCode": "Taastekood",
+      "recoverySubtitle": "Sisestage üks taastekoodidest, mille kaheastmelise autentimise seadistamisel salvestasite. Iga kood töötab ühe korra.",
+      "lostAccess": "Kaotasite nii autentimisrakenduse kui ka taastekoodid? Võtke ühendust ALVOXIS Flow toega; enne kaheastmelise autentimise lähtestamist kontrollitakse teie isikut.",
+      "signOut": "Logi välja"
+    },
+    "setup": {
+      "title": "Kaheastmelise autentimise seadistamine",
+      "intro": "Sisselogimisel on vaja autentimisrakenduse koodi (näiteks Google Authenticator, Microsoft Authenticator või 1Password).",
+      "required": "Teie roll nõuab ettevõtte andmetele juurdepääsuks kaheastmelist autentimist.",
+      "step1": "Alustamiseks kinnitage parool",
+      "start": "Jätka",
+      "step2": "Skannige see QR-kood autentimisrakendusega",
+      "manual": "Ei saa skannida? Sisestage see võti käsitsi:",
+      "step3": "Sisestage rakenduses kuvatud 6-kohaline kood",
+      "verify": "Lülita kaheastmeline autentimine sisse",
+      "recoveryTitle": "Salvestage taastekoodid",
+      "recoveryBody": "Iga koodi saab kasutada ühe korra, kui kaotate juurdepääsu autentimisrakendusele. Hoidke neid turvalises ja privaatses kohas — neid ei näidata uuesti.",
+      "copy": "Kopeeri koodid",
+      "copied": "Kopeeritud",
+      "done": "Olen koodid salvestanud",
+      "qrAlt": "QR-kood autentimisrakenduse jaoks"
+    },
+    "security": {
+      "title": "Turvalisus",
+      "subtitle": "Parool, kaheastmeline autentimine ja aktiivsed seansid.",
+      "passwordTitle": "Parooli muutmine",
+      "currentPassword": "Praegune parool",
+      "newPassword": "Uus parool",
+      "changePassword": "Muuda parooli",
+      "passwordChanged": "Parool muudetud. Kõik teised seansid logiti välja.",
+      "twoFactorTitle": "Kaheastmeline autentimine",
+      "twoFactorOn": "Sisse lülitatud",
+      "twoFactorOff": "Pole sisse lülitatud",
+      "enable": "Seadista",
+      "disable": "Lülita välja",
+      "disableHelp": "Kaheastmelise autentimise väljalülitamiseks sisestage parool.",
+      "requiredForRole": "Teie rolli jaoks kohustuslik — seda ei saa välja lülitada.",
+      "regenerate": "Loo uued taastekoodid",
+      "regenerateHelp": "Sisestage parool. Praegused taastekoodid lakkavad töötamast.",
+      "regenerated": "Teie uued taastekoodid (varasemad enam ei kehti):",
+      "sessionsTitle": "Aktiivsed seansid",
+      "sessionsSubtitle": "Seadmed, kus olete praegu oma kontole sisse logitud.",
+      "thisDevice": "See seade",
+      "signedIn": "Sisse logitud",
+      "lastActive": "Viimati aktiivne",
+      "ipAddress": "IP-aadress",
+      "unknownDevice": "Tundmatu seade",
+      "secondFactor": "Teine tegur kinnitatud",
+      "revoke": "Logi välja",
+      "revokeOthers": "Logi välja kõik teised seansid",
+      "revokedOthers": "{count, plural, one {# seanss logiti välja.} other {# seanssi logiti välja.}}",
+      "revoked": "Seanss logiti välja.",
+      "noOthers": "Teisi aktiivseid seansse pole.",
+      "emailNotConfigured": "Selles serveris pole e-kirjade saatmine seadistatud, seega turvateavitusi, näiteks uute sisselogimiste kohta, ei saadeta. Administraator peab e-kirjade saatmise seadistama."
+    },
+    "errors": {
+      "invalidCredentials": "Vale e-post või parool.",
+      "emailNotVerified": "Kinnitage esmalt oma e-posti aadress — otsige postkastist kinnituslinki.",
+      "passwordTooShort": "Parool peab olema vähemalt {min} tähemärki pikk.",
+      "passwordTooLong": "Parool on liiga pikk.",
+      "invalidEmail": "Sisestage kehtiv e-posti aadress.",
+      "invalidToken": "See link on kehtetu või aegunud.",
+      "invalidCode": "Kood ei ole õige. Kontrollige, et seadme kellaaeg on õige, ja proovige uuesti.",
+      "codeUsed": "Seda koodi on juba kasutatud. Oodake järgmist koodi.",
+      "tooManyRequests": "Liiga palju katseid. Oodake veidi ja proovige uuesti.",
+      "locked": "Liiga palju ebaõnnestunud katseid. Proovige hiljem uuesti.",
+      "requiredForRole": "Teie roll nõuab kaheastmelist autentimist, seega ei saa seda välja lülitada.",
+      "invalidPassword": "Parool ei ole õige.",
+      "emailNotConfigured": "Selles serveris pole e-kirjade saatmine seadistatud, seega ei saa kinnitus- ega parooli lähtestamise kirju saata. Võtke ühendust administraatoriga.",
+      "generic": "Midagi läks valesti. Proovige uuesti."
+    }
+  },
+  "account": {
+    "security": "Turvalisus",
+    "signOut": "Logi välja"
+  },
+  "onboarding": {
+    "createCompanyTitle": "Looge oma ettevõte",
+    "createCompanyBody": "Lisage oma ettevõte, et alustada dokumentidega töötamist. Teist saab selle omanik.",
+    "companyName": "Ettevõtte nimi",
+    "country": "Riik",
+    "countries": {
+      "LV": "Läti",
+      "LT": "Leedu",
+      "EE": "Eesti",
+      "PL": "Poola"
+    },
+    "create": "Loo ettevõte",
+    "created": "Ettevõte on loodud.",
+    "yourCompanies": "Teie ettevõtted",
+    "twoFactorRequiredTitle": "Nõutav on kaheastmeline autentimine",
+    "twoFactorRequiredBody": "Omanikud ja administraatorid peavad enne ettevõtte andmetele juurdepääsu seadistama kaheastmelise autentimise.",
+    "setUpNow": "Seadista kohe"
   }
 }
