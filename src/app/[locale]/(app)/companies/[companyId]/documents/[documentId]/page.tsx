@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { DocumentEditor } from "@/components/documents/document-editor";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { DocumentView } from "@/components/documents/document-view";
+import { PdfLinks } from "@/components/documents/pdf-links";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Alert } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
@@ -68,6 +69,7 @@ export default async function DocumentPage({ params }: Params) {
               {t("issuedNotice", { number: document.number ?? "" })}
             </span>
           </Alert>
+          <PdfLinks companyId={companyId} documentId={document.id} draft={false} />
           <DocumentView document={document} />
         </div>
       ) : (

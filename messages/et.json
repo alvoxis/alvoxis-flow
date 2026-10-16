@@ -592,7 +592,15 @@
     "deleteConfirm": "Kustuta jäädavalt",
     "deleted": "Mustand kustutatud.",
     "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa.",
-    "colBuyer": "Ostja"
+    "colBuyer": "Ostja",
+    "pdf": {
+      "open": "Ava PDF",
+      "download": "Laadi PDF alla",
+      "openDraft": "PDF-i eelvaade",
+      "downloadDraft": "Laadi mustandi PDF alla",
+      "draftHint": "Mustandi PDF on märgitud „pole väljastatud“ ja sellel pole numbrit.",
+      "unsaved": "PDF näitab viimast salvestatud versiooni. Salvestage mustand, et muudatused jõuaksid PDF-i."
+    }
   },
   "taxCategories": {
     "title": "Maksukategooriad",

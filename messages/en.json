@@ -592,7 +592,15 @@
     "deleteConfirm": "Delete permanently",
     "deleted": "Draft deleted.",
     "deleteConfirmBodyEditor": "The draft is deleted permanently and cannot be restored. All unsaved changes in this editor will be lost. Issued documents cannot be deleted.",
-    "colBuyer": "Buyer"
+    "colBuyer": "Buyer",
+    "pdf": {
+      "open": "Open PDF",
+      "download": "Download PDF",
+      "openDraft": "Preview PDF",
+      "downloadDraft": "Download draft PDF",
+      "draftHint": "The draft PDF is marked “not issued” and has no number.",
+      "unsaved": "The PDF shows the last saved version. Save the draft to include your changes."
+    }
   },
   "taxCategories": {
     "title": "Tax categories",
