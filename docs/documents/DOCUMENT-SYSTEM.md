@@ -204,6 +204,19 @@ numbers are always the server's; the editor shows `issues` translated by code
 messages (a version conflict offers a reload). Non-members, archived companies and missing
 `documents.view` get 404; roles that need 2FA without it see the 2FA notice.
 
+### Creating and deleting drafts
+
+Users with `documents.create` get a "New document" action on the list
+(`/{locale}/companies/{companyId}/documents/new`): type (invoice, proforma or delivery note;
+credit notes come from an issued invoice), document language (default: the interface language),
+currency (EUR or PLN, **no default** — it must be chosen), issue date (default: today's calendar
+date in the browser's time zone, editable) and buyer name. The form sends only these fields with
+`lines: []` to `POST …/documents`; the server adds the seller from the company profile. The
+editor then opens for lines and explicit tax categories. Drafts can be deleted from the editor and
+from their list row, each after a confirmation; afterwards the list shows a confirmation message.
+Issued documents never show the action, and the API refuses it anyway (409; another company's
+document is a 404). Both actions are hidden without `documents.create` and enforced by the API.
+
 ### Tax categories in the UI
 
 `/{locale}/companies/{companyId}/tax-categories` lists the catalog (a table on wide screens, cards
@@ -224,7 +237,7 @@ the old snapshot, and the server never rolls it back.
 
 ## Not implemented yet
 
-Creating or deleting drafts in the UI, the buyer in the document list, bank-account snapshots from
+The buyer in the document list, bank-account snapshots from
 company settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.

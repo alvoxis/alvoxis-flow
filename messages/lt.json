@@ -573,7 +573,25 @@
     "noCategoriesManage": "Įmonė dar neturi mokesčių kategorijų. Prieš išrašydami dokumentus su kainomis pridėkite įmonės ar buhalterio patvirtintas kategorijas.",
     "setUpCategories": "Nustatyti mokesčių kategorijas",
     "noCategoriesAsk": "Įmonė dar neturi mokesčių kategorijų. Paprašykite savininko, administratoriaus ar buhalterio jas pridėti.",
-    "creditNoteTax": "iš pradinės sąskaitos"
+    "creditNoteTax": "iš pradinės sąskaitos",
+    "new": {
+      "title": "Naujas dokumentas",
+      "type": "Dokumento tipas",
+      "language": "Dokumento kalba",
+      "currency": "Valiuta",
+      "chooseCurrency": "Pasirinkite valiutą…",
+      "buyerName": "Pirkėjo pavadinimas",
+      "hint": "Pardavėjo duomenys imami iš įmonės profilio. Eilutės ir mokesčių kategorijos pridedamos redaktoriuje sukūrus juodraštį.",
+      "create": "Sukurti juodraštį",
+      "invalid": "Juodraštis nesukurtas. Patikrinkite laukus.",
+      "cannotCreate": "Jūsų vaidmuo neleidžia kurti dokumentų."
+    },
+    "deleteDraft": "Ištrinti juodraštį",
+    "deleteConfirmTitle": "Ištrinti šį juodraštį?",
+    "deleteConfirmBody": "Juodraštis bus ištrintas negrįžtamai. Išrašytų dokumentų ištrinti negalima.",
+    "deleteConfirm": "Ištrinti negrįžtamai",
+    "deleted": "Juodraštis ištrintas.",
+    "deleteConfirmBodyEditor": "Juodraštis bus ištrintas negrįžtamai ir jo nebus galima atkurti. Visi šiame redaktoriuje neišsaugoti pakeitimai bus prarasti. Išrašytų dokumentų ištrinti negalima."
   },
   "taxCategories": {
     "title": "Mokesčių kategorijos",

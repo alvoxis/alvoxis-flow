@@ -573,7 +573,25 @@
     "noCategoriesManage": "Ettevõttel pole veel maksukategooriaid. Lisage ettevõtte või raamatupidaja kinnitatud kategooriad enne hindadega dokumentide väljastamist.",
     "setUpCategories": "Seadista maksukategooriad",
     "noCategoriesAsk": "Ettevõttel pole veel maksukategooriaid. Paluge omanikul, administraatoril või raamatupidajal need lisada.",
-    "creditNoteTax": "algselt arvelt"
+    "creditNoteTax": "algselt arvelt",
+    "new": {
+      "title": "Uus dokument",
+      "type": "Dokumendi liik",
+      "language": "Dokumendi keel",
+      "currency": "Valuuta",
+      "chooseCurrency": "Valige valuuta…",
+      "buyerName": "Ostja nimi",
+      "hint": "Müüja andmed võetakse ettevõtte profiilist. Read ja maksukategooriad lisatakse redaktoris pärast mustandi loomist.",
+      "create": "Loo mustand",
+      "invalid": "Mustandit ei loodud. Palun kontrollige välju.",
+      "cannotCreate": "Teie roll ei luba dokumente luua."
+    },
+    "deleteDraft": "Kustuta mustand",
+    "deleteConfirmTitle": "Kas kustutada see mustand?",
+    "deleteConfirmBody": "Mustand kustutatakse jäädavalt. Väljastatud dokumente kustutada ei saa.",
+    "deleteConfirm": "Kustuta jäädavalt",
+    "deleted": "Mustand kustutatud.",
+    "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa."
   },
   "taxCategories": {
     "title": "Maksukategooriad",
