@@ -161,14 +161,15 @@ Creating and editing needs `tax_categories.manage` (owner, administrator, accoun
 Thin route handlers over `document-service` (session → `requireUser` → `requireCompanyAccess`
 inside the service; no business logic in the routes):
 
-| Method and path (`/api/companies/{companyId}/documents…`) | Permission          | Body                         |
-| --------------------------------------------------------- | ------------------- | ---------------------------- |
-| `GET …/documents`                                         | `documents.view`    | —                            |
-| `POST …/documents` (create draft, 201)                    | `documents.create`  | draft input                  |
-| `GET …/documents/{documentId}`                            | `documents.view`    | —                            |
-| `PATCH …/documents/{documentId}`                          | `documents.create`  | `{ expectedVersion, draft }` |
-| `DELETE …/documents/{documentId}` (drafts only)           | `documents.create`  | —                            |
-| `POST …/documents/{documentId}/issue`                     | `documents.approve` | `{ expectedVersion }`        |
+| Method and path (`/api/companies/{companyId}/documents…`)  | Permission          | Body                         |
+| ---------------------------------------------------------- | ------------------- | ---------------------------- |
+| `GET …/documents`                                          | `documents.view`    | —                            |
+| `POST …/documents` (create draft, 201)                     | `documents.create`  | draft input                  |
+| `GET …/documents/{documentId}`                             | `documents.view`    | —                            |
+| `PATCH …/documents/{documentId}`                           | `documents.create`  | `{ expectedVersion, draft }` |
+| `DELETE …/documents/{documentId}` (drafts only)            | `documents.create`  | —                            |
+| `POST …/documents/{documentId}/issue`                      | `documents.approve` | `{ expectedVersion }`        |
+| `GET …/documents/{documentId}/pdf` (`?download=1` to save) | `documents.view`    | —                            |
 
 | Method and path (`/api/companies/{companyId}/tax-categories…`) | Permission              | Body                                            |
 | -------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -188,6 +189,13 @@ this company); changing `code`, `kind` or `ratePercent` is a 422.
 Bank accounts add `409 iban_taken` (another active account of the company has this IBAN) and
 `404 not_found`; an invalid IBAN (ISO 13616 checksum) or BIC (8 or 11 characters, format only) is
 a 422 (`bankAccount.iban.invalid`, `bankAccount.bic.invalid`); changing the IBAN is a 422.
+
+`GET …/documents/{documentId}/pdf` returns `application/pdf` (`Content-Disposition: inline`, or
+`attachment` with `?download=1`; `Cache-Control: private, no-store`). Issued documents are rendered
+only from their frozen snapshot (content, totals, number and fingerprint as issued — later profile
+or catalog changes never appear); the file is named after the number. Drafts render their last
+saved content with the "not issued" watermark and no number (`draft-<type>-<id>.pdf`). Errors are
+the usual JSON answers (401/403/404/400).
 
 `GET …/documents` returns `{ documents: [{ id, type, status, number, issueDate, currency,
 grossTotal, buyerName }] }`, ordered by issue date. `buyerName` is the buyer's name stored on the
@@ -219,6 +227,13 @@ numbers are always the server's; the editor shows `issues` translated by code
 (`documents.issues.*`, generic text for unknown codes) and maps 409/401/403/404 answers to
 messages (a version conflict offers a reload). Non-members, archived companies and missing
 `documents.view` get 404; roles that need 2FA without it see the 2FA notice.
+
+### PDF
+
+The document page offers "Open PDF" (new tab) and "Download PDF" for issued documents, and a
+watermarked preview for drafts in the editor (with a note when there are unsaved changes, since
+the PDF shows the last saved version). The links use the PDF endpoint above; anyone who can see the
+document page may get its PDF.
 
 ### Creating and deleting drafts
 

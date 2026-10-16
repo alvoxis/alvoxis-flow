@@ -5,6 +5,7 @@ import { useId, useState } from "react";
 import { BankAccountSelect } from "@/components/documents/bank-account-select";
 import { DeleteDraftButton } from "@/components/documents/delete-draft-button";
 import { BankDetails, Totals } from "@/components/documents/document-view";
+import { PdfLinks } from "@/components/documents/pdf-links";
 import { IssueList } from "@/components/documents/issue-list";
 import { Alert, Button, Field } from "@/components/ui/form";
 import { type BankAccountItem, formatIban } from "@/features/bank-accounts/model";
@@ -580,6 +581,15 @@ export function DocumentEditor({
           >
             {t("issue")}
           </Button>
+        ) : null}
+      </div>
+
+      <div className="space-y-2 border-t border-border pt-4">
+        <PdfLinks companyId={companyId} documentId={document.id} draft />
+        {dirty ? (
+          <p className="text-xs text-warning" data-testid="pdf-unsaved-hint">
+            {t("pdf.unsaved")}
+          </p>
         ) : null}
       </div>
 

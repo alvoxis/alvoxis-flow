@@ -599,7 +599,15 @@
     "deleted": "Melnraksts dzēsts.",
     "deleteConfirmBodyEditor": "Melnraksts tiks dzēsts neatgriezeniski, un to nevarēs atjaunot. Visas šajā redaktorā nesaglabātās izmaiņas tiks zaudētas. Izrakstītus dokumentus dzēst nevar.",
     "colBuyer": "Pircējs",
-    "creditNoteBank": "Kredītrēķins saglabā sākotnējā rēķina bankas rekvizītus."
+    "creditNoteBank": "Kredītrēķins saglabā sākotnējā rēķina bankas rekvizītus.",
+    "pdf": {
+      "open": "Atvērt PDF",
+      "download": "Lejupielādēt PDF",
+      "openDraft": "PDF priekšskatījums",
+      "downloadDraft": "Lejupielādēt melnraksta PDF",
+      "draftHint": "Melnraksta PDF ir atzīmēts kā „nav izrakstīts“ un tam nav numura.",
+      "unsaved": "PDF rāda pēdējo saglabāto versiju. Saglabājiet melnrakstu, lai izmaiņas būtu PDF."
+    }
   },
   "taxCategories": {
     "title": "Nodokļu kategorijas",
