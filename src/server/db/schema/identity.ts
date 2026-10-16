@@ -64,6 +64,11 @@ export const companies = pgTable(
     country: countryCode("country").notNull(),
     registrationNumber: text("registration_number"),
     vatNumber: text("vat_number"),
+    /** Registered address (country = `country`). All optional: older companies have none. */
+    addressLine1: text("address_line1"),
+    addressLine2: text("address_line2"),
+    postalCode: text("postal_code"),
+    city: text("city"),
     defaultLocale: localeCode("default_locale").notNull().default("en"),
     archivedAt: timestamp("archived_at", { withTimezone: true }),
     ...timestamps,

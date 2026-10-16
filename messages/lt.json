@@ -348,5 +348,41 @@
     "twoFactorRequiredTitle": "Reikalinga dviejų veiksnių autentifikacija",
     "twoFactorRequiredBody": "Savininkai ir administratoriai turi nustatyti dviejų veiksnių autentifikaciją prieš pasiekdami įmonės duomenis.",
     "setUpNow": "Nustatyti dabar"
+  },
+  "company": {
+    "title": "Įmonės profilis",
+    "description": "Jūsų įmonės rekvizitai, pavyzdžiui, pardavėjui nurodyti dokumentuose.",
+    "openProfile": "Profilis",
+    "readOnly": "Galite peržiūrėti šį profilį. Keisti jį gali tik savininkai ir administratoriai.",
+    "name": "Rodomas pavadinimas",
+    "legalName": "Oficialus (teisinis) pavadinimas",
+    "country": "Šalis",
+    "countryHint": "Nustatoma kuriant įmonę; čia jos pakeisti negalima.",
+    "registrationNumber": "Registracijos numeris",
+    "vatNumber": "PVM mokėtojo kodas",
+    "vatNumberHint": "Neprivaloma. Prasideda šalies kodu, pvz., {prefix}. Tikrinamas tik formatas, o ne registracija.",
+    "address": "Registracijos adresas",
+    "addressLine1": "Gatvė ir numeris",
+    "addressLine2": "Papildoma adreso eilutė",
+    "postalCode": "Pašto kodas",
+    "city": "Miestas",
+    "save": "Išsaugoti profilį",
+    "saved": "Profilis išsaugotas.",
+    "invalid": "Patikrinkite pažymėtus laukus.",
+    "forbidden": "Neturite teisės keisti šio profilio.",
+    "twoFactorRequired": "Jūsų vaidmeniui prieš atidarant įmonės duomenis reikalingas dviejų veiksnių autentifikavimas.",
+    "setUpTwoFactor": "Nustatyti dviejų veiksnių autentifikavimą",
+    "error": "Kažkas nepavyko. Bandykite dar kartą.",
+    "notSet": "Nenurodyta",
+    "fieldError": {
+      "name": "Įveskite pavadinimą (iki 200 simbolių).",
+      "legalName": "Iki 300 simbolių.",
+      "registrationNumber": "Raidės, skaitmenys, tarpai, taškai, pasvirieji brūkšniai ar brūkšneliai (iki 32 simbolių).",
+      "vatNumber": "Šalies kodas, po jo 2–12 raidžių ar skaitmenų.",
+      "addressLine1": "Iki 200 simbolių.",
+      "addressLine2": "Iki 200 simbolių.",
+      "postalCode": "Iki 16 simbolių.",
+      "city": "Iki 100 simbolių."
+    }
   }
 }

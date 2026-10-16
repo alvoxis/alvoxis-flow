@@ -84,7 +84,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           <ul className="divide-y divide-border" data-testid="company-list">
             {companies.map((c) => (
               <li key={c.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
-                <span className="font-medium text-text">{c.name}</span>
+                <Link
+                  href={`/companies/${c.id}/profile`}
+                  className="font-medium text-text hover:text-accent"
+                  data-testid="company-profile-link"
+                >
+                  {c.name}
+                </Link>
                 <span className="flex items-center gap-2 text-muted">
                   {tOn(`countries.${c.country}`)}
                   <Badge tone="accent">{tRoles(c.roleKey as "owner")}</Badge>

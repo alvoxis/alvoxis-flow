@@ -348,5 +348,41 @@
     "twoFactorRequiredTitle": "Nõutav on kaheastmeline autentimine",
     "twoFactorRequiredBody": "Omanikud ja administraatorid peavad enne ettevõtte andmetele juurdepääsu seadistama kaheastmelise autentimise.",
     "setUpNow": "Seadista kohe"
+  },
+  "company": {
+    "title": "Ettevõtte profiil",
+    "description": "Teie ettevõtte rekvisiidid, näiteks müüja andmeteks dokumentidel.",
+    "openProfile": "Profiil",
+    "readOnly": "Saate seda profiili vaadata. Muuta saavad seda ainult omanikud ja administraatorid.",
+    "name": "Kuvatav nimi",
+    "legalName": "Ametlik (juriidiline) nimi",
+    "country": "Riik",
+    "countryHint": "Määratakse ettevõtte loomisel; siin seda muuta ei saa.",
+    "registrationNumber": "Registrikood",
+    "vatNumber": "KMKR number",
+    "vatNumberHint": "Valikuline. Algab riigikoodiga, nt {prefix}. Kontrollitakse ainult vormingut, mitte registreerimist.",
+    "address": "Registreeritud aadress",
+    "addressLine1": "Tänav ja number",
+    "addressLine2": "Täiendav aadressirida",
+    "postalCode": "Postiindeks",
+    "city": "Linn",
+    "save": "Salvesta profiil",
+    "saved": "Profiil salvestatud.",
+    "invalid": "Palun kontrollige märgitud välju.",
+    "forbidden": "Teil pole õigust seda profiili muuta.",
+    "twoFactorRequired": "Teie roll nõuab enne ettevõtte andmete avamist kaheastmelist autentimist.",
+    "setUpTwoFactor": "Seadista kaheastmeline autentimine",
+    "error": "Midagi läks valesti. Palun proovige uuesti.",
+    "notSet": "Määramata",
+    "fieldError": {
+      "name": "Sisestage nimi (kuni 200 tähemärki).",
+      "legalName": "Kuni 300 tähemärki.",
+      "registrationNumber": "Tähed, numbrid, tühikud, punktid, kaldkriipsud või sidekriipsud (kuni 32 tähemärki).",
+      "vatNumber": "Riigikood, seejärel 2–12 tähte või numbrit.",
+      "addressLine1": "Kuni 200 tähemärki.",
+      "addressLine2": "Kuni 200 tähemärki.",
+      "postalCode": "Kuni 16 tähemärki.",
+      "city": "Kuni 100 tähemärki."
+    }
   }
 }
