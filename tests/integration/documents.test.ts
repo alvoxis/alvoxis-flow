@@ -4,7 +4,15 @@ import { type Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { type Actor } from "@/server/auth/authorization";
 import { type Database } from "@/server/db/client";
-import { auditLogs, documentLines, documents, memberships, roles, users } from "@/server/db/schema";
+import {
+  auditLogs,
+  companies,
+  documentLines,
+  documents,
+  memberships,
+  roles,
+  users,
+} from "@/server/db/schema";
 import { ForbiddenError } from "@/server/errors";
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
 import {
@@ -28,7 +36,7 @@ import {
   ensureDefaultNumberSeries,
 } from "@/modules/documents/server/numbering-service";
 import { DocumentRuleError, type DraftInput } from "@/modules/documents/domain";
-import { FIXTURE_TAX, invoiceDraft } from "../support/document-fixtures";
+import { FIXTURE_TAX, invoiceDraft, FIXTURE_SELLER_PROFILE } from "../support/document-fixtures";
 import { openTestDb } from "./test-db";
 
 let db: Database;
@@ -48,6 +56,7 @@ async function newCompany() {
     name: "Fixture Company",
     country: "LV",
   });
+  await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, actor, companyId);
   return { actor, companyId };
 }
@@ -179,11 +188,17 @@ describe("drafts and issuing", () => {
 
   it("does not consume a number when issuing fails validation", async () => {
     const { actor, companyId } = await newCompany();
-    const bad = await createDraft(db, actor, companyId, input({ seller: { name: "" } }));
-    expect(bad.issues.map((i) => i.code)).toContain("seller.name.required");
+    // The company profile has no address yet: issuing is blocked by validation.
+    await db
+      .update(companies)
+      .set({ addressLine1: null, addressLine2: null })
+      .where(eq(companies.id, companyId));
+    const bad = await createDraft(db, actor, companyId, input());
+    expect(bad.issues.map((i) => i.code)).toContain("seller.address.required");
     await expect(issueDocument(db, actor, companyId, bad.id, 1)).rejects.toThrow(
       DocumentValidationError,
     );
+    await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
     expect((await issuedInvoice(companyId, actor)).number).toBe("INV-2026-0001");
   });
 

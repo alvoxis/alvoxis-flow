@@ -61,6 +61,18 @@ Numbers are allocated **only when a document is issued**, inside the issuing tra
 atomic counter row. Drafts have no number; failed issues release the number (no gaps); concurrent
 issues are serialised. `(company, type, number)` is unique.
 
+## Seller details
+
+The company profile (`/companies/[id]/profile`) is the only source of the seller's identity:
+official name (legal name, else display name), registration number, VAT number and registered
+address (country = company country). It is applied when any draft is created or edited (manual,
+derived, credit note, import) and again **when the document is issued**, so the issued snapshot
+holds the profile as it was at that moment. Only the draft's contact fields (email, phone,
+contact person) are kept; a client cannot supply another seller identity. Without a street line
+in the profile, issuing is blocked (`seller.address.required`) and no number is used. Later
+profile changes never affect issued documents (immutable rows and hashed snapshots); the buyer is
+likewise frozen as entered on the draft.
+
 ## Lifecycle, immutability and corrections
 
 ```
@@ -115,7 +127,7 @@ Scanned PDFs without a text layer are reported as unreadable (OCR is not impleme
 
 ## Not implemented yet
 
-UI and HTTP endpoints (they need authentication — stage 2), company profile as the source of
-seller/bank snapshots and tax categories, payment status, importing historical issued documents
+UI and HTTP endpoints for documents, bank-account snapshots and tax categories from company
+settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.
