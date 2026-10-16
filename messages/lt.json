@@ -592,7 +592,15 @@
     "deleteConfirm": "Ištrinti negrįžtamai",
     "deleted": "Juodraštis ištrintas.",
     "deleteConfirmBodyEditor": "Juodraštis bus ištrintas negrįžtamai ir jo nebus galima atkurti. Visi šiame redaktoriuje neišsaugoti pakeitimai bus prarasti. Išrašytų dokumentų ištrinti negalima.",
-    "colBuyer": "Pirkėjas"
+    "colBuyer": "Pirkėjas",
+    "pdf": {
+      "open": "Atidaryti PDF",
+      "download": "Atsisiųsti PDF",
+      "openDraft": "PDF peržiūra",
+      "downloadDraft": "Atsisiųsti juodraščio PDF",
+      "draftHint": "Juodraščio PDF pažymėtas „neišrašytas“ ir neturi numerio.",
+      "unsaved": "PDF rodo paskutinę išsaugotą versiją. Išsaugokite juodraštį, kad pakeitimai patektų į PDF."
+    }
   },
   "taxCategories": {
     "title": "Mokesčių kategorijos",
