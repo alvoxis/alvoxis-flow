@@ -18,9 +18,16 @@ Better Auth, next-intl (en, ru, lv, lt, et). Details: [README](README.md),
 
 ## Local environment (cloud session)
 
-- Postgres: `su postgres -c "setsid /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/alvoxis-dev/data -l /var/lib/postgresql/alvoxis-dev/log -o '-p 5432 -k /tmp' start"`
+- The SessionStart hook (`.claude/hooks/session-start.sh`) prepares this at session start: runs
+  `pnpm install` only when `node_modules` is missing or older than the lockfile; leaves a running
+  Postgres alone, starts the existing cluster, creates a cluster only where none exists and only
+  missing localhost databases. It never drops data, migrates or runs tests. Read its
+  `[session-start]` lines first; `ERROR:` lines need a manual look. Its own test:
+  `bash .claude/hooks/test-session-start.sh` (temp cluster on port 55432).
+- Manual Postgres start: `su postgres -c "setsid /usr/lib/postgresql/16/bin/pg_ctl -D /var/lib/postgresql/alvoxis-dev/data -l /var/lib/postgresql/alvoxis-dev/log -o '-p 5432 -k /tmp' start"`
   (check with `pg_isready -h /tmp`). Databases: `alvoxis_flow` (dev), `alvoxis_flow_test`
-  (integration; its schema is dropped), `alvoxis_flow_e2e` (e2e; recreate freely).
+  (integration; its schema is dropped), `alvoxis_flow_e2e` (e2e; recreate freely). New databases
+  are empty: `pnpm db:migrate && pnpm db:seed` when needed.
 - `.env` is git-ignored (local placeholders); `DATABASE_URL`/`TEST_DATABASE_URL` point to localhost.
 - E2E browser: `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium-1194/chrome-linux/chrome`.
 - E2E like CI: `E2E_DATABASE_URL=<…/alvoxis_flow_e2e> CI=1`, after `pnpm db:migrate && pnpm db:seed`.
