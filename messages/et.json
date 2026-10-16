@@ -384,5 +384,183 @@
       "postalCode": "Kuni 16 tähemärki.",
       "city": "Kuni 100 tähemärki."
     }
+  },
+  "documents": {
+    "title": "Dokumendid",
+    "description": "Selle ettevõtte arved, ettemaksuarved, kreeditarved ja saatelehed.",
+    "open": "Dokumendid",
+    "empty": "Selles ettevõttes pole veel dokumente.",
+    "colNumber": "Dokumendi nr",
+    "colType": "Liik",
+    "colStatus": "Olek",
+    "colIssueDate": "Väljastamise kuupäev",
+    "colTotal": "Summa",
+    "notIssued": "Pole veel väljastatud",
+    "openDocument": "Ava",
+    "back": "Kõik dokumendid",
+    "draftHeading": "Mustand",
+    "status": {
+      "draft": "Mustand",
+      "issued": "Väljastatud"
+    },
+    "issuedNotice": "Dokument on väljastatud numbriga {number}. Väljastatud dokumente ei saa muuta.",
+    "readOnlyDraft": "Saate seda mustandit vaadata. Teie roll ei luba seda muuta.",
+    "sellerHint": "Müüja andmed võetakse ettevõtte profiilist.",
+    "sections": {
+      "dates": "Kuupäevad",
+      "buyer": "Ostja",
+      "lines": "Read",
+      "other": "Maksmine ja märkused",
+      "totals": "Kokku"
+    },
+    "name": "Nimi",
+    "addressLine": "Tänav ja maja",
+    "countryCode": "Riigikood (nt LV)",
+    "lineN": "Rida {n}",
+    "addLine": "Lisa rida",
+    "removeLine": "Eemalda rida {n}",
+    "noTax": "Maksukategooriata",
+    "save": "Salvesta mustand",
+    "saved": "Mustand salvestatud.",
+    "unsaved": "Teil on salvestamata muudatusi. Salvestage mustand enne väljastamist.",
+    "totalsPending": "Summad kuvatakse, kui mustandis pole vigu.",
+    "issue": "Väljasta dokument",
+    "issueConfirmTitle": "Kas väljastada see dokument?",
+    "issueConfirmBody": "Määratakse seeria järgmine number ja sisu lukustatakse. Väljastatud dokumenti ei saa muuta ega kustutada.",
+    "issueConfirm": "Väljasta",
+    "cancel": "Tühista",
+    "issueBlocked": "Dokumenti ei saa veel väljastada. Parandage allpool loetletud probleemid.",
+    "invalid": "Mustandit ei salvestatud. Parandage allpool loetletud probleemid.",
+    "checksTitle": "Kontrollid",
+    "severity": {
+      "error": "Viga",
+      "warning": "Hoiatus"
+    },
+    "outcome": {
+      "conflict": "Mustandit muudeti mujal, näiteks teisel vahekaardil. Jätkamiseks laadige see uuesti; siin salvestamata muudatused lähevad kaotsi.",
+      "notDraft": "See dokument on juba väljastatud. Laadige leht uuesti, et seda näha.",
+      "state": "See toiming pole selle dokumendi puhul võimalik.",
+      "signedOut": "Seanss on lõppenud. Logige uuesti sisse.",
+      "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
+      "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
+      "notFound": "Seda dokumenti enam ei ole.",
+      "error": "Midagi läks valesti. Proovige uuesti."
+    },
+    "reload": "Laadi uuesti",
+    "issueGeneric": "Väärtus puudub või on vigane.",
+    "issues": {
+      "line": {
+        "description": {
+          "required": "Sisestage kirjeldus.",
+          "tooLong": "Kirjeldus on liiga pikk."
+        },
+        "quantity": {
+          "invalid": "Sisestage korrektne kogus.",
+          "zero": "Kogus ei saa olla null."
+        },
+        "unitPrice": {
+          "required": "Sisestage ühikuhind.",
+          "invalid": "Sisestage korrektne ühikuhind."
+        },
+        "discount": {
+          "invalid": "Sisestage korrektne allahindlus (0–100%)."
+        },
+        "weight": {
+          "invalid": "Sisestage korrektne kaal."
+        },
+        "taxCategory": {
+          "required": "Valige maksukategooria."
+        },
+        "id": {
+          "duplicate": "Kahel real on sama identifikaator."
+        }
+      },
+      "creditNote": {
+        "line": {
+          "quantity": {
+            "mustBeNegative": "Kreeditarve kogused peavad olema negatiivsed."
+          },
+          "unitPrice": {
+            "mustBePositive": "Kreeditarve hinnad peavad olema positiivsed."
+          },
+          "source": {
+            "required": "Iga kreeditarve rida peab viitama arve reale."
+          }
+        },
+        "originalInvoice": {
+          "required": "Kreeditarve peab viitama algsele arvele."
+        },
+        "total": {
+          "mustBeNegative": "Kreeditarve summa peab olema negatiivne."
+        }
+      },
+      "deliveryNote": {
+        "line": {
+          "quantity": {
+            "mustBePositive": "Saatelehe kogused peavad olema positiivsed."
+          }
+        }
+      },
+      "tax": {
+        "kind": {
+          "invalid": "Maksukohtlemine on vigane."
+        },
+        "rate": {
+          "invalid": "Maksumäär on vigane.",
+          "zeroRequiresTreatment": "0% määr vajab maksukohtlemist (nt maksuvaba või pöördmaksustamine).",
+          "mustBeZeroForTreatment": "See maksukohtlemine nõuab 0% määra."
+        },
+        "note": {
+          "recommended": "Lisage maksukohtlemist selgitav märkus."
+        }
+      },
+      "currency": {
+        "unsupported": "Seda valuutat ei toetata."
+      },
+      "language": {
+        "unsupported": "Seda keelt ei toetata."
+      },
+      "date": {
+        "invalid": "Sisestage korrektne kuupäev."
+      },
+      "dueDate": {
+        "beforeIssueDate": "Maksetähtaeg ei saa olla enne väljastamise kuupäeva."
+      },
+      "validUntil": {
+        "onlyForProforma": "„Kehtiv kuni“ kasutatakse ainult ettemaksuarvetel."
+      },
+      "seller": {
+        "name": {
+          "required": "Ettevõtte profiilis puudub nimi."
+        },
+        "address": {
+          "required": "Ettevõtte profiilis puudub aadress."
+        },
+        "identifier": {
+          "missing": "Ettevõtte profiilis puudub registri- või KMKR-number."
+        }
+      },
+      "buyer": {
+        "name": {
+          "required": "Sisestage ostja nimi."
+        }
+      },
+      "bankAccount": {
+        "iban": {
+          "invalid": "Pangakonto IBAN on vigane."
+        },
+        "missing": "Dokumendil pole pangakontot."
+      },
+      "lines": {
+        "required": "Lisage vähemalt üks rida.",
+        "tooMany": "Dokumendil on liiga palju ridu."
+      },
+      "exchangeRate": {
+        "currencyMismatch": "Vahetuskurss ei vasta dokumendi valuutale."
+      },
+      "total": {
+        "mustBePositive": "Summa peab olema suurem kui null."
+      }
+    }
   }
 }

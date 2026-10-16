@@ -384,5 +384,183 @@
       "postalCode": "Līdz 16 rakstzīmēm.",
       "city": "Līdz 100 rakstzīmēm."
     }
+  },
+  "documents": {
+    "title": "Dokumenti",
+    "description": "Šī uzņēmuma rēķini, avansa rēķini, kredītrēķini un pavadzīmes.",
+    "open": "Dokumenti",
+    "empty": "Šajā uzņēmumā vēl nav dokumentu.",
+    "colNumber": "Numurs",
+    "colType": "Veids",
+    "colStatus": "Statuss",
+    "colIssueDate": "Izrakstīšanas datums",
+    "colTotal": "Summa",
+    "notIssued": "Vēl nav izrakstīts",
+    "openDocument": "Atvērt",
+    "back": "Visi dokumenti",
+    "draftHeading": "Melnraksts",
+    "status": {
+      "draft": "Melnraksts",
+      "issued": "Izrakstīts"
+    },
+    "issuedNotice": "Dokuments izrakstīts ar Nr. {number}. Izrakstītus dokumentus nevar labot.",
+    "readOnlyDraft": "Jūs varat skatīt šo melnrakstu. Jūsu loma neļauj to mainīt.",
+    "sellerHint": "Pārdevēja dati tiek ņemti no uzņēmuma profila.",
+    "sections": {
+      "dates": "Datumi",
+      "buyer": "Pircējs",
+      "lines": "Rindas",
+      "other": "Apmaksa un piezīmes",
+      "totals": "Kopsummas"
+    },
+    "name": "Nosaukums",
+    "addressLine": "Iela un numurs",
+    "countryCode": "Valsts kods (piem., LV)",
+    "lineN": "Rinda {n}",
+    "addLine": "Pievienot rindu",
+    "removeLine": "Dzēst rindu {n}",
+    "noTax": "Bez nodokļu kategorijas",
+    "save": "Saglabāt melnrakstu",
+    "saved": "Melnraksts saglabāts.",
+    "unsaved": "Ir nesaglabātas izmaiņas. Saglabājiet melnrakstu pirms izrakstīšanas.",
+    "totalsPending": "Kopsummas parādīsies, kad melnrakstā nebūs kļūdu.",
+    "issue": "Izrakstīt dokumentu",
+    "issueConfirmTitle": "Izrakstīt šo dokumentu?",
+    "issueConfirmBody": "Tiks piešķirts nākamais sērijas numurs, un saturs tiks iesaldēts. Izrakstītu dokumentu nevar labot vai dzēst.",
+    "issueConfirm": "Izrakstīt",
+    "cancel": "Atcelt",
+    "issueBlocked": "Dokumentu vēl nevar izrakstīt. Novērsiet tālāk norādītās problēmas.",
+    "invalid": "Melnraksts netika saglabāts. Novērsiet tālāk norādītās problēmas.",
+    "checksTitle": "Pārbaudes",
+    "severity": {
+      "error": "Kļūda",
+      "warning": "Brīdinājums"
+    },
+    "outcome": {
+      "conflict": "Melnraksts tika mainīts citur, piemēram, citā cilnē. Pārlādējiet to, lai turpinātu; šeit nesaglabātās izmaiņas tiks zaudētas.",
+      "notDraft": "Šis dokuments jau ir izrakstīts. Pārlādējiet, lai to redzētu.",
+      "state": "Šī darbība šim dokumentam nav iespējama.",
+      "signedOut": "Sesija ir beigusies. Lūdzu, pierakstieties vēlreiz.",
+      "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
+      "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
+      "notFound": "Šis dokuments vairs nepastāv.",
+      "error": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz."
+    },
+    "reload": "Pārlādēt",
+    "issueGeneric": "Vērtība trūkst vai ir nederīga.",
+    "issues": {
+      "line": {
+        "description": {
+          "required": "Ievadiet aprakstu.",
+          "tooLong": "Apraksts ir pārāk garš."
+        },
+        "quantity": {
+          "invalid": "Ievadiet derīgu daudzumu.",
+          "zero": "Daudzums nevar būt nulle."
+        },
+        "unitPrice": {
+          "required": "Ievadiet vienības cenu.",
+          "invalid": "Ievadiet derīgu vienības cenu."
+        },
+        "discount": {
+          "invalid": "Ievadiet derīgu atlaidi (0–100 %)."
+        },
+        "weight": {
+          "invalid": "Ievadiet derīgu svaru."
+        },
+        "taxCategory": {
+          "required": "Izvēlieties nodokļu kategoriju."
+        },
+        "id": {
+          "duplicate": "Divām rindām ir vienāds identifikators."
+        }
+      },
+      "creditNote": {
+        "line": {
+          "quantity": {
+            "mustBeNegative": "Kredītrēķina daudzumiem jābūt negatīviem."
+          },
+          "unitPrice": {
+            "mustBePositive": "Kredītrēķina cenām jābūt pozitīvām."
+          },
+          "source": {
+            "required": "Katrai kredītrēķina rindai jāatsaucas uz rēķina rindu."
+          }
+        },
+        "originalInvoice": {
+          "required": "Kredītrēķinam jāatsaucas uz sākotnējo rēķinu."
+        },
+        "total": {
+          "mustBeNegative": "Kredītrēķina summai jābūt negatīvai."
+        }
+      },
+      "deliveryNote": {
+        "line": {
+          "quantity": {
+            "mustBePositive": "Pavadzīmes daudzumiem jābūt pozitīviem."
+          }
+        }
+      },
+      "tax": {
+        "kind": {
+          "invalid": "Nodokļu režīms nav derīgs."
+        },
+        "rate": {
+          "invalid": "Nodokļu likme nav derīga.",
+          "zeroRequiresTreatment": "0 % likmei nepieciešams nodokļu režīms (piem., atbrīvots vai apgrieztā maksāšana).",
+          "mustBeZeroForTreatment": "Šim nodokļu režīmam nepieciešama 0 % likme."
+        },
+        "note": {
+          "recommended": "Pievienojiet piezīmi par nodokļu režīmu."
+        }
+      },
+      "currency": {
+        "unsupported": "Šī valūta netiek atbalstīta."
+      },
+      "language": {
+        "unsupported": "Šī valoda netiek atbalstīta."
+      },
+      "date": {
+        "invalid": "Ievadiet derīgu datumu."
+      },
+      "dueDate": {
+        "beforeIssueDate": "Apmaksas termiņš nevar būt pirms izrakstīšanas datuma."
+      },
+      "validUntil": {
+        "onlyForProforma": "“Derīgs līdz” izmanto tikai avansa rēķinos."
+      },
+      "seller": {
+        "name": {
+          "required": "Uzņēmuma profilā nav norādīts nosaukums."
+        },
+        "address": {
+          "required": "Uzņēmuma profilā nav norādīta adrese."
+        },
+        "identifier": {
+          "missing": "Uzņēmuma profilā nav norādīts reģistrācijas vai PVN numurs."
+        }
+      },
+      "buyer": {
+        "name": {
+          "required": "Ievadiet pircēja nosaukumu."
+        }
+      },
+      "bankAccount": {
+        "iban": {
+          "invalid": "Bankas konta IBAN nav derīgs."
+        },
+        "missing": "Dokumentā nav norādīts bankas konts."
+      },
+      "lines": {
+        "required": "Pievienojiet vismaz vienu rindu.",
+        "tooMany": "Dokumentā ir pārāk daudz rindu."
+      },
+      "exchangeRate": {
+        "currencyMismatch": "Valūtas kurss neatbilst dokumenta valūtai."
+      },
+      "total": {
+        "mustBePositive": "Summai jābūt lielākai par nulli."
+      }
+    }
   }
 }

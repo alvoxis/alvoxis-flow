@@ -40,6 +40,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const t = await getTranslations("dashboard");
   const tOn = await getTranslations("onboarding");
   const tRoles = await getTranslations("roles");
+  const tDocs = await getTranslations("documents");
   const user = await requirePageUser(locale);
   const { companies, twoFactorMissing } = await dashboardData(user);
 
@@ -91,7 +92,14 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 >
                   {c.name}
                 </Link>
-                <span className="flex items-center gap-2 text-muted">
+                <span className="flex flex-wrap items-center justify-end gap-2 text-muted">
+                  <Link
+                    href={`/companies/${c.id}/documents`}
+                    className="text-accent hover:underline"
+                    data-testid="company-documents-link"
+                  >
+                    {tDocs("open")}
+                  </Link>
                   {tOn(`countries.${c.country}`)}
                   <Badge tone="accent">{tRoles(c.roleKey as "owner")}</Badge>
                 </span>

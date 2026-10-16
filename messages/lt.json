@@ -384,5 +384,183 @@
       "postalCode": "Iki 16 simbolių.",
       "city": "Iki 100 simbolių."
     }
+  },
+  "documents": {
+    "title": "Dokumentai",
+    "description": "Šios įmonės sąskaitos faktūros, išankstinės sąskaitos, kreditinės sąskaitos ir važtaraščiai.",
+    "open": "Dokumentai",
+    "empty": "Šioje įmonėje dar nėra dokumentų.",
+    "colNumber": "Numeris",
+    "colType": "Tipas",
+    "colStatus": "Būsena",
+    "colIssueDate": "Išrašymo data",
+    "colTotal": "Suma",
+    "notIssued": "Dar neišrašytas",
+    "openDocument": "Atidaryti",
+    "back": "Visi dokumentai",
+    "draftHeading": "Juodraštis",
+    "status": {
+      "draft": "Juodraštis",
+      "issued": "Išrašytas"
+    },
+    "issuedNotice": "Dokumentas išrašytas Nr. {number}. Išrašytų dokumentų keisti negalima.",
+    "readOnlyDraft": "Galite peržiūrėti šį juodraštį. Jūsų vaidmuo neleidžia jo keisti.",
+    "sellerHint": "Pardavėjo duomenys imami iš įmonės profilio.",
+    "sections": {
+      "dates": "Datos",
+      "buyer": "Pirkėjas",
+      "lines": "Eilutės",
+      "other": "Mokėjimas ir pastabos",
+      "totals": "Sumos"
+    },
+    "name": "Pavadinimas",
+    "addressLine": "Gatvė ir numeris",
+    "countryCode": "Šalies kodas (pvz., LV)",
+    "lineN": "Eilutė {n}",
+    "addLine": "Pridėti eilutę",
+    "removeLine": "Pašalinti eilutę {n}",
+    "noTax": "Be mokesčių kategorijos",
+    "save": "Išsaugoti juodraštį",
+    "saved": "Juodraštis išsaugotas.",
+    "unsaved": "Yra neišsaugotų pakeitimų. Prieš išrašydami išsaugokite juodraštį.",
+    "totalsPending": "Sumos bus rodomos, kai juodraštyje neliks klaidų.",
+    "issue": "Išrašyti dokumentą",
+    "issueConfirmTitle": "Išrašyti šį dokumentą?",
+    "issueConfirmBody": "Bus suteiktas kitas serijos numeris, o turinys užfiksuotas. Išrašyto dokumento negalima keisti ar ištrinti.",
+    "issueConfirm": "Išrašyti",
+    "cancel": "Atšaukti",
+    "issueBlocked": "Dokumento dar negalima išrašyti. Ištaisykite toliau nurodytas problemas.",
+    "invalid": "Juodraštis neišsaugotas. Ištaisykite toliau nurodytas problemas.",
+    "checksTitle": "Patikros",
+    "severity": {
+      "error": "Klaida",
+      "warning": "Įspėjimas"
+    },
+    "outcome": {
+      "conflict": "Juodraštis buvo pakeistas kitur, pavyzdžiui, kitame skirtuke. Įkelkite jį iš naujo; čia neišsaugoti pakeitimai bus prarasti.",
+      "notDraft": "Šis dokumentas jau išrašytas. Įkelkite iš naujo, kad jį pamatytumėte.",
+      "state": "Šis veiksmas šiam dokumentui negalimas.",
+      "signedOut": "Sesija baigėsi. Prisijunkite dar kartą.",
+      "twoFactor": "Šiam veiksmui jūsų vaidmeniui reikalingas dviejų veiksnių autentifikavimas.",
+      "forbidden": "Neturite teisės atlikti šio veiksmo arba įmonė nebėra aktyvi.",
+      "notFound": "Šio dokumento nebėra.",
+      "error": "Kažkas nepavyko. Bandykite dar kartą."
+    },
+    "reload": "Įkelti iš naujo",
+    "issueGeneric": "Reikšmė trūksta arba neteisinga.",
+    "issues": {
+      "line": {
+        "description": {
+          "required": "Įveskite aprašymą.",
+          "tooLong": "Aprašymas per ilgas."
+        },
+        "quantity": {
+          "invalid": "Įveskite teisingą kiekį.",
+          "zero": "Kiekis negali būti nulis."
+        },
+        "unitPrice": {
+          "required": "Įveskite vieneto kainą.",
+          "invalid": "Įveskite teisingą vieneto kainą."
+        },
+        "discount": {
+          "invalid": "Įveskite teisingą nuolaidą (0–100 %)."
+        },
+        "weight": {
+          "invalid": "Įveskite teisingą svorį."
+        },
+        "taxCategory": {
+          "required": "Pasirinkite mokesčių kategoriją."
+        },
+        "id": {
+          "duplicate": "Dvi eilutės turi tą patį identifikatorių."
+        }
+      },
+      "creditNote": {
+        "line": {
+          "quantity": {
+            "mustBeNegative": "Kreditinės sąskaitos kiekiai turi būti neigiami."
+          },
+          "unitPrice": {
+            "mustBePositive": "Kreditinės sąskaitos kainos turi būti teigiamos."
+          },
+          "source": {
+            "required": "Kiekviena kreditinės sąskaitos eilutė turi nurodyti sąskaitos eilutę."
+          }
+        },
+        "originalInvoice": {
+          "required": "Kreditinė sąskaita turi nurodyti pradinę sąskaitą faktūrą."
+        },
+        "total": {
+          "mustBeNegative": "Kreditinės sąskaitos suma turi būti neigiama."
+        }
+      },
+      "deliveryNote": {
+        "line": {
+          "quantity": {
+            "mustBePositive": "Važtaraščio kiekiai turi būti teigiami."
+          }
+        }
+      },
+      "tax": {
+        "kind": {
+          "invalid": "Neteisingas mokesčių režimas."
+        },
+        "rate": {
+          "invalid": "Neteisingas mokesčio tarifas.",
+          "zeroRequiresTreatment": "0 % tarifui reikia mokesčių režimo (pvz., neapmokestinama arba atvirkštinis apmokestinimas).",
+          "mustBeZeroForTreatment": "Šiam mokesčių režimui reikia 0 % tarifo."
+        },
+        "note": {
+          "recommended": "Pridėkite pastabą apie mokesčių režimą."
+        }
+      },
+      "currency": {
+        "unsupported": "Ši valiuta nepalaikoma."
+      },
+      "language": {
+        "unsupported": "Ši kalba nepalaikoma."
+      },
+      "date": {
+        "invalid": "Įveskite teisingą datą."
+      },
+      "dueDate": {
+        "beforeIssueDate": "Mokėjimo terminas negali būti ankstesnis už išrašymo datą."
+      },
+      "validUntil": {
+        "onlyForProforma": "„Galioja iki“ naudojama tik išankstinėse sąskaitose."
+      },
+      "seller": {
+        "name": {
+          "required": "Įmonės profilyje nenurodytas pavadinimas."
+        },
+        "address": {
+          "required": "Įmonės profilyje nenurodytas adresas."
+        },
+        "identifier": {
+          "missing": "Įmonės profilyje nenurodytas registracijos arba PVM kodas."
+        }
+      },
+      "buyer": {
+        "name": {
+          "required": "Įveskite pirkėjo pavadinimą."
+        }
+      },
+      "bankAccount": {
+        "iban": {
+          "invalid": "Banko sąskaitos IBAN neteisingas."
+        },
+        "missing": "Dokumente nenurodyta banko sąskaita."
+      },
+      "lines": {
+        "required": "Pridėkite bent vieną eilutę.",
+        "tooMany": "Dokumente per daug eilučių."
+      },
+      "exchangeRate": {
+        "currencyMismatch": "Valiutos kursas neatitinka dokumento valiutos."
+      },
+      "total": {
+        "mustBePositive": "Suma turi būti didesnė už nulį."
+      }
+    }
   }
 }
