@@ -384,5 +384,183 @@
       "postalCode": "Up to 16 characters.",
       "city": "Up to 100 characters."
     }
+  },
+  "documents": {
+    "title": "Documents",
+    "description": "Invoices, proforma invoices, credit notes and delivery notes of this company.",
+    "open": "Documents",
+    "empty": "There are no documents in this company yet.",
+    "colNumber": "Number",
+    "colType": "Type",
+    "colStatus": "Status",
+    "colIssueDate": "Issue date",
+    "colTotal": "Total",
+    "notIssued": "Not issued yet",
+    "openDocument": "Open",
+    "back": "All documents",
+    "draftHeading": "Draft",
+    "status": {
+      "draft": "Draft",
+      "issued": "Issued"
+    },
+    "issuedNotice": "This document is issued as No. {number}. Issued documents cannot be edited.",
+    "readOnlyDraft": "You can view this draft. Your role cannot change it.",
+    "sellerHint": "The seller details come from the company profile.",
+    "sections": {
+      "dates": "Dates",
+      "buyer": "Buyer",
+      "lines": "Lines",
+      "other": "Payment and notes",
+      "totals": "Totals"
+    },
+    "name": "Name",
+    "addressLine": "Street and number",
+    "countryCode": "Country code (e.g. LV)",
+    "lineN": "Line {n}",
+    "addLine": "Add line",
+    "removeLine": "Remove line {n}",
+    "noTax": "No tax category",
+    "save": "Save draft",
+    "saved": "Draft saved.",
+    "unsaved": "You have unsaved changes. Save the draft before issuing it.",
+    "totalsPending": "Totals appear when the draft has no errors.",
+    "issue": "Issue document",
+    "issueConfirmTitle": "Issue this document?",
+    "issueConfirmBody": "The next number in the series is assigned and the content is frozen. An issued document cannot be edited or deleted.",
+    "issueConfirm": "Issue now",
+    "cancel": "Cancel",
+    "issueBlocked": "The document cannot be issued yet. Fix the problems listed below.",
+    "invalid": "The draft was not saved. Fix the problems listed below.",
+    "checksTitle": "Checks",
+    "severity": {
+      "error": "Error",
+      "warning": "Warning"
+    },
+    "outcome": {
+      "conflict": "This draft was changed elsewhere, for example in another tab. Reload it to continue; changes made here and not saved will be lost.",
+      "notDraft": "This document has already been issued. Reload to see it.",
+      "state": "This action is not possible for this document.",
+      "signedOut": "Your session has ended. Please sign in again.",
+      "twoFactor": "Your role requires two-factor authentication for this action.",
+      "forbidden": "You do not have permission for this action, or the company is no longer active.",
+      "notFound": "This document no longer exists.",
+      "error": "Something went wrong. Please try again."
+    },
+    "reload": "Reload",
+    "issueGeneric": "This value is missing or invalid.",
+    "issues": {
+      "line": {
+        "description": {
+          "required": "Enter a description.",
+          "tooLong": "The description is too long."
+        },
+        "quantity": {
+          "invalid": "Enter a valid quantity.",
+          "zero": "The quantity cannot be zero."
+        },
+        "unitPrice": {
+          "required": "Enter a unit price.",
+          "invalid": "Enter a valid unit price."
+        },
+        "discount": {
+          "invalid": "Enter a valid discount (0–100%)."
+        },
+        "weight": {
+          "invalid": "Enter a valid weight."
+        },
+        "taxCategory": {
+          "required": "Choose a tax category."
+        },
+        "id": {
+          "duplicate": "Two lines have the same identifier."
+        }
+      },
+      "creditNote": {
+        "line": {
+          "quantity": {
+            "mustBeNegative": "Credit note quantities must be negative."
+          },
+          "unitPrice": {
+            "mustBePositive": "Credit note prices must be positive."
+          },
+          "source": {
+            "required": "Every credit note line must refer to an invoice line."
+          }
+        },
+        "originalInvoice": {
+          "required": "A credit note must refer to the original invoice."
+        },
+        "total": {
+          "mustBeNegative": "The credit note total must be negative."
+        }
+      },
+      "deliveryNote": {
+        "line": {
+          "quantity": {
+            "mustBePositive": "Delivery note quantities must be positive."
+          }
+        }
+      },
+      "tax": {
+        "kind": {
+          "invalid": "The tax treatment is not valid."
+        },
+        "rate": {
+          "invalid": "The tax rate is not valid.",
+          "zeroRequiresTreatment": "A 0% rate needs a tax treatment (e.g. exempt or reverse charge).",
+          "mustBeZeroForTreatment": "This tax treatment requires a 0% rate."
+        },
+        "note": {
+          "recommended": "Add a note explaining the tax treatment."
+        }
+      },
+      "currency": {
+        "unsupported": "This currency is not supported."
+      },
+      "language": {
+        "unsupported": "This language is not supported."
+      },
+      "date": {
+        "invalid": "Enter a valid date."
+      },
+      "dueDate": {
+        "beforeIssueDate": "The due date cannot be before the issue date."
+      },
+      "validUntil": {
+        "onlyForProforma": "“Valid until” is only used on proforma invoices."
+      },
+      "seller": {
+        "name": {
+          "required": "The company name is missing in the company profile."
+        },
+        "address": {
+          "required": "The company address is missing in the company profile."
+        },
+        "identifier": {
+          "missing": "The company registration or VAT number is missing in the company profile."
+        }
+      },
+      "buyer": {
+        "name": {
+          "required": "Enter the buyer's name."
+        }
+      },
+      "bankAccount": {
+        "iban": {
+          "invalid": "A bank account IBAN is not valid."
+        },
+        "missing": "No bank account is shown on the document."
+      },
+      "lines": {
+        "required": "Add at least one line.",
+        "tooMany": "The document has too many lines."
+      },
+      "exchangeRate": {
+        "currencyMismatch": "The exchange rate does not match the document currency."
+      },
+      "total": {
+        "mustBePositive": "The total must be greater than zero."
+      }
+    }
   }
 }

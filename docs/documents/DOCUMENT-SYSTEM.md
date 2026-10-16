@@ -149,9 +149,25 @@ errors use `input.*` codes, blocking business rules use the `validateDocument` c
 one transaction, so a refused or failed issue never uses a number, and a repeated issue is a 409
 that keeps the original number.
 
+## UI
+
+`/{locale}/companies/{companyId}/documents` lists the company's documents (number, type, status,
+issue date, total — the total is stored for issued documents only). A document page shows issued
+documents read-only from their snapshot, with the assigned number. Drafts open in an editor
+(dates, buyer, lines, payment terms and notes) that saves with `PATCH` and issues with
+`POST …/issue` after an explicit confirmation; issuing is disabled while there are unsaved
+changes. The pages load data through `src/server/documents/page-data.ts` (the same
+`document-service` calls and `requireCompanyAccess`); `documents.create` / `documents.approve`
+only decide which controls are shown, the API enforces them. Validation findings, totals and
+numbers are always the server's; the editor shows `issues` translated by code
+(`documents.issues.*`, generic text for unknown codes) and maps 409/401/403/404 answers to
+messages (a version conflict offers a reload). Non-members, archived companies and missing
+`documents.view` get 404; roles that need 2FA without it see the 2FA notice.
+
 ## Not implemented yet
 
-UI for documents, bank-account snapshots and tax categories from company
+Creating or deleting drafts in the UI, choosing tax categories (new lines reuse the previous
+line's category), the buyer in the document list, bank-account snapshots and tax categories from company
 settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.
