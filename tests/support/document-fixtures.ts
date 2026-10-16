@@ -103,3 +103,16 @@ export function idGenerator(prefix = "n"): () => string {
   let i = 0;
   return () => `${prefix}${++i}`;
 }
+
+/**
+ * Company-profile values that produce exactly the fixture seller above (synthetic data). The
+ * seller on documents comes from the profile, so test companies get this profile.
+ */
+export const FIXTURE_SELLER_PROFILE = {
+  legalName: "Example Workwear SIA",
+  registrationNumber: "40000000000",
+  vatNumber: "LV40000000000",
+  addressLine1: "Example street 1",
+  postalCode: "LV-1000",
+  city: "Rīga",
+} as const;

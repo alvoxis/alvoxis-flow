@@ -4,7 +4,7 @@ import { type Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { type Actor } from "@/server/auth/authorization";
 import { type Database } from "@/server/db/client";
-import { auditLogs, documents, memberships, roles, users } from "@/server/db/schema";
+import { auditLogs, companies, documents, memberships, roles, users } from "@/server/db/schema";
 import { ForbiddenError } from "@/server/errors";
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
 import { type ImportDecisions } from "@/modules/documents/import";
@@ -13,7 +13,7 @@ import { sampleModels } from "@/modules/documents/sample/sample-documents";
 import { createDraft, issueDocument } from "@/modules/documents/server/document-service";
 import { createDraftFromImport, previewPdfImport } from "@/modules/documents/server/import-service";
 import { ensureDefaultNumberSeries } from "@/modules/documents/server/numbering-service";
-import { FIXTURE_TAX } from "../support/document-fixtures";
+import { FIXTURE_TAX, FIXTURE_SELLER_PROFILE } from "../support/document-fixtures";
 import { openTestDb } from "./test-db";
 
 let db: Database;
@@ -35,6 +35,7 @@ async function newCompany() {
     name: "Import Co",
     country: "LV",
   });
+  await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, actor, companyId);
   return { actor, companyId };
 }

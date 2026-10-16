@@ -32,6 +32,11 @@ import {
 } from "./errors";
 import { draftToRowValues, lineToRowValues, rowToDraft } from "./mapping";
 import { allocateDocumentNumber } from "./numbering-service";
+import {
+  applySellerIdentity,
+  applySellerIdentityToInput,
+  loadSellerIdentity,
+} from "./seller-profile";
 
 export interface StoredDocument {
   id: string;
@@ -99,6 +104,11 @@ async function insertDraft(
   action: string,
   opts: { seriesId?: string; sourceFileSha256?: string } = {},
 ) {
+  // Every new draft (manual, derived, credit note, import) shows the company profile as seller.
+  draft = {
+    ...draft,
+    seller: applySellerIdentity(draft.seller, await loadSellerIdentity(tx, companyId)),
+  };
   const [row] = await tx
     .insert(documents)
     .values({
@@ -138,15 +148,19 @@ export async function createDraft(
   input: unknown,
   opts: { seriesId?: string; sourceFileSha256?: string; auditAction?: string } = {},
 ) {
-  const draft = parseDraftInput(input, randomUUID);
-  if (draft.type === "credit_note") {
-    throw new DocumentStateError(
-      "creditNote.useDedicatedFlow",
-      "Credit notes are created from an issued invoice",
-    );
-  }
   return db.transaction(async (tx) => {
     await requireCompanyAccess(tx, actor, companyId, "documents.create");
+    // The seller comes from the company profile; a client cannot supply another identity.
+    const draft = parseDraftInput(
+      applySellerIdentityToInput(input, await loadSellerIdentity(tx, companyId)),
+      randomUUID,
+    );
+    if (draft.type === "credit_note") {
+      throw new DocumentStateError(
+        "creditNote.useDedicatedFlow",
+        "Credit notes are created from an issued invoice",
+      );
+    }
     const id = await insertDraft(
       tx,
       actor,
@@ -178,7 +192,10 @@ export async function updateDraft(
       throw new DocumentStateError("document.notDraft", "Issued documents cannot be edited");
     if (current.row.version !== expectedVersion) throw new DocumentVersionConflictError();
 
-    const next = parseDraftInput(input, randomUUID);
+    const next = parseDraftInput(
+      applySellerIdentityToInput(input, await loadSellerIdentity(tx, companyId)),
+      randomUUID,
+    );
     if (next.type !== current.row.type)
       throw new DocumentStateError("document.typeChange", "Document type cannot change");
     // Credit-note lines must keep pointing at the original invoice lines.
@@ -391,7 +408,12 @@ export async function issueDocument(
       throw new DocumentStateError("document.alreadyIssued", "Document is already issued");
     if (current.row.version !== expectedVersion) throw new DocumentVersionConflictError();
 
-    const draft = current.draft;
+    // The issued snapshot freezes the seller as the company profile reads at this moment;
+    // later profile edits never touch issued documents (rows and snapshots are immutable).
+    const draft: DocumentDraft = {
+      ...current.draft,
+      seller: applySellerIdentity(current.draft.seller, await loadSellerIdentity(tx, companyId)),
+    };
     const issues = validateDocument(draft);
     if (hasBlockingIssues(issues)) throw new DocumentValidationError(issues);
 
@@ -469,6 +491,7 @@ export async function issueDocument(
         taxTotal: totals?.taxTotal ?? null,
         grossTotal: totals?.grossTotal ?? null,
         taxSummary: totals?.taxSummary ?? null,
+        seller: draft.seller,
         snapshot: snapshot as unknown as DocumentDraft & Record<string, unknown>,
         contentHash,
         issuedAt,
