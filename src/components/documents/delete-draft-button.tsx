@@ -15,11 +15,14 @@ export function DeleteDraftButton({
   companyId,
   documentId,
   compact = false,
+  fromEditor = false,
 }: {
   companyId: string;
   documentId: string;
   /** Smaller trigger for list rows. */
   compact?: boolean;
+  /** Opened from the editor: the confirmation also warns that unsaved changes are lost. */
+  fromEditor?: boolean;
 }) {
   const t = useTranslations("documents");
   const tCompany = useTranslations("company");
@@ -77,8 +80,8 @@ export function DeleteDraftButton({
           <p id={`${id}-title`} className="text-sm font-semibold text-text">
             {t("deleteConfirmTitle")}
           </p>
-          <p id={`${id}-body`} className="text-sm text-muted">
-            {t("deleteConfirmBody")}
+          <p id={`${id}-body`} className="text-sm text-muted" data-testid="delete-confirm-body">
+            {t(fromEditor ? "deleteConfirmBodyEditor" : "deleteConfirmBody")}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <Button type="button" variant="danger" disabled={pending} onClick={() => void remove()}>

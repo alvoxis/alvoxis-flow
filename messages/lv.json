@@ -590,7 +590,8 @@
     "deleteConfirmTitle": "Dzēst šo melnrakstu?",
     "deleteConfirmBody": "Melnraksts tiks dzēsts neatgriezeniski. Izrakstītus dokumentus dzēst nevar.",
     "deleteConfirm": "Dzēst neatgriezeniski",
-    "deleted": "Melnraksts dzēsts."
+    "deleted": "Melnraksts dzēsts.",
+    "deleteConfirmBodyEditor": "Melnraksts tiks dzēsts neatgriezeniski, un to nevarēs atjaunot. Visas šajā redaktorā nesaglabātās izmaiņas tiks zaudētas. Izrakstītus dokumentus dzēst nevar."
   },
   "taxCategories": {
     "title": "Nodokļu kategorijas",

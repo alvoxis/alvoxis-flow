@@ -590,7 +590,8 @@
     "deleteConfirmTitle": "Kas kustutada see mustand?",
     "deleteConfirmBody": "Mustand kustutatakse jäädavalt. Väljastatud dokumente kustutada ei saa.",
     "deleteConfirm": "Kustuta jäädavalt",
-    "deleted": "Mustand kustutatud."
+    "deleted": "Mustand kustutatud.",
+    "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa."
   },
   "taxCategories": {
     "title": "Maksukategooriad",

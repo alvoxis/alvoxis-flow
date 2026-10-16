@@ -590,7 +590,8 @@
     "deleteConfirmTitle": "Delete this draft?",
     "deleteConfirmBody": "The draft is deleted permanently. Issued documents cannot be deleted.",
     "deleteConfirm": "Delete permanently",
-    "deleted": "Draft deleted."
+    "deleted": "Draft deleted.",
+    "deleteConfirmBodyEditor": "The draft is deleted permanently and cannot be restored. All unsaved changes in this editor will be lost. Issued documents cannot be deleted."
   },
   "taxCategories": {
     "title": "Tax categories",

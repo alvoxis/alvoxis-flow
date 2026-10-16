@@ -590,7 +590,8 @@
     "deleteConfirmTitle": "Ištrinti šį juodraštį?",
     "deleteConfirmBody": "Juodraštis bus ištrintas negrįžtamai. Išrašytų dokumentų ištrinti negalima.",
     "deleteConfirm": "Ištrinti negrįžtamai",
-    "deleted": "Juodraštis ištrintas."
+    "deleted": "Juodraštis ištrintas.",
+    "deleteConfirmBodyEditor": "Juodraštis bus ištrintas negrįžtamai ir jo nebus galima atkurti. Visi šiame redaktoriuje neišsaugoti pakeitimai bus prarasti. Išrašytų dokumentų ištrinti negalima."
   },
   "taxCategories": {
     "title": "Mokesčių kategorijos",

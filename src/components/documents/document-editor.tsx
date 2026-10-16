@@ -513,7 +513,7 @@ export function DocumentEditor({
 
       {canEdit ? (
         <div className="border-t border-border pt-4">
-          <DeleteDraftButton companyId={companyId} documentId={document.id} />
+          <DeleteDraftButton companyId={companyId} documentId={document.id} fromEditor />
         </div>
       ) : null}
 
