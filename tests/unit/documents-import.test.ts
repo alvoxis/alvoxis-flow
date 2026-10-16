@@ -279,7 +279,7 @@ describe("toDraftInput", () => {
     },
     buyer: { name: "MV EXAMPLE STAR" },
     bankAccounts: [{ iban: "LV80BANK0000435195001" }],
-    defaultTaxCategory: FIXTURE_TAX.zero,
+    defaultTaxCategoryId: "00000000-0000-4000-8000-000000000000",
     acknowledgedFlags: ["identifier.labelMismatch", "tax.zeroRateUnexplained"],
   };
 
@@ -305,9 +305,15 @@ describe("toDraftInput", () => {
   it("produces a valid draft with the tax treatment chosen by the user", () => {
     const input = toDraftInput(review, decisions);
     expect(input.lines).toHaveLength(3);
-    expect(input.lines.every((l) => l.taxCategory === FIXTURE_TAX.zero)).toBe(true);
+    // Lines reference the chosen company category; the server builds the snapshot from it.
+    expect(input.lines.every((l) => l.taxCategoryId === decisions.defaultTaxCategoryId)).toBe(true);
     let n = 0;
     const draft = parseDraftInput(input, () => `l${++n}`);
-    expect(validateDocument(draft).filter((i) => i.severity === "error")).toEqual([]);
+    expect(draft.lines.every((l) => l.taxCategoryId === decisions.defaultTaxCategoryId)).toBe(true);
+    const resolved = {
+      ...draft,
+      lines: draft.lines.map((l) => ({ ...l, taxCategory: FIXTURE_TAX.zero })),
+    };
+    expect(validateDocument(resolved).filter((i) => i.severity === "error")).toEqual([]);
   });
 });

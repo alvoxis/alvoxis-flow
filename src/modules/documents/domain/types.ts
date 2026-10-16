@@ -69,6 +69,12 @@ export interface DocumentLine {
   discountPercent?: string;
   /** Required on priced documents; null on delivery notes. */
   taxCategory: TaxCategorySnapshot | null;
+  /**
+   * Draft lines only: the company tax category this snapshot was built from. Never part of an
+   * issued snapshot. Absent on credit-note lines (they keep the invoice's snapshot) and on lines
+   * created before the company catalog existed.
+   */
+  taxCategoryId?: string;
   /** Optional gross weight in kg for delivery notes / shipping. */
   weightKg?: string;
   /** For credit notes: id of the credited line on the original invoice. */

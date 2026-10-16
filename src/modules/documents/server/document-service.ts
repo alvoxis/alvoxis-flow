@@ -19,6 +19,7 @@ import { parseDraftInput } from "../domain/schema";
 import { canonicalJson } from "../domain/snapshot";
 import {
   type DocumentDraft,
+  type DocumentLine,
   type DocumentTotals,
   type IssuedDocument,
   isPricedDocument,
@@ -32,6 +33,14 @@ import {
 } from "./errors";
 import { draftToRowValues, lineToRowValues, rowToDraft } from "./mapping";
 import { allocateDocumentNumber } from "./numbering-service";
+import {
+  assignTaxCategories,
+  categorySnapshot,
+  linkDerivedLines,
+  loadCategories,
+  referencedCategoryIds,
+  taxCategoryFindings,
+} from "./tax-category-service";
 import {
   applySellerIdentity,
   applySellerIdentityToInput,
@@ -69,11 +78,17 @@ async function loadRow(db: DbOrTx, companyId: string, documentId: string, forUpd
       .where(and(eq(documents.id, row.relatedDocumentId), eq(documents.companyId, companyId)));
     if (rel?.number) related = { number: rel.number, issueDate: rel.issueDate };
   }
-  return { row, lines, draft: rowToDraft(row, lines, related) };
+  const draft = rowToDraft(row, lines, related);
+  // Catalog state of the referenced categories (drafts only: issued documents use the snapshot).
+  const categories =
+    row.status === "draft"
+      ? await loadCategories(db, companyId, referencedCategoryIds(draft.lines))
+      : new Map();
+  return { row, lines, draft, categories };
 }
 
 function toStored(loaded: Awaited<ReturnType<typeof loadRow>>): StoredDocument {
-  const { row, draft } = loaded;
+  const { row, draft, categories } = loaded;
   const issuedTotals = row.snapshot
     ? ((row.snapshot as { totals?: DocumentTotals | null }).totals ?? null)
     : null;
@@ -92,7 +107,10 @@ function toStored(loaded: Awaited<ReturnType<typeof loadRow>>): StoredDocument {
           ? calculateTotals(draft)
           : null,
     contentHash: row.contentHash,
-    issues: row.status === "draft" ? validateDocument(draft) : [],
+    issues:
+      row.status === "draft"
+        ? [...validateDocument(draft), ...taxCategoryFindings(draft, categories)]
+        : [],
   };
 }
 
@@ -161,11 +179,12 @@ export async function createDraft(
         "Credit notes are created from an issued invoice",
       );
     }
+    const lines = await assignTaxCategories(tx, companyId, draft.lines);
     const id = await insertDraft(
       tx,
       actor,
       companyId,
-      draft,
+      { ...draft, lines },
       opts.auditAction ?? "document.draft_created",
       opts,
     );
@@ -198,11 +217,22 @@ export async function updateDraft(
     );
     if (next.type !== current.row.type)
       throw new DocumentStateError("document.typeChange", "Document type cannot change");
-    // Credit-note lines must keep pointing at the original invoice lines.
-    const lines =
-      current.row.type === "credit_note"
-        ? next.lines.map((l, i) => ({ ...l, sourceLineId: current.draft.lines[i]?.sourceLineId }))
-        : next.lines;
+    let lines: DocumentLine[];
+    if (current.row.type === "credit_note") {
+      // Credit-note lines keep pointing at the original invoice lines and always carry the
+      // invoice line's tax snapshot; any category in the request is ignored.
+      const original = await loadIssued(tx, companyId, current.row.relatedDocumentId!);
+      const originalLines = new Map(original.lines.map((l) => [l.id, l]));
+      lines = next.lines.map(({ taxCategoryId: _ignored, ...l }, i) => {
+        const sourceLineId = current.draft.lines[i]?.sourceLineId;
+        const source = sourceLineId ? originalLines.get(sourceLineId) : undefined;
+        return { ...l, sourceLineId, taxCategory: source?.taxCategory ?? null };
+      });
+    } else {
+      // Categories already on the draft may stay even if archived since; new ones must be active.
+      const keep = new Set(referencedCategoryIds(current.draft.lines));
+      lines = await assignTaxCategories(tx, companyId, next.lines, keep);
+    }
 
     await tx.delete(documentLines).where(eq(documentLines.documentId, documentId));
     if (lines.length)
@@ -377,6 +407,14 @@ export async function deriveDraft(
       for (const k of ["id", "number", "status", "issuedAt", "totals", "contentHash"] as const)
         delete (draft as Partial<IssuedDocument>)[k];
     }
+    // Priced derived lines keep their source line's catalog category while it is active.
+    if (kind !== "delivery_note") {
+      const sourceIds =
+        kind === "replacement_invoice"
+          ? source.lines.map((l) => l.id)
+          : draft.lines.map((l) => l.sourceLineId);
+      draft = { ...draft, lines: await linkDerivedLines(tx, companyId, draft.lines, sourceIds) };
+    }
     // Derived lines that refer to the source keep sourceLineId only for credit notes; strip others
     // so the same-tenant line FK is only used where it carries meaning.
     if (draft.type !== "credit_note")
@@ -410,11 +448,27 @@ export async function issueDocument(
 
     // The issued snapshot freezes the seller as the company profile reads at this moment;
     // later profile edits never touch issued documents (rows and snapshots are immutable).
+    // Catalog categories are locked FOR SHARE so they cannot be archived while this issue runs;
+    // their current label/note go into the snapshot (code, kind and rate never change).
+    const categories = await loadCategories(
+      tx,
+      companyId,
+      referencedCategoryIds(current.draft.lines),
+      true,
+    );
+    const lines = current.draft.lines.map((l) => {
+      const cat =
+        current.row.type !== "credit_note" && l.taxCategoryId
+          ? categories.get(l.taxCategoryId)
+          : undefined;
+      return cat ? { ...l, taxCategory: categorySnapshot(cat) } : l;
+    });
     const draft: DocumentDraft = {
       ...current.draft,
       seller: applySellerIdentity(current.draft.seller, await loadSellerIdentity(tx, companyId)),
+      lines,
     };
-    const issues = validateDocument(draft);
+    const issues = [...validateDocument(draft), ...taxCategoryFindings(draft, categories)];
     if (hasBlockingIssues(issues)) throw new DocumentValidationError(issues);
 
     if (draft.type === "credit_note") {
@@ -444,6 +498,20 @@ export async function issueDocument(
           "Credit note must keep the invoice's exchange-rate snapshot",
         );
       }
+      // Defence in depth: every credited line must carry its invoice line's tax snapshot.
+      const originalLines = new Map(original.lines.map((l) => [l.id, l]));
+      if (
+        draft.lines.some(
+          (l) =>
+            canonicalJson(l.taxCategory) !==
+            canonicalJson(originalLines.get(l.sourceLineId ?? "")?.taxCategory ?? null),
+        )
+      ) {
+        throw new DocumentStateError(
+          "creditNote.taxCategoryMismatch",
+          "Credit note lines must keep the invoice's tax categories",
+        );
+      }
       assertCreditWithinRemaining(
         original,
         draft.lines,
@@ -462,6 +530,8 @@ export async function issueDocument(
     const issuedAt = new Date();
     const snapshot: IssuedDocument = {
       ...draft,
+      // Catalog links are a draft-time reference, never part of the issued content.
+      lines: draft.lines.map(({ taxCategoryId: _id, ...l }) => l),
       id: documentId,
       number,
       status: "issued",
@@ -473,6 +543,14 @@ export async function issueDocument(
     const contentHash = hashSnapshot(hashed);
     snapshot.contentHash = contentHash;
 
+    // Line rows mirror the snapshot's (possibly relabelled) categories before the rows freeze.
+    for (const l of draft.lines) {
+      if (!l.taxCategoryId) continue;
+      await tx
+        .update(documentLines)
+        .set({ taxCategory: l.taxCategory })
+        .where(and(eq(documentLines.id, l.id), eq(documentLines.documentId, documentId)));
+    }
     if (totals) {
       for (const l of totals.lines) {
         await tx

@@ -469,7 +469,10 @@
           "invalid": "Sisestage korrektne kaal."
         },
         "taxCategory": {
-          "required": "Valige maksukategooria."
+          "required": "Valige maksukategooria.",
+          "unknown": "Seda maksukategooriat ettevõtte loendis ei ole.",
+          "archived": "See maksukategooria on arhiveeritud. Valige aktiivne kategooria.",
+          "unlinked": "Selle rea maksukategooria sisestati enne ettevõtte maksukategooriate loendi loomist. Valige loendist kategooria."
         },
         "id": {
           "duplicate": "Kahel real on sama identifikaator."

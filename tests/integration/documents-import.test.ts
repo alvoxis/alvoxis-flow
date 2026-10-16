@@ -14,6 +14,7 @@ import { createDraft, issueDocument } from "@/modules/documents/server/document-
 import { createDraftFromImport, previewPdfImport } from "@/modules/documents/server/import-service";
 import { ensureDefaultNumberSeries } from "@/modules/documents/server/numbering-service";
 import { FIXTURE_TAX, FIXTURE_SELLER_PROFILE } from "../support/document-fixtures";
+import { addFixtureTaxCategories, withCategoryIds } from "../support/tax-category-fixtures";
 import { openTestDb } from "./test-db";
 
 let db: Database;
@@ -37,7 +38,8 @@ async function newCompany() {
   });
   await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, actor, companyId);
-  return { actor, companyId };
+  const cats = await addFixtureTaxCategories(db, actor, companyId);
+  return { actor, companyId, cats };
 }
 
 const decisions: ImportDecisions = {
@@ -52,9 +54,13 @@ const decisions: ImportDecisions = {
   },
   buyer: { name: "Sample Shipping Agency Ltd" },
   bankAccounts: [{ iban: "LV80BANK0000435195001" }],
-  defaultTaxCategory: FIXTURE_TAX.standard20,
+  defaultTaxCategoryId: "", // set per company: decisionsFor(cats)
   acknowledgedFlags: [],
 };
+const decisionsFor = (cats: Record<string, string>): ImportDecisions => ({
+  ...decisions,
+  defaultTaxCategoryId: cats[FIXTURE_TAX.standard20.code]!,
+});
 
 describe("PDF import", { timeout: 30_000 }, () => {
   it("previews without creating anything and audits only metadata", async () => {
@@ -79,14 +85,14 @@ describe("PDF import", { timeout: 30_000 }, () => {
   });
 
   it("creates a draft only from reviewed decisions and detects re-imports of the same file", async () => {
-    const { actor, companyId } = await newCompany();
+    const { actor, companyId, cats } = await newCompany();
     const review = await previewPdfImport(db, actor, companyId, pdf);
     const required = review.flags.filter((f) => f.severity !== "info").map((f) => f.code);
 
     // A clean ALVOXIS Flow PDF only produces informational findings (e.g. "confirm tax treatment").
     expect(required).toEqual([]);
     expect(review.flags.map((f) => f.code)).toContain("tax.treatmentRequiresConfirmation");
-    const draft = await createDraftFromImport(db, actor, companyId, pdf, decisions);
+    const draft = await createDraftFromImport(db, actor, companyId, pdf, decisionsFor(cats));
     expect(draft).toMatchObject({ status: "draft", number: null });
     expect(draft.draft.lines).toHaveLength(4);
     expect(draft.totals?.currency).toBe("EUR");
@@ -101,7 +107,7 @@ describe("PDF import", { timeout: 30_000 }, () => {
     ]);
     await expect(
       createDraftFromImport(db, actor, companyId, pdf, {
-        ...decisions,
+        ...decisionsFor(cats),
         acknowledgedFlags: [...required, "duplicate.possible"],
       }),
     ).rejects.toThrow(/already exist/);
@@ -110,9 +116,18 @@ describe("PDF import", { timeout: 30_000 }, () => {
   it("finds an existing issued document with the same number and date", async () => {
     const { actor, companyId } = await newCompany();
     const { lines, ...rest } = sampleModels("en").invoice!.document;
+    const sampleCats = await addFixtureTaxCategories(
+      db,
+      actor,
+      companyId,
+      lines.flatMap((l) => (l.taxCategory ? [l.taxCategory] : [])),
+    );
     const d = await createDraft(db, actor, companyId, {
       ...rest,
-      lines: lines.map(({ id: _i, ...l }) => l),
+      lines: withCategoryIds(
+        lines.map(({ id: _i, ...l }) => l),
+        sampleCats,
+      ),
     });
     const issued = await issueDocument(db, actor, companyId, d.id, 1);
     expect(issued.number).toBe("INV-2026-0001");
@@ -129,7 +144,7 @@ describe("PDF import", { timeout: 30_000 }, () => {
     const b = await newCompany();
     const review = await previewPdfImport(db, a.actor, a.companyId, pdf);
     await createDraftFromImport(db, a.actor, a.companyId, pdf, {
-      ...decisions,
+      ...decisionsFor(a.cats),
       acknowledgedFlags: review.flags.map((f) => f.code),
     });
     expect((await previewPdfImport(db, b.actor, b.companyId, pdf)).duplicates).toEqual([]);

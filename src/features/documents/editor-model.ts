@@ -109,9 +109,11 @@ function cleanParty(p: PartySnapshot): PartySnapshot {
   };
 }
 
-function cleanLine({ sourceLineId: _s, ...l }: DocumentLine) {
+/** Lines refer to a company category by id; the server builds the tax snapshot itself. */
+function cleanLine({ sourceLineId: _s, taxCategory: _snapshot, ...l }: DocumentLine) {
   return {
     ...l,
+    taxCategoryId: l.taxCategoryId ?? null,
     unit: blank(l.unit),
     discountPercent: blank(l.discountPercent),
     // An empty price is "no price", so the server reports it as a missing price, not a format error.

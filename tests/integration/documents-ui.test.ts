@@ -13,6 +13,11 @@ import { documentPageData, documentsListData } from "@/server/documents/page-dat
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
 import { UnauthenticatedError } from "@/server/errors";
 import { FIXTURE_SELLER_PROFILE, invoiceDraft } from "../support/document-fixtures";
+import {
+  addFixtureTaxCategories,
+  withCategoryIds,
+  type FixtureCategoryIds,
+} from "../support/tax-category-fixtures";
 import { openTestDb } from "./test-db";
 
 /**
@@ -74,12 +79,16 @@ async function newUser() {
   return u!;
 }
 
+/** Catalog of the most recently created company (inputs reference it by id). */
+let cats: FixtureCategoryIds = {};
+
 async function newCompany() {
   const owner = actorOf((await newUser()).id);
   const { companyId } = await createCompanyWithOwner(db, owner, { name: "Ui Co", country: "LV" });
   await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, owner, companyId);
-  return { owner, companyId };
+  cats = await addFixtureTaxCategories(db, owner, companyId);
+  return { owner, companyId, cats };
 }
 
 async function member(companyId: string, roleKey: string) {
@@ -94,7 +103,13 @@ async function member(companyId: string, roleKey: string) {
 
 function input(overrides: Parameters<typeof invoiceDraft>[0] = {}) {
   const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
-  return { ...rest, lines: lines.map(({ id: _id, sourceLineId: _s, ...l }) => l) };
+  return {
+    ...rest,
+    lines: withCategoryIds(
+      lines.map(({ id: _id, sourceLineId: _s, ...l }) => l),
+      cats,
+    ),
+  };
 }
 
 const req = (method: string, body: unknown) =>

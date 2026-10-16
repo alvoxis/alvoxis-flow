@@ -8,6 +8,7 @@ import {
   type DocumentLine,
   isPricedDocument,
   TAX_TREATMENT_KINDS,
+  type TaxCategorySnapshot,
 } from "./types";
 
 export type IssueSeverity = "error" | "warning";
@@ -103,25 +104,41 @@ function validateLine(
     if (priced) add("line.taxCategory.required", `${p}.taxCategory`);
     return;
   }
+  issues.push(...validateTaxCategory(cat, `${p}.taxCategory`));
+}
+
+/**
+ * Technical consistency of a tax category (used for line snapshots and for the company catalog).
+ * These are format rules, not country tax law: which treatment and rate apply is the user's
+ * decision. `prefix` is prepended to paths ("" → "kind", "ratePercent", …).
+ */
+export function validateTaxCategory(
+  cat: Pick<TaxCategorySnapshot, "kind" | "ratePercent" | "note">,
+  prefix = "",
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  const at = (field: string) => (prefix ? (field ? `${prefix}.${field}` : prefix) : field);
+  const add = (code: string, path: string, severity: IssueSeverity = "error") =>
+    issues.push({ code, path, severity });
   if (!(TAX_TREATMENT_KINDS as readonly string[]).includes(cat.kind))
-    add("tax.kind.invalid", `${p}.taxCategory.kind`);
+    add("tax.kind.invalid", at("kind"));
   if (
     !DECIMAL.test(cat.ratePercent) ||
     decimals(cat.ratePercent) > LIMITS.rateDecimals ||
     new Decimal(cat.ratePercent).lt(0) ||
     new Decimal(cat.ratePercent).gte(100)
   ) {
-    add("tax.rate.invalid", `${p}.taxCategory.ratePercent`);
-    return;
+    add("tax.rate.invalid", at("ratePercent"));
+    return issues;
   }
   const rate = new Decimal(cat.ratePercent);
   // A bare "0%" is ambiguous (seen in real examples). Force an explicit treatment instead.
-  if (cat.kind === "standard" && rate.isZero())
-    add("tax.rate.zeroRequiresTreatment", `${p}.taxCategory`);
+  if (cat.kind === "standard" && rate.isZero()) add("tax.rate.zeroRequiresTreatment", at(""));
   if (cat.kind !== "standard" && !rate.isZero())
-    add("tax.rate.mustBeZeroForTreatment", `${p}.taxCategory.ratePercent`);
+    add("tax.rate.mustBeZeroForTreatment", at("ratePercent"));
   if (cat.kind !== "standard" && !cat.note?.trim())
-    add("tax.note.recommended", `${p}.taxCategory.note`, "warning");
+    add("tax.note.recommended", at("note"), "warning");
+  return issues;
 }
 
 export function validateDocument(doc: DocumentDraft): ValidationIssue[] {

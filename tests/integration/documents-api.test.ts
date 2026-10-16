@@ -10,6 +10,11 @@ import { auditLogs, companies, documents, memberships, roles, users } from "@/se
 import { UnauthenticatedError } from "@/server/errors";
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
 import { FIXTURE_SELLER_PROFILE, invoiceDraft } from "../support/document-fixtures";
+import {
+  addFixtureTaxCategories,
+  withCategoryIds,
+  type FixtureCategoryIds,
+} from "../support/tax-category-fixtures";
 import { openTestDb } from "./test-db";
 
 /**
@@ -65,12 +70,16 @@ async function newUser() {
   return u!;
 }
 
+/** Catalog of the most recently created company (inputs reference it by id). */
+let cats: FixtureCategoryIds = {};
+
 async function newCompany() {
   const owner = actorOf((await newUser()).id);
   const { companyId } = await createCompanyWithOwner(db, owner, { name: "Api Co", country: "LV" });
   await db.update(companies).set(FIXTURE_SELLER_PROFILE).where(eq(companies.id, companyId));
   await ensureDefaultNumberSeries(db, owner, companyId);
-  return { owner, companyId };
+  cats = await addFixtureTaxCategories(db, owner, companyId);
+  return { owner, companyId, cats };
 }
 
 async function member(companyId: string, roleKey: string) {
@@ -85,7 +94,13 @@ async function member(companyId: string, roleKey: string) {
 
 function input(overrides: Parameters<typeof invoiceDraft>[0] = {}) {
   const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
-  return { ...rest, lines: lines.map(({ id: _id, sourceLineId: _s, ...l }) => l) };
+  return {
+    ...rest,
+    lines: withCategoryIds(
+      lines.map(({ id: _id, sourceLineId: _s, ...l }) => l),
+      cats,
+    ),
+  };
 }
 
 const req = (method: string, body?: unknown) =>
@@ -263,8 +278,9 @@ describe("document API: draft → validation → issue", () => {
   });
 
   it("invalid input is 422, malformed requests 400, unknown documents 404", async () => {
-    const { owner, companyId } = await newCompany();
+    // `input()` uses the most recent company's catalog, so the company under test comes last.
     const other = await newCompany();
+    const { owner, companyId } = await newCompany();
     as(owner);
 
     const bad = await api.create(companyId, { ...input(), issueDate: "02.03.2026" });
@@ -295,7 +311,10 @@ describe("document API: draft → validation → issue", () => {
     expect((await api.get(companyId, "nope")).status).toBe(400);
     // A document of another company is not found through this company's URL.
     as(other.owner);
+    const ownCats = cats;
+    cats = other.cats;
     const foreign = (await api.create(other.companyId, input())).body.document;
+    cats = ownCats;
     as(owner);
     for (const r of [
       await api.get(companyId, foreign.id),

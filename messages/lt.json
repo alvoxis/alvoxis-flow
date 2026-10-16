@@ -469,7 +469,10 @@
           "invalid": "Įveskite teisingą svorį."
         },
         "taxCategory": {
-          "required": "Pasirinkite mokesčių kategoriją."
+          "required": "Pasirinkite mokesčių kategoriją.",
+          "unknown": "Šios mokesčių kategorijos nėra įmonės sąraše.",
+          "archived": "Ši mokesčių kategorija archyvuota. Pasirinkite aktyvią kategoriją.",
+          "unlinked": "Šios eilutės mokesčių kategorija įvesta prieš sukuriant įmonės mokesčių kategorijų sąrašą. Pasirinkite kategoriją iš sąrašo."
         },
         "id": {
           "duplicate": "Dvi eilutės turi tą patį identifikatorių."
