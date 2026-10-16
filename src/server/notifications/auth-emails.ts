@@ -11,7 +11,8 @@ export type AuthEmailKind =
   | "newSignIn"
   | "passwordChanged"
   | "twoFactorEnabled"
-  | "twoFactorDisabled";
+  | "twoFactorDisabled"
+  | "signInLocked";
 
 export function asLocale(value: unknown): AppLocale {
   return typeof value === "string" && (LOCALES as readonly string[]).includes(value)

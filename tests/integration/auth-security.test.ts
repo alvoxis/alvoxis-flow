@@ -1,8 +1,16 @@
+import { createHmac, randomBytes } from "node:crypto";
 import { and, eq } from "drizzle-orm";
 import { type Pool } from "pg";
 import { afterAll, afterEach, beforeAll, describe, expect, it, type MockInstance } from "vitest";
-import { reencryptTwoFactorData, secretConfigFromEnv } from "@/server/auth/operator";
+import {
+  reencryptTwoFactorData,
+  reencryptTwoFactorRow,
+  secretConfigFromEnv,
+} from "@/server/auth/operator";
+import { DISABLED_AUTH_PATHS } from "@/server/auth/auth";
 import { requireUser } from "@/server/auth/session";
+import { hashSessionToken } from "@/server/auth/session-token-store";
+import { revokeMyOtherSessions } from "@/server/auth/sessions-service";
 import { type Database } from "@/server/db/client";
 import { auditLogs, authSessions, twoFactors, users } from "@/server/db/schema";
 import { TwoFactorChallengeRequiredError, UnauthenticatedError } from "@/server/errors";
@@ -61,7 +69,7 @@ async function enrolledUser() {
   expect(
     (await c.request("/two-factor/verify-totp", { body: { code: totp(secret) } })).status,
   ).toBe(200);
-  return { email, secret };
+  return { email, secret, backupCodes: enable.json!.backupCodes as string[] };
 }
 
 describe("Google OAuth", () => {
@@ -127,13 +135,10 @@ describe("Google OAuth", () => {
     // Library endpoints that would otherwise reveal or replace the second factor, or change the
     // account, are refused for this session — even with the correct password.
     for (const [path, body] of [
-      ["/two-factor/get-totp-uri", { password: STRONG_PASSWORD }],
       ["/two-factor/generate-backup-codes", { password: STRONG_PASSWORD }],
       ["/two-factor/enable", { password: STRONG_PASSWORD }],
       ["/two-factor/disable", { password: STRONG_PASSWORD }],
       ["/change-password", { currentPassword: STRONG_PASSWORD, newPassword: "x".repeat(20) }],
-      ["/update-user", { name: "Changed" }],
-      ["/link-social", { provider: "google", callbackURL: "/en" }],
     ] as const) {
       const res = await c.request(path, { body });
       expect({ path, status: res.status, code: res.json?.code }).toEqual({
@@ -141,6 +146,10 @@ describe("Google OAuth", () => {
         status: 403,
         code: "TWO_FACTOR_CHALLENGE_REQUIRED",
       });
+    }
+    // Endpoints the app does not use do not exist at all (e.g. reading the TOTP URI again).
+    for (const path of ["/two-factor/get-totp-uri", "/update-user", "/link-social"]) {
+      expect((await c.request(path, { body: { password: STRONG_PASSWORD } })).status).toBe(404);
     }
 
     // The step-up challenge and signing out stay available.
@@ -153,7 +162,67 @@ describe("Google OAuth", () => {
       ).status,
     ).toBe(200);
     await expect(current(c)).resolves.toMatchObject({ email, twoFactorVerified: true });
-    expect((await c.request("/update-user", { body: { name: "Changed" } })).status).toBe(200);
+    expect(
+      (
+        await c.request("/two-factor/generate-backup-codes", {
+          body: { password: STRONG_PASSWORD },
+        })
+      ).status,
+    ).toBe(200);
+  });
+});
+
+describe("every auth endpoint", () => {
+  // Reachable without a completed sign-in by design: starting one, email links, the challenge itself.
+  const OPEN = [
+    "/sign-in/",
+    "/sign-up/",
+    "/callback/",
+    "/request-password-reset",
+    "/reset-password",
+    "/verify-email",
+    "/send-verification-email",
+    "/error",
+    "/ok",
+    "/get-session",
+    "/sign-out",
+    "/two-factor/verify-totp",
+    "/two-factor/verify-backup-code",
+  ];
+
+  it("refuses a session that still owes its second factor on every other endpoint", async () => {
+    const { email } = await enrolledUser();
+    const c = new AuthClient(h.auth);
+    await googleSignIn(c, { sub: `g-${email}`, email, email_verified: true });
+    await expect(current(c)).rejects.toThrow(TwoFactorChallengeRequiredError);
+
+    const endpoints = Object.values(
+      h.auth.api as Record<
+        string,
+        {
+          path?: string;
+          options?: { method?: string | string[]; metadata?: { SERVER_ONLY?: boolean } };
+        }
+      >,
+    )
+      .filter((e) => e.path && !e.options?.metadata?.SERVER_ONLY)
+      .filter((e) => !OPEN.some((p) => e.path!.startsWith(p)));
+    expect(endpoints.length).toBeGreaterThan(10);
+    for (const e of endpoints) {
+      const methods = [e.options?.method ?? "POST"].flat().filter((m) => m !== "*");
+      for (const method of methods) {
+        const res = await c.request(e.path!, {
+          method,
+          ...(method === "GET" ? {} : { body: { password: STRONG_PASSWORD } }),
+        });
+        const expected = DISABLED_AUTH_PATHS.includes(e.path!) ? 404 : 403;
+        expect({ path: e.path, method, status: res.status }).toEqual({
+          path: e.path,
+          method,
+          status: expected,
+        });
+      }
+    }
   });
 });
 
@@ -192,6 +261,68 @@ describe("client IP and rate limiting", () => {
     expect((await flows.signedIn(email)).res.status).toBe(200);
     for (let i = 0; i < 9; i++) await flows.signedIn(email, "wrong-password-guess");
     expect((await flows.signedIn(email)).res.status).toBe(200);
+  });
+
+  it("an attacker cannot lock the owner out of a device they signed in from before", async () => {
+    const { email } = await flows.registerAndVerify();
+    const laptop = (await flows.signedIn(email)).c; // earlier successful sign-in → known device
+    const other = (await flows.registerAndVerify()).email;
+    await laptop.request("/sign-in/email", { body: { email: other, password: STRONG_PASSWORD } });
+    expect(laptop.cookies.has("alvoxis.known_device")).toBe(true);
+
+    // Attacker exhausts the account limit from rotating IPs.
+    for (let i = 0; i < 10; i++) await flows.signedIn(email, "wrong-password-guess");
+    expect((await flows.signedIn(email)).res.status).toBe(429); // new device: still blocked
+
+    // Forged or foreign known-device cookies do not help.
+    const forger = new AuthClient(h.auth);
+    forger.cookies.set("alvoxis.known_device", "anything");
+    expect(
+      (await forger.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } }))
+        .status,
+    ).toBe(429);
+
+    // The owner's own browser still signs in (password still checked).
+    expect(
+      (
+        await laptop.request("/sign-in/email", {
+          body: { email, password: "wrong-password-guess" },
+        })
+      ).status,
+    ).toBe(401);
+    expect(
+      (await laptop.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } }))
+        .status,
+    ).toBe(200);
+  });
+
+  it("a known device for one account does not unlock another", async () => {
+    const { email: mine } = await flows.registerAndVerify();
+    const { email: victim } = await flows.registerAndVerify();
+    const attacker = (await flows.signedIn(mine)).c;
+    for (let i = 0; i < 10; i++) await flows.signedIn(victim, "wrong-password-guess");
+    expect(
+      (
+        await attacker.request("/sign-in/email", {
+          body: { email: victim, password: "guess-123456" },
+        })
+      ).status,
+    ).toBe(429);
+  });
+
+  it("tells the owner once when the account limit is reached", async () => {
+    const { email } = await flows.registerAndVerify();
+    const id = await userIdOf(email);
+    for (let i = 0; i < 12; i++) await flows.signedIn(email, "wrong-password-guess");
+    expect(h.mailer.outbox.filter((m) => m.to === email && m.kind === "signInLocked")).toHaveLength(
+      1,
+    );
+    expect(
+      await db.$count(
+        auditLogs,
+        and(eq(auditLogs.actorUserId, id), eq(auditLogs.action, "auth.sign_in_locked")),
+      ),
+    ).toBe(1);
   });
 
   it("behind trusted proxies, takes the client IP from the right of the chain, not the spoofable left", async () => {
@@ -283,5 +414,137 @@ describe("2FA key rotation", () => {
       BETTER_AUTH_SECRETS: `2:${NEW_KEY}`,
     });
     await signInAndVerify(retired, Date.now() - 30_000);
+  });
+});
+
+describe("session token storage", () => {
+  const COOKIE = "alvoxis.session_token";
+  /** Signs a cookie value exactly like the library — i.e. an attacker who also holds the secret. */
+  const signed = (value: string) =>
+    encodeURIComponent(
+      `${value}.${createHmac("sha256", TEST_AUTH_SECRET).update(value).digest("base64")}`,
+    );
+  const rawToken = (c: AuthClient) => decodeURIComponent(c.cookies.get(COOKIE)!).split(".")[0]!;
+
+  it("stores only a SHA-256 digest; the browser's token still works", async () => {
+    const { email } = await flows.registerAndVerify();
+    const { c } = await flows.signedIn(email);
+    const raw = rawToken(c);
+    // The forged-cookie helper reproduces the library's signature (sanity check for the tests below).
+    expect(c.cookies.get(COOKIE)).toBe(signed(raw));
+    const rows = await db
+      .select({ token: authSessions.token })
+      .from(authSessions)
+      .where(eq(authSessions.userId, await userIdOf(email)));
+    expect(rows).toEqual([{ token: hashSessionToken(raw) }]);
+    expect(rows[0]!.token).not.toContain(raw);
+    await expect(current(c)).resolves.toMatchObject({ email });
+  });
+
+  it("a digest read from the database is not a usable session, even with the signing secret", async () => {
+    const { email } = await flows.registerAndVerify();
+    const { c } = await flows.signedIn(email);
+    const [row] = await db
+      .select({ token: authSessions.token })
+      .from(authSessions)
+      .where(eq(authSessions.userId, await userIdOf(email)));
+    const thief = new AuthClient(h.auth);
+    thief.cookies.set(COOKIE, signed(row!.token));
+    await expect(current(thief)).rejects.toThrow(UnauthenticatedError);
+    expect((await thief.request("/get-session")).json).toBeNull();
+    await expect(current(c)).resolves.toBeTruthy();
+  });
+
+  it("sessions stored in plain text by an older release keep working and are re-hashed on use", async () => {
+    const { email } = await flows.registerAndVerify();
+    const id = await userIdOf(email);
+    const legacy = randomBytes(24).toString("base64url");
+    await db.insert(authSessions).values({
+      token: legacy,
+      userId: id,
+      expiresAt: new Date(Date.now() + 3_600_000),
+    });
+    const c = new AuthClient(h.auth);
+    c.cookies.set(COOKIE, signed(legacy));
+    await expect(current(c)).resolves.toMatchObject({ email });
+    const rows = await db
+      .select({ token: authSessions.token })
+      .from(authSessions)
+      .where(eq(authSessions.userId, id));
+    expect(rows).toEqual([{ token: hashSessionToken(legacy) }]);
+    await expect(current(c)).resolves.toMatchObject({ email });
+  });
+
+  it("sign-out, revoke-others, 2FA step-up and password change still find the hashed session", async () => {
+    const { email, secret } = await enrolledUser();
+    const id = await userIdOf(email);
+    const a = new AuthClient(h.auth);
+    await a.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
+    await a.request("/two-factor/verify-totp", {
+      body: { code: totp(secret, Date.now() + 30_000) },
+    });
+    const me = await current(a);
+    expect(me.twoFactorVerified).toBe(true);
+
+    const b = new AuthClient(h.auth);
+    await b.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
+    await b.request("/two-factor/verify-totp", {
+      body: { code: totp(secret, Date.now() - 30_000) },
+    });
+    await expect(current(b)).resolves.toBeTruthy();
+
+    await revokeMyOtherSessions(db, me);
+    await expect(current(b)).rejects.toThrow(UnauthenticatedError);
+
+    const changed = await a.request("/change-password", {
+      body: { currentPassword: STRONG_PASSWORD, newPassword: "another-very-long-password-91" },
+    });
+    expect(changed.status).toBe(200);
+    await expect(current(a)).resolves.toBeTruthy();
+
+    expect((await a.request("/sign-out", { body: {} })).status).toBe(200);
+    await expect(current(a)).rejects.toThrow(UnauthenticatedError);
+    expect(await db.$count(authSessions, eq(authSessions.userId, id))).toBe(0);
+  });
+
+  it("re-encryption never restores a recovery code spent while it runs", async () => {
+    const { email, backupCodes } = await enrolledUser();
+    const id = await userIdOf(email);
+    const [stale] = await db.select().from(twoFactors).where(eq(twoFactors.userId, id));
+
+    // The user spends a recovery code after the row was read…
+    const c = new AuthClient(h.auth);
+    await c.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
+    expect(
+      (await c.request("/two-factor/verify-backup-code", { body: { code: backupCodes[0] } }))
+        .status,
+    ).toBe(200);
+    const [spent] = await db.select().from(twoFactors).where(eq(twoFactors.userId, id));
+
+    // …so writing the stale snapshot back is refused, and the full run re-reads the row.
+    const rotating = createTestAuth(db, {
+      BETTER_AUTH_SECRETS: `3:${"race-test-secret-not-for-production-".padEnd(40, "x")},1:${TEST_AUTH_SECRET}`,
+    });
+    const key = secretConfigFromEnv(rotating.env);
+    if (typeof key === "string") throw new Error("expected a versioned key");
+    expect(await reencryptTwoFactorRow(db, key, stale!)).toBe("changed");
+    const [unchanged] = await db.select().from(twoFactors).where(eq(twoFactors.userId, id));
+    expect(unchanged!.backupCodes).toBe(spent!.backupCodes);
+    // (Other tests' rows use other keys and are reported as unreadable — untouched.)
+    expect((await reencryptTwoFactorData(db, key)).unreadable).not.toContain(id);
+    const [rewritten] = await db.select().from(twoFactors).where(eq(twoFactors.userId, id));
+    expect(rewritten!.backupCodes.startsWith("$ba$3$")).toBe(true);
+
+    // The spent code stays spent; an unused one still works (under the new key).
+    const again = new AuthClient(rotating.auth);
+    await again.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
+    expect(
+      (await again.request("/two-factor/verify-backup-code", { body: { code: backupCodes[0] } }))
+        .status,
+    ).toBe(401);
+    expect(
+      (await again.request("/two-factor/verify-backup-code", { body: { code: backupCodes[1] } }))
+        .status,
+    ).toBe(200);
   });
 });

@@ -5,6 +5,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { hashSessionToken } from "@/server/auth/session-token-store";
 import { testDatabaseUrl } from "./test-db";
 
 /**
@@ -172,6 +173,38 @@ describe("upgrading an existing stage-1 database", () => {
       // After fixing the cause, the same upgrade succeeds.
       await migrate(db, { migrationsFolder: MIGRATIONS });
       expect(await count(pool, "SELECT count(*) AS n FROM users WHERE email_verified")).toBe(1);
+    } finally {
+      await pool.end();
+    }
+  });
+
+  it("hashes sessions stored before 0008 exactly like the application, and re-running changes nothing", async () => {
+    const pool = await freshDatabase("upgrade_sessions");
+    try {
+      const db = drizzle(pool);
+      const before0008 = journal.entries.find(
+        (e) => e.tag === "0008_auth_hash_session_tokens",
+      )!.idx;
+      await migrate(db, { migrationsFolder: migrationsFolder((i) => i < before0008) });
+      await seedStage1(pool);
+      const { rows } = await pool.query<{ id: string }>("SELECT id FROM users LIMIT 1");
+      const plain = "LegacyPlainSessionToken0123456789ab";
+      await pool.query(
+        "INSERT INTO auth_sessions (token, user_id, expires_at) VALUES ($1, $2, now() + interval '1 day')",
+        [plain, rows[0]!.id],
+      );
+
+      await migrate(db, { migrationsFolder: MIGRATIONS });
+      const token = async () =>
+        (await pool.query<{ token: string }>("SELECT token FROM auth_sessions")).rows[0]!.token;
+      expect(await token()).toBe(hashSessionToken(plain));
+
+      // Re-running the migrator, or the statement itself, is a no-op.
+      await migrate(db, { migrationsFolder: MIGRATIONS });
+      await pool.query(
+        readFileSync(path.join(MIGRATIONS, "0008_auth_hash_session_tokens.sql"), "utf8"),
+      );
+      expect(await token()).toBe(hashSessionToken(plain));
     } finally {
       await pool.end();
     }

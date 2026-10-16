@@ -194,7 +194,11 @@
       "subject": "Divu faktoru autentifikācija izslēgta",
       "body": "Jūsu ALVOXIS Flow kontam tika izslēgta divu faktoru autentifikācija ({time}, UTC). Ja tas nebijāt jūs, nekavējoties nomainiet paroli:\n{link}"
     },
-    "unknownDevice": "nezināma ierīce"
+    "unknownDevice": "nezināma ierīce",
+    "signInLocked": {
+      "subject": "Vairāki neveiksmīgi pieteikšanās mēģinājumi",
+      "body": "Pēc vairākiem neveiksmīgiem mēģinājumiem {time} (UTC) pieteikšanās ar paroli jūsu ALVOXIS Flow kontā ir apturēta uz 15 minūtēm. No ierīcēm, no kurām jau esat pieteicies, pieteikties joprojām var. Ja tas nebijāt jūs, atiestatiet paroli:\n{link}"
+    }
   },
   "auth": {
     "email": "E-pasts",

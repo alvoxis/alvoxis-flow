@@ -39,6 +39,11 @@ contract over separate releases), so the application can be rolled back without 
 - Database: forward-fix migrations are preferred. For data loss/corruption, restore via PITR to a new
   instance, verify, then switch `DATABASE_URL`. Restore drills must be performed and documented before
   launch.
+- Before every migration run, in addition to the platform snapshot:
+  `pg_dump -Fc -d "$DATABASE_URL" -f pre-release.dump` (keep it encrypted, with the release).
+  Restore into a **new** database: `createdb <new> && pg_restore -d <new> pre-release.dump`, check row
+  counts and `drizzle.__drizzle_migrations`, then switch `DATABASE_URL`. A failed `pnpm db:migrate`
+  needs no restore — it runs in one transaction and leaves the schema unchanged (tested).
 - `audit_logs` is append-only by design; it is never modified during recovery.
 
 ## Health checks

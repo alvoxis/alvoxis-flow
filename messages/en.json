@@ -194,7 +194,11 @@
       "subject": "Two-factor authentication disabled",
       "body": "Two-factor authentication was disabled for your ALVOXIS Flow account on {time} (UTC). If this was not you, change your password immediately:\n{link}"
     },
-    "unknownDevice": "an unknown device"
+    "unknownDevice": "an unknown device",
+    "signInLocked": {
+      "subject": "Several failed sign-in attempts",
+      "body": "Password sign-in to your ALVOXIS Flow account was paused for 15 minutes after several failed attempts on {time} (UTC). Devices you have signed in from before can still sign in. If this was not you, reset your password:\n{link}"
+    }
   },
   "auth": {
     "email": "Email",

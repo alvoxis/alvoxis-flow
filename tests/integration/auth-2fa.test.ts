@@ -246,6 +246,34 @@ describe("company access requires every authentication step", () => {
     return { email, c, companyId };
   }
 
+  it("changing the password neither grants nor drops the session's 2FA state", async () => {
+    // Owner without 2FA: the replacement session must not count as verified.
+    const { c, companyId } = await ownerWithCompany();
+    const changed = await c.request("/change-password", {
+      body: { currentPassword: STRONG_PASSWORD, newPassword: "another-very-long-password-91" },
+    });
+    expect({ status: changed.status, body: changed.json }).toMatchObject({ status: 200 });
+    const me = await current(c);
+    expect(me.twoFactorVerified).toBe(false);
+    await expect(listDocuments(db, toActor(me), companyId)).rejects.toThrow(TwoFactorRequiredError);
+
+    // Enrolled owner: stays verified after the change (no second challenge).
+    const enable = await c.request("/two-factor/enable", {
+      body: { password: "another-very-long-password-91" },
+    });
+    const secret = secretFromOtpauthUri(String(enable.json!.totpURI));
+    expect(
+      (await c.request("/two-factor/verify-totp", { body: { code: totp(secret) } })).status,
+    ).toBe(200);
+    const again = await c.request("/change-password", {
+      body: { currentPassword: "another-very-long-password-91", newPassword: STRONG_PASSWORD },
+    });
+    expect({ status: again.status, body: again.json }).toMatchObject({ status: 200 });
+    const after = await current(c);
+    expect(after.twoFactorVerified).toBe(true);
+    await expect(listDocuments(db, toActor(after), companyId)).resolves.toEqual([]);
+  });
+
   it("denies company data to an owner until 2FA is enrolled, without locking them out", async () => {
     const { c, companyId } = await ownerWithCompany();
     const me = await current(c);
@@ -338,16 +366,28 @@ describe("company access requires every authentication step", () => {
     const me = await current(again);
     expect(me.twoFactorVerified).toBe(false);
     await expect(listDocuments(db, toActor(me), companyId)).rejects.toThrow(TwoFactorRequiredError);
-    const [entry] = await db
-      .select()
+    const entries = await db
+      .select({ action: auditLogs.action, metadata: auditLogs.metadata })
       .from(auditLogs)
-      .where(
-        and(eq(auditLogs.entityId, id), eq(auditLogs.action, "auth.two_factor_reset_by_operator")),
-      );
-    expect(entry!.metadata).toEqual({
-      reason: "TICKET-42 identity checked",
+      .where(eq(auditLogs.entityId, id));
+    expect(entries.find((e) => e.action === "auth.two_factor_reset_by_operator")!.metadata).toEqual(
+      {
+        reason: "TICKET-42 identity checked",
+        operator: "Test Operator",
+        revokedSessions: 1,
+      },
+    );
+    expect(
+      entries.find((e) => e.action === "auth.two_factor_reset_notification")!.metadata,
+    ).toEqual({
       operator: "Test Operator",
-      revokedSessions: 1,
+      notified: true,
+      delivery: "sent",
+    });
+
+    // Running it again is harmless: nothing left to remove, still audited and notified.
+    await expect(op({ email, reason: "TICKET-42 repeated" })).resolves.toMatchObject({
+      userId: id,
       notified: true,
     });
   });

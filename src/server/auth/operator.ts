@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import {
   parseEnvelope,
   type SecretConfig,
@@ -57,6 +57,15 @@ export async function operatorResetTwoFactor(
       .delete(authSessions)
       .where(eq(authSessions.userId, user.id))
       .returning({ id: authSessions.id });
+    // Same transaction: a reset can never happen without its audit entry.
+    await recordAudit(tx, {
+      companyId: null,
+      actorUserId: null,
+      action: "auth.two_factor_reset_by_operator",
+      entityType: "user",
+      entityId: user.id,
+      metadata: { reason, operator, revokedSessions: revoked.length },
+    });
     return { user, revokedSessions: revoked.length };
   });
   if (!reset) return null;
@@ -72,14 +81,15 @@ export async function operatorResetTwoFactor(
     .catch(() => ({ status: "failed" as const }));
   const notified = delivery.status === "sent";
 
+  // The audit log is append-only, so the notification outcome is a second entry.
   await recordAudit(db, {
     companyId: null,
     actorUserId: null,
-    action: "auth.two_factor_reset_by_operator",
+    action: "auth.two_factor_reset_notification",
     entityType: "user",
     entityId: reset.user.id,
-    metadata: { reason, operator, revokedSessions: reset.revokedSessions, notified },
-  });
+    metadata: { operator, notified, delivery: delivery.status },
+  }).catch(() => undefined);
   return { userId: reset.user.id, revokedSessions: reset.revokedSessions, notified };
 }
 
@@ -93,10 +103,44 @@ export function secretConfigFromEnv(env: ServerEnv): SecretConfig | string {
   };
 }
 
+type TwoFactorRow = typeof twoFactors.$inferSelect;
+
+/**
+ * Re-encrypts one row with the current key, but only if it has not changed since it was read
+ * (compare-and-swap). Otherwise a recovery code spent in the meantime would be restored.
+ */
+export async function reencryptTwoFactorRow(
+  db: Database,
+  key: SecretConfig,
+  row: TwoFactorRow,
+): Promise<"updated" | "changed"> {
+  const secret = await symmetricEncrypt({
+    key,
+    data: await symmetricDecrypt({ key, data: row.secret }),
+  });
+  const backupCodes = await symmetricEncrypt({
+    key,
+    data: await symmetricDecrypt({ key, data: row.backupCodes }),
+  });
+  const written = await db
+    .update(twoFactors)
+    .set({ secret, backupCodes })
+    .where(
+      and(
+        eq(twoFactors.id, row.id),
+        eq(twoFactors.secret, row.secret),
+        eq(twoFactors.backupCodes, row.backupCodes),
+      ),
+    )
+    .returning({ id: twoFactors.id });
+  return written.length === 1 ? "updated" : "changed";
+}
+
 /**
  * After adding a new key to BETTER_AUTH_SECRETS, re-encrypts every TOTP secret and recovery-code
  * set with the current key so older keys can be retired. Idempotent; rows already on the
  * current version are skipped. Rows that cannot be decrypted are reported, never modified.
+ * Rows modified concurrently are re-read and retried; nothing is ever overwritten blindly.
  */
 export async function reencryptTwoFactorData(
   db: Database,
@@ -113,16 +157,15 @@ export async function reencryptTwoFactorData(
       continue;
     }
     try {
-      const secret = await symmetricEncrypt({
-        key,
-        data: await symmetricDecrypt({ key, data: row.secret }),
-      });
-      const backupCodes = await symmetricEncrypt({
-        key,
-        data: await symmetricDecrypt({ key, data: row.backupCodes }),
-      });
-      await db.update(twoFactors).set({ secret, backupCodes }).where(eq(twoFactors.id, row.id));
-      updated++;
+      let current: TwoFactorRow | undefined = row;
+      for (let attempt = 0; current && attempt < 5; attempt++) {
+        if (isCurrent(current.secret) && isCurrent(current.backupCodes)) break;
+        if ((await reencryptTwoFactorRow(db, key, current)) === "updated") {
+          updated++;
+          break;
+        }
+        [current] = await db.select().from(twoFactors).where(eq(twoFactors.id, row.id));
+      }
     } catch {
       unreadable.push(row.userId);
     }

@@ -194,7 +194,11 @@
       "subject": "Kaheastmeline autentimine on välja lülitatud",
       "body": "Teie ALVOXIS Flow kontol lülitati kaheastmeline autentimine välja ({time}, UTC). Kui see ei olnud teie, muutke parooli kohe:\n{link}"
     },
-    "unknownDevice": "tundmatu seade"
+    "unknownDevice": "tundmatu seade",
+    "signInLocked": {
+      "subject": "Mitu ebaõnnestunud sisselogimiskatset",
+      "body": "Pärast mitut ebaõnnestunud katset {time} (UTC) on teie ALVOXIS Flow konto parooliga sisselogimine 15 minutiks peatatud. Seadmetest, kust olete varem sisse loginud, saab endiselt sisse logida. Kui see polnud teie, lähtestage parool:\n{link}"
+    }
   },
   "auth": {
     "email": "E-post",

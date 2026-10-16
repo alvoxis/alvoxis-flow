@@ -4,7 +4,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { APIError, createAuthMiddleware, getIP, getSessionFromCtx } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { twoFactor } from "better-auth/plugins/two-factor";
-import { and, eq, gt, lt, ne, sql } from "drizzle-orm";
+import { and, eq, gt, inArray, lt, notInArray, sql } from "drizzle-orm";
 import { type ServerEnv } from "@/config/env";
 import { LOCALES } from "@/i18n/config";
 import { recordAudit } from "@/server/audit/audit-log";
@@ -20,6 +20,7 @@ import {
 } from "@/server/db/schema";
 import { asLocale, authEmail } from "@/server/notifications/auth-emails";
 import { type Mailer } from "@/server/notifications/mailer";
+import { storedTokenCandidates, withHashedSessionTokens } from "./session-token-store";
 import { userRequiresTwoFactor } from "./two-factor-policy";
 import { deviceLabel } from "./user-agent";
 
@@ -31,6 +32,14 @@ export const RESET_TOKEN_EXPIRES_IN = 60 * 60; // 1 hour
 const TOTP_REPLAY_WINDOW_SECONDS = 120; // covers the ±1 step tolerance of a 30s TOTP
 /** Failed password sign-ins per account (any IP) before further attempts are refused. */
 export const ACCOUNT_SIGN_IN_LIMIT = { max: 10, windowMs: 15 * 60 * 1000 };
+/**
+ * A browser that has signed in to an account with the correct password before carries a signed
+ * "known device" cookie for it. While the account's limit is exhausted only such browsers may keep
+ * trying (password, 2FA and per-IP limits still apply), so an attacker cannot lock the owner out.
+ */
+const KNOWN_DEVICE_COOKIE = "known_device";
+const KNOWN_DEVICE_MAX_AGE = 60 * 60 * 24 * 90; // 90 days
+const KNOWN_DEVICE_MAX_ACCOUNTS = 5;
 
 /**
  * Endpoints a session that still owes its second factor may call. Everything else that acts on the
@@ -88,8 +97,32 @@ const RATE_LIMITS: Record<string, { window: number; max: number }> = {
   "/two-factor/generate-backup-codes": { window: 300, max: 5 },
 };
 
+export const DISABLED_AUTH_PATHS = [
+  "/list-sessions",
+  "/revoke-session",
+  "/revoke-sessions",
+  "/revoke-other-sessions",
+  "/two-factor/send-otp",
+  "/two-factor/verify-otp",
+  "/two-factor/get-totp-uri",
+  "/delete-user",
+  "/delete-user/callback",
+  "/update-user",
+  "/update-session",
+  "/change-email",
+  "/link-social",
+  "/unlink-account",
+  "/list-accounts",
+  "/account-info",
+  "/get-access-token",
+  "/refresh-token",
+  "/verify-password",
+];
+
 /** Enrollment state detected in the before-hook, consumed by the after-hook of the same request. */
 const enrollmentRequests = new WeakSet<Request>();
+/** 2FA verification time of the session that requested a password change (copied to its replacement). */
+const passwordChangeVerification = new WeakMap<Request, Date | null>();
 
 function isApiError(value: unknown): value is APIError {
   return (
@@ -132,6 +165,8 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
     `sign-in-account:${createHmac("sha256", env.BETTER_AUTH_SECRET)
       .update(email.trim().toLowerCase())
       .digest("base64url")}`;
+  /** Short account identifier stored in the known-device cookie (no email address in cookies). */
+  const knownDeviceId = (email: string) => accountKey(email).slice("sign-in-account:".length, 38);
   const clearAccountFailures = (email: string) =>
     db.delete(authRateLimits).where(eq(authRateLimits.key, accountKey(email)));
 
@@ -196,17 +231,20 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
     trustedOrigins: [appUrl],
     telemetry: { enabled: false },
     logger: { level: env.LOG_LEVEL === "debug" ? "debug" : "warn" },
-    database: drizzleAdapter(db, {
-      provider: "pg",
-      schema: {
-        users,
-        auth_sessions: authSessions,
-        auth_accounts: authAccounts,
-        auth_verifications: authVerifications,
-        two_factors: twoFactors,
-        auth_rate_limits: authRateLimits,
-      },
-    }),
+    // Session tokens are stored as SHA-256 digests (see session-token-store.ts).
+    database: withHashedSessionTokens(
+      drizzleAdapter(db, {
+        provider: "pg",
+        schema: {
+          users,
+          auth_sessions: authSessions,
+          auth_accounts: authAccounts,
+          auth_verifications: authVerifications,
+          two_factors: twoFactors,
+          auth_rate_limits: authRateLimits,
+        },
+      }),
+    ),
     user: {
       modelName: "users",
       fields: { name: "displayName" },
@@ -250,17 +288,11 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
       // The library skips origin/callbackURL validation when NODE_ENV=test; keep it on everywhere.
       disableOriginCheck: false,
     },
-    // Session management goes through the app's audited service (no tokens sent to browsers);
-    // email/SMS one-time codes are not offered (TOTP + recovery codes only).
-    disabledPaths: [
-      "/list-sessions",
-      "/revoke-session",
-      "/revoke-sessions",
-      "/revoke-other-sessions",
-      "/two-factor/send-otp",
-      "/two-factor/verify-otp",
-      "/delete-user",
-    ],
+    // Only endpoints the app uses stay reachable. Session management goes through the app's
+    // audited service (no tokens sent to browsers); email/SMS one-time codes are not offered;
+    // the TOTP URI is shown once at enrolment and can never be read again; profile/email
+    // changes, account linking and provider tokens are not features yet.
+    disabledPaths: DISABLED_AUTH_PATHS,
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,
@@ -371,6 +403,7 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
             ctx.context.secret,
           );
           if (token) {
+            const candidates = storedTokenCandidates(token);
             const [row] = await db
               .select({
                 verifiedAt: authSessions.twoFactorVerifiedAt,
@@ -378,7 +411,7 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
               })
               .from(authSessions)
               .innerJoin(users, eq(users.id, authSessions.userId))
-              .where(eq(authSessions.token, token))
+              .where(inArray(authSessions.token, candidates.length ? candidates : ["-"]))
               .limit(1);
             if (row?.twoFactorEnabled && !row.verifiedAt) {
               throw new APIError("FORBIDDEN", {
@@ -396,11 +429,21 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
             .select()
             .from(authRateLimits)
             .where(eq(authRateLimits.key, accountKey(body.email)));
-          if (
+          const locked =
             entry &&
             entry.count >= ACCOUNT_SIGN_IN_LIMIT.max &&
-            Date.now() - entry.lastRequest < ACCOUNT_SIGN_IN_LIMIT.windowMs
-          ) {
+            Date.now() - entry.lastRequest < ACCOUNT_SIGN_IN_LIMIT.windowMs;
+          const knownDevice =
+            locked &&
+            String(
+              (await ctx.getSignedCookie(
+                ctx.context.createAuthCookie(KNOWN_DEVICE_COOKIE).name,
+                ctx.context.secret,
+              )) ?? "",
+            )
+              .split(",")
+              .includes(knownDeviceId(body.email));
+          if (locked && !knownDevice) {
             throw new APIError("TOO_MANY_REQUESTS", {
               code: APP_AUTH_ERRORS.TOO_MANY_ATTEMPTS,
               message: "Too many failed attempts. Try again later.",
@@ -409,6 +452,17 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
         }
 
         if (path === "/change-password") {
+          const token = await ctx.getSignedCookie(
+            ctx.context.authCookies.sessionToken.name,
+            ctx.context.secret,
+          );
+          if (token && ctx.request) {
+            const [row] = await db
+              .select({ verifiedAt: authSessions.twoFactorVerifiedAt })
+              .from(authSessions)
+              .where(inArray(authSessions.token, storedTokenCandidates(token)));
+            passwordChangeVerification.set(ctx.request, row?.verifiedAt ?? null);
+          }
           // Policy: changing the password always signs out every other session.
           return { context: { body: { ...body, revokeOtherSessions: true } } };
         }
@@ -471,7 +525,7 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
           if (email && failed && errorCode(returned) === "INVALID_EMAIL_OR_PASSWORD") {
             const now = Date.now();
             const expired = sql`${authRateLimits.lastRequest} < ${now - ACCOUNT_SIGN_IN_LIMIT.windowMs}`;
-            await db
+            const [counter] = await db
               .insert(authRateLimits)
               .values({ key: accountKey(email), count: 1, lastRequest: now })
               .onConflictDoUpdate({
@@ -480,9 +534,39 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
                   count: sql`case when ${expired} then 1 else ${authRateLimits.count} + 1 end`,
                   lastRequest: sql`case when ${expired} then ${now} else ${authRateLimits.lastRequest} end`,
                 },
-              });
+              })
+              .returning({ count: authRateLimits.count });
+            if (counter?.count === ACCOUNT_SIGN_IN_LIMIT.max) {
+              // Tell the owner once per lock (unknown addresses: nobody to tell, same response).
+              const [owner] = await db
+                .select({ id: users.id, locale: users.locale })
+                .from(users)
+                .where(eq(users.email, email))
+                .limit(1);
+              if (owner) {
+                await audit("auth.sign_in_locked", owner.id, {}, ip, ua);
+                await sendSecurityEmail("signInLocked", owner.id, {
+                  link: accountLink(owner.locale, "/forgot-password"),
+                });
+              }
+            }
           } else if (email && !failed) {
             await clearAccountFailures(email);
+            // Correct password: remember this browser for the account (see KNOWN_DEVICE_COOKIE).
+            const cookie = ctx.context.createAuthCookie(KNOWN_DEVICE_COOKIE, {
+              maxAge: KNOWN_DEVICE_MAX_AGE,
+            });
+            const previous = String(
+              (await ctx.getSignedCookie(cookie.name, ctx.context.secret)) ?? "",
+            )
+              .split(",")
+              .filter((id) => id && id !== knownDeviceId(email));
+            await ctx.setSignedCookie(
+              cookie.name,
+              [knownDeviceId(email), ...previous].slice(0, KNOWN_DEVICE_MAX_ACCOUNTS).join(","),
+              ctx.context.secret,
+              cookie.attributes,
+            );
           }
           if (failed) {
             const [user] = email
@@ -526,7 +610,7 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
           await db
             .update(authSessions)
             .set({ twoFactorVerifiedAt: new Date() })
-            .where(eq(authSessions.token, current.session.token));
+            .where(inArray(authSessions.token, storedTokenCandidates(current.session.token)));
           const userId = current.user.id;
           if (path.endsWith("backup-code"))
             await audit("auth.two_factor_recovery_code_used", userId, {}, ip, ua);
@@ -535,7 +619,10 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
             await db
               .delete(authSessions)
               .where(
-                and(eq(authSessions.userId, userId), ne(authSessions.token, current.session.token)),
+                and(
+                  eq(authSessions.userId, userId),
+                  notInArray(authSessions.token, storedTokenCandidates(current.session.token)),
+                ),
               );
             await audit("auth.two_factor_enabled", userId, {}, ip, ua);
             await sendSecurityEmail("twoFactorEnabled", userId);
@@ -549,6 +636,23 @@ export function createAuth({ db, env, mailer }: AuthDeps) {
             );
           }
           return;
+        }
+
+        if (path === "/change-password" && !failed && ctx.request && ctx.context.newSession) {
+          // Revoking other sessions replaces the current one; it keeps its (possibly absent) 2FA
+          // verification — never more than the session that made the request had.
+          const verifiedAt = passwordChangeVerification.get(ctx.request) ?? null;
+          passwordChangeVerification.delete(ctx.request);
+          if (verifiedAt)
+            await db
+              .update(authSessions)
+              .set({ twoFactorVerifiedAt: verifiedAt })
+              .where(
+                inArray(
+                  authSessions.token,
+                  storedTokenCandidates(ctx.context.newSession.session.token),
+                ),
+              );
         }
 
         const session = failed ? null : await getSessionFromCtx(ctx).catch(() => null);

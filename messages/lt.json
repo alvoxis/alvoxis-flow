@@ -194,7 +194,11 @@
       "subject": "Dviejų veiksnių autentifikacija išjungta",
       "body": "Jūsų ALVOXIS Flow paskyrai išjungta dviejų veiksnių autentifikacija ({time}, UTC). Jei tai buvote ne jūs, nedelsdami pakeiskite slaptažodį:\n{link}"
     },
-    "unknownDevice": "nežinomas įrenginys"
+    "unknownDevice": "nežinomas įrenginys",
+    "signInLocked": {
+      "subject": "Keli nesėkmingi prisijungimo bandymai",
+      "body": "Po kelių nesėkmingų bandymų {time} (UTC) prisijungimas slaptažodžiu prie jūsų ALVOXIS Flow paskyros sustabdytas 15 minučių. Iš įrenginių, kuriais jau jungėtės, prisijungti vis dar galima. Jei tai buvote ne jūs, atkurkite slaptažodį:\n{link}"
+    }
   },
   "auth": {
     "email": "El. paštas",
