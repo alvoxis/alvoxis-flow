@@ -411,7 +411,8 @@
       "buyer": "Pirkėjas",
       "lines": "Eilutės",
       "other": "Mokėjimas ir pastabos",
-      "totals": "Sumos"
+      "totals": "Sumos",
+      "bank": "Banko rekvizitai"
     },
     "name": "Pavadinimas",
     "addressLine": "Gatvė ir numeris",
@@ -551,7 +552,12 @@
         "iban": {
           "invalid": "Banko sąskaitos IBAN neteisingas."
         },
-        "missing": "Dokumente nenurodyta banko sąskaita."
+        "missing": "Dokumente nenurodyta banko sąskaita.",
+        "unknown": "Pasirinkta banko sąskaita šioje įmonėje nerasta.",
+        "archived": "Šio juodraščio banko sąskaita archyvuota. Prieš išrašydami pasirinkite kitą sąskaitą arba be rekvizitų.",
+        "bic": {
+          "invalid": "BIC/SWIFT kodas neteisingas (8 arba 11 raidžių ir skaitmenų)."
+        }
       },
       "lines": {
         "required": "Pridėkite bent vieną eilutę.",
@@ -593,6 +599,7 @@
     "deleted": "Juodraštis ištrintas.",
     "deleteConfirmBodyEditor": "Juodraštis bus ištrintas negrįžtamai ir jo nebus galima atkurti. Visi šiame redaktoriuje neišsaugoti pakeitimai bus prarasti. Išrašytų dokumentų ištrinti negalima.",
     "colBuyer": "Pirkėjas",
+    "creditNoteBank": "Kreditinė sąskaita išlaiko pradinės sąskaitos banko rekvizitus.",
     "pdf": {
       "open": "Atidaryti PDF",
       "download": "Atsisiųsti PDF",
@@ -662,5 +669,71 @@
       "error": "Kažkas nepavyko. Bandykite dar kartą."
     },
     "reload": "Įkelti iš naujo"
+  },
+  "bankAccounts": {
+    "title": "Banko sąskaitos",
+    "description": "Įmonės banko sąskaitos, kurias galima nurodyti dokumentuose.",
+    "open": "Banko sąskaitos",
+    "snapshotHint": "Išrašant dokumentą, pasirinktos sąskaitos rekvizitai išsaugomi jame. Vėlesni pakeitimai čia išrašytų dokumentų nekeičia.",
+    "readOnly": "Galite peržiūrėti banko sąskaitas. Keisti jas gali savininkai ir administratoriai.",
+    "empty": "Banko sąskaitų dar nėra.",
+    "colName": "Pavadinimas",
+    "colIban": "IBAN",
+    "colBic": "BIC/SWIFT",
+    "colStatus": "Būsena",
+    "colActions": "Veiksmai",
+    "fields": {
+      "iban": "IBAN",
+      "ibanHint": "Tikrinama pagal IBAN kontrolinę sumą. Vėliau pakeisti negalima.",
+      "bic": "BIC/SWIFT",
+      "bicHint": "Neprivaloma, 8 arba 11 simbolių.",
+      "bankName": "Banko pavadinimas",
+      "label": "Žymė",
+      "labelHint": "Neprivaloma, pvz., „Pagrindinė sąskaita“. Rodoma tik programėlėje.",
+      "isDefault": "Naudoti pagal numatymą naujiems dokumentams"
+    },
+    "status": {
+      "active": "Aktyvi",
+      "archived": "Archyvuota",
+      "default": "Numatytoji"
+    },
+    "create": "Pridėti sąskaitą",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "immutableHint": "IBAN pakeisti negalima. Kitam IBAN pridėkite naują sąskaitą ir archyvuokite šią.",
+    "makeDefault": "Nustatyti numatytąja",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "archiveConfirmTitle": "Archyvuoti šią sąskaitą?",
+    "archiveConfirmBody": "Ji nebebus siūloma dokumentams. Juodraščių, kuriuose ji jau pasirinkta, negalima išrašyti, kol nepasirinkta kita sąskaita. Išrašyti dokumentai nesikeičia.",
+    "archiveConfirm": "Archyvuoti",
+    "done": {
+      "created": "Sąskaita pridėta.",
+      "saved": "Pakeitimai išsaugoti.",
+      "archived": "Sąskaita archyvuota.",
+      "restored": "Sąskaita atkurta.",
+      "defaultSet": "Numatytoji sąskaita pakeista."
+    },
+    "outcome": {
+      "invalid": "Patikrinkite pažymėtus laukus.",
+      "ibanTaken": "Šis IBAN jau naudojamas aktyvioje šios įmonės sąskaitoje.",
+      "conflict": "Ši sąskaita buvo pakeista kitur. Perkraukite, kad matytumėte naujausią versiją.",
+      "signedOut": "Jūsų sesija baigėsi. Prisijunkite iš naujo.",
+      "twoFactor": "Jūsų vaidmeniui šiam veiksmui reikia dviejų veiksnių autentifikavimo.",
+      "forbidden": "Neturite teisės atlikti šio veiksmo arba įmonė nebėra aktyvi.",
+      "notFound": "Šios sąskaitos nebėra.",
+      "error": "Kažkas nepavyko. Bandykite dar kartą."
+    },
+    "reload": "Perkrauti",
+    "picker": {
+      "label": "Banko sąskaita",
+      "none": "Be banko rekvizitų",
+      "hint": "Sąskaitos rekvizitai nukopijuojami į dokumentą ir išsaugomi jį išrašant.",
+      "empty": "Įmonė dar neturi banko sąskaitų.",
+      "manage": "Tvarkyti banko sąskaitas",
+      "archived": "Archyvuota sąskaita {iban}",
+      "unlinked": "Išsaugoti rekvizitai {iban} (nesusieti su sąskaita)"
+    }
   }
 }

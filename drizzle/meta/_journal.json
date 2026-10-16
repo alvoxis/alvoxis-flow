@@ -85,6 +85,13 @@
       "when": 1792162123654,
       "tag": "0011_grant_tax_categories_manage",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792178668000,
+      "tag": "0012_company_bank_accounts",
+      "breakpoints": true
     }
   ]
 }

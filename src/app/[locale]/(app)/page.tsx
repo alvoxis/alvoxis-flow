@@ -42,6 +42,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const tRoles = await getTranslations("roles");
   const tDocs = await getTranslations("documents");
   const tCat = await getTranslations("taxCategories");
+  const tBank = await getTranslations("bankAccounts");
   const user = await requirePageUser(locale);
   const { companies, twoFactorMissing } = await dashboardData(user);
 
@@ -107,6 +108,13 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                     data-testid="company-tax-categories-link"
                   >
                     {tCat("open")}
+                  </Link>
+                  <Link
+                    href={`/companies/${c.id}/bank-accounts`}
+                    className="text-accent hover:underline"
+                    data-testid="company-bank-accounts-link"
+                  >
+                    {tBank("open")}
                   </Link>
                   {tOn(`countries.${c.country}`)}
                   <Badge tone="accent">{tRoles(c.roleKey as "owner")}</Badge>

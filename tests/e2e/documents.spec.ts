@@ -17,7 +17,12 @@ import {
  * company's own tax category by id; the fixture rate is arbitrary, not a real country rate.
  */
 function draftInput(taxCategoryId: string | null) {
-  const { lines, relation: _r, ...rest } = invoiceDraft({ buyer: { name: "Testa Pircējs SIA" } });
+  const {
+    lines,
+    relation: _r,
+    bankAccounts: _b,
+    ...rest
+  } = invoiceDraft({ buyer: { name: "Testa Pircējs SIA" } });
   return {
     ...rest,
     lines: lines.map(({ id: _id, sourceLineId: _s, taxCategory: _t, ...l }) => ({

@@ -53,7 +53,6 @@ const decisions: ImportDecisions = {
     address: { lines: ["Parauga iela 1"], city: "Rīga", countryCode: "LV" },
   },
   buyer: { name: "Sample Shipping Agency Ltd" },
-  bankAccounts: [{ iban: "LV80BANK0000435195001" }],
   defaultTaxCategoryId: "", // set per company: decisionsFor(cats)
   acknowledgedFlags: [],
 };
@@ -115,7 +114,7 @@ describe("PDF import", { timeout: 30_000 }, () => {
 
   it("finds an existing issued document with the same number and date", async () => {
     const { actor, companyId } = await newCompany();
-    const { lines, ...rest } = sampleModels("en").invoice!.document;
+    const { lines, bankAccounts: _b, ...rest } = sampleModels("en").invoice!.document;
     const sampleCats = await addFixtureTaxCategories(
       db,
       actor,

@@ -31,7 +31,7 @@ describe("validateTaxCategory (technical consistency, not country tax rules)", (
 
 describe("draft input references the catalog by id", () => {
   const base = () => {
-    const { lines, relation: _r, ...rest } = invoiceDraft();
+    const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft();
     return {
       ...rest,
       lines: lines.map(({ id: _i, sourceLineId: _s, taxCategory: _t, ...l }) => l),

@@ -125,11 +125,14 @@ function cleanLine({ sourceLineId: _s, taxCategory: _snapshot, ...l }: DocumentL
 /**
  * The PATCH `draft` body: the edited draft with empty optional fields omitted. Relations and the
  * seller are not editable; the server ignores them (the seller comes from the company profile).
+ * Bank details are never sent inline: `bankAccountId` is sent only when the user changed the
+ * account (an id, or null for none); otherwise the server keeps the saved details as they are.
  */
-export function toDraftInput(draft: DocumentDraft) {
-  const { relation: _relation, ...rest } = draft;
+export function toDraftInput(draft: DocumentDraft, bank?: { bankAccountId: string | null }) {
+  const { relation: _relation, bankAccounts: _bank, bankAccountId: _bankId, ...rest } = draft;
   return {
     ...rest,
+    ...(bank ? { bankAccountId: bank.bankAccountId } : {}),
     dueDate: blank(draft.dueDate),
     supplyDate: blank(draft.supplyDate),
     validUntil: blank(draft.validUntil),

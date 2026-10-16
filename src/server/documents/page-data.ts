@@ -1,6 +1,10 @@
 import "server-only";
 import { z } from "zod";
 import {
+  type BankAccountView,
+  listBankAccounts,
+} from "@/modules/documents/server/bank-account-service";
+import {
   getDocument,
   listDocuments,
   type StoredDocument,
@@ -44,8 +48,13 @@ export type DocumentPageData =
       permissions: DocumentPermissions;
       /** Active categories offered in the line picker (archived ones are never offered). */
       taxCategories: TaxCategoryView[];
+      /** Active company bank accounts offered in the account picker (drafts only). */
+      bankAccounts: BankAccountView[];
     }
   | Denied;
+
+export type NewDocumentPageData =
+  { status: "ok"; permissions: DocumentPermissions; bankAccounts: BankAccountView[] } | Denied;
 
 async function permissionsFor(user: AuthenticatedUser, companyId: string) {
   const ctx = await requireCompanyAccess(getDb(), toActor(user), companyId, "documents.view");
@@ -93,7 +102,24 @@ export async function documentPageData(
     const permissions = await permissionsFor(user, companyId);
     const document = await getDocument(getDb(), toActor(user), companyId, documentId);
     const taxCategories = await listTaxCategories(getDb(), toActor(user), companyId);
-    return { status: "ok", document, permissions, taxCategories };
+    const bankAccounts =
+      document.status === "draft" ? await listBankAccounts(getDb(), toActor(user), companyId) : [];
+    return { status: "ok", document, permissions, taxCategories, bankAccounts };
+  } catch (err) {
+    return denied(err);
+  }
+}
+
+/** "New document" page (documents.view; creating needs documents.create, API-enforced). */
+export async function newDocumentPageData(
+  user: AuthenticatedUser,
+  companyId: string,
+): Promise<NewDocumentPageData> {
+  if (!z.uuid().safeParse(companyId).success) return { status: "not_found" };
+  try {
+    const permissions = await permissionsFor(user, companyId);
+    const bankAccounts = await listBankAccounts(getDb(), toActor(user), companyId);
+    return { status: "ok", permissions, bankAccounts };
   } catch (err) {
     return denied(err);
   }

@@ -267,7 +267,10 @@ describe("upgrading to the tax-category catalog (0010–0011)", () => {
 
       await migrate(db, { migrationsFolder: MIGRATIONS });
       const after = await snapshot();
-      expect(after.doc).toEqual(before.doc);
+      // Later migrations only add the (empty) bank-account link (0012).
+      const { bank_account_id: bankLink, ...docAfter } = after.doc as Record<string, unknown>;
+      expect(bankLink).toBeNull();
+      expect(docAfter).toEqual(before.doc);
       const { tax_category_id: linkId, ...lineAfter } = after.line;
       expect(linkId).toBeNull();
       expect(lineAfter).toEqual(before.line);
@@ -294,6 +297,78 @@ describe("upgrading to the tax-category catalog (0010–0011)", () => {
       for (const stmt of grantSql.split("--> statement-breakpoint")) await pool.query(stmt);
       expect(await grants()).toEqual(["accountant", "administrator", "owner"]);
       expect(await count(pool, `SELECT count(*) AS n FROM tax_categories`)).toBe(0); // no presets
+    } finally {
+      await pool.end();
+    }
+  });
+});
+
+describe("upgrading to company bank accounts (0012)", () => {
+  const BEFORE_ACCOUNTS = 11; // 0011_grant_tax_categories_manage
+
+  it("keeps inline bank details of drafts and issued documents; creates no accounts", async () => {
+    const pool = await freshDatabase("bankacc");
+    try {
+      const db = drizzle(pool);
+      await migrate(db, { migrationsFolder: migrationsFolder((i) => i <= BEFORE_ACCOUNTS) });
+      const company = (
+        await pool.query<{ id: string }>(
+          `INSERT INTO companies (name, country) VALUES ('Bank Upgrade SIA', 'LV') RETURNING id`,
+        )
+      ).rows[0]!.id;
+      // Fictitious details with a valid checksum, as entered before accounts existed.
+      const bank = JSON.stringify([{ bankName: "Example Bank AS", iban: "LV80BANK0000435195001" }]);
+      const insertDoc = async () =>
+        (
+          await pool.query<{ id: string }>(
+            `INSERT INTO documents (company_id, type, language, currency, issue_date, seller, buyer, bank_accounts)
+             VALUES ($1, 'invoice', 'en', 'EUR', '2026-01-05', '{"name":"S"}', '{"name":"B"}', $2)
+             RETURNING id`,
+            [company, bank],
+          )
+        ).rows[0]!.id;
+      const draftId = await insertDoc();
+      const issuedId = await insertDoc();
+      await pool.query(
+        `UPDATE documents SET status = 'issued', number = 'INV-2026-0001', issued_at = now(),
+           content_hash = 'fixture-hash', snapshot = '{"number":"INV-2026-0001"}' WHERE id = $1`,
+        [issuedId],
+      );
+      const rows = async () =>
+        (
+          await pool.query<{ id: string; doc: Record<string, unknown> }>(
+            `SELECT id, to_jsonb(d) AS doc FROM documents d WHERE company_id = $1 ORDER BY id`,
+            [company],
+          )
+        ).rows;
+      const before = await rows();
+
+      await migrate(db, { migrationsFolder: MIGRATIONS });
+      const after = await rows();
+      expect(after.map((r) => r.id)).toEqual(before.map((r) => r.id));
+      after.forEach(({ doc: { bank_account_id: link, ...rest } }, i) => {
+        expect(link).toBeNull();
+        expect(rest).toEqual(before[i]!.doc);
+      });
+      expect(await count(pool, `SELECT count(*) AS n FROM company_bank_accounts`)).toBe(0);
+      // Issued documents stay immutable; a link to another company's account is refused.
+      await expect(
+        pool.query(`UPDATE documents SET bank_accounts = '[]' WHERE id = $1`, [issuedId]),
+      ).rejects.toThrow();
+      const other = (
+        await pool.query<{ id: string }>(
+          `INSERT INTO companies (name, country) VALUES ('Other SIA', 'LV') RETURNING id`,
+        )
+      ).rows[0]!.id;
+      const foreign = (
+        await pool.query<{ id: string }>(
+          `INSERT INTO company_bank_accounts (company_id, iban) VALUES ($1, 'LV80BANK0000435195001') RETURNING id`,
+          [other],
+        )
+      ).rows[0]!.id;
+      await expect(
+        pool.query(`UPDATE documents SET bank_account_id = $1 WHERE id = $2`, [foreign, draftId]),
+      ).rejects.toThrow();
     } finally {
       await pool.end();
     }

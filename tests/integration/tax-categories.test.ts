@@ -26,6 +26,7 @@ import {
 } from "@/server/db/schema";
 import { UnauthenticatedError } from "@/server/errors";
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
+import { addFixtureBankAccount } from "../support/bank-account-fixtures";
 import { FIXTURE_SELLER_PROFILE, FIXTURE_TAX, invoiceDraft } from "../support/document-fixtures";
 import { openTestDb } from "./test-db";
 
@@ -150,7 +151,7 @@ async function category(companyId: string, actor: Actor, cat: object = FIXTURE_T
 
 /** Draft API input whose lines all use `categoryId`. */
 function input(categoryId: string | null, overrides: Parameters<typeof invoiceDraft>[0] = {}) {
-  const { lines, relation: _r, ...rest } = invoiceDraft(overrides);
+  const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft(overrides);
   return {
     ...rest,
     lines: lines.map(({ id: _id, sourceLineId: _s, taxCategory: _t, ...l }) => ({
@@ -340,7 +341,8 @@ describe("tax categories on drafts and issuing", () => {
     });
     expect(refused.status).toBe(422);
 
-    const created = await api.createDoc(companyId, input(id));
+    const bankAccountId = await addFixtureBankAccount(db, owner, companyId);
+    const created = await api.createDoc(companyId, { ...input(id), bankAccountId });
     expect(created.status).toBe(201);
     expect(created.body.document.draft.lines[0]).toMatchObject({
       taxCategoryId: id,
@@ -444,8 +446,9 @@ describe("tax categories on drafts and issuing", () => {
     const { owner, companyId } = await newCompany();
     const id = await category(companyId, owner);
     const other = await category(companyId, owner, FIXTURE_TAX.zero);
+    const bankAccountId = await addFixtureBankAccount(db, owner, companyId);
     as(owner);
-    const inv = (await api.createDoc(companyId, input(id))).body.document;
+    const inv = (await api.createDoc(companyId, { ...input(id), bankAccountId })).body.document;
     const issuedInv = (await api.issue(companyId, inv.id, 1)).body.document;
     // Archiving the invoice's category does not block crediting it.
     await api.patch(companyId, id, { expectedVersion: 1, archived: true });
@@ -453,7 +456,7 @@ describe("tax categories on drafts and issuing", () => {
     const cn = await createCreditNoteDraft(db, owner, companyId, inv.id, "full", {
       issueDate: "2026-03-10",
     });
-    const { relation: _r, lines, ...rest } = cn.draft;
+    const { relation: _r, bankAccounts: _b, lines, ...rest } = cn.draft;
     const edited = await api.patchDoc(companyId, cn.id, {
       expectedVersion: 1,
       draft: {
@@ -496,8 +499,11 @@ describe("tax categories on drafts and issuing", () => {
   it("derived invoices keep active categories and ask for a choice when one was archived", async () => {
     const { owner, companyId } = await newCompany();
     const id = await category(companyId, owner);
+    const bankAccountId = await addFixtureBankAccount(db, owner, companyId);
     as(owner);
-    const pf = (await api.createDoc(companyId, input(id, { type: "proforma" }))).body.document;
+    const pf = (
+      await api.createDoc(companyId, { ...input(id, { type: "proforma" }), bankAccountId })
+    ).body.document;
     await api.issue(companyId, pf.id, 1);
     const inv = await deriveDraft(db, owner, companyId, pf.id, "invoice_from_proforma", {
       issueDate: "2026-03-05",

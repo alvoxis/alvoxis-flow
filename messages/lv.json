@@ -411,7 +411,8 @@
       "buyer": "Pircējs",
       "lines": "Rindas",
       "other": "Apmaksa un piezīmes",
-      "totals": "Kopsummas"
+      "totals": "Kopsummas",
+      "bank": "Bankas rekvizīti"
     },
     "name": "Nosaukums",
     "addressLine": "Iela un numurs",
@@ -551,7 +552,12 @@
         "iban": {
           "invalid": "Bankas konta IBAN nav derīgs."
         },
-        "missing": "Dokumentā nav norādīts bankas konts."
+        "missing": "Dokumentā nav norādīts bankas konts.",
+        "unknown": "Izvēlētais bankas konts šajā uzņēmumā nav atrasts.",
+        "archived": "Šī melnraksta bankas konts ir arhivēts. Pirms izrakstīšanas izvēlieties citu kontu vai bez rekvizītiem.",
+        "bic": {
+          "invalid": "BIC/SWIFT kods nav derīgs (8 vai 11 burti un cipari)."
+        }
       },
       "lines": {
         "required": "Pievienojiet vismaz vienu rindu.",
@@ -593,6 +599,7 @@
     "deleted": "Melnraksts dzēsts.",
     "deleteConfirmBodyEditor": "Melnraksts tiks dzēsts neatgriezeniski, un to nevarēs atjaunot. Visas šajā redaktorā nesaglabātās izmaiņas tiks zaudētas. Izrakstītus dokumentus dzēst nevar.",
     "colBuyer": "Pircējs",
+    "creditNoteBank": "Kredītrēķins saglabā sākotnējā rēķina bankas rekvizītus.",
     "pdf": {
       "open": "Atvērt PDF",
       "download": "Lejupielādēt PDF",
@@ -662,5 +669,71 @@
       "error": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz."
     },
     "reload": "Pārlādēt"
+  },
+  "bankAccounts": {
+    "title": "Bankas konti",
+    "description": "Uzņēmuma bankas konti, ko var norādīt dokumentos.",
+    "open": "Bankas konti",
+    "snapshotHint": "Izrakstot dokumentu, izvēlētā konta rekvizīti tiek saglabāti tajā. Vēlākas izmaiņas šeit izrakstītos dokumentus nemaina.",
+    "readOnly": "Jūs varat skatīt bankas kontus. Mainīt tos var īpašnieki un administratori.",
+    "empty": "Bankas kontu vēl nav.",
+    "colName": "Nosaukums",
+    "colIban": "IBAN",
+    "colBic": "BIC/SWIFT",
+    "colStatus": "Statuss",
+    "colActions": "Darbības",
+    "fields": {
+      "iban": "IBAN",
+      "ibanHint": "Pārbauda pēc IBAN kontrolsummas. Vēlāk to mainīt nevar.",
+      "bic": "BIC/SWIFT",
+      "bicHint": "Nav obligāts, 8 vai 11 rakstzīmes.",
+      "bankName": "Bankas nosaukums",
+      "label": "Apzīmējums",
+      "labelHint": "Nav obligāts, piemēram, “Pamatkonts”. Redzams tikai lietotnē.",
+      "isDefault": "Izmantot pēc noklusējuma jauniem dokumentiem"
+    },
+    "status": {
+      "active": "Aktīvs",
+      "archived": "Arhivēts",
+      "default": "Noklusējuma"
+    },
+    "create": "Pievienot kontu",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "immutableHint": "IBAN mainīt nevar. Citam IBAN pievienojiet jaunu kontu un arhivējiet šo.",
+    "makeDefault": "Iestatīt kā noklusējuma",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "archiveConfirmTitle": "Arhivēt šo kontu?",
+    "archiveConfirmBody": "Tas vairs netiks piedāvāts dokumentiem. Melnrakstus, kuros tas jau izvēlēts, nevar izrakstīt, kamēr nav izvēlēts cits konts. Izrakstītie dokumenti nemainās.",
+    "archiveConfirm": "Arhivēt",
+    "done": {
+      "created": "Konts pievienots.",
+      "saved": "Izmaiņas saglabātas.",
+      "archived": "Konts arhivēts.",
+      "restored": "Konts atjaunots.",
+      "defaultSet": "Noklusējuma konts nomainīts."
+    },
+    "outcome": {
+      "invalid": "Lūdzu, pārbaudiet iezīmētos laukus.",
+      "ibanTaken": "Šis IBAN jau tiek izmantots aktīvā šī uzņēmuma kontā.",
+      "conflict": "Šis konts ir mainīts citur. Pārlādējiet, lai redzētu jaunāko versiju.",
+      "signedOut": "Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.",
+      "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
+      "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
+      "notFound": "Šis konts vairs nepastāv.",
+      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz."
+    },
+    "reload": "Pārlādēt",
+    "picker": {
+      "label": "Bankas konts",
+      "none": "Bez bankas rekvizītiem",
+      "hint": "Konta rekvizīti tiek nokopēti dokumentā un saglabāti, to izrakstot.",
+      "empty": "Uzņēmumam vēl nav bankas kontu.",
+      "manage": "Pārvaldīt bankas kontus",
+      "archived": "Arhivēts konts {iban}",
+      "unlinked": "Saglabātie rekvizīti {iban} (nav saistīti ar kontu)"
+    }
   }
 }

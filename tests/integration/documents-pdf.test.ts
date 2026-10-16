@@ -87,7 +87,7 @@ async function member(companyId: string, roleKey: string) {
 }
 
 function input(cats: FixtureCategoryIds) {
-  const { lines, relation: _r, ...rest } = invoiceDraft();
+  const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft();
   return {
     ...rest,
     lines: withCategoryIds(

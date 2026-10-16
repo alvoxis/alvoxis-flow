@@ -97,10 +97,13 @@ export const draftInputSchema = z.object({
   seller: party,
   buyer: party,
   deliverTo: party.optional(),
-  bankAccounts: z
-    .array(z.object({ bankName: optText(200), iban: text(42).min(1), bic: optText(11) }))
-    .max(5)
-    .default([]),
+  /**
+   * A company bank account (by id); the server builds the printed details from it. Omitted on
+   * update = keep the current choice; null = no bank account. Inline account details are refused
+   * so a client cannot put an arbitrary IBAN on a document.
+   */
+  bankAccountId: z.uuid().nullable().optional(),
+  bankAccounts: z.never().optional(),
   buyerReference: optText(200),
   paymentTerms: optText(500),
   notes: optText(2000),
@@ -117,9 +120,10 @@ export type DraftInput = z.input<typeof draftInputSchema>;
  * the snapshot (`taxCategory` is null until then).
  */
 export function parseDraftInput(input: unknown, newLineId: () => string): DocumentDraft {
-  const parsed = draftInputSchema.parse(input);
+  const { bankAccountId: _bank, bankAccounts: _never, ...parsed } = draftInputSchema.parse(input);
   return {
     ...parsed,
+    bankAccounts: [],
     lines: parsed.lines.map(({ taxCategoryId, taxCategory: _never, ...l }) => ({
       ...l,
       id: newLineId(),

@@ -52,6 +52,50 @@ export const documentRelationKind = pgEnum("document_relation_kind", [
 export const currencyCode = pgEnum("currency_code", ["EUR", "PLN"]);
 export const numberingResetPolicy = pgEnum("numbering_reset_policy", ["never", "yearly"]);
 export const lineKind = pgEnum("document_line_kind", ["item", "charge"]);
+/**
+ * Company bank accounts printed on documents. A draft references one by id; the server builds the
+ * document's bank snapshot from it and refreshes it when the document is issued. The IBAN never
+ * changes (a new IBAN is a new account); accounts are archived, never deleted. Issued documents
+ * keep their own frozen snapshot.
+ */
+export const companyBankAccounts = pgTable(
+  "company_bank_accounts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    label: text("label"),
+    bankName: text("bank_name"),
+    /** Normalised: no spaces, upper case; mod-97 checked by the service. */
+    iban: text("iban").notNull(),
+    bic: text("bic"),
+    isDefault: boolean("is_default").notNull().default(false),
+    version: integer("version").notNull().default(1),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("company_bank_accounts_id_company_uq").on(t.id, t.companyId),
+    // An IBAN is listed once among a company's active accounts.
+    uniqueIndex("company_bank_accounts_active_iban_uq")
+      .on(t.companyId, t.iban)
+      .where(sql`${t.archivedAt} is null`),
+    uniqueIndex("company_bank_accounts_one_default_uq")
+      .on(t.companyId)
+      .where(sql`${t.isDefault} and ${t.archivedAt} is null`),
+    check("company_bank_accounts_iban_ck", sql`${t.iban} ~ '^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$'`),
+    check(
+      "company_bank_accounts_bic_ck",
+      sql`${t.bic} is null or ${t.bic} ~ '^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$'`,
+    ),
+    check("company_bank_accounts_version_ck", sql`${t.version} > 0`),
+  ],
+);
+
 export const taxTreatmentKind = pgEnum("tax_treatment_kind", [
   "standard",
   "zero_rated",
@@ -168,6 +212,8 @@ export const documents = pgTable(
     buyer: jsonb("buyer").$type<PartySnapshot>().notNull(),
     deliverTo: jsonb("deliver_to").$type<PartySnapshot>(),
     bankAccounts: jsonb("bank_accounts").$type<BankAccountSnapshot[]>().notNull().default([]),
+    /** Drafts: the company bank account the snapshot was built from (null if none or legacy). */
+    bankAccountId: uuid("bank_account_id"),
     buyerReference: text("buyer_reference"),
     paymentTerms: text("payment_terms"),
     notes: text("notes"),
@@ -201,6 +247,12 @@ export const documents = pgTable(
       name: "documents_series_same_company_fk",
       columns: [t.seriesId, t.companyId],
       foreignColumns: [documentNumberSeries.id, documentNumberSeries.companyId],
+    }).onDelete("restrict"),
+    // Composite key: a document can only reference a bank account of its own company.
+    foreignKey({
+      name: "documents_bank_account_same_company_fk",
+      columns: [t.bankAccountId, t.companyId],
+      foreignColumns: [companyBankAccounts.id, companyBankAccounts.companyId],
     }).onDelete("restrict"),
     foreignKey({
       name: "documents_related_same_company_fk",

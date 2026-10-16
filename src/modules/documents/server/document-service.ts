@@ -32,6 +32,7 @@ import {
   DocumentVersionConflictError,
 } from "./errors";
 import { draftToRowValues, lineToRowValues, rowToDraft } from "./mapping";
+import { accountSnapshot, loadBankAccount } from "./bank-account-service";
 import { allocateDocumentNumber } from "./numbering-service";
 import {
   assignTaxCategories,
@@ -84,11 +85,58 @@ async function loadRow(db: DbOrTx, companyId: string, documentId: string, forUpd
     row.status === "draft"
       ? await loadCategories(db, companyId, referencedCategoryIds(draft.lines))
       : new Map();
-  return { row, lines, draft, categories };
+  const bankAccount =
+    row.status === "draft" && row.bankAccountId
+      ? await loadBankAccount(db, companyId, row.bankAccountId)
+      : undefined;
+  return { row, lines, draft, categories, bankAccount };
+}
+
+/** Blocking finding: the draft's bank account was archived after it was chosen. */
+function bankAccountFindings(
+  draft: DocumentDraft,
+  account: { archivedAt: Date | null } | undefined,
+): ValidationIssue[] {
+  if (!draft.bankAccountId) return [];
+  return !account || account.archivedAt
+    ? [{ code: "bankAccount.archived", severity: "error", path: "bankAccountId" }]
+    : [];
+}
+
+/** `bankAccountId` as submitted: undefined (keep), null (none) or an id (input already parsed). */
+function bankChoice(input: unknown): string | null | undefined {
+  const v = (input as { bankAccountId?: unknown }).bankAccountId;
+  return typeof v === "string" || v === null ? v : undefined;
+}
+
+/**
+ * Resolves the submitted bank account choice against the company's accounts and builds the
+ * printed details from the account row (never from the request). Unknown or other companies'
+ * accounts → 422 `bankAccount.unknown`; a newly chosen archived account → 422
+ * `bankAccount.archived` (the draft's current account may stay, issuing is then blocked).
+ */
+async function assignBankAccount(
+  tx: DbOrTx,
+  companyId: string,
+  choice: string | null | undefined,
+  current?: Pick<DocumentDraft, "bankAccounts" | "bankAccountId">,
+): Promise<Pick<DocumentDraft, "bankAccounts" | "bankAccountId">> {
+  if (choice === undefined)
+    return current
+      ? { bankAccounts: current.bankAccounts, bankAccountId: current.bankAccountId }
+      : { bankAccounts: [], bankAccountId: undefined };
+  if (choice === null) return { bankAccounts: [], bankAccountId: undefined };
+  const account = await loadBankAccount(tx, companyId, choice, true);
+  const path = "bankAccountId";
+  if (!account)
+    throw new DocumentValidationError([{ code: "bankAccount.unknown", severity: "error", path }]);
+  if (account.archivedAt && current?.bankAccountId !== account.id)
+    throw new DocumentValidationError([{ code: "bankAccount.archived", severity: "error", path }]);
+  return { bankAccounts: [accountSnapshot(account)], bankAccountId: account.id };
 }
 
 function toStored(loaded: Awaited<ReturnType<typeof loadRow>>): StoredDocument {
-  const { row, draft, categories } = loaded;
+  const { row, draft, categories, bankAccount } = loaded;
   const issuedTotals = row.snapshot
     ? ((row.snapshot as { totals?: DocumentTotals | null }).totals ?? null)
     : null;
@@ -109,7 +157,11 @@ function toStored(loaded: Awaited<ReturnType<typeof loadRow>>): StoredDocument {
     contentHash: row.contentHash,
     issues:
       row.status === "draft"
-        ? [...validateDocument(draft), ...taxCategoryFindings(draft, categories)]
+        ? [
+            ...validateDocument(draft),
+            ...taxCategoryFindings(draft, categories),
+            ...bankAccountFindings(draft, bankAccount),
+          ]
         : [],
   };
 }
@@ -211,11 +263,12 @@ export async function createDraft(
       );
     }
     const lines = await assignTaxCategories(tx, companyId, draft.lines);
+    const bank = await assignBankAccount(tx, companyId, bankChoice(input));
     const id = await insertDraft(
       tx,
       actor,
       companyId,
-      { ...draft, lines },
+      { ...draft, ...bank, lines },
       opts.auditAction ?? "document.draft_created",
       opts,
     );
@@ -279,7 +332,10 @@ export async function updateDraft(
       relatedDocumentId: _rd,
       type: _t,
       ...values
-    } = draftToRowValues(next);
+    } = draftToRowValues({
+      ...next,
+      ...(await assignBankAccount(tx, companyId, bankChoice(input), current.draft)),
+    });
     await tx
       .update(documents)
       .set({ ...values, version: expectedVersion + 1 })
@@ -452,6 +508,19 @@ export async function deriveDraft(
           : draft.lines.map((l) => l.sourceLineId);
       draft = { ...draft, lines: await linkDerivedLines(tx, companyId, draft.lines, sourceIds) };
     }
+    // Derived invoices keep the source's bank account while it is active (fresh details);
+    // otherwise they keep the source's printed details without a link.
+    if (kind !== "delivery_note") {
+      const [src] = await tx
+        .select({ bankAccountId: documents.bankAccountId })
+        .from(documents)
+        .where(and(eq(documents.id, sourceId), eq(documents.companyId, companyId)));
+      const account = src?.bankAccountId
+        ? await loadBankAccount(tx, companyId, src.bankAccountId, true)
+        : undefined;
+      if (account && !account.archivedAt)
+        draft = { ...draft, bankAccounts: [accountSnapshot(account)], bankAccountId: account.id };
+    }
     // Derived lines that refer to the source keep sourceLineId only for credit notes; strip others
     // so the same-tenant line FK is only used where it carries meaning.
     if (draft.type !== "credit_note")
@@ -500,12 +569,24 @@ export async function issueDocument(
           : undefined;
       return cat ? { ...l, taxCategory: categorySnapshot(cat) } : l;
     });
+    // The chosen bank account is locked FOR SHARE (archiving takes FOR UPDATE); its current
+    // details go into the snapshot.
+    const bankAccount = current.draft.bankAccountId
+      ? await loadBankAccount(tx, companyId, current.draft.bankAccountId, true)
+      : undefined;
     const draft: DocumentDraft = {
       ...current.draft,
       seller: applySellerIdentity(current.draft.seller, await loadSellerIdentity(tx, companyId)),
       lines,
+      ...(bankAccount && !bankAccount.archivedAt
+        ? { bankAccounts: [accountSnapshot(bankAccount)] }
+        : {}),
     };
-    const issues = [...validateDocument(draft), ...taxCategoryFindings(draft, categories)];
+    const issues = [
+      ...validateDocument(draft),
+      ...taxCategoryFindings(draft, categories),
+      ...bankAccountFindings(draft, bankAccount),
+    ];
     if (hasBlockingIssues(issues)) throw new DocumentValidationError(issues);
 
     if (draft.type === "credit_note") {
@@ -569,6 +650,7 @@ export async function issueDocument(
       ...draft,
       // Catalog links are a draft-time reference, never part of the issued content.
       lines: draft.lines.map(({ taxCategoryId: _id, ...l }) => l),
+      bankAccountId: undefined,
       id: documentId,
       number,
       status: "issued",
@@ -607,6 +689,7 @@ export async function issueDocument(
         grossTotal: totals?.grossTotal ?? null,
         taxSummary: totals?.taxSummary ?? null,
         seller: draft.seller,
+        bankAccounts: draft.bankAccounts,
         snapshot: snapshot as unknown as DocumentDraft & Record<string, unknown>,
         contentHash,
         issuedAt,

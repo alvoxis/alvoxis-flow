@@ -3,8 +3,13 @@ import { type ReactNode } from "react";
 import { type AppLocale } from "@/i18n/config";
 import { formatDate, formatMoney } from "@/lib/format";
 import { type CurrencyCode } from "@/lib/money";
+import { formatIban } from "@/features/bank-accounts/model";
 import { type ApiDocument } from "@/features/documents/editor-model";
-import { isPricedDocument, type PartySnapshot } from "@/modules/documents/domain/types";
+import {
+  type BankAccountSnapshot,
+  isPricedDocument,
+  type PartySnapshot,
+} from "@/modules/documents/domain/types";
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -106,6 +111,7 @@ export function DocumentView({ document }: { document: ApiDocument }) {
         </table>
       </div>
       {document.totals ? <Totals totals={document.totals} currency={d.currency} /> : null}
+      {priced && d.bankAccounts.length > 0 ? <BankDetails accounts={d.bankAccounts} /> : null}
       {d.paymentTerms || d.notes ? (
         <dl className="grid gap-3 sm:grid-cols-2">
           {d.paymentTerms ? <Row label={t("paymentTerms")}>{d.paymentTerms}</Row> : null}
@@ -113,6 +119,28 @@ export function DocumentView({ document }: { document: ApiDocument }) {
         </dl>
       ) : null}
     </div>
+  );
+}
+
+/** Bank details as stored on the document (on issued ones: frozen when issued). */
+export function BankDetails({ accounts }: { accounts: readonly BankAccountSnapshot[] }) {
+  const t = useTranslations("documentPdf");
+  if (accounts.length === 0) return null;
+  return (
+    <section className="space-y-2 text-sm" data-testid="document-bank-details">
+      <h3 className="font-semibold text-text">{t("payment")}</h3>
+      {accounts.map((b) => (
+        <dl key={b.iban} className="grid gap-1 sm:grid-cols-3">
+          {b.bankName ? <Row label={t("bank")}>{b.bankName}</Row> : null}
+          <Row label={t("iban")}>
+            <span className="font-mono break-all" data-testid="document-bank-iban">
+              {formatIban(b.iban)}
+            </span>
+          </Row>
+          {b.bic ? <Row label={t("bic")}>{b.bic}</Row> : null}
+        </dl>
+      ))}
+    </section>
   );
 }
 

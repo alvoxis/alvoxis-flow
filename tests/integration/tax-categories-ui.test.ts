@@ -24,6 +24,7 @@ import { documentPageData, documentsListData } from "@/server/documents/page-dat
 import { UnauthenticatedError } from "@/server/errors";
 import { taxCategoriesPageData } from "@/server/tax-categories/page-data";
 import { createCompanyWithOwner } from "@/server/tenancy/company-service";
+import { addFixtureBankAccount } from "../support/bank-account-fixtures";
 import { FIXTURE_SELLER_PROFILE, FIXTURE_TAX, invoiceDraft } from "../support/document-fixtures";
 import { openTestDb } from "./test-db";
 
@@ -110,7 +111,7 @@ const addCategory = async (actor: Actor, companyId: string, cat: object = FIXTUR
   (await createTaxCategory(db, actor, companyId, cat)).taxCategory;
 
 function input(categoryId: string | null) {
-  const { lines, relation: _r, ...rest } = invoiceDraft();
+  const { lines, relation: _r, bankAccounts: _b, ...rest } = invoiceDraft();
   return {
     ...rest,
     lines: lines.map(({ id: _id, sourceLineId: _s, taxCategory: _t, ...l }) => ({
@@ -147,7 +148,8 @@ async function issue(companyId: string, documentId: string, expectedVersion: num
 
 /** A draft whose lines carry a pre-catalog snapshot (no catalog link), as before stage C1. */
 async function legacyDraft(owner: Actor, companyId: string, categoryId: string) {
-  const draft = await createDraft(db, owner, companyId, input(categoryId));
+  const bankAccountId = await addFixtureBankAccount(db, owner, companyId);
+  const draft = await createDraft(db, owner, companyId, { ...input(categoryId), bankAccountId });
   await db
     .update(documentLines)
     .set({ taxCategoryId: null, taxCategory: FIXTURE_TAX.standard20 })
