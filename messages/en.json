@@ -348,5 +348,41 @@
     "twoFactorRequiredTitle": "Two-factor authentication required",
     "twoFactorRequiredBody": "Owners and administrators must set up two-factor authentication before they can access company data.",
     "setUpNow": "Set up now"
+  },
+  "company": {
+    "title": "Company profile",
+    "description": "Identification details used for your company, for example as the seller on documents.",
+    "openProfile": "Profile",
+    "readOnly": "You can view this profile. Only owners and administrators can change it.",
+    "name": "Display name",
+    "legalName": "Official (legal) name",
+    "country": "Country",
+    "countryHint": "Set when the company was created; it cannot be changed here.",
+    "registrationNumber": "Registration number",
+    "vatNumber": "VAT number",
+    "vatNumberHint": "Optional. Starts with the country code, e.g. {prefix}. Only the format is checked, not registration.",
+    "address": "Registered address",
+    "addressLine1": "Street and number",
+    "addressLine2": "Additional address line",
+    "postalCode": "Postal code",
+    "city": "City",
+    "save": "Save profile",
+    "saved": "Profile saved.",
+    "invalid": "Please check the highlighted fields.",
+    "forbidden": "You do not have permission to change this profile.",
+    "twoFactorRequired": "Your role requires two-factor authentication before you can open company data.",
+    "setUpTwoFactor": "Set up two-factor authentication",
+    "error": "Something went wrong. Please try again.",
+    "notSet": "Not set",
+    "fieldError": {
+      "name": "Enter a name (up to 200 characters).",
+      "legalName": "Up to 300 characters.",
+      "registrationNumber": "Use letters, digits, spaces, dots, slashes or dashes (up to 32 characters).",
+      "vatNumber": "Use the country code followed by 2–12 letters or digits.",
+      "addressLine1": "Up to 200 characters.",
+      "addressLine2": "Up to 200 characters.",
+      "postalCode": "Up to 16 characters.",
+      "city": "Up to 100 characters."
+    }
   }
 }

@@ -64,6 +64,13 @@
       "when": 1792135497731,
       "tag": "0008_auth_hash_session_tokens",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792147608590,
+      "tag": "0009_company_profile_address",
+      "breakpoints": true
     }
   ]
 }

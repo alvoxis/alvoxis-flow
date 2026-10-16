@@ -348,5 +348,41 @@
     "twoFactorRequiredTitle": "Nepieciešama divu faktoru autentifikācija",
     "twoFactorRequiredBody": "Īpašniekiem un administratoriem pirms piekļuves uzņēmuma datiem jāiestata divu faktoru autentifikācija.",
     "setUpNow": "Iestatīt tagad"
+  },
+  "company": {
+    "title": "Uzņēmuma profils",
+    "description": "Jūsu uzņēmuma rekvizīti, piemēram, pārdevēja norādīšanai dokumentos.",
+    "openProfile": "Profils",
+    "readOnly": "Jūs varat skatīt šo profilu. Mainīt to var tikai īpašnieki un administratori.",
+    "name": "Attēlojamais nosaukums",
+    "legalName": "Oficiālais (juridiskais) nosaukums",
+    "country": "Valsts",
+    "countryHint": "Norādīta, veidojot uzņēmumu; šeit to mainīt nevar.",
+    "registrationNumber": "Reģistrācijas numurs",
+    "vatNumber": "PVN numurs",
+    "vatNumberHint": "Nav obligāts. Sākas ar valsts kodu, piemēram, {prefix}. Tiek pārbaudīts tikai formāts, nevis reģistrācija.",
+    "address": "Juridiskā adrese",
+    "addressLine1": "Iela un numurs",
+    "addressLine2": "Papildu adreses rinda",
+    "postalCode": "Pasta indekss",
+    "city": "Pilsēta",
+    "save": "Saglabāt profilu",
+    "saved": "Profils saglabāts.",
+    "invalid": "Lūdzu, pārbaudiet iezīmētos laukus.",
+    "forbidden": "Jums nav tiesību mainīt šo profilu.",
+    "twoFactorRequired": "Jūsu lomai pirms uzņēmuma datu atvēršanas nepieciešama divu faktoru autentifikācija.",
+    "setUpTwoFactor": "Iestatīt divu faktoru autentifikāciju",
+    "error": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz.",
+    "notSet": "Nav norādīts",
+    "fieldError": {
+      "name": "Norādiet nosaukumu (līdz 200 rakstzīmēm).",
+      "legalName": "Līdz 300 rakstzīmēm.",
+      "registrationNumber": "Burti, cipari, atstarpes, punkti, slīpsvītras vai defises (līdz 32 rakstzīmēm).",
+      "vatNumber": "Valsts kods, pēc tam 2–12 burti vai cipari.",
+      "addressLine1": "Līdz 200 rakstzīmēm.",
+      "addressLine2": "Līdz 200 rakstzīmēm.",
+      "postalCode": "Līdz 16 rakstzīmēm.",
+      "city": "Līdz 100 rakstzīmēm."
+    }
   }
 }
