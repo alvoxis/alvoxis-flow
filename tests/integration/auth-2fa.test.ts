@@ -3,6 +3,7 @@ import { type Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { listDocuments } from "@/modules/documents/server/document-service";
 import { requireCompanyAccess } from "@/server/auth/authorization";
+import { operatorResetTwoFactor } from "@/server/auth/operator";
 import { requireUser, toActor } from "@/server/auth/session";
 import {
   listMySessions,
@@ -313,5 +314,35 @@ describe("company access requires every authentication step", () => {
       .set({ status: "active" })
       .where(eq(memberships.userId, outsider.userId));
     await expect(listDocuments(db, toActor(outsider), companyId)).resolves.toEqual([]);
+  });
+
+  it("operator reset removes the factor, signs out everywhere and still requires re-enrolment", async () => {
+    const { email, c, companyId } = await ownerWithCompany();
+    await enrol(c);
+    const id = await userId(email);
+    await expect(operatorResetTwoFactor(db, email, "")).rejects.toThrow(/reason/);
+    expect(await operatorResetTwoFactor(db, "missing@example.test", "TICKET-1")).toBeNull();
+
+    const result = await operatorResetTwoFactor(
+      db,
+      email.toUpperCase(),
+      "TICKET-42 identity checked",
+    );
+    expect(result).toMatchObject({ userId: id, revokedSessions: 1 });
+    expect(await db.select().from(twoFactors).where(eq(twoFactors.userId, id))).toHaveLength(0);
+    await expect(current(c)).rejects.toThrow(UnauthenticatedError);
+
+    // A password sign-in now works without a second factor, but company data stays locked.
+    const { c: again } = await flows.signedIn(email);
+    const me = await current(again);
+    expect(me.twoFactorVerified).toBe(false);
+    await expect(listDocuments(db, toActor(me), companyId)).rejects.toThrow(TwoFactorRequiredError);
+    const [entry] = await db
+      .select()
+      .from(auditLogs)
+      .where(
+        and(eq(auditLogs.entityId, id), eq(auditLogs.action, "auth.two_factor_reset_by_operator")),
+      );
+    expect(entry!.metadata).toEqual({ reason: "TICKET-42 identity checked", revokedSessions: 1 });
   });
 });

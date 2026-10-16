@@ -3,10 +3,11 @@
 Business management SaaS for small and medium businesses in **Latvia, Lithuania, Estonia and Poland**:
 invoicing, customers & suppliers, products, inventory, production, payroll and analytics.
 
-> **Status: Stage 1 — foundation, plus the document foundation (stage 6a).** The repository contains the application skeleton, data model for
-> identity/tenancy/permissions, an internationalised responsive UI shell with a _sample-data_ dashboard,
-> tests and CI. There is **no authentication, no real business data, no payments and no external
-> integrations yet.** See [docs/ROADMAP.md](docs/ROADMAP.md).
+> **Status: Stage 2 — authentication and sessions**, on top of the foundation (stage 1) and the
+> document foundation (stage 6a). Users can register, verify their email, sign in with a password or
+> Google, reset passwords, manage sessions/devices and enrol TOTP two-factor authentication (mandatory
+> for owners and admins). There is **no real business data, no payments and no external integrations
+> yet.** See [docs/ROADMAP.md](docs/ROADMAP.md) and [docs/auth/AUTHENTICATION.md](docs/auth/AUTHENTICATION.md).
 
 ## Stack
 
@@ -19,6 +20,7 @@ invoicing, customers & suppliers, products, inventory, production, payroll and a
 | i18n          | next-intl 4 — `en`, `ru`, `lv`, `lt`, `et`                      |
 | Database      | PostgreSQL 16 + Drizzle ORM 0.45 (SQL migrations in `drizzle/`) |
 | Validation    | Zod 4                                                           |
+| Auth          | Better Auth 1.7 (email/password, Google, TOTP 2FA, DB sessions) |
 | Money         | decimal.js via `src/lib/money` (no floats)                      |
 | Tests         | Vitest 4 (unit + integration), Playwright (e2e)                 |
 | CI            | GitHub Actions                                                  |
@@ -48,15 +50,20 @@ Validated with Zod in [`src/config/env.ts`](src/config/env.ts). Validation is la
 use), so `pnpm build` does not need a database, but any server code that needs configuration fails
 fast with a list of problems (values are never echoed).
 
-| Variable            | Required                             | Purpose                                                                               |
-| ------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
-| `DATABASE_URL`      | yes (runtime)                        | PostgreSQL connection string. Server-only.                                            |
-| `TEST_DATABASE_URL` | integration tests                    | Disposable DB; **its schema is dropped** by the test setup. Name must contain `test`. |
-| `APP_URL`           | no (default `http://localhost:3000`) | Public base URL.                                                                      |
-| `LOG_LEVEL`         | no (default `info`)                  | `fatal`…`debug`.                                                                      |
+| Variable                                    | Required                             | Purpose                                                                               |
+| ------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                              | yes (runtime)                        | PostgreSQL connection string. Server-only.                                            |
+| `TEST_DATABASE_URL`                         | integration tests                    | Disposable DB; **its schema is dropped** by the test setup. Name must contain `test`. |
+| `APP_URL`                                   | no (default `http://localhost:3000`) | Public base URL.                                                                      |
+| `LOG_LEVEL`                                 | no (default `info`)                  | `fatal`…`debug`.                                                                      |
+| `BETTER_AUTH_SECRET`                        | yes (runtime)                        | ≥ 32 random characters; signs sessions, encrypts 2FA data. Server-only.               |
+| `TRUSTED_IP_HEADER`                         | real deployments                     | Client-IP header set by your reverse proxy (rate limiting, device list).              |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | optional                             | Enables Google sign-in (both or neither).                                             |
+| `EMAIL_TRANSPORT` (+ `EMAIL_*`, `SMTP_*`)   | no (default `disabled`)              | `file` writes mails to `tmp/mail` for local development; `smtp` for real delivery.    |
 
-No API keys are needed in this stage. Future secrets (Anthropic, Stripe, Google OAuth, SMTP, Telegram)
-will be server-only variables and will never use the `NEXT_PUBLIC_` prefix.
+Setup steps for Google OAuth and SMTP: [docs/auth/AUTHENTICATION.md](docs/auth/AUTHENTICATION.md).
+All secrets are server-only variables and never use the `NEXT_PUBLIC_` prefix. With
+`EMAIL_TRANSPORT=file`, open the newest JSON file in `tmp/mail` to follow verification and reset links.
 
 ## Database
 

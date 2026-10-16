@@ -24,6 +24,7 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed-permissions.ts",
     "db:studio": "drizzle-kit studio",
+    "auth:reset-2fa": "tsx scripts/reset-two-factor.ts",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
     "docs:samples": "tsx scripts/render-sample-documents.ts"
   },

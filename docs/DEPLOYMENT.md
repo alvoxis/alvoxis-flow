@@ -13,6 +13,11 @@ can also build the repository directly.
 
 - `DATABASE_URL` — managed PostgreSQL 16 with TLS, automated backups and point-in-time recovery (PITR).
 - `APP_URL` — public HTTPS origin.
+- `BETTER_AUTH_SECRET` — ≥ 32 random characters, kept stable (rotating it signs everyone out and makes
+  enrolled 2FA unreadable).
+- `TRUSTED_IP_HEADER` — the client-IP header set by the reverse proxy.
+- `EMAIL_TRANSPORT=smtp` with `EMAIL_FROM` and `SMTP_*`; optionally `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`.
+  Details and the operator 2FA-reset procedure: [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md).
 - Secrets are stored in the hosting platform's secret manager, never in the repository.
 
 ## Release procedure (target)

@@ -48,7 +48,17 @@ const baseSchema = z.object({
   TRUSTED_IP_HEADER: optionalNonEmpty,
 });
 
+/** True for http(s)://localhost / 127.0.0.1 — local runs and CI of a production build, never a real deployment. */
+export function isLocalhostUrl(url: string): boolean {
+  try {
+    return ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
 export const serverEnvSchema = baseSchema.superRefine((env, ctx) => {
+  const realDeployment = env.NODE_ENV === "production" && !isLocalhostUrl(env.APP_URL);
   if (Boolean(env.GOOGLE_CLIENT_ID) !== Boolean(env.GOOGLE_CLIENT_SECRET)) {
     ctx.addIssue({
       code: "custom",
@@ -56,7 +66,7 @@ export const serverEnvSchema = baseSchema.superRefine((env, ctx) => {
       message: "Set both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, or neither",
     });
   }
-  if (env.EMAIL_TRANSPORT === "file" && env.NODE_ENV === "production") {
+  if (env.EMAIL_TRANSPORT === "file" && realDeployment) {
     ctx.addIssue({
       code: "custom",
       path: ["EMAIL_TRANSPORT"],
@@ -80,7 +90,17 @@ export const serverEnvSchema = baseSchema.superRefine((env, ctx) => {
       message: "EMAIL_FROM is required to send email",
     });
   }
-  if (env.NODE_ENV === "production" && !env.APP_URL.startsWith("https://")) {
+  if (realDeployment && !env.TRUSTED_IP_HEADER) {
+    // Without a client IP the auth rate limiter uses one bucket shared by every visitor, so a
+    // single attacker could exhaust the sign-in limit for everyone.
+    ctx.addIssue({
+      code: "custom",
+      path: ["TRUSTED_IP_HEADER"],
+      message:
+        "TRUSTED_IP_HEADER is required in production so rate limits apply per client (e.g. x-forwarded-for behind your proxy)",
+    });
+  }
+  if (realDeployment && !env.APP_URL.startsWith("https://")) {
     ctx.addIssue({
       code: "custom",
       path: ["APP_URL"],

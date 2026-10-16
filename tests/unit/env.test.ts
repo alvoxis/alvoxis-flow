@@ -52,8 +52,21 @@ describe("parseServerEnv", () => {
     ).toBe(587);
   });
 
-  it("requires https in production", () => {
-    expect(() => parseServerEnv({ ...base, NODE_ENV: "production" })).toThrow(/https/);
+  it("requires https in production deployments (localhost builds are exempt)", () => {
+    expect(() =>
+      parseServerEnv({ ...base, NODE_ENV: "production", APP_URL: "http://app.example.test" }),
+    ).toThrow(/https/);
+    expect(
+      parseServerEnv({ ...base, NODE_ENV: "production", APP_URL: "http://localhost:3000" }).APP_URL,
+    ).toBe("http://localhost:3000");
+    expect(
+      parseServerEnv({
+        ...base,
+        NODE_ENV: "production",
+        APP_URL: "http://localhost:3000",
+        EMAIL_TRANSPORT: "file",
+      }).EMAIL_TRANSPORT,
+    ).toBe("file");
   });
 
   it("fails fast when DATABASE_URL is missing", () => {

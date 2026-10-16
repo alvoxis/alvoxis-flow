@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { z } from "zod";
-import { ensureDefaultNumberSeries } from "@/modules/documents/server/numbering-service";
+import { insertDefaultNumberSeries } from "@/modules/documents/server/numbering-service";
 import { getAuth } from "@/server/auth/instance";
 import { requireUser, toActor } from "@/server/auth/session";
 import { getDb } from "@/server/db/client";
@@ -20,10 +20,8 @@ export async function POST(request: Request) {
     const db = getDb();
     const user = await requireUser(getAuth(), db, await headers());
     const input = createCompanySchema.parse(await request.json());
-    const actor = toActor(user);
-    const { companyId } = await createCompanyWithOwner(db, actor, input);
-    // Owner role requires 2FA: default numbering series are created once access is possible.
-    if (actor.twoFactorVerified) await ensureDefaultNumberSeries(db, actor, companyId);
+    const { companyId } = await createCompanyWithOwner(db, toActor(user), input);
+    await insertDefaultNumberSeries(db, companyId);
     return ok({ companyId }, 201);
   } catch (err) {
     return apiError(err);
