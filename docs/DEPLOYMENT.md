@@ -3,6 +3,9 @@
 Nothing in this repository deploys automatically yet. This document records the intended process; it
 will be finalised (and tested) in the infrastructure stage before any commercial launch.
 
+For a temporary, private test copy on free tiers (synthetic data only), see
+[TEST-ENVIRONMENT.md](TEST-ENVIRONMENT.md).
+
 ## Build artefact
 
 `pnpm build` produces a Next.js **standalone** server in `.next/standalone` (plus `.next/static` and
