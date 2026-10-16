@@ -69,6 +69,8 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
   const priced = isPricedDocument(draft.type);
   // Credit-note lines map to invoice lines by position, so their set of lines is fixed.
   const fixedLines = draft.type === "credit_note";
+  // Without a tax-category source in the API, new lines are only possible where there is no tax.
+  const canAddLines = canEdit && !fixedLines && !priced;
   const readOnly = !canEdit || pending;
 
   const update = (patch: Partial<DocumentDraft>) => {
@@ -338,14 +340,12 @@ export function DocumentEditor({ companyId, document, canEdit, canIssue }: Docum
             </li>
           ))}
         </ol>
-        {canEdit && !fixedLines ? (
+        {canAddLines ? (
           <Button
             type="button"
             variant="secondary"
             disabled={pending}
-            onClick={() =>
-              update({ lines: [...draft.lines, newLine(draft.lines.at(-1), crypto.randomUUID())] })
-            }
+            onClick={() => update({ lines: [...draft.lines, newLine(crypto.randomUUID())] })}
           >
             {t("addLine")}
           </Button>

@@ -80,6 +80,9 @@ test("list → edit draft → validation on issue → confirm issue → numbered
   await expect(editor.locator('input[name="buyer.name"]')).toHaveValue("Testa Pircējs SIA");
   await expect(page.getByTestId("document-gross-total")).toBeVisible();
 
+  // No tax-category source in the API: an invoice cannot get new lines with an implied category.
+  await expect(editor.getByRole("button", { name: "Add line" })).toHaveCount(0);
+
   // Business-rule errors are saved as findings and block issuing (server validation).
   await editor.locator('input[name="buyer.name"]').fill("");
   await expect(editor.getByRole("button", { name: "Issue document" })).toBeDisabled();

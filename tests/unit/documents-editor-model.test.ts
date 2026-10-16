@@ -121,14 +121,14 @@ describe("toDraftInput (PATCH body)", () => {
     });
   });
 
-  it("new lines reuse the previous line's tax category and pricing mode", () => {
-    const prev = line({ id: "a" });
-    expect(newLine(prev, "n")).toMatchObject({
+  it("new lines never get a tax category implicitly", () => {
+    expect(newLine("n")).toEqual({
       id: "n",
-      taxCategory: prev.taxCategory,
-      unitPrice: "",
+      kind: "item",
+      description: "",
+      quantity: "1",
+      unitPrice: null,
+      taxCategory: null,
     });
-    expect(newLine({ ...prev, unitPrice: null }, "n").unitPrice).toBeNull();
-    expect(newLine(undefined, "n").taxCategory).toBeNull();
   });
 });

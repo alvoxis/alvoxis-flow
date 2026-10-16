@@ -166,8 +166,8 @@ messages (a version conflict offers a reload). Non-members, archived companies a
 
 ## Not implemented yet
 
-Creating or deleting drafts in the UI, choosing tax categories (new lines reuse the previous
-line's category), the buyer in the document list, bank-account snapshots and tax categories from company
+Creating or deleting drafts in the UI, choosing tax categories (until the API offers a category source, lines can be
+added only to delivery notes; existing lines keep their category), the buyer in the document list, bank-account snapshots and tax categories from company
 settings, payment status, importing historical issued documents
 with their original numbers, e-invoicing formats (e.g. structured XML required in some countries),
 country profiles for mandatory content, and OCR.

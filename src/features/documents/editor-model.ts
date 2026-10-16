@@ -140,15 +140,10 @@ export function toDraftInput(draft: DocumentDraft) {
   };
 }
 
-/** A new empty line; it reuses the previous line's tax category (there is no category picker yet). */
-export function newLine(previous: DocumentLine | undefined, id: string): DocumentLine {
-  return {
-    id,
-    kind: "item",
-    description: "",
-    quantity: "1",
-    unit: previous?.unit,
-    unitPrice: previous?.unitPrice === null ? null : "",
-    taxCategory: previous?.taxCategory ?? null,
-  };
+/**
+ * A new empty line for an unpriced document (delivery note). It never gets a tax category: the
+ * API offers no category source yet, so priced documents cannot add lines in the editor.
+ */
+export function newLine(id: string): DocumentLine {
+  return { id, kind: "item", description: "", quantity: "1", unitPrice: null, taxCategory: null };
 }
