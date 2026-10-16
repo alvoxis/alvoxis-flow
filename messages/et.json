@@ -162,5 +162,38 @@
     "page": "Lk {page} / {total}",
     "totalQuantity": "Kogus kokku",
     "totalWeight": "Kaal kokku, kg"
+  },
+  "email": {
+    "footer": "Selle sõnumi saatis ALVOXIS Flow. Kui te seda ei oodanud, võite selle tähelepanuta jätta.",
+    "greeting": "Tere, {name}!",
+    "verify": {
+      "subject": "Kinnitage oma e-posti aadress",
+      "body": "Palun kinnitage oma ALVOXIS Flow e-posti aadress, avades selle lingi:\n{link}\n\nLink kehtib 24 tundi."
+    },
+    "reset": {
+      "subject": "Parooli lähtestamine",
+      "body": "Saime taotluse lähtestada teie ALVOXIS Flow parool. Uue parooli valimiseks avage see link:\n{link}\n\nLink kehtib 1 tunni ja seda saab kasutada ühe korra. Kui te seda ei taotlenud, jätke see kiri tähelepanuta — parool ei muutu."
+    },
+    "existingAccount": {
+      "subject": "Registreerimiskatse teie e-posti aadressiga",
+      "body": "Keegi proovis luua selle e-posti aadressiga uut ALVOXIS Flow kontot, kuid teil on juba konto. Kui see olite teie, logige sisse või lähtestage parool siin:\n{link}"
+    },
+    "newSignIn": {
+      "subject": "Uus sisselogimine teie kontole",
+      "body": "Teie ALVOXIS Flow kontole logiti sisse {time} (UTC) seadmest: {device}.\nKui see ei olnud teie, muutke parooli ja logige teised seansid välja:\n{link}"
+    },
+    "passwordChanged": {
+      "subject": "Teie parool on muudetud",
+      "body": "Teie ALVOXIS Flow parool muudeti {time} (UTC) ja teised seansid logiti välja. Kui see ei olnud teie, lähtestage parool kohe:\n{link}"
+    },
+    "twoFactorEnabled": {
+      "subject": "Kaheastmeline autentimine on sisse lülitatud",
+      "body": "Teie ALVOXIS Flow kontol lülitati sisse kaheastmeline autentimine ({time}, UTC). Hoidke taastekoode turvalises kohas. Kui see ei olnud teie, võtke kohe ühendust administraatoriga."
+    },
+    "twoFactorDisabled": {
+      "subject": "Kaheastmeline autentimine on välja lülitatud",
+      "body": "Teie ALVOXIS Flow kontol lülitati kaheastmeline autentimine välja ({time}, UTC). Kui see ei olnud teie, muutke parooli kohe:\n{link}"
+    },
+    "unknownDevice": "tundmatu seade"
   }
 }

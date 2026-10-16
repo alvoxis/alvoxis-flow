@@ -162,5 +162,38 @@
     "page": "{page}. lpp. no {total}",
     "totalQuantity": "Kopējais daudzums",
     "totalWeight": "Kopējais svars, kg"
+  },
+  "email": {
+    "footer": "Šo ziņojumu nosūtīja ALVOXIS Flow. Ja to negaidījāt, varat to ignorēt.",
+    "greeting": "Labdien, {name}!",
+    "verify": {
+      "subject": "Apstipriniet e-pasta adresi",
+      "body": "Lūdzu, apstipriniet savu e-pasta adresi ALVOXIS Flow, atverot šo saiti:\n{link}\n\nSaite ir derīga 24 stundas."
+    },
+    "reset": {
+      "subject": "Paroles atiestatīšana",
+      "body": "Saņēmām pieprasījumu atiestatīt jūsu ALVOXIS Flow paroli. Atveriet šo saiti, lai izvēlētos jaunu paroli:\n{link}\n\nSaite ir derīga 1 stundu un izmantojama vienu reizi. Ja to nepieprasījāt, ignorējiet šo e-pastu — parole netiks mainīta."
+    },
+    "existingAccount": {
+      "subject": "Reģistrācijas mēģinājums ar jūsu e-pastu",
+      "body": "Kāds mēģināja izveidot jaunu ALVOXIS Flow kontu ar šo e-pasta adresi, taču jums jau ir konts. Ja tas bijāt jūs, pierakstieties vai atiestatiet paroli šeit:\n{link}"
+    },
+    "newSignIn": {
+      "subject": "Jauna pierakstīšanās jūsu kontā",
+      "body": "Jūsu ALVOXIS Flow kontā pierakstījās {time} (UTC) no ierīces: {device}.\nJa tas nebijāt jūs, nomainiet paroli un izrakstiet citas sesijas:\n{link}"
+    },
+    "passwordChanged": {
+      "subject": "Jūsu parole ir nomainīta",
+      "body": "Jūsu ALVOXIS Flow parole tika nomainīta {time} (UTC), un pārējās sesijas tika izrakstītas. Ja tas nebijāt jūs, nekavējoties atiestatiet paroli:\n{link}"
+    },
+    "twoFactorEnabled": {
+      "subject": "Divu faktoru autentifikācija ieslēgta",
+      "body": "Jūsu ALVOXIS Flow kontam tika ieslēgta divu faktoru autentifikācija ({time}, UTC). Glabājiet atkopšanas kodus drošā vietā. Ja tas nebijāt jūs, nekavējoties sazinieties ar administratoru."
+    },
+    "twoFactorDisabled": {
+      "subject": "Divu faktoru autentifikācija izslēgta",
+      "body": "Jūsu ALVOXIS Flow kontam tika izslēgta divu faktoru autentifikācija ({time}, UTC). Ja tas nebijāt jūs, nekavējoties nomainiet paroli:\n{link}"
+    },
+    "unknownDevice": "nezināma ierīce"
   }
 }

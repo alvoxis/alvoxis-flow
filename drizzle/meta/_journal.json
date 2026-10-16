@@ -36,6 +36,20 @@
       "when": 1792099662127,
       "tag": "0004_documents_import_source",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792130538638,
+      "tag": "0005_auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792130551596,
+      "tag": "0006_auth_email_verified_sync",
+      "breakpoints": true
     }
   ]
 }

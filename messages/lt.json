@@ -162,5 +162,38 @@
     "page": "{page} psl. iš {total}",
     "totalQuantity": "Bendras kiekis",
     "totalWeight": "Bendras svoris, kg"
+  },
+  "email": {
+    "footer": "Šį pranešimą išsiuntė ALVOXIS Flow. Jei jo nesitikėjote, galite jį ignoruoti.",
+    "greeting": "Sveiki, {name},",
+    "verify": {
+      "subject": "Patvirtinkite el. pašto adresą",
+      "body": "Patvirtinkite savo el. pašto adresą ALVOXIS Flow atidarę šią nuorodą:\n{link}\n\nNuoroda galioja 24 valandas."
+    },
+    "reset": {
+      "subject": "Slaptažodžio atkūrimas",
+      "body": "Gavome prašymą atkurti jūsų ALVOXIS Flow slaptažodį. Atidarykite šią nuorodą ir pasirinkite naują slaptažodį:\n{link}\n\nNuoroda galioja 1 valandą ir gali būti panaudota vieną kartą. Jei to neprašėte, ignoruokite šį laišką — slaptažodis nepasikeis."
+    },
+    "existingAccount": {
+      "subject": "Bandymas registruotis jūsų el. paštu",
+      "body": "Kažkas bandė sukurti naują ALVOXIS Flow paskyrą su šiuo el. pašto adresu, tačiau jūs jau turite paskyrą. Jei tai buvote jūs, prisijunkite arba atkurkite slaptažodį čia:\n{link}"
+    },
+    "newSignIn": {
+      "subject": "Naujas prisijungimas prie paskyros",
+      "body": "Prie jūsų ALVOXIS Flow paskyros prisijungta {time} (UTC) iš įrenginio: {device}.\nJei tai buvote ne jūs, pakeiskite slaptažodį ir atjunkite kitas sesijas:\n{link}"
+    },
+    "passwordChanged": {
+      "subject": "Jūsų slaptažodis pakeistas",
+      "body": "Jūsų ALVOXIS Flow slaptažodis pakeistas {time} (UTC), kitos sesijos atjungtos. Jei tai padarėte ne jūs, nedelsdami atkurkite slaptažodį:\n{link}"
+    },
+    "twoFactorEnabled": {
+      "subject": "Dviejų veiksnių autentifikacija įjungta",
+      "body": "Jūsų ALVOXIS Flow paskyrai įjungta dviejų veiksnių autentifikacija ({time}, UTC). Laikykite atkūrimo kodus saugioje vietoje. Jei tai buvote ne jūs, nedelsdami susisiekite su administratoriumi."
+    },
+    "twoFactorDisabled": {
+      "subject": "Dviejų veiksnių autentifikacija išjungta",
+      "body": "Jūsų ALVOXIS Flow paskyrai išjungta dviejų veiksnių autentifikacija ({time}, UTC). Jei tai buvote ne jūs, nedelsdami pakeiskite slaptažodį:\n{link}"
+    },
+    "unknownDevice": "nežinomas įrenginys"
   }
 }

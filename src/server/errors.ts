@@ -12,3 +12,22 @@ export class TwoFactorRequiredError extends Error {
     this.name = "TwoFactorRequiredError";
   }
 }
+
+/** No valid session (or the user is disabled). Map to 401. */
+export class UnauthenticatedError extends Error {
+  constructor(message = "Authentication required") {
+    super(message);
+    this.name = "UnauthenticatedError";
+  }
+}
+
+/**
+ * The user has 2FA enabled but this session has not passed a second factor yet (e.g. after a
+ * Google sign-in). Only the 2FA challenge and sign-out are allowed. Map to 401.
+ */
+export class TwoFactorChallengeRequiredError extends Error {
+  constructor() {
+    super("Complete the two-factor challenge for this session");
+    this.name = "TwoFactorChallengeRequiredError";
+  }
+}
