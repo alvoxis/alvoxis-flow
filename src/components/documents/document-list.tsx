@@ -13,6 +13,7 @@ export interface DocumentListRow {
   number: string | null;
   issueDate: string;
   currency: string;
+  buyerName: string | null;
   grossTotal: string | null;
 }
 
@@ -40,8 +41,9 @@ export function DocumentList({
     );
   return (
     <div>
-      <div className="hidden grid-cols-[1.2fr_1.2fr_1fr_1fr_1fr] gap-3 border-b border-border px-1 pb-2 text-xs font-medium tracking-wide text-muted uppercase md:grid">
+      <div className="hidden grid-cols-[1.1fr_1.6fr_1fr_0.9fr_0.9fr_1fr] gap-3 border-b border-border px-1 pb-2 text-xs font-medium tracking-wide text-muted uppercase md:grid">
         <span>{t("colNumber")}</span>
+        <span>{t("colBuyer")}</span>
         <span>{t("colType")}</span>
         <span>{t("colStatus")}</span>
         <span>{t("colIssueDate")}</span>
@@ -52,21 +54,28 @@ export function DocumentList({
           <li key={d.id} data-testid="document-row" data-document-id={d.id}>
             <Link
               href={`/companies/${companyId}/documents/${d.id}`}
-              className="grid grid-cols-2 gap-x-3 gap-y-1 px-1 py-3 text-sm hover:bg-surface-2/60 md:grid-cols-[1.2fr_1.2fr_1fr_1fr_1fr] md:items-center"
+              className="grid grid-cols-2 gap-x-3 gap-y-1 px-1 py-3 text-sm hover:bg-surface-2/60 md:grid-cols-[1.1fr_1.6fr_1fr_0.9fr_0.9fr_1fr] md:items-center"
             >
               <span className="font-medium text-text" data-testid="document-number">
                 {d.number ?? <span className="text-muted">{t("notIssued")}</span>}
               </span>
-              <span className="text-right text-muted md:order-none md:text-left">
-                {tType(d.type)}
+              <span className="text-right text-muted md:order-2 md:text-left">{tType(d.type)}</span>
+              {/* Long names are cut with an ellipsis; the full name is in the title and the
+                  accessible text (and on the document page). */}
+              <span
+                className="col-span-2 min-w-0 truncate text-text md:order-1 md:col-span-1"
+                title={d.buyerName?.trim() ? d.buyerName : undefined}
+                data-testid="document-buyer"
+              >
+                {d.buyerName?.trim() ? d.buyerName : "—"}
               </span>
-              <span>
+              <span className="md:order-3">
                 <DocumentStatusBadge status={d.status} />
               </span>
-              <span className="text-right text-muted md:text-left">
+              <span className="text-right text-muted md:order-4 md:text-left">
                 {formatDate(d.issueDate, locale)}
               </span>
-              <span className="col-span-2 text-right font-medium text-text md:col-span-1">
+              <span className="col-span-2 text-right font-medium text-text md:order-5 md:col-span-1">
                 {d.grossTotal ? formatMoney(d.grossTotal, d.currency as CurrencyCode, locale) : "—"}
               </span>
             </Link>
