@@ -114,6 +114,22 @@ deployment is only reachable through Vercel's edge, which is the condition that 
 5. Optional: create a Neon branch (e.g. `before-test`) right after migrating, so the database can be
    reset to an empty, migrated state later (§10).
 
+### Without a computer: the manual GitHub Actions workflow
+
+`.github/workflows/neon-test-migrations.yml` runs the same two commands (`pnpm db:migrate`, then
+`pnpm db:seed`) on GitHub's runners, so step 4 can be done from a phone. It only starts by hand
+(Actions → "Neon test database migrations" → Run workflow), only from `main`, and only after typing
+`migrate-neon-test`; it never deploys.
+
+1. In GitHub → Settings → Environments, create `neon-test`, restrict its deployment branches to
+   `main` (optionally add yourself as required reviewer), and add the secret
+   `NEON_TEST_DATABASE_URL` there: the **direct** Neon string (host without `-pooler`, with
+   `sslmode=verify-full`). A repository secret with the same name also works, without these gates.
+2. Run the workflow. It refuses to start without the secret, with a non-Neon or pooled host, or
+   without `sslmode`. GitHub masks the secret in logs; the scripts print only success or the
+   error (a connection error can name the host, never the password).
+3. Use only the test project's string here, never production.
+
 ## 6. Email (Mailtrap Email Sandbox)
 
 1. In Mailtrap, open Email Sandbox (Email Testing), use the default inbox (or create one), and open

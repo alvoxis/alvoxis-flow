@@ -1,0 +1,77 @@
+name: Neon test database migrations
+
+# Manual only: applies the Drizzle migrations and the permission catalog to the temporary Neon
+# TEST database (docs/TEST-ENVIRONMENT.md §5). Never deploys. Never used for production.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "migrate-neon-test" to apply migrations and the permission seed to the Neon test database'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# One run at a time; a second run waits instead of migrating concurrently.
+concurrency:
+  group: neon-test-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Migrate and seed the Neon test database
+    # Trusted code only: the workflow must be started from main of this repository.
+    if: github.ref == 'refs/heads/main' && github.repository == 'alvoxis/alvoxis-flow'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Optional extra gate: restrict this environment to main (and add a reviewer) in the
+    # repository settings, and store NEON_TEST_DATABASE_URL as its environment secret.
+    environment: neon-test
+    steps:
+      - name: Check the confirmation and the secret
+        shell: bash
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          NEON_TEST_DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRM" != "migrate-neon-test" ]; then
+            echo "::error::Confirmation text does not match; nothing was done."
+            exit 1
+          fi
+          if [ -z "${NEON_TEST_DATABASE_URL:-}" ]; then
+            echo "::error::Secret NEON_TEST_DATABASE_URL is not set; nothing was done."
+            exit 1
+          fi
+          # Shape checks without printing the value: a Neon host, the direct (non-pooled)
+          # endpoint as recommended for migrations, and TLS required.
+          node -e '
+            const fail = (m) => { console.error("::error::" + m + "; nothing was done."); process.exit(1); };
+            let u;
+            try { u = new URL(process.env.NEON_TEST_DATABASE_URL); } catch { fail("NEON_TEST_DATABASE_URL is not a valid URL"); }
+            if (!/^postgres(ql)?:$/.test(u.protocol)) fail("NEON_TEST_DATABASE_URL is not a postgres:// URL");
+            if (!u.hostname.endsWith(".neon.tech")) fail("NEON_TEST_DATABASE_URL does not point to a Neon host");
+            if (u.hostname.includes("-pooler")) fail("Use the direct (non-pooled) Neon connection string for migrations");
+            if (!["require", "verify-full"].includes(u.searchParams.get("sslmode") ?? "")) fail("NEON_TEST_DATABASE_URL must set sslmode=require or sslmode=verify-full");
+          '
+
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      # The secret is not in the environment of the install step.
+      - run: pnpm install --frozen-lockfile
+
+      - name: Apply migrations (pnpm db:migrate)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+        run: pnpm db:migrate
+
+      - name: Sync the permission catalog (pnpm db:seed)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+        run: pnpm db:seed
