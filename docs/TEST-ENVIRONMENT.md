@@ -122,12 +122,15 @@ deployment is only reachable through Vercel's edge, which is the condition that 
 `migrate-neon-test`; it never deploys.
 
 1. In GitHub → Settings → Environments, create `neon-test`, restrict its deployment branches to
-   `main` (optionally add yourself as required reviewer), and add the secret
-   `NEON_TEST_DATABASE_URL` there: the **direct** Neon string (host without `-pooler`, with
-   `sslmode=verify-full`). A repository secret with the same name also works, without these gates.
-2. Run the workflow. It refuses to start without the secret, with a non-Neon or pooled host, or
-   without `sslmode`. GitHub masks the secret in logs; the scripts print only success or the
-   error (a connection error can name the host, never the password).
+   `main` (optionally add yourself as required reviewer), and add there:
+   - the secret `NEON_TEST_DATABASE_URL`: the **direct** Neon string (host without `-pooler`) with
+     `sslmode=verify-full`; besides `sslmode` only `channel_binding` may appear in its query;
+   - the variable `NEON_TEST_DB_HOST`: the same direct endpoint host (`ep-….neon.tech`), not a
+     secret.
+2. Run the workflow. Before any connection it refuses to continue unless the confirmation matches,
+   the secret and the variable are set, the URL's host equals `NEON_TEST_DB_HOST` exactly, no
+   pooled host is used, and `sslmode=verify-full`. GitHub masks the secret in logs; the scripts
+   print only success or the error (a connection error can name the host, never the password).
 3. Use only the test project's string here, never production.
 
 ## 6. Email (Mailtrap Email Sandbox)

@@ -26,7 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     # Optional extra gate: restrict this environment to main (and add a reviewer) in the
-    # repository settings, and store NEON_TEST_DATABASE_URL as its environment secret.
+    # repository settings, and store NEON_TEST_DATABASE_URL (secret) and NEON_TEST_DB_HOST
+    # (variable: the test project's direct endpoint host, not a secret) there.
     environment: neon-test
     steps:
       - name: Check the confirmation and the secret
@@ -34,6 +35,7 @@ jobs:
         env:
           CONFIRM: ${{ inputs.confirm }}
           NEON_TEST_DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+          NEON_TEST_DB_HOST: ${{ vars.NEON_TEST_DB_HOST }}
         run: |
           set -euo pipefail
           if [ "$CONFIRM" != "migrate-neon-test" ]; then
@@ -44,23 +46,33 @@ jobs:
             echo "::error::Secret NEON_TEST_DATABASE_URL is not set; nothing was done."
             exit 1
           fi
-          # Shape checks without printing the value: a Neon host, the direct (non-pooled)
-          # endpoint as recommended for migrations, and TLS required.
+          # Checks without printing the value: the exact direct endpoint host of the test project
+          # (variable NEON_TEST_DB_HOST), never a pooled host, and sslmode=verify-full.
           node -e '
             const fail = (m) => { console.error("::error::" + m + "; nothing was done."); process.exit(1); };
+            const directHost = /^ep-[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+(-[a-z0-9]+)*)+\.neon\.tech$/;
+            const expected = (process.env.NEON_TEST_DB_HOST ?? "").trim().toLowerCase();
+            if (!expected) fail("Variable NEON_TEST_DB_HOST is not set");
+            if (!directHost.test(expected) || expected.includes("-pooler"))
+              fail("NEON_TEST_DB_HOST must be a direct Neon endpoint host (ep-….neon.tech, without -pooler)");
             let u;
             try { u = new URL(process.env.NEON_TEST_DATABASE_URL); } catch { fail("NEON_TEST_DATABASE_URL is not a valid URL"); }
             if (!/^postgres(ql)?:$/.test(u.protocol)) fail("NEON_TEST_DATABASE_URL is not a postgres:// URL");
-            if (!u.hostname.endsWith(".neon.tech")) fail("NEON_TEST_DATABASE_URL does not point to a Neon host");
+            // The pg driver lets query parameters (host, port, ssl*, …) override the URL; allow only these.
+            const allowed = new Set(["sslmode", "channel_binding"]);
+            for (const key of u.searchParams.keys())
+              if (!allowed.has(key)) fail("NEON_TEST_DATABASE_URL may only carry the sslmode and channel_binding parameters");
             if (u.hostname.includes("-pooler")) fail("Use the direct (non-pooled) Neon connection string for migrations");
-            if (!["require", "verify-full"].includes(u.searchParams.get("sslmode") ?? "")) fail("NEON_TEST_DATABASE_URL must set sslmode=require or sslmode=verify-full");
+            if (u.hostname !== expected) fail("The NEON_TEST_DATABASE_URL host is not NEON_TEST_DB_HOST");
+            const sslmode = u.searchParams.getAll("sslmode");
+            if (sslmode.length !== 1 || sslmode[0] !== "verify-full") fail("NEON_TEST_DATABASE_URL must set sslmode=verify-full");
           '
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
       # The secret is not in the environment of the install step.
