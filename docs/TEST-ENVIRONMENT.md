@@ -5,8 +5,11 @@ expected cost of €0. It is **not** production and must never hold real custome
 data: use synthetic data only (fictitious companies, `example.test` addresses, IBANs such as
 `LV80BANK0000435195001` that only pass the checksum).
 
-Nothing in this repository deploys automatically. Every step below is done by the account owner in
-the providers' dashboards; the application code is used unchanged.
+The repository has no deploy scripts, but once the Vercel project is connected (§7) Vercel deploys
+it automatically: merging to `main` (the production branch by default) creates a **production
+deployment**, and every PR branch gets a preview deployment (see
+[DEPLOYMENT.md](DEPLOYMENT.md)). Every step below is done by the account owner in the providers'
+dashboards; the application code is used unchanged.
 
 | Part               | Service                     | Why                                                                    |
 | ------------------ | --------------------------- | ---------------------------------------------------------------------- |
@@ -77,7 +80,9 @@ deployment is only reachable through Vercel's edge, which is the condition that 
 - Mark the variables as sensitive if Vercel offers it for the environment, so their values cannot be
   read back from the dashboard.
 - Scope them to **Production** only. Preview deployments (one per pushed branch) then do not get the
-  test database or SMTP credentials.
+  test database or SMTP credentials; their pages answer 500 (`Invalid server environment`), which
+  is expected. A preview that should work needs its own Preview-scoped values (another database or
+  Neon branch, its own secret) — never the production ones.
 - In Neon, use the connection string of a role and database created for this test project only.
 - If a secret leaks: rotate it at the provider (Neon: reset the role password; Mailtrap: reset the
   SMTP credentials; `BETTER_AUTH_SECRET`: replace it — test users must sign in and enrol 2FA again),
@@ -85,7 +90,8 @@ deployment is only reachable through Vercel's edge, which is the condition that 
 
 ## 5. Database (Neon)
 
-1. Create a Neon project in an EU region (e.g. Frankfurt) with PostgreSQL 16 or newer.
+1. Create a Neon project in an EU region (e.g. Frankfurt) with PostgreSQL 16 or newer (CI tests 16
+   and 18). Keep the test and production databases in separate Neon projects.
 2. In **Connect**, copy two connection strings for the same database and role:
    - **pooled** (host with `-pooler`) → Vercel `DATABASE_URL` (serverless functions open many
      short connections);
@@ -162,8 +168,12 @@ pricing page). When it is used up, sign-up verification mails no longer arrive u
    also protects the production domain and is available on all plans. Visitors then sign in to
    Vercel before they reach the app; on Hobby only the account owner (plus at most one external user)
    has access. Do not create shareable bypass links.
-5. Deploy from `main` only. Merging to `main` creates a new production deployment, so run new
-   migrations (§5) before merging a PR that adds one.
+5. Production code always comes from `main`. While `main` is the production branch, merging to
+   `main` creates a new production deployment, so run new migrations (§5) before merging a PR that
+   adds one. To deploy
+   production only on purpose, set a separate production branch (Settings → Environments →
+   Production → Branch Tracking) that is only updated from `main`; `main` and PR branches then get
+   preview deployments only.
 
 ## 8. Checks after deployment
 
