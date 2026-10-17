@@ -1,0 +1,107 @@
+name: Node.js 24 compatibility
+
+# The full CI suite on Node.js 24.x (the Vercel runtime) with PostgreSQL 18 (the Neon production
+# version). Same commands as ci.yml, which keeps testing the .nvmrc version; informational until
+# the project decides which Node.js version it targets.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: node24-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  quality-integration:
+    name: Node 24 — lint, typecheck, unit, integration (PostgreSQL 18)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: alvoxis_flow_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Disposable CI-only database; not a secret.
+      TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: node --version
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Migrations match schema (no drift)
+        run: |
+          pnpm drizzle-kit check
+          pnpm drizzle-kit generate
+          git diff --exit-code -- drizzle
+          test -z "$(git status --porcelain -- drizzle)"
+      - run: pnpm test:integration
+
+  build-e2e:
+    name: Node 24 — build and end-to-end tests (PostgreSQL 18)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: alvoxis_flow_e2e
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Disposable CI-only database; not a secret. The e2e server's auth secret is a
+      # fixture defined in playwright.config.ts.
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_e2e
+      E2E_DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_e2e
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: node --version
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Prepare the e2e database
+        run: |
+          pnpm db:migrate
+          pnpm db:seed
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-node24
+          path: playwright-report
+          retention-days: 7
