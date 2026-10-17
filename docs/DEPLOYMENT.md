@@ -38,9 +38,10 @@ contract over separate releases), so the application can be rolled back without 
 
 ## Production database migrations without a terminal
 
-`.github/workflows/neon-production-migrations.yml` runs `pnpm db:migrate`, then `pnpm db:seed`,
-against the Neon production project from GitHub's runners. It is the same checked workflow as the
-test one ([TEST-ENVIRONMENT.md](TEST-ENVIRONMENT.md)) with its own names:
+`.github/workflows/neon-production-migrations.yml` runs `pnpm db:migrate` against the Neon
+production project from GitHub's runners; `pnpm db:seed` (the idempotent permission catalog sync)
+runs in the same run only when the input `run_seed` is set to true (default false). It is the same
+checked workflow as the test one ([TEST-ENVIRONMENT.md](TEST-ENVIRONMENT.md)) with its own names:
 
 - GitHub environment `neon-production` (restrict deployment branches to `main`);
 - secret `NEON_PRODUCTION_DATABASE_URL`: the **direct** Neon string (Connect → pooling off),

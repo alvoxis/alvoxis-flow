@@ -1,16 +1,22 @@
 name: Neon production database migrations
 
-# Manual only: applies the Drizzle migrations and the permission catalog to the Neon PRODUCTION
-# database (alvoxis-flow-production). Same checked steps as neon-test-migrations.yml, but its own
-# environment, secret, host variable and confirmation word. Never deploys, never resets data:
-# drizzle applies only the migrations not yet recorded, in one transaction.
+# Manual only: applies the Drizzle migrations to the Neon PRODUCTION database
+# (alvoxis-flow-production); the permission catalog (pnpm db:seed) runs only when run_seed is
+# explicitly true. Same checked steps as neon-test-migrations.yml, but its own environment, secret,
+# host variable and confirmation word. Never deploys, never resets data: drizzle applies only the
+# migrations not yet recorded, in one transaction (a re-run with nothing pending changes nothing).
 on:
   workflow_dispatch:
     inputs:
       confirm:
-        description: 'Type "migrate-neon-production" to apply migrations and the permission seed to the Neon PRODUCTION database'
+        description: 'Type "migrate-neon-production" to apply migrations to the Neon PRODUCTION database'
         required: true
         type: string
+      run_seed:
+        description: "Also sync the permission catalog (pnpm db:seed) after the migrations"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -22,7 +28,7 @@ concurrency:
 
 jobs:
   migrate:
-    name: Migrate and seed the Neon production database
+    name: Migrate the Neon production database
     # Trusted code only: the workflow must be started from main of this repository.
     if: github.ref == 'refs/heads/main' && github.repository == 'alvoxis/alvoxis-flow'
     runs-on: ubuntu-latest
@@ -74,7 +80,9 @@ jobs:
           echo "::add-mask::$url"
           DATABASE_URL="$url" pnpm db:migrate
 
+      # Only on explicit request: run_seed is false unless set when starting the workflow.
       - name: Sync the permission catalog (pnpm db:seed)
+        if: ${{ inputs.run_seed == true }}
         shell: bash
         env:
           NEON_PRODUCTION_DATABASE_URL: ${{ secrets.NEON_PRODUCTION_DATABASE_URL }}
