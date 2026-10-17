@@ -1,0 +1,94 @@
+name: Neon production database migrations
+
+# Manual only: applies the Drizzle migrations to the Neon PRODUCTION database
+# (alvoxis-flow-production); the permission catalog (pnpm db:seed) runs only when run_seed is
+# explicitly true. Same checked steps as neon-test-migrations.yml, but its own environment, secret,
+# host variable and confirmation word. Never deploys, never resets data: drizzle applies only the
+# migrations not yet recorded, in one transaction (a re-run with nothing pending changes nothing).
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "migrate-neon-production" to apply migrations to the Neon PRODUCTION database'
+        required: true
+        type: string
+      run_seed:
+        description: "Also sync the permission catalog (pnpm db:seed) after the migrations"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One run at a time; a second run waits instead of migrating concurrently.
+concurrency:
+  group: neon-production-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Migrate the Neon production database
+    # Trusted code only: the workflow must be started from main of this repository.
+    if: github.ref == 'refs/heads/main' && github.repository == 'alvoxis/alvoxis-flow'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Optional extra gate: restrict this environment to main (and add a reviewer) in the
+    # repository settings, and store NEON_PRODUCTION_DATABASE_URL (secret) and NEON_PRODUCTION_DB_HOST
+    # (variable: the production project's direct endpoint host, not a secret) there.
+    environment: neon-production
+    steps:
+      # No secret in these steps. Only trusted code from main is checked out (see `if` above).
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+
+      # Before any connection: the confirmation, then scripts/ci/neon-test-url.ts (exact direct
+      # endpoint host from NEON_PRODUCTION_DB_HOST, no pooler, only sslmode/channel_binding parameters,
+      # sslmode=require or verify-full). It runs with plain Node and prints no values.
+      - name: Check the confirmation and the connection settings
+        shell: bash
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          NEON_PRODUCTION_DATABASE_URL: ${{ secrets.NEON_PRODUCTION_DATABASE_URL }}
+          NEON_PRODUCTION_DB_HOST: ${{ vars.NEON_PRODUCTION_DB_HOST }}
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRM" != "migrate-neon-production" ]; then
+            echo "::error::Confirmation text does not match; nothing was done."
+            exit 1
+          fi
+          node --no-warnings scripts/ci/neon-test-url.ts check NEON_PRODUCTION_DATABASE_URL NEON_PRODUCTION_DB_HOST
+
+      # The secret is not in the environment of the install step.
+      - run: pnpm install --frozen-lockfile
+
+      # The normalized URL (sslmode=require tightened to verify-full) only lives in a shell
+      # variable of each step: masked, never written to a file or GITHUB_ENV, never printed.
+      - name: Apply migrations (pnpm db:migrate)
+        shell: bash
+        env:
+          NEON_PRODUCTION_DATABASE_URL: ${{ secrets.NEON_PRODUCTION_DATABASE_URL }}
+          NEON_PRODUCTION_DB_HOST: ${{ vars.NEON_PRODUCTION_DB_HOST }}
+        run: |
+          set -euo pipefail
+          url="$(node --no-warnings scripts/ci/neon-test-url.ts print NEON_PRODUCTION_DATABASE_URL NEON_PRODUCTION_DB_HOST)"
+          echo "::add-mask::$url"
+          DATABASE_URL="$url" pnpm db:migrate
+
+      # Only on explicit request: run_seed is false unless set when starting the workflow.
+      - name: Sync the permission catalog (pnpm db:seed)
+        if: ${{ inputs.run_seed == true }}
+        shell: bash
+        env:
+          NEON_PRODUCTION_DATABASE_URL: ${{ secrets.NEON_PRODUCTION_DATABASE_URL }}
+          NEON_PRODUCTION_DB_HOST: ${{ vars.NEON_PRODUCTION_DB_HOST }}
+        run: |
+          set -euo pipefail
+          url="$(node --no-warnings scripts/ci/neon-test-url.ts print NEON_PRODUCTION_DATABASE_URL NEON_PRODUCTION_DB_HOST)"
+          echo "::add-mask::$url"
+          DATABASE_URL="$url" pnpm db:seed
