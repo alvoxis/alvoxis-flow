@@ -45,6 +45,8 @@ const collection = await import("@/app/api/companies/[companyId]/documents/route
 const single = await import("@/app/api/companies/[companyId]/documents/[documentId]/route");
 const issueRoute =
   await import("@/app/api/companies/[companyId]/documents/[documentId]/issue/route");
+const creditNoteRoute =
+  await import("@/app/api/companies/[companyId]/documents/[documentId]/credit-note/route");
 
 let db: Database;
 let pool: Pool;
@@ -130,6 +132,8 @@ const api = {
     call(single.DELETE(req("DELETE"), p({ companyId, documentId }))),
   issue: (companyId: string, documentId: string, body: unknown) =>
     call(issueRoute.POST(req("POST", body), p({ companyId, documentId }))),
+  creditNote: (companyId: string, documentId: string, body: unknown) =>
+    call(creditNoteRoute.POST(req("POST", body), p({ companyId, documentId }))),
 };
 
 async function storedRow(id: string) {
@@ -411,5 +415,277 @@ describe("document API: draft → validation → issue", () => {
 
     expect(await storedRow(id)).toMatchObject({ status: "draft", version: 1, number: null });
     expect(await auditActions(id)).toEqual(["document.draft_created"]);
+  });
+});
+
+describe("document API: credit notes", () => {
+  /** An issued invoice (lines l1: 10 × 65.00, l2: 10 × 45.00) and its stored row. */
+  async function issuedInvoice(owner: Actor, companyId: string) {
+    as(owner);
+    const { id } = (await api.create(companyId, input())).body.document;
+    const issued = (await api.issue(companyId, id, { expectedVersion: 1 })).body.document;
+    expect(issued.number).toBe("INV-2026-0001");
+    const [l1, l2] = issued.draft.lines.map((l: { id: string }) => l.id);
+    return { id, l1: l1 as string, l2: l2 as string, row: await storedRow(id) };
+  }
+
+  /** The issued invoice row, snapshot and hash are exactly as they were at issue. */
+  async function expectInvoiceUnchanged(
+    owner: Actor,
+    companyId: string,
+    inv: Awaited<ReturnType<typeof issuedInvoice>>,
+  ) {
+    const now = await storedRow(inv.id);
+    expect(now).toEqual(inv.row);
+    expect(await verifyDocumentIntegrity(db, owner, companyId, inv.id)).toBe(true);
+  }
+
+  async function creditNoteCount(companyId: string) {
+    const rows = await db
+      .select({ id: documents.id })
+      .from(documents)
+      .where(and(eq(documents.companyId, companyId), eq(documents.type, "credit_note")));
+    return rows.length;
+  }
+
+  it("creates a credit-note draft for an issued invoice; the number comes only at issue", async () => {
+    const { owner, companyId } = await newCompany();
+    const inv = await issuedInvoice(owner, companyId);
+
+    const created = await api.creditNote(companyId, inv.id, {
+      issueDate: "2026-03-10",
+      language: "lv",
+      lines: [{ sourceLineId: inv.l2, quantity: "6" }],
+    });
+    expect(created.status).toBe(201);
+    const cn = created.body.document;
+    expect(cn).toMatchObject({
+      status: "draft",
+      number: null,
+      version: 1,
+      draft: {
+        type: "credit_note",
+        language: "lv",
+        issueDate: "2026-03-10",
+        relation: { kind: "credits", documentId: inv.id, documentNumber: "INV-2026-0001" },
+        lines: [{ quantity: "-6", sourceLineId: inv.l2 }],
+      },
+    });
+    expect((await storedRow(cn.id))!.number).toBeNull();
+
+    const issued = await api.issue(companyId, cn.id, { expectedVersion: 1 });
+    expect(issued.status).toBe(200);
+    expect(issued.body.document).toMatchObject({ status: "issued", number: "CN-2026-0001" });
+    expect(issued.body.document.totals.grossTotal).toBe("-324.00");
+    expect(await auditActions(cn.id)).toEqual([
+      "document.credit_note_draft_created",
+      "document.issued",
+    ]);
+
+    // "full" credits what remains; afterwards nothing is left to credit.
+    const rest = (
+      await api.creditNote(companyId, inv.id, { issueDate: "2026-03-11", lines: "full" })
+    ).body.document;
+    expect(rest.draft.lines).toEqual([
+      expect.objectContaining({ sourceLineId: inv.l1, quantity: "-10" }),
+      expect.objectContaining({ sourceLineId: inv.l2, quantity: "-4" }),
+    ]);
+    expect((await api.issue(companyId, rest.id, { expectedVersion: 1 })).body.document.number).toBe(
+      "CN-2026-0002",
+    );
+    expect(
+      await api.creditNote(companyId, inv.id, { issueDate: "2026-03-12", lines: "full" }),
+    ).toMatchObject({
+      status: 422,
+      body: {
+        error: "validation_failed",
+        issues: [expect.objectContaining({ code: "creditNote.nothingRemaining" })],
+      },
+    });
+    await expectInvoiceUnchanged(owner, companyId, inv);
+  });
+
+  it("refuses crediting more than remains, at creation and at issue, without using a number", async () => {
+    const { owner, companyId } = await newCompany();
+    const inv = await issuedInvoice(owner, companyId);
+    const six = { issueDate: "2026-03-10", lines: [{ sourceLineId: inv.l2, quantity: "6" }] };
+
+    // Each draft fits on its own; together they exceed the line.
+    const a = (await api.creditNote(companyId, inv.id, six)).body.document;
+    const b = (await api.creditNote(companyId, inv.id, six)).body.document;
+    expect((await api.issue(companyId, a.id, { expectedVersion: 1 })).body.document.number).toBe(
+      "CN-2026-0001",
+    );
+    expect(await api.issue(companyId, b.id, { expectedVersion: 1 })).toMatchObject({
+      status: 422,
+      body: {
+        error: "validation_failed",
+        issues: [expect.objectContaining({ code: "creditNote.quantity.exceedsRemaining" })],
+      },
+    });
+    expect(await storedRow(b.id)).toMatchObject({ status: "draft", number: null });
+
+    // A new draft beyond what remains is refused immediately and nothing is stored.
+    const before = await creditNoteCount(companyId);
+    expect(
+      await api.creditNote(companyId, inv.id, {
+        issueDate: "2026-03-10",
+        lines: [{ sourceLineId: inv.l2, quantity: "5" }],
+      }),
+    ).toMatchObject({
+      status: 422,
+      body: { issues: [expect.objectContaining({ code: "creditNote.quantity.exceedsRemaining" })] },
+    });
+    expect(await creditNoteCount(companyId)).toBe(before);
+
+    // What remains can still be credited, with the next number: the refused issue used none.
+    const ok = (
+      await api.creditNote(companyId, inv.id, {
+        issueDate: "2026-03-10",
+        lines: [{ sourceLineId: inv.l2, quantity: "4" }],
+      })
+    ).body.document;
+    expect((await api.issue(companyId, ok.id, { expectedVersion: 1 })).body.document.number).toBe(
+      "CN-2026-0002",
+    );
+    await expectInvoiceUnchanged(owner, companyId, inv);
+  });
+
+  it("only issued invoices can be credited", async () => {
+    const { owner, companyId } = await newCompany();
+    as(owner);
+    const draft = (await api.create(companyId, input())).body.document;
+    expect(
+      await api.creditNote(companyId, draft.id, { issueDate: "2026-03-10", lines: "full" }),
+    ).toMatchObject({ status: 409, body: { error: "invalid_state", code: "source.notIssued" } });
+
+    const proforma = (await api.create(companyId, input({ type: "proforma" }))).body.document;
+    expect((await api.issue(companyId, proforma.id, { expectedVersion: 1 })).status).toBe(200);
+    expect(
+      await api.creditNote(companyId, proforma.id, { issueDate: "2026-03-10", lines: "full" }),
+    ).toMatchObject({ status: 409, body: { error: "invalid_state", code: "source.invalid" } });
+
+    const inv = await issuedInvoice(owner, companyId);
+    // The credit note cannot predate the invoice.
+    expect(
+      await api.creditNote(companyId, inv.id, { issueDate: "2026-03-01", lines: "full" }),
+    ).toMatchObject({
+      status: 422,
+      body: { issues: [expect.objectContaining({ code: "creditNote.dateBeforeOriginal" })] },
+    });
+    const cn = (await api.creditNote(companyId, inv.id, { issueDate: "2026-03-10", lines: "full" }))
+      .body.document;
+    await api.issue(companyId, cn.id, { expectedVersion: 1 });
+    // A credit note cannot itself be credited.
+    const cnLine = (await api.get(companyId, cn.id)).body.document.draft.lines[0].id;
+    expect(
+      await api.creditNote(companyId, cn.id, {
+        issueDate: "2026-03-10",
+        lines: [{ sourceLineId: cnLine, quantity: "1" }],
+      }),
+    ).toMatchObject({ status: 409, body: { code: "source.invalid" } });
+  });
+
+  it("invalid bodies are 422, malformed requests 400, unknown or foreign invoices 404", async () => {
+    const { owner, companyId } = await newCompany();
+    const inv = await issuedInvoice(owner, companyId);
+    const before = await creditNoteCount(companyId);
+    const line = (quantity: string, extra: object = {}) => ({
+      issueDate: "2026-03-10",
+      lines: [{ sourceLineId: inv.l1, quantity, ...extra }],
+    });
+
+    const cases: [unknown, string][] = [
+      [{ lines: "full" }, "issueDate"],
+      [{ issueDate: "10.03.2026", lines: "full" }, "issueDate"],
+      [{ issueDate: "2026-03-10", lines: "some" }, "lines"],
+      [{ issueDate: "2026-03-10", lines: [] }, "lines"],
+      [{ issueDate: "2026-03-10", language: "de", lines: "full" }, "language"],
+      [line("-1"), "lines.0.quantity"],
+      [line("abc"), "lines.0.quantity"],
+      [line("1", { unitPrice: "1.00" }), "lines.0"], // unknown fields are refused, not ignored
+    ];
+    for (const [body, path] of cases) {
+      const r = await api.creditNote(companyId, inv.id, body);
+      expect(r.status, JSON.stringify(body)).toBe(422);
+      expect(r.body.issues).toContainEqual(expect.objectContaining({ path }));
+    }
+    for (const [body, code] of [
+      [line("0"), "creditNote.quantity.invalid"],
+      [line("11"), "creditNote.quantity.exceedsRemaining"],
+      [
+        { issueDate: "2026-03-10", lines: [{ sourceLineId: "nope", quantity: "1" }] },
+        "creditNote.sourceLine.unknown",
+      ],
+    ] as const) {
+      expect(await api.creditNote(companyId, inv.id, body)).toMatchObject({
+        status: 422,
+        body: { issues: [expect.objectContaining({ code })] },
+      });
+    }
+    expect((await api.creditNote(companyId, inv.id, "not json")).status).toBe(400);
+    expect((await api.creditNote(companyId, "nope", { lines: "full" })).status).toBe(400);
+    expect(
+      await api.creditNote(companyId, randomUUID(), { issueDate: "2026-03-10", lines: "full" }),
+    ).toMatchObject({ status: 404, body: { error: "not_found" } });
+
+    // Another company's issued invoice is not found through this company's URL.
+    const other = await newCompany();
+    const foreign = await issuedInvoice(other.owner, other.companyId);
+    as(owner);
+    expect(
+      await api.creditNote(companyId, foreign.id, { issueDate: "2026-03-10", lines: "full" }),
+    ).toMatchObject({ status: 404, body: { error: "not_found" } });
+    expect(await creditNoteCount(companyId)).toBe(before);
+    expect(await creditNoteCount(other.companyId)).toBe(0);
+    await expectInvoiceUnchanged(other.owner, other.companyId, foreign);
+  });
+
+  it("access: create needs documents.create, issue needs documents.approve; outsiders are refused", async () => {
+    const { owner, companyId } = await newCompany();
+    const inv = await issuedInvoice(owner, companyId);
+    const body = { issueDate: "2026-03-10", lines: [{ sourceLineId: inv.l1, quantity: "1" }] };
+
+    // Manager: may create the draft but not issue it.
+    as(await member(companyId, "manager"));
+    const cn = await api.creditNote(companyId, inv.id, body);
+    expect(cn.status).toBe(201);
+    expect(await api.issue(companyId, cn.body.document.id, { expectedVersion: 1 })).toMatchObject({
+      status: 403,
+      body: { error: "forbidden" },
+    });
+    expect((await storedRow(cn.body.document.id))!.number).toBeNull();
+
+    // Accountant: may issue it.
+    as(await member(companyId, "accountant"));
+    expect(
+      (await api.issue(companyId, cn.body.document.id, { expectedVersion: 1 })).body.document
+        .number,
+    ).toBe("CN-2026-0001");
+
+    const count = await creditNoteCount(companyId);
+    const refused: [Actor | null, number, string][] = [
+      [await member(companyId, "warehouse_employee"), 403, "forbidden"],
+      [await member(companyId, "production_employee"), 403, "forbidden"],
+      [actorOf((await newUser()).id), 403, "forbidden"],
+      [{ userId: owner.userId, twoFactorVerified: false }, 403, "two_factor_enrollment_required"],
+      [null, 401, "unauthenticated"],
+    ];
+    for (const [actor, status, error] of refused) {
+      as(actor);
+      expect(await api.creditNote(companyId, inv.id, body)).toMatchObject({
+        status,
+        body: { error },
+      });
+    }
+    await expectInvoiceUnchanged(owner, companyId, inv);
+    await db.update(companies).set({ archivedAt: new Date() }).where(eq(companies.id, companyId));
+    as(owner);
+    expect(await api.creditNote(companyId, inv.id, body)).toMatchObject({
+      status: 403,
+      body: { error: "forbidden" },
+    });
+    expect(await creditNoteCount(companyId)).toBe(count);
+    expect(await storedRow(inv.id)).toEqual(inv.row);
   });
 });
