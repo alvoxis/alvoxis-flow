@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { DocumentRuleError } from "@/modules/documents/domain/derive";
 import {
   BankAccountIbanTakenError,
   BankAccountNotFoundError,
@@ -45,6 +46,14 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof DocumentStateError) return json(409, "invalid_state", { code: err.code });
   if (err instanceof DocumentValidationError)
     return json(422, "validation_failed", { issues: err.issues });
+  // Derivation rules (credit notes): a source of the wrong kind is a state conflict; everything
+  // else (unknown line, quantity, remaining amount, date) is a finding about the request.
+  if (err instanceof DocumentRuleError)
+    return err.code.startsWith("source.")
+      ? json(409, "invalid_state", { code: err.code })
+      : json(422, "validation_failed", {
+          issues: [{ code: err.code, severity: "error", path: "" }],
+        });
   if (err instanceof ZodError) return json(400, "invalid_request");
   console.error("[api] unexpected error", err instanceof Error ? err.name : err);
   return json(500, "internal_error");
