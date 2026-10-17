@@ -3,7 +3,7 @@
 import { clsx } from "clsx";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { NAV_ITEMS } from "./nav-items";
+import { isNavItemActive, NAV_ITEMS } from "./nav-items";
 
 export function NavIcon({ d }: { d: string }) {
   return (
@@ -29,7 +29,7 @@ export function NavList({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <ul className="space-y-1">
       {NAV_ITEMS.map((item) => {
-        const active = !item.soon && pathname === item.href;
+        const active = isNavItemActive(item, pathname);
         const base = "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors";
         if (item.soon) {
           return (

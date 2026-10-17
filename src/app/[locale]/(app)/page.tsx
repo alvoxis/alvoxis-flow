@@ -1,12 +1,8 @@
 import { type Metadata } from "next";
-import { type Locale, useLocale } from "next-intl";
+import { type Locale, useLocale, useTranslations } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CreateCompanyForm } from "@/components/dashboard/create-company-form";
-import { KpiCard } from "@/components/dashboard/kpi-card";
-import { NextSteps } from "@/components/dashboard/next-steps";
-import { RecentDocuments } from "@/components/dashboard/recent-documents";
-import { SAMPLE_DOCUMENTS, SAMPLE_MONTH } from "@/features/dashboard/sample-data";
-import { computeDashboardSummary, type CurrencyTotal } from "@/features/dashboard/summary";
+import { type CurrencyTotal, type DocumentsOverview } from "@/features/dashboard/summary";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
@@ -26,12 +22,39 @@ export async function generateMetadata({
 
 function Totals({ totals }: { totals: CurrencyTotal[] }) {
   const locale = useLocale();
-  if (totals.length === 0) return <p>—</p>;
-  return totals.map((x) => (
-    <p key={x.currency} data-currency={x.currency}>
+  if (totals.length === 0) return <>—</>;
+  return totals.map((x, i) => (
+    <span key={x.currency} data-currency={x.currency}>
+      {i > 0 ? " · " : null}
       {formatMoney(x.amount, x.currency, locale)}
-    </p>
+    </span>
   ));
+}
+
+function DocumentsFigures({ overview }: { overview: DocumentsOverview }) {
+  const t = useTranslations("dashboard.documents");
+  return (
+    <dl className="grid grid-cols-3 gap-3 text-sm" data-testid="company-documents-overview">
+      <div>
+        <dt className="text-xs text-muted">{t("drafts")}</dt>
+        <dd className="tabular text-lg font-semibold text-text" data-testid="overview-drafts">
+          {overview.drafts}
+        </dd>
+      </div>
+      <div>
+        <dt className="text-xs text-muted">{t("issued")}</dt>
+        <dd className="tabular text-lg font-semibold text-text" data-testid="overview-issued">
+          {overview.issued}
+        </dd>
+      </div>
+      <div className="min-w-0">
+        <dt className="text-xs text-muted">{t("issuedTotal")}</dt>
+        <dd className="tabular font-semibold break-words text-text" data-testid="overview-totals">
+          <Totals totals={overview.issuedTotals} />
+        </dd>
+      </div>
+    </dl>
+  );
 }
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -43,11 +66,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const tDocs = await getTranslations("documents");
   const tCat = await getTranslations("taxCategories");
   const tBank = await getTranslations("bankAccounts");
+  const tOverview = await getTranslations("dashboard.documents");
   const user = await requirePageUser(locale);
   const { companies, twoFactorMissing } = await dashboardData(user);
-
-  // Sample data until the documents module and authentication exist (see docs/ROADMAP.md).
-  const summary = computeDashboardSummary(SAMPLE_DOCUMENTS, SAMPLE_MONTH);
 
   return (
     <div className="space-y-6">
@@ -125,53 +146,42 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         </Card>
       )}
 
-      <div
-        role="note"
-        data-testid="sample-data-banner"
-        className="flex items-start gap-3 rounded-xl border border-amber-800/50 bg-amber-950/30 px-4 py-3 text-sm text-amber-100"
-      >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="mt-0.5 size-4 shrink-0 text-warning"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-        >
-          <path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
-        </svg>
-        <p>{t("demoBanner")}</p>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" data-testid="kpi-grid">
-        <KpiCard label={t("kpi.revenue")} hint={t("kpi.revenueHint")}>
-          <Totals totals={summary.invoicedByCurrency} />
-        </KpiCard>
-        <KpiCard
-          label={t("kpi.outstanding")}
-          hint={t("kpi.outstandingHint", { count: summary.outstandingCount })}
-        >
-          <Totals totals={summary.outstandingByCurrency} />
-        </KpiCard>
-        <KpiCard
-          label={t("kpi.overdue")}
-          hint={t("kpi.overdueHint", { count: summary.overdueCount })}
-          tone={summary.overdueCount > 0 ? "danger" : "default"}
-        >
-          <Totals totals={summary.overdueByCurrency} />
-        </KpiCard>
-        <KpiCard label={t("kpi.documents")} hint={t("kpi.documentsHint")}>
-          <p>{summary.documentCount}</p>
-        </KpiCard>
-      </div>
-
-      <p className="text-xs text-muted">{t("currencyNote")}</p>
-
-      <div className="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <RecentDocuments documents={SAMPLE_DOCUMENTS} />
-        <NextSteps />
-      </div>
+      {companies.length > 0 ? (
+        <div data-testid="documents-overview">
+          <Card>
+            <CardHeader title={tOverview("title")} />
+            <ul className="space-y-4">
+              {companies.map((c) => (
+                <li key={c.id} className="space-y-2" data-company-id={c.id}>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-text">{c.name}</p>
+                    {c.documents ? (
+                      <Link
+                        href={`/companies/${c.id}/documents`}
+                        className="text-sm text-accent hover:underline"
+                      >
+                        {tDocs("open")}
+                      </Link>
+                    ) : null}
+                  </div>
+                  {c.documents === null ? (
+                    <p className="text-sm text-muted" data-testid="overview-unavailable">
+                      {tOverview("unavailable")}
+                    </p>
+                  ) : c.documents.drafts + c.documents.issued === 0 ? (
+                    <p className="text-sm text-muted" data-testid="overview-empty">
+                      {tOverview("empty")}
+                    </p>
+                  ) : (
+                    <DocumentsFigures overview={c.documents} />
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-muted">{tOverview("currencyNote")}</p>
+          </Card>
+        </div>
+      ) : null}
     </div>
   );
 }
