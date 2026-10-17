@@ -50,7 +50,6 @@ describe("message catalogs", () => {
       // Brand names and identical technical terms are allowed to match.
       const allowed = new Set([
         "metadata.title",
-        "dashboard.recent.number",
         // Identical internationally used terms and pure placeholders.
         "documentPdf.iban",
         "documentPdf.bic",

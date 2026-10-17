@@ -28,37 +28,14 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Overview of your company's documents and operations.",
-    "demoBanner": "Preview with sample data. Nothing shown here is connected to a real company yet.",
-    "demoBadge": "Sample data",
-    "kpi": {
-      "revenue": "Invoiced this month",
-      "revenueHint": "Approved invoices, shown per document currency",
-      "outstanding": "Outstanding",
-      "outstandingHint": "{count, plural, one {# unpaid invoice} other {# unpaid invoices}}",
-      "overdue": "Overdue",
-      "overdueHint": "{count, plural, one {# invoice past due date} other {# invoices past due date}}",
-      "documents": "Documents this month",
-      "documentsHint": "Invoices, proformas, credit notes and delivery notes"
-    },
-    "currencyNote": "Each document keeps its own currency. Totals in different currencies are never added together.",
-    "recent": {
-      "title": "Recent documents",
-      "description": "Latest documents across all types",
-      "number": "Number",
-      "type": "Type",
-      "customer": "Customer",
-      "date": "Date",
-      "status": "Status",
-      "amount": "Amount",
-      "creditsInvoice": "Credits {number}",
-      "noAmount": "Not applicable"
-    },
-    "nextSteps": {
-      "title": "Getting started",
-      "createCompany": "Create your company profile",
-      "inviteTeam": "Invite your team and assign roles",
-      "addCustomers": "Add customers and products",
-      "firstInvoice": "Issue your first invoice"
+    "documents": {
+      "title": "Documents",
+      "drafts": "Drafts",
+      "issued": "Issued",
+      "issuedTotal": "Issued total",
+      "empty": "No documents yet.",
+      "unavailable": "Documents are not available with your role, or until two-factor authentication is set up.",
+      "currencyNote": "Totals are shown per document currency and are never added across currencies."
     }
   },
   "documentType": {
@@ -87,6 +64,13 @@
     "title": "Page not found",
     "description": "The page you are looking for does not exist or has been moved.",
     "backHome": "Back to dashboard"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "The page could not be shown. Please try again. If it keeps happening, tell us the error code.",
+    "digest": "Error code: {digest}",
+    "retry": "Try again",
+    "home": "Back to the dashboard"
   },
   "offline": {
     "title": "You are offline",
@@ -607,6 +591,12 @@
       "downloadDraft": "Download draft PDF",
       "draftHint": "The draft PDF is marked “not issued” and has no number.",
       "unsaved": "The PDF shows the last saved version. Save the draft to include your changes."
+    },
+    "entry": {
+      "title": "Documents",
+      "choose": "Choose a company to open its documents.",
+      "none": "Documents belong to a company. Create your company first.",
+      "createCompany": "Create a company"
     }
   },
   "taxCategories": {

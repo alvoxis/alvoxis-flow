@@ -28,37 +28,14 @@
   "dashboard": {
     "title": "Apžvalga",
     "subtitle": "Jūsų įmonės dokumentų ir veiklos suvestinė.",
-    "demoBanner": "Peržiūra su pavyzdiniais duomenimis. Niekas čia dar nesusieta su tikra įmone.",
-    "demoBadge": "Pavyzdiniai duomenys",
-    "kpi": {
-      "revenue": "Išrašyta šį mėnesį",
-      "revenueHint": "Patvirtintos sąskaitos, kiekviena savo dokumento valiuta",
-      "outstanding": "Neapmokėta",
-      "outstandingHint": "{count, plural, one {# neapmokėta sąskaita} few {# neapmokėtos sąskaitos} many {# neapmokėtos sąskaitos} other {# neapmokėtų sąskaitų}}",
-      "overdue": "Vėluojančios",
-      "overdueHint": "{count, plural, one {# sąskaita su praleistu terminu} few {# sąskaitos su praleistu terminu} many {# sąskaitos su praleistu terminu} other {# sąskaitų su praleistu terminu}}",
-      "documents": "Dokumentai šį mėnesį",
-      "documentsHint": "Sąskaitos, išankstinės sąskaitos, kreditinės sąskaitos ir važtaraščiai"
-    },
-    "currencyNote": "Kiekvienas dokumentas išlaiko savo valiutą. Sumos skirtingomis valiutomis niekada nesumuojamos.",
-    "recent": {
-      "title": "Naujausi dokumentai",
-      "description": "Paskutiniai visų tipų dokumentai",
-      "number": "Numeris",
-      "type": "Tipas",
-      "customer": "Klientas",
-      "date": "Data",
-      "status": "Būsena",
-      "amount": "Suma",
-      "creditsInvoice": "Koreguoja {number}",
-      "noAmount": "Netaikoma"
-    },
-    "nextSteps": {
-      "title": "Pradžia",
-      "createCompany": "Sukurkite įmonės profilį",
-      "inviteTeam": "Pakvieskite komandą ir priskirkite roles",
-      "addCustomers": "Pridėkite klientus ir produktus",
-      "firstInvoice": "Išrašykite pirmąją sąskaitą"
+    "documents": {
+      "title": "Dokumentai",
+      "drafts": "Juodraščiai",
+      "issued": "Išrašyti",
+      "issuedTotal": "Išrašytų suma",
+      "empty": "Dokumentų dar nėra.",
+      "unavailable": "Dokumentai nepasiekiami jūsų vaidmeniui arba kol nenustatytas dviejų veiksnių autentifikavimas.",
+      "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų."
     }
   },
   "documentType": {
@@ -87,6 +64,13 @@
     "title": "Puslapis nerastas",
     "description": "Ieškomas puslapis neegzistuoja arba buvo perkeltas.",
     "backHome": "Grįžti į apžvalgą"
+  },
+  "errorPage": {
+    "title": "Įvyko klaida",
+    "description": "Puslapio nepavyko parodyti. Bandykite dar kartą. Jei klaida kartojasi, nurodykite klaidos kodą.",
+    "digest": "Klaidos kodas: {digest}",
+    "retry": "Bandyti dar kartą",
+    "home": "Grįžti į apžvalgą"
   },
   "offline": {
     "title": "Nėra interneto ryšio",
@@ -607,6 +591,12 @@
       "downloadDraft": "Atsisiųsti juodraščio PDF",
       "draftHint": "Juodraščio PDF pažymėtas „neišrašytas“ ir neturi numerio.",
       "unsaved": "PDF rodo paskutinę išsaugotą versiją. Išsaugokite juodraštį, kad pakeitimai patektų į PDF."
+    },
+    "entry": {
+      "title": "Dokumentai",
+      "choose": "Pasirinkite įmonę, kad atidarytumėte jos dokumentus.",
+      "none": "Dokumentai priklauso įmonei. Pirmiausia sukurkite įmonę.",
+      "createCompany": "Sukurti įmonę"
     }
   },
   "taxCategories": {
