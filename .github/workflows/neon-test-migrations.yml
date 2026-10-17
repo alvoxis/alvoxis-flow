@@ -30,7 +30,19 @@ jobs:
     # (variable: the test project's direct endpoint host, not a secret) there.
     environment: neon-test
     steps:
-      - name: Check the confirmation and the secret
+      # No secret in these steps. Only trusted code from main is checked out (see `if` above).
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+
+      # Before any connection: the confirmation, then scripts/ci/neon-test-url.ts (exact direct
+      # endpoint host from NEON_TEST_DB_HOST, no pooler, only sslmode/channel_binding parameters,
+      # sslmode=require or verify-full). It runs with plain Node and prints no values.
+      - name: Check the confirmation and the connection settings
         shell: bash
         env:
           CONFIRM: ${{ inputs.confirm }}
@@ -42,48 +54,31 @@ jobs:
             echo "::error::Confirmation text does not match; nothing was done."
             exit 1
           fi
-          if [ -z "${NEON_TEST_DATABASE_URL:-}" ]; then
-            echo "::error::Secret NEON_TEST_DATABASE_URL is not set; nothing was done."
-            exit 1
-          fi
-          # Checks without printing the value: the exact direct endpoint host of the test project
-          # (variable NEON_TEST_DB_HOST), never a pooled host, and sslmode=verify-full.
-          node -e '
-            const fail = (m) => { console.error("::error::" + m + "; nothing was done."); process.exit(1); };
-            const directHost = /^ep-[a-z0-9]+(-[a-z0-9]+)*(\.[a-z0-9]+(-[a-z0-9]+)*)+\.neon\.tech$/;
-            const expected = (process.env.NEON_TEST_DB_HOST ?? "").trim().toLowerCase();
-            if (!expected) fail("Variable NEON_TEST_DB_HOST is not set");
-            if (!directHost.test(expected) || expected.includes("-pooler"))
-              fail("NEON_TEST_DB_HOST must be a direct Neon endpoint host (ep-….neon.tech, without -pooler)");
-            let u;
-            try { u = new URL(process.env.NEON_TEST_DATABASE_URL); } catch { fail("NEON_TEST_DATABASE_URL is not a valid URL"); }
-            if (!/^postgres(ql)?:$/.test(u.protocol)) fail("NEON_TEST_DATABASE_URL is not a postgres:// URL");
-            // The pg driver lets query parameters (host, port, ssl*, …) override the URL; allow only these.
-            const allowed = new Set(["sslmode", "channel_binding"]);
-            for (const key of u.searchParams.keys())
-              if (!allowed.has(key)) fail("NEON_TEST_DATABASE_URL may only carry the sslmode and channel_binding parameters");
-            if (u.hostname.includes("-pooler")) fail("Use the direct (non-pooled) Neon connection string for migrations");
-            if (u.hostname !== expected) fail("The NEON_TEST_DATABASE_URL host is not NEON_TEST_DB_HOST");
-            const sslmode = u.searchParams.getAll("sslmode");
-            if (sslmode.length !== 1 || sslmode[0] !== "verify-full") fail("NEON_TEST_DATABASE_URL must set sslmode=verify-full");
-          '
+          node --no-warnings scripts/ci/neon-test-url.ts check
 
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          persist-credentials: false
-      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: .nvmrc
       # The secret is not in the environment of the install step.
       - run: pnpm install --frozen-lockfile
 
+      # The normalized URL (sslmode=require tightened to verify-full) only lives in a shell
+      # variable of each step: masked, never written to a file or GITHUB_ENV, never printed.
       - name: Apply migrations (pnpm db:migrate)
+        shell: bash
         env:
-          DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
-        run: pnpm db:migrate
+          NEON_TEST_DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+          NEON_TEST_DB_HOST: ${{ vars.NEON_TEST_DB_HOST }}
+        run: |
+          set -euo pipefail
+          url="$(node --no-warnings scripts/ci/neon-test-url.ts print)"
+          echo "::add-mask::$url"
+          DATABASE_URL="$url" pnpm db:migrate
 
       - name: Sync the permission catalog (pnpm db:seed)
+        shell: bash
         env:
-          DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
-        run: pnpm db:seed
+          NEON_TEST_DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+          NEON_TEST_DB_HOST: ${{ vars.NEON_TEST_DB_HOST }}
+        run: |
+          set -euo pipefail
+          url="$(node --no-warnings scripts/ci/neon-test-url.ts print)"
+          echo "::add-mask::$url"
+          DATABASE_URL="$url" pnpm db:seed
