@@ -69,6 +69,25 @@ describe("parseServerEnv", () => {
     ).toBe("file");
   });
 
+  it("requires an explicit APP_URL on Vercel instead of silently using localhost", () => {
+    const vercel = { ...base, NODE_ENV: "production", VERCEL: "1" };
+    expect(() => parseServerEnv(vercel)).toThrow(/APP_URL: APP_URL is required on Vercel/);
+    // With APP_URL set, the usual production rules apply (https, per-client rate limits).
+    expect(() => parseServerEnv({ ...vercel, APP_URL: "https://flow.example.test" })).toThrow(
+      /TRUSTED_IP_HEADER/,
+    );
+    const env = parseServerEnv({
+      ...vercel,
+      APP_URL: "https://flow.example.test",
+      TRUSTED_IP_HEADER: "x-real-ip",
+    });
+    expect(env.APP_URL).toBe("https://flow.example.test");
+    // Outside Vercel the local default is unchanged.
+    expect(parseServerEnv({ ...base, NODE_ENV: "production" }).APP_URL).toBe(
+      "http://localhost:3000",
+    );
+  });
+
   it("fails fast when DATABASE_URL is missing", () => {
     expect(() => parseServerEnv({})).toThrow(EnvValidationError);
   });

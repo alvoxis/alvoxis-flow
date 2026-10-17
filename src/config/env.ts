@@ -18,8 +18,11 @@ const baseSchema = z.object({
     .string()
     .min(1, "DATABASE_URL is required")
     .refine((v) => /^postgres(ql)?:\/\//.test(v), "DATABASE_URL must be a postgres:// URL"),
-  APP_URL: z.url().default("http://localhost:3000"),
+  /** Public origin; defaults to the local dev server, but must be set explicitly on Vercel. */
+  APP_URL: z.url().optional(),
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug"]).default("info"),
+  /** Set to "1" by Vercel on its build and runtime machines (read-only platform signal). */
+  VERCEL: optionalNonEmpty,
 
   /** Signs/encrypts session cookies, 2FA secrets and backup codes. ≥ 32 random characters. */
   BETTER_AUTH_SECRET: z.string().min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
@@ -109,57 +112,71 @@ export function isLocalhostUrl(url: string): boolean {
   }
 }
 
-export const serverEnvSchema = baseSchema.superRefine((env, ctx) => {
-  const realDeployment = env.NODE_ENV === "production" && !isLocalhostUrl(env.APP_URL);
-  if (Boolean(env.GOOGLE_CLIENT_ID) !== Boolean(env.GOOGLE_CLIENT_SECRET)) {
-    ctx.addIssue({
-      code: "custom",
-      path: ["GOOGLE_CLIENT_ID"],
-      message: "Set both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, or neither",
-    });
-  }
-  if (env.EMAIL_TRANSPORT === "file" && realDeployment) {
-    ctx.addIssue({
-      code: "custom",
-      path: ["EMAIL_TRANSPORT"],
-      message: "The file transport is for development and tests only",
-    });
-  }
-  if (env.EMAIL_TRANSPORT === "smtp") {
-    for (const key of ["SMTP_HOST", "EMAIL_FROM"] as const) {
-      if (!env[key])
-        ctx.addIssue({
-          code: "custom",
-          path: [key],
-          message: `${key} is required when EMAIL_TRANSPORT=smtp`,
-        });
+const DEFAULT_APP_URL = "http://localhost:3000";
+
+export const serverEnvSchema = baseSchema
+  .superRefine((env, ctx) => {
+    if (env.VERCEL === "1" && !env.APP_URL) {
+      // The localhost default would silently become the auth base URL, the only trusted origin
+      // and the host of every email link, so sign-in on the deployment could never work.
+      ctx.addIssue({
+        code: "custom",
+        path: ["APP_URL"],
+        message: "APP_URL is required on Vercel (the deployment's public https:// origin)",
+      });
     }
-  }
-  if (env.EMAIL_TRANSPORT !== "disabled" && !env.EMAIL_FROM && env.EMAIL_TRANSPORT !== "file") {
-    ctx.addIssue({
-      code: "custom",
-      path: ["EMAIL_FROM"],
-      message: "EMAIL_FROM is required to send email",
-    });
-  }
-  if (realDeployment && !env.TRUSTED_IP_HEADER) {
-    // Without a client IP the auth rate limiter uses one bucket shared by every visitor, so a
-    // single attacker could exhaust the sign-in limit for everyone.
-    ctx.addIssue({
-      code: "custom",
-      path: ["TRUSTED_IP_HEADER"],
-      message:
-        "TRUSTED_IP_HEADER is required in production so rate limits apply per client (e.g. x-forwarded-for behind your proxy)",
-    });
-  }
-  if (realDeployment && !env.APP_URL.startsWith("https://")) {
-    ctx.addIssue({
-      code: "custom",
-      path: ["APP_URL"],
-      message: "APP_URL must use https in production",
-    });
-  }
-});
+    const appUrl = env.APP_URL ?? DEFAULT_APP_URL;
+    const realDeployment = env.NODE_ENV === "production" && !isLocalhostUrl(appUrl);
+    if (Boolean(env.GOOGLE_CLIENT_ID) !== Boolean(env.GOOGLE_CLIENT_SECRET)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["GOOGLE_CLIENT_ID"],
+        message: "Set both GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET, or neither",
+      });
+    }
+    if (env.EMAIL_TRANSPORT === "file" && realDeployment) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["EMAIL_TRANSPORT"],
+        message: "The file transport is for development and tests only",
+      });
+    }
+    if (env.EMAIL_TRANSPORT === "smtp") {
+      for (const key of ["SMTP_HOST", "EMAIL_FROM"] as const) {
+        if (!env[key])
+          ctx.addIssue({
+            code: "custom",
+            path: [key],
+            message: `${key} is required when EMAIL_TRANSPORT=smtp`,
+          });
+      }
+    }
+    if (env.EMAIL_TRANSPORT !== "disabled" && !env.EMAIL_FROM && env.EMAIL_TRANSPORT !== "file") {
+      ctx.addIssue({
+        code: "custom",
+        path: ["EMAIL_FROM"],
+        message: "EMAIL_FROM is required to send email",
+      });
+    }
+    if (realDeployment && !env.TRUSTED_IP_HEADER) {
+      // Without a client IP the auth rate limiter uses one bucket shared by every visitor, so a
+      // single attacker could exhaust the sign-in limit for everyone.
+      ctx.addIssue({
+        code: "custom",
+        path: ["TRUSTED_IP_HEADER"],
+        message:
+          "TRUSTED_IP_HEADER is required in production so rate limits apply per client (e.g. x-forwarded-for behind your proxy)",
+      });
+    }
+    if (realDeployment && !appUrl.startsWith("https://")) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["APP_URL"],
+        message: "APP_URL must use https in production",
+      });
+    }
+  })
+  .transform((env) => ({ ...env, APP_URL: env.APP_URL ?? DEFAULT_APP_URL }));
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
 
