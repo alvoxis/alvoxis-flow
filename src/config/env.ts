@@ -181,9 +181,15 @@ export const serverEnvSchema = baseSchema
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
 
 export class EnvValidationError extends Error {
-  constructor(public readonly issues: string[]) {
+  /** Names of the invalid or missing variables (never their values), sorted and deduplicated. */
+  readonly variables: string[];
+  constructor(
+    public readonly issues: string[],
+    variables: string[] = [],
+  ) {
     super(`Invalid server environment:\n  - ${issues.join("\n  - ")}`);
     this.name = "EnvValidationError";
+    this.variables = [...new Set(variables)].sort();
   }
 }
 
@@ -192,6 +198,7 @@ export function parseServerEnv(source: Record<string, string | undefined>): Serv
   if (!result.success) {
     throw new EnvValidationError(
       result.error.issues.map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`),
+      result.error.issues.map((i) => String(i.path[0] ?? "(root)")),
     );
   }
   return result.data;
