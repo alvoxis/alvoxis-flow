@@ -51,6 +51,30 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Raised card: a hairline border that fades from the accent into the regular border, an inner top
+   highlight and layered drop shadows. Static (nothing animates or blurs), cheap on iPhones. */
+@utility surface-raised {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    linear-gradient(
+        155deg,
+        color-mix(in oklab, var(--color-accent) 55%, transparent),
+        var(--color-border) 45%
+      )
+      border-box;
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.05),
+    0 1px 2px 0 rgb(0 0 0 / 0.45),
+    0 18px 40px -20px rgb(0 0 0 / 0.75),
+    0 8px 32px -16px color-mix(in oklab, var(--color-accent-strong) 35%, transparent);
+}
+
+/* Soft accent glow behind a key figure. */
+@utility glow-accent {
+  text-shadow: 0 0 28px color-mix(in oklab, var(--color-accent) 45%, transparent);
+}
+
 /* Users who ask for less motion get no transitions or animations (dialogs and toasts then open
    and close instantly; Base UI waits for transitions only when there are any). */
 @media (prefers-reduced-motion: reduce) {
