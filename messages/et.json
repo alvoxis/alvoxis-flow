@@ -479,7 +479,19 @@
         },
         "total": {
           "mustBeNegative": "Kreeditarve summa peab olema negatiivne."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "Krediteeritav kogus ületab arve rea jääki (koos väljastatud kreeditarvetega).",
+          "invalid": "Krediteeritav kogus peab olema nullist suurem."
+        },
+        "amount": {
+          "exceedsRemaining": "Krediteeritav summa ületab arve rea jääki (koos väljastatud kreeditarvetega)."
+        },
+        "nothingRemaining": "See arve on juba täielikult krediteeritud.",
+        "sourceLine": {
+          "unknown": "Krediteeritud rida ei ole algsel arvel."
+        },
+        "dateBeforeOriginal": "Kreeditarve kuupäev ei saa olla varasem kui arve kuupäev."
       },
       "deliveryNote": {
         "line": {
@@ -584,6 +596,34 @@
     "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa.",
     "colBuyer": "Ostja",
     "creditNoteBank": "Kreeditarve säilitab algse arve pangarekvisiidid.",
+    "creditNote": {
+      "create": "Loo kreeditarve",
+      "title": "Kreeditarve arvele {number}",
+      "description": "Luuakse kreeditarve mustand, mida saab enne väljastamist redaktoris kontrollida. Arvet ennast ei muudeta.",
+      "mode": "Mida krediteerida",
+      "full": {
+        "label": "Kogu jääk",
+        "hint": "Krediteeritakse kõik arve read, mida pole veel krediteeritud."
+      },
+      "partial": {
+        "label": "Valitud read",
+        "hint": "Krediteeritakse ainult allpool sisestatud kogused."
+      },
+      "linesTitle": "Krediteeritavad kogused",
+      "linesHint": "Jätke rida tühjaks, et see vahele jätta. Juba väljastatud kreeditarveid arvestatakse mustandi loomisel.",
+      "invoiced": "Arvel: {quantity}",
+      "quantityFor": "Krediteeritav kogus, rida {n}: {description}",
+      "submit": "Loo mustand",
+      "refused": "Kreeditarve mustandit ei loodud.",
+      "notCreditable": "Krediteerida saab ainult väljastatud arvet.",
+      "errors": {
+        "dateRequired": "Sisestage kreeditarve kuupäev.",
+        "dateBeforeInvoice": "Kreeditarve kuupäev ei saa olla varasem kui arve kuupäev.",
+        "noLines": "Sisestage kogus vähemalt ühele reale.",
+        "quantityInvalid": "Sisestage nullist suurem arv, kuni 4 kohta pärast koma.",
+        "quantityTooHigh": "See on rohkem kui arvel olev kogus."
+      }
+    },
     "pdf": {
       "open": "Ava PDF",
       "download": "Laadi PDF alla",

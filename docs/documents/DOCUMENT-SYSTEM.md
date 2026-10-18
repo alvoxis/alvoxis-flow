@@ -268,6 +268,31 @@ from their list row, each after a confirmation; afterwards the list shows a conf
 Issued documents never show the action, and the API refuses it anyway (409; another company's
 document is a 404). Both actions are hidden without `documents.create` and enforced by the API.
 
+### Credit notes in the UI
+
+An issued invoice shows "Create credit note" to users with `documents.create` (not on drafts,
+proformas, delivery notes or credit notes). It opens a modal dialog (Base UI AlertDialog, focus on
+Cancel) with:
+
+- **What to credit**: everything that remains (`lines: "full"`, the default) or selected lines with
+  a quantity per invoice line (a decimal comma is accepted). The dialog shows invoiced quantities
+  only. What remains after issued credit notes is checked by the server.
+- **Date** (default: today in the browser, never before the invoice date) and **document
+  language** (default: the invoice's).
+
+The form catches obvious mistakes before sending: missing date, date before the invoice, no line,
+a quantity that is not positive, has more than 4 decimals or exceeds the invoiced quantity. It
+then calls `POST …/credit-note`. The server's findings appear in the dialog, translated by code
+(`documents.issues.creditNote.*`: `quantity.exceedsRemaining`, `amount.exceedsRemaining`,
+`nothingRemaining`, `quantity.invalid`, `sourceLine.unknown`, `dateBeforeOriginal`); the same
+texts appear in the editor when issuing is refused.
+
+While the request runs, the dialog cannot be closed and its actions are disabled, so a double
+click creates one draft. On success the draft opens in the editor (fixed lines, the invoice's tax
+categories and bank details) and is issued through the editor's usual confirmation, which is also
+a modal AlertDialog. A link from the invoice page to its credit notes is not shown yet; the PDF
+of a credit note names its invoice.
+
 ### Bank accounts
 
 A company keeps several bank accounts (`company_bank_accounts`, migration 0012): IBAN (stored
