@@ -1,15 +1,30 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useId, useState } from "react";
+import { useRef, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Alert, Button } from "@/components/ui/form";
 import { type DeleteOutcome, interpretDeleteResponse } from "@/features/documents/create-model";
 import { Link, useRouter } from "@/i18n/navigation";
 
 /**
- * Deletes a draft through `DELETE …/documents/{id}` after an explicit confirmation, then returns
- * to the documents list with a confirmation message. Shown only for drafts and only to users with
- * documents.create; the server refuses everything else (issued → 409, other company → 404).
+ * Deletes a draft through `DELETE …/documents/{id}` after an explicit confirmation in a modal
+ * alert dialog, then returns to the documents list with a confirmation message. Shown only for
+ * drafts and only to users with documents.create; the server refuses everything else (issued →
+ * 409, other company → 404).
+ *
+ * The dialog opens with focus on Cancel (the safe action); Esc and Cancel close it, and focus goes
+ * back to the trigger. While the request runs both actions are disabled and the dialog cannot be
+ * closed, so the draft is deleted at most once. A refusal closes the dialog and is shown as an
+ * inline alert under the trigger.
  */
 export function DeleteDraftButton({
   companyId,
@@ -27,13 +42,17 @@ export function DeleteDraftButton({
   const t = useTranslations("documents");
   const tCompany = useTranslations("company");
   const router = useRouter();
-  const id = useId();
-  const [confirming, setConfirming] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  // A ref, not state: it blocks a second click that lands before React re-renders the buttons.
+  const inFlight = useRef(false);
+  const [open, setOpen] = useState(false);
   const [pending, setPending] = useState(false);
   const [outcome, setOutcome] = useState<Exclude<DeleteOutcome, { kind: "deleted" }> | null>(null);
   const listUrl = `/companies/${companyId}/documents`;
 
   async function remove() {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setPending(true);
     let result: DeleteOutcome;
     try {
@@ -44,8 +63,9 @@ export function DeleteDraftButton({
     } catch {
       result = { kind: "error" };
     }
+    inFlight.current = false;
     setPending(false);
-    setConfirming(false);
+    setOpen(false);
     if (result.kind === "deleted") {
       router.push(`${listUrl}?deleted=1`);
       router.refresh();
@@ -56,48 +76,50 @@ export function DeleteDraftButton({
 
   return (
     <div className="space-y-2" data-testid="delete-draft">
-      {!confirming ? (
-        <Button
-          type="button"
-          variant={compact ? "ghost" : "danger"}
-          className={compact ? "px-0 py-1 text-danger hover:text-red-300" : undefined}
-          disabled={pending}
-          onClick={() => {
-            setOutcome(null);
-            setConfirming(true);
-          }}
-        >
-          {t("deleteDraft")}
-        </Button>
-      ) : (
-        <div
-          role="alertdialog"
-          aria-labelledby={`${id}-title`}
-          aria-describedby={`${id}-body`}
-          className="space-y-3 rounded-xl border border-red-800/60 bg-red-950/30 p-3"
-          data-testid="delete-confirm"
-        >
-          <p id={`${id}-title`} className="text-sm font-semibold text-text">
-            {t("deleteConfirmTitle")}
-          </p>
-          <p id={`${id}-body`} className="text-sm text-muted" data-testid="delete-confirm-body">
-            {t(fromEditor ? "deleteConfirmBodyEditor" : "deleteConfirmBody")}
-          </p>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button type="button" variant="danger" disabled={pending} onClick={() => void remove()}>
-              {t("deleteConfirm")}
-            </Button>
+      <AlertDialog
+        open={open}
+        onOpenChange={(next) => {
+          // Not while the request runs: Esc must not hide a deletion that is still in progress.
+          if (inFlight.current) return;
+          if (next) setOutcome(null);
+          setOpen(next);
+        }}
+      >
+        <AlertDialogTrigger
+          render={
             <Button
               type="button"
-              variant="secondary"
+              variant={compact ? "ghost" : "danger"}
+              className={compact ? "px-0 py-1 text-danger hover:text-red-300" : undefined}
+            />
+          }
+          disabled={pending}
+        >
+          {t("deleteDraft")}
+        </AlertDialogTrigger>
+        <AlertDialogContent initialFocus={cancelRef} data-testid="delete-confirm">
+          <AlertDialogTitle className="text-base font-semibold text-text">
+            {t("deleteConfirmTitle")}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-sm text-muted" data-testid="delete-confirm-body">
+            {t(fromEditor ? "deleteConfirmBodyEditor" : "deleteConfirmBody")}
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <Button
+              type="button"
+              variant="danger"
               disabled={pending}
-              onClick={() => setConfirming(false)}
+              aria-busy={pending || undefined}
+              onClick={() => void remove()}
             >
-              {t("cancel")}
+              {t("deleteConfirm")}
             </Button>
-          </div>
-        </div>
-      )}
+            <AlertDialogCancel ref={cancelRef} disabled={pending}>
+              {t("cancel")}
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       {outcome ? (
         <Alert tone="error">
           {outcome.kind === "twoFactor" ? (

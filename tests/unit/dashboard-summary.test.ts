@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { isNavItemActive, NAV_ITEMS } from "@/components/layout/nav-items";
-import { summarizeDocuments } from "@/features/dashboard/summary";
+import { issuedShare, summarizeDocuments } from "@/features/dashboard/summary";
 import { localeOfPath } from "@/features/errors/locale";
 
 describe("summarizeDocuments", () => {
@@ -26,6 +26,16 @@ describe("summarizeDocuments", () => {
     expect(
       summarizeDocuments([{ status: "draft", currency: "EUR", grossTotal: "50.00" }]).issuedTotals,
     ).toEqual([]);
+  });
+});
+
+describe("issuedShare", () => {
+  it("is the rounded percentage of issued documents, 0 without documents", () => {
+    expect(issuedShare({ drafts: 0, issued: 0 })).toBe(0);
+    expect(issuedShare({ drafts: 3, issued: 0 })).toBe(0);
+    expect(issuedShare({ drafts: 0, issued: 2 })).toBe(100);
+    expect(issuedShare({ drafts: 1, issued: 2 })).toBe(67);
+    expect(issuedShare({ drafts: 2, issued: 1 })).toBe(33);
   });
 });
 

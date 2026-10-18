@@ -1,0 +1,67 @@
+name: WebKit (optional)
+
+# Optional, non-blocking check: the dialog, navigation and app e2e tests on Playwright's WebKit
+# with an iPhone profile. It is a separate workflow so that it never changes the required CI
+# checks; a failure here is a signal to look at Safari behaviour, not a merge blocker.
+# Playwright's WebKit is not Safari itself: real-device checks on an iPhone are still needed.
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: webkit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  webkit-e2e:
+    name: Optional — iPhone WebKit e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: alvoxis_flow_e2e
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Disposable CI-only database; not a secret. The e2e server's auth secret is a
+      # fixture defined in playwright.config.ts.
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_e2e
+      E2E_DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_e2e
+      E2E_WEBKIT: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Prepare the e2e database
+        run: |
+          pnpm db:migrate
+          pnpm db:seed
+      - run: pnpm exec playwright install --with-deps webkit
+      - run: >-
+          pnpm exec playwright test --project=iphone-webkit
+          tests/e2e/dialogs.spec.ts tests/e2e/navigation.spec.ts tests/e2e/app.spec.ts
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-webkit
+          path: playwright-report
+          retention-days: 7
