@@ -61,13 +61,38 @@ async function googleSignIn(c: AuthClient, claims: GoogleClaims) {
   return c.request(`/callback/google?code=test-code&state=${encodeURIComponent(state)}`);
 }
 
+const TOTP_STEP_MS = 30_000;
+/** Codes this file already sent, per TOTP secret: the server rejects a code used once (replay). */
+const usedTotpCodes = new Map<string, Set<string>>();
+
+/**
+ * A TOTP code the server accepts now (it allows the current 30 s step and one step either side)
+ * that this file has not sent before for the secret. Fixed offsets such as "now − 30 s" are not
+ * enough: when a step boundary passes between two verifications, "now − 30 s" names the step of
+ * the earlier code, which replay protection then (correctly) rejects.
+ */
+function freshTotp(secret: string): string {
+  const used = usedTotpCodes.get(secret) ?? new Set<string>();
+  usedTotpCodes.set(secret, used);
+  const now = Math.floor(Date.now() / TOTP_STEP_MS);
+  // Prefer steps that stay valid if the request lands just after the next boundary.
+  for (const step of [now, now + 1, now - 1]) {
+    const code = totp(secret, step * TOTP_STEP_MS);
+    if (!used.has(code)) {
+      used.add(code);
+      return code;
+    }
+  }
+  throw new Error("every TOTP code in the accepted window was already used by this test");
+}
+
 async function enrolledUser() {
   const { email } = await flows.registerAndVerify();
   const { c } = await flows.signedIn(email);
   const enable = await c.request("/two-factor/enable", { body: { password: STRONG_PASSWORD } });
   const secret = secretFromOtpauthUri(String(enable.json!.totpURI));
   expect(
-    (await c.request("/two-factor/verify-totp", { body: { code: totp(secret) } })).status,
+    (await c.request("/two-factor/verify-totp", { body: { code: freshTotp(secret) } })).status,
   ).toBe(200);
   return { email, secret, backupCodes: enable.json!.backupCodes as string[] };
 }
@@ -157,7 +182,7 @@ describe("Google OAuth", () => {
     expect(
       (
         await c.request("/two-factor/verify-totp", {
-          body: { code: totp(secret, Date.now() + 30_000) },
+          body: { code: freshTotp(secret) },
         })
       ).status,
     ).toBe(200);
@@ -381,12 +406,12 @@ describe("2FA key rotation", () => {
     // Stored encrypted (XChaCha20-Poly1305), never as the plain secret.
     expect(before!.secret).not.toContain(secret);
 
-    const signInAndVerify = async (auth: ReturnType<typeof createTestAuth>, at: number) => {
+    const signInAndVerify = async (auth: ReturnType<typeof createTestAuth>) => {
       const c = new AuthClient(auth.auth);
       const res = await c.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
       expect(res.json).toMatchObject({ twoFactorRedirect: true });
       const verify = await c.request("/two-factor/verify-totp", {
-        body: { code: totp(secret, at) },
+        body: { code: freshTotp(secret) },
       });
       expect(verify.status).toBe(200);
     };
@@ -395,7 +420,7 @@ describe("2FA key rotation", () => {
     const rotating = createTestAuth(db, {
       BETTER_AUTH_SECRETS: `2:${NEW_KEY},1:${TEST_AUTH_SECRET}`,
     });
-    await signInAndVerify(rotating, Date.now() + 30_000);
+    await signInAndVerify(rotating);
 
     // Step 2: re-encrypt with the new key (idempotent).
     const key = secretConfigFromEnv(rotating.env);
@@ -413,7 +438,7 @@ describe("2FA key rotation", () => {
       BETTER_AUTH_SECRET: NEW_KEY,
       BETTER_AUTH_SECRETS: `2:${NEW_KEY}`,
     });
-    await signInAndVerify(retired, Date.now() - 30_000);
+    await signInAndVerify(retired);
   });
 });
 
@@ -481,7 +506,7 @@ describe("session token storage", () => {
     const a = new AuthClient(h.auth);
     await a.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
     await a.request("/two-factor/verify-totp", {
-      body: { code: totp(secret, Date.now() + 30_000) },
+      body: { code: freshTotp(secret) },
     });
     const me = await current(a);
     expect(me.twoFactorVerified).toBe(true);
@@ -489,7 +514,7 @@ describe("session token storage", () => {
     const b = new AuthClient(h.auth);
     await b.request("/sign-in/email", { body: { email, password: STRONG_PASSWORD } });
     await b.request("/two-factor/verify-totp", {
-      body: { code: totp(secret, Date.now() - 30_000) },
+      body: { code: freshTotp(secret) },
     });
     await expect(current(b)).resolves.toBeTruthy();
 
