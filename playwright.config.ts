@@ -24,6 +24,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], viewport: { width: 820, height: 1180 } },
     },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
+    // Optional iPhone check on WebKit (Playwright's build, not Safari itself), run only by the
+    // separate non-blocking workflow .github/workflows/webkit.yml with E2E_WEBKIT=1.
+    ...(process.env.E2E_WEBKIT === "1"
+      ? [{ name: "iphone-webkit", use: { ...devices["iPhone 15"], launchOptions: {} } }]
+      : []),
   ],
   webServer: {
     command: `pnpm start --port ${PORT}`,

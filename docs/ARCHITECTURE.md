@@ -92,6 +92,29 @@ flagged `requires_two_factor`.
 Web app manifest + icons; a service worker (production only) that caches only offline fallback pages and
 icons. Business data and HTML pages are deliberately not cached on devices.
 
+## UI components
+
+- Shared primitives live in `src/components/ui` and use the app's own colour tokens from
+  `src/app/globals.css` (`bg`, `surface`, `surface-2`, `border`, `text`, `muted`, `accent`, …). The app
+  is dark-only.
+- Interactive overlays use **Base UI** (`@base-ui/react`) in the shadcn/ui "base" pattern: the code is in
+  the repository (`alert-dialog.tsx`, `toast.tsx`), restyled with our tokens. Base UI handles focus
+  trapping and return, Esc, scroll lock and hiding the rest of the page from assistive technology.
+- `components.json` records the shadcn setup (`base-nova`). **Do not accept the CSS that `shadcn init` or
+  `shadcn add` writes into `globals.css` unreviewed**: its tokens reuse our names (`border`, `accent`,
+  `muted`) with other meanings and would restyle every screen. Add component code, then map it to our
+  tokens.
+- `cn()` (`src/lib/utils.ts`) is clsx + tailwind-merge, for components whose `className` overrides
+  defaults.
+- Base UI layout requirements: the app is wrapped in `.root` (`isolation: isolate`) and `body` is
+  `position: relative` (backdrops cover the area under the iOS 26 Safari toolbars).
+- `prefers-reduced-motion: reduce` turns transitions and animations off globally.
+- Toasts are for confirmations that need no action; errors and messages with links stay in inline
+  alerts next to their form. `<Toaster />` is **not** mounted globally: add it to the layout or page of
+  the routes that show toasts, so its code loads only there (no screen uses toasts yet).
+- Dialog behaviour is covered by e2e tests with axe (`@axe-core/playwright`); an optional, non-blocking
+  workflow (`webkit.yml`) runs the dialog and navigation tests on WebKit with an iPhone profile.
+
 ## Key dependency decisions
 
 | Decision                         | Why                                                                                                                                                                         | Trade-off                                                                                             |

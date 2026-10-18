@@ -55,7 +55,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {/* .root: own stacking context, so Base UI popups (portalled to <body>) stay on top. */}
+          <div className="root">{children}</div>
+        </NextIntlClientProvider>
         <ServiceWorkerRegistration />
       </body>
     </html>
