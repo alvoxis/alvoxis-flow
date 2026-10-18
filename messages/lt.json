@@ -86,6 +86,7 @@
     "number": "Nr.",
     "issueDate": "Išrašymo data",
     "dueDate": "Apmokėti iki",
+    "amountDue": "Mokėtina suma",
     "supplyDate": "Tiekimo data",
     "validUntil": "Galioja iki",
     "buyerReference": "Užsakymo numeris",
@@ -127,7 +128,6 @@
     "bank": "Bankas",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Prašome apmokėti iki {date}",
     "notes": "Pastabos",
     "relation": {
       "credits": "Kreditinė sąskaita sąskaitai {number}, {date}",
@@ -367,6 +367,21 @@
       "addressLine2": "Iki 200 simbolių.",
       "postalCode": "Iki 16 simbolių.",
       "city": "Iki 100 simbolių."
+    },
+    "pdfAccent": {
+      "legend": "Dokumentų spalva",
+      "hint": "Sąskaitų ir kitų PDF dokumentų akcento spalva: antraštė, plonos linijos, apmokėjimo terminas ir bendra suma. Fonas lieka baltas, o tekstas tamsus, todėl dokumentai gerai spausdinami bet kuriuo spausdintuvu.",
+      "default": "Numatytoji",
+      "previewLabel": "Sąskaitos pavyzdys spalva „{colour}“",
+      "previewCaption": "Pavyzdys: kur spalva matoma PDF dokumente. Sumos ir turinys nesikeičia.",
+      "options": {
+        "navy": "Tamsiai mėlyna",
+        "graphite": "Grafito",
+        "blue": "Mėlyna",
+        "teal": "Žydrai žalia",
+        "green": "Žalia",
+        "burgundy": "Bordo"
+      }
     }
   },
   "documents": {

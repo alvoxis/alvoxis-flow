@@ -1,6 +1,8 @@
 import "server-only";
+import { eq } from "drizzle-orm";
 import { type Actor } from "@/server/auth/authorization";
 import { type DbOrTx } from "@/server/db/client";
+import { companies } from "@/server/db/schema";
 import { type DocumentDraft, type DocumentTotals } from "../domain/types";
 import { type DocumentPdfModel } from "../pdf/document-pdf";
 import { renderDocumentPdf } from "../pdf/render";
@@ -14,6 +16,9 @@ const SAFE = /[^A-Za-z0-9._-]+/g;
  * documents are rendered only from their frozen snapshot — content, totals, number and hash as
  * issued — never from the current company profile or draft rows. Drafts render their current
  * content with the "not issued" watermark and no number.
+ *
+ * The company's current PDF accent colour is applied to both: it is presentation like the
+ * template itself (headings, rules, total highlight), never content, totals or numbering.
  */
 export async function getDocumentPdf(
   db: DbOrTx,
@@ -22,6 +27,12 @@ export async function getDocumentPdf(
   documentId: string,
 ): Promise<{ bytes: Buffer; filename: string }> {
   const stored = await getDocument(db, actor, companyId, documentId);
+  // After getDocument's access check (documents.view in this company).
+  const [company] = await db
+    .select({ pdfAccent: companies.pdfAccent })
+    .from(companies)
+    .where(eq(companies.id, companyId));
+  const accent = company?.pdfAccent ?? null;
   let model: DocumentPdfModel;
   if (stored.status === "issued") {
     // getDocument serves issued documents from `documents.snapshot`; take every field from it.
@@ -36,6 +47,7 @@ export async function getDocumentPdf(
       number: snapshot.number,
       totals: snapshot.totals,
       contentHash: snapshot.contentHash,
+      accent,
     };
   } else {
     model = {
@@ -44,6 +56,7 @@ export async function getDocumentPdf(
       number: null,
       totals: stored.totals,
       contentHash: null,
+      accent,
     };
   }
   const base =

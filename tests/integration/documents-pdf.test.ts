@@ -1,9 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { and, eq } from "drizzle-orm";
 import { type Pool } from "pg";
-import { extractText } from "unpdf";
+import { extractText, getDocumentProxy } from "unpdf";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { type IssuedDocument } from "@/modules/documents/domain";
+import { PDF_ACCENT_COLORS } from "@/lib/pdf-accent";
 import { renderDocumentPdf } from "@/modules/documents/pdf/render";
 import { createDraft, issueDocument } from "@/modules/documents/server/document-service";
 import { ensureDefaultNumberSeries } from "@/modules/documents/server/numbering-service";
@@ -108,6 +109,17 @@ async function getPdf(actor: Actor | null, companyId: string, documentId: string
 
 const textOf = async (bytes: Uint8Array) =>
   (await extractText(bytes.slice(), { mergePages: true })).text.replace(/[\s  ]+/g, " ");
+
+/** Colours used by fill/stroke operators on page 1 (pdf.js reports them as hex strings). */
+async function colorsOf(bytes: Uint8Array): Promise<Set<string>> {
+  const page = await (await getDocumentProxy(bytes.slice())).getPage(1);
+  const ops = await page.getOperatorList();
+  return new Set(
+    (ops.argsArray as unknown[][])
+      .flat()
+      .filter((a): a is string => typeof a === "string" && /^#[0-9a-f]{6}$/.test(a)),
+  );
+}
 
 describe("document PDF", { timeout: 60_000 }, () => {
   it("issued: rendered only from the frozen snapshot, even after profile and catalog changes", async () => {
@@ -216,5 +228,29 @@ describe("document PDF", { timeout: 60_000 }, () => {
     });
     await db.update(companies).set({ archivedAt: new Date() }).where(eq(companies.id, a.companyId));
     expect((await refused(a.owner, a.companyId, draftA.id)).status).toBe(403);
+  });
+
+  it("uses the company's PDF colour for drafts and issued documents; the content stays the same", async () => {
+    const { owner, companyId, cats } = await newCompany();
+    const draft = await createDraft(db, owner, companyId, input(cats));
+    const issued = await issueDocument(db, owner, companyId, draft.id, 1);
+    const draft2 = await createDraft(db, owner, companyId, input(cats));
+
+    const before = await getPdf(owner, companyId, issued.id);
+    expect(await colorsOf(before.bytes)).toContain(PDF_ACCENT_COLORS.navy.accent); // default
+
+    await db.update(companies).set({ pdfAccent: "burgundy" }).where(eq(companies.id, companyId));
+    for (const id of [issued.id, draft2.id]) {
+      const { res, bytes } = await getPdf(owner, companyId, id);
+      expect(res.status).toBe(200);
+      const colors = await colorsOf(bytes);
+      expect(colors).toContain(PDF_ACCENT_COLORS.burgundy.accent);
+      expect(colors).not.toContain(PDF_ACCENT_COLORS.navy.accent);
+    }
+    // Only the colour changed: the issued document's text (number, totals, hash) is identical.
+    const after = await getPdf(owner, companyId, issued.id);
+    expect(await textOf(after.bytes)).toBe(await textOf(before.bytes));
+    const [row] = await db.select().from(documents).where(eq(documents.id, issued.id));
+    expect(row!.contentHash).toBe(issued.contentHash);
   });
 });

@@ -223,4 +223,59 @@ describe("company profile", () => {
     const [row] = await db.select().from(companies).where(eq(companies.id, companyId));
     expect(row!.name).toBe("Profile Test");
   });
+
+  it("PDF colour: defaults to dark blue, accepts only palette values, audited by field name", async () => {
+    const { owner, companyId } = await ownerCompany();
+    const actor = verified(owner.id);
+    await expect(getCompanyProfile(db, actor, companyId)).resolves.toMatchObject({
+      profile: { pdfAccent: "navy" },
+    });
+
+    await expect(
+      updateCompanyProfile(db, actor, companyId, { name: "Profile Test", pdfAccent: "teal" }),
+    ).resolves.toMatchObject({ ok: true, profile: { pdfAccent: "teal", name: "Profile Test" } });
+    const [entry] = await db
+      .select()
+      .from(auditLogs)
+      .where(
+        and(eq(auditLogs.companyId, companyId), eq(auditLogs.action, "company.profile_updated")),
+      );
+    expect(entry!.metadata).toEqual({ changed: ["pdfAccent"] });
+
+    // Anything outside the palette (free colours, CSS, wrong case) is refused; nothing changes.
+    for (const bad of ["#ff0000", "red", "NAVY", "teal; color: red", "", 3]) {
+      const result = await updateCompanyProfile(db, actor, companyId, {
+        name: "Profile Test",
+        pdfAccent: bad,
+      });
+      expect(result, String(bad)).toMatchObject({ ok: false });
+      expect(Object.keys((result as { fieldErrors: object }).fieldErrors)).toEqual(["pdfAccent"]);
+    }
+    // Omitting the colour keeps it (forms and API clients that do not send it).
+    await updateCompanyProfile(db, actor, companyId, { name: "Renamed" });
+    const [row] = await db.select().from(companies).where(eq(companies.id, companyId));
+    expect(row).toMatchObject({ pdfAccent: "teal", name: "Renamed" });
+
+    // The database itself refuses values outside the palette.
+    await expect(
+      db
+        .update(companies)
+        .set({ pdfAccent: "pink" as "teal" })
+        .where(eq(companies.id, companyId)),
+    ).rejects.toThrow();
+  });
+
+  it("PDF colour can only be changed with company.manage, in the actor's own company", async () => {
+    const { companyId } = await ownerCompany();
+    const { owner: otherOwner } = await ownerCompany();
+    const accountant = await createUser();
+    await addMember(companyId, accountant.id, "accountant");
+    for (const actor of [verified(accountant.id), verified(otherOwner.id)]) {
+      await expect(
+        updateCompanyProfile(db, actor, companyId, { name: "Profile Test", pdfAccent: "green" }),
+      ).rejects.toThrow(ForbiddenError);
+    }
+    const [row] = await db.select().from(companies).where(eq(companies.id, companyId));
+    expect(row!.pdfAccent).toBe("navy");
+  });
 });
