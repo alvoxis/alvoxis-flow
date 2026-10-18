@@ -6,10 +6,11 @@ data: use synthetic data only (fictitious companies, `example.test` addresses, I
 `LV80BANK0000435195001` that only pass the checksum).
 
 The repository has no deploy scripts, but once the Vercel project is connected (§7) Vercel deploys
-it automatically: merging to `main` (the production branch by default) creates a **production
-deployment**, and every PR branch gets a preview deployment (see
-[DEPLOYMENT.md](DEPLOYMENT.md)). Every step below is done by the account owner in the providers'
-dashboards; the application code is used unchanged.
+it automatically: a push to the project's **production branch** creates a **production
+deployment**, and every other branch and PR gets a preview deployment (see
+[DEPLOYMENT.md](DEPLOYMENT.md)). Vercel's default production branch is `main`; the main ALVOXIS
+Flow project uses a separate `production` branch. Every step below is done by the account owner in
+the providers' dashboards; the application code is used unchanged.
 
 | Part               | Service                     | Why                                                                    |
 | ------------------ | --------------------------- | ---------------------------------------------------------------------- |
@@ -168,12 +169,12 @@ pricing page). When it is used up, sign-up verification mails no longer arrive u
    also protects the production domain and is available on all plans. Visitors then sign in to
    Vercel before they reach the app; on Hobby only the account owner (plus at most one external user)
    has access. Do not create shareable bypass links.
-5. Production code always comes from `main`. While `main` is the production branch, merging to
-   `main` creates a new production deployment, so run new migrations (§5) before merging a PR that
-   adds one. To deploy
-   production only on purpose, set a separate production branch (Settings → Environments →
-   Production → Branch Tracking) that is only updated from `main`; `main` and PR branches then get
-   preview deployments only.
+5. Production code always comes from `main`. Prefer a separate production branch (Settings →
+   Environments → Production → Branch Tracking) that is only updated from `main` through a release
+   PR; `main` and PR branches then get preview deployments only, and new migrations (§5) are run
+   before the release PR is merged. If the project keeps Vercel's default (`main` as the production
+   branch), merging to `main` deploys to production, so run new migrations before merging a PR that
+   adds one.
 
 ## 8. Checks after deployment
 
