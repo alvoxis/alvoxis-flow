@@ -725,5 +725,11 @@
       "archived": "Arhivēts konts {iban}",
       "unlinked": "Saglabātie rekvizīti {iban} (nav saistīti ar kontu)"
     }
+  },
+  "ui": {
+    "toast": {
+      "region": "Paziņojumi",
+      "close": "Aizvērt paziņojumu"
+    }
   }
 }

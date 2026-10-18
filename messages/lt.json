@@ -725,5 +725,11 @@
       "archived": "Archyvuota sąskaita {iban}",
       "unlinked": "Išsaugoti rekvizitai {iban} (nesusieti su sąskaita)"
     }
+  },
+  "ui": {
+    "toast": {
+      "region": "Pranešimai",
+      "close": "Uždaryti pranešimą"
+    }
   }
 }
