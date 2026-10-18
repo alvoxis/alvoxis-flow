@@ -28,37 +28,14 @@
   "dashboard": {
     "title": "Pārskats",
     "subtitle": "Jūsu uzņēmuma dokumentu un darbību kopsavilkums.",
-    "demoBanner": "Priekšskatījums ar parauga datiem. Nekas šeit vēl nav saistīts ar reālu uzņēmumu.",
-    "demoBadge": "Parauga dati",
-    "kpi": {
-      "revenue": "Izrakstīts šomēnes",
-      "revenueHint": "Apstiprinātie rēķini, katrs savā dokumenta valūtā",
-      "outstanding": "Neapmaksāts",
-      "outstandingHint": "{count, plural, zero {# neapmaksātu rēķinu} one {# neapmaksāts rēķins} other {# neapmaksāti rēķini}}",
-      "overdue": "Kavēts",
-      "overdueHint": "{count, plural, zero {# rēķinu ar nokavētu termiņu} one {# rēķins ar nokavētu termiņu} other {# rēķini ar nokavētu termiņu}}",
-      "documents": "Dokumenti šomēnes",
-      "documentsHint": "Rēķini, avansa rēķini, kredītrēķini un pavadzīmes"
-    },
-    "currencyNote": "Katrs dokuments saglabā savu valūtu. Summas dažādās valūtās nekad netiek saskaitītas kopā.",
-    "recent": {
-      "title": "Jaunākie dokumenti",
-      "description": "Pēdējie visu veidu dokumenti",
-      "number": "Numurs",
-      "type": "Veids",
-      "customer": "Klients",
-      "date": "Datums",
-      "status": "Statuss",
-      "amount": "Summa",
-      "creditsInvoice": "Koriģē {number}",
-      "noAmount": "Nav piemērojams"
-    },
-    "nextSteps": {
-      "title": "Darba sākšana",
-      "createCompany": "Izveidojiet uzņēmuma profilu",
-      "inviteTeam": "Uzaiciniet komandu un piešķiriet lomas",
-      "addCustomers": "Pievienojiet klientus un produktus",
-      "firstInvoice": "Izrakstiet pirmo rēķinu"
+    "documents": {
+      "title": "Dokumenti",
+      "drafts": "Melnraksti",
+      "issued": "Izrakstīti",
+      "issuedTotal": "Izrakstīto summa",
+      "empty": "Dokumentu vēl nav.",
+      "unavailable": "Dokumenti nav pieejami jūsu lomai vai līdz divfaktoru autentifikācijas iestatīšanai.",
+      "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām."
     }
   },
   "documentType": {
@@ -87,6 +64,13 @@
     "title": "Lapa nav atrasta",
     "description": "Meklētā lapa neeksistē vai ir pārvietota.",
     "backHome": "Atpakaļ uz pārskatu"
+  },
+  "errorPage": {
+    "title": "Radās kļūda",
+    "description": "Lapu neizdevās parādīt. Lūdzu, mēģiniet vēlreiz. Ja kļūda atkārtojas, norādiet kļūdas kodu.",
+    "digest": "Kļūdas kods: {digest}",
+    "retry": "Mēģināt vēlreiz",
+    "home": "Atpakaļ uz pārskatu"
   },
   "offline": {
     "title": "Nav interneta savienojuma",
@@ -607,6 +591,12 @@
       "downloadDraft": "Lejupielādēt melnraksta PDF",
       "draftHint": "Melnraksta PDF ir atzīmēts kā „nav izrakstīts“ un tam nav numura.",
       "unsaved": "PDF rāda pēdējo saglabāto versiju. Saglabājiet melnrakstu, lai izmaiņas būtu PDF."
+    },
+    "entry": {
+      "title": "Dokumenti",
+      "choose": "Izvēlieties uzņēmumu, lai atvērtu tā dokumentus.",
+      "none": "Dokumenti pieder uzņēmumam. Vispirms izveidojiet uzņēmumu.",
+      "createCompany": "Izveidot uzņēmumu"
     }
   },
   "taxCategories": {

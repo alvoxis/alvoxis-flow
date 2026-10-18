@@ -28,37 +28,14 @@
   "dashboard": {
     "title": "Ülevaade",
     "subtitle": "Teie ettevõtte dokumentide ja tegevuste kokkuvõte.",
-    "demoBanner": "Eelvaade näidisandmetega. Midagi siin pole veel päris ettevõttega seotud.",
-    "demoBadge": "Näidisandmed",
-    "kpi": {
-      "revenue": "Selle kuu arved",
-      "revenueHint": "Kinnitatud arved, iga dokumendi enda valuutas",
-      "outstanding": "Tasumata",
-      "outstandingHint": "{count, plural, one {# tasumata arve} other {# tasumata arvet}}",
-      "overdue": "Tähtaeg ületatud",
-      "overdueHint": "{count, plural, one {# arve tähtaeg on ületatud} other {# arve tähtaeg on ületatud}}",
-      "documents": "Selle kuu dokumendid",
-      "documentsHint": "Arved, ettemaksuarved, kreeditarved ja saatelehed"
-    },
-    "currencyNote": "Iga dokument säilitab oma valuuta. Eri valuutades summasid kunagi kokku ei liideta.",
-    "recent": {
-      "title": "Viimased dokumendid",
-      "description": "Kõige uuemad igat tüüpi dokumendid",
-      "number": "Number",
-      "type": "Tüüp",
-      "customer": "Klient",
-      "date": "Kuupäev",
-      "status": "Olek",
-      "amount": "Summa",
-      "creditsInvoice": "Korrigeerib {number}",
-      "noAmount": "Ei kohaldu"
-    },
-    "nextSteps": {
-      "title": "Alustamine",
-      "createCompany": "Looge ettevõtte profiil",
-      "inviteTeam": "Kutsuge meeskond ja määrake rollid",
-      "addCustomers": "Lisage kliendid ja tooted",
-      "firstInvoice": "Koostage esimene arve"
+    "documents": {
+      "title": "Dokumendid",
+      "drafts": "Mustandid",
+      "issued": "Väljastatud",
+      "issuedTotal": "Väljastatute summa",
+      "empty": "Dokumente veel pole.",
+      "unavailable": "Dokumendid ei ole teie rollile kättesaadavad või enne kaheastmelise autentimise seadistamist.",
+      "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta."
     }
   },
   "documentType": {
@@ -87,6 +64,13 @@
     "title": "Lehte ei leitud",
     "description": "Otsitavat lehte ei ole olemas või see on teisaldatud.",
     "backHome": "Tagasi ülevaatesse"
+  },
+  "errorPage": {
+    "title": "Midagi läks valesti",
+    "description": "Lehte ei õnnestunud kuvada. Palun proovige uuesti. Kui viga kordub, teatage veakood.",
+    "digest": "Veakood: {digest}",
+    "retry": "Proovi uuesti",
+    "home": "Tagasi ülevaatesse"
   },
   "offline": {
     "title": "Võrguühendus puudub",
@@ -607,6 +591,12 @@
       "downloadDraft": "Laadi mustandi PDF alla",
       "draftHint": "Mustandi PDF on märgitud „pole väljastatud“ ja sellel pole numbrit.",
       "unsaved": "PDF näitab viimast salvestatud versiooni. Salvestage mustand, et muudatused jõuaksid PDF-i."
+    },
+    "entry": {
+      "title": "Dokumendid",
+      "choose": "Valige ettevõte, et avada selle dokumendid.",
+      "none": "Dokumendid kuuluvad ettevõttele. Looge kõigepealt ettevõte.",
+      "createCompany": "Loo ettevõte"
     }
   },
   "taxCategories": {

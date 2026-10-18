@@ -1,6 +1,8 @@
 import "server-only";
-import { getMailer } from "@/server/auth/instance";
 import { z } from "zod";
+import { type DocumentsOverview, summarizeDocuments } from "@/features/dashboard/summary";
+import { listDocuments } from "@/modules/documents/server/document-service";
+import { getMailer } from "@/server/auth/instance";
 import { type AuthenticatedUser, toActor } from "@/server/auth/session";
 import { listMySessions } from "@/server/auth/sessions-service";
 import { userRequiresTwoFactor } from "@/server/auth/two-factor-policy";
@@ -16,7 +18,26 @@ export async function dashboardData(user: AuthenticatedUser) {
     listCompaniesForUser(db, user.userId),
     userRequiresTwoFactor(db, user.userId),
   ]);
-  return { companies, twoFactorMissing: needsTwoFactor && !user.twoFactorVerified };
+  // Real document figures per company, through the same access check as the documents page
+  // (requireCompanyAccess + documents.view). Without access (role, missing 2FA) it stays null.
+  const documents = new Map<string, DocumentsOverview | null>();
+  for (const c of companies) {
+    try {
+      documents.set(c.id, summarizeDocuments(await listDocuments(db, toActor(user), c.id)));
+    } catch (err) {
+      if (!(err instanceof ForbiddenError) && !(err instanceof TwoFactorRequiredError)) throw err;
+      documents.set(c.id, null);
+    }
+  }
+  return {
+    companies: companies.map((c) => ({ ...c, documents: documents.get(c.id) ?? null })),
+    twoFactorMissing: needsTwoFactor && !user.twoFactorVerified,
+  };
+}
+
+/** Companies the user belongs to, for the "Documents" entry in the main navigation. */
+export async function documentsEntryData(user: AuthenticatedUser) {
+  return listCompaniesForUser(getDb(), user.userId);
 }
 
 export async function securityData(user: AuthenticatedUser) {

@@ -96,7 +96,7 @@ src/
   app/                 Next.js routes ([locale]/ pages, api/health, manifest)
   components/          UI (layout shell, dashboard, primitives)
   config/env.ts        server environment schema
-  features/            feature logic usable by UI (dashboard summary, sample data)
+  features/            feature logic usable by UI (dashboard document figures, client models)
   modules/documents/   documents: domain model, server services, PDF rendering, PDF import
   i18n/                locales, routing, request config
   lib/money/           decimal money, currencies, exchange-rate provenance
