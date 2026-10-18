@@ -110,7 +110,8 @@ icons. Business data and HTML pages are deliberately not cached on devices.
   `position: relative` (backdrops cover the area under the iOS 26 Safari toolbars).
 - `prefers-reduced-motion: reduce` turns transitions and animations off globally.
 - Toasts are for confirmations that need no action; errors and messages with links stay in inline
-  alerts next to their form.
+  alerts next to their form. `<Toaster />` is **not** mounted globally: add it to the layout or page of
+  the routes that show toasts, so its code loads only there (no screen uses toasts yet).
 - Dialog behaviour is covered by e2e tests with axe (`@axe-core/playwright`); an optional, non-blocking
   workflow (`webkit.yml`) runs the dialog and navigation tests on WebKit with an iPhone profile.
 

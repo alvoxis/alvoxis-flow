@@ -4,7 +4,6 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { type ReactNode } from "react";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
-import { Toaster } from "@/components/ui/toast";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -59,7 +58,6 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           {/* .root: own stacking context, so Base UI popups (portalled to <body>) stay on top. */}
           <div className="root">{children}</div>
-          <Toaster />
         </NextIntlClientProvider>
         <ServiceWorkerRegistration />
       </body>

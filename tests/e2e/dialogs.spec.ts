@@ -167,9 +167,27 @@ test("with reduced motion the dialog opens and closes without transitions", asyn
   await expect(dialog).toHaveCount(0);
 });
 
-test("the notification region is labelled in the page language", async ({ page }) => {
-  await page.goto("/ru/sign-in");
-  await expect(page.getByRole("region", { name: "Уведомления" })).toHaveCount(1);
-  await page.goto("/lv/sign-in");
-  await expect(page.getByRole("region", { name: "Paziņojumi" })).toHaveCount(1);
+test("pages without notifications do not mount the toast region", async ({ page, baseURL }) => {
+  // Toasts are loaded only on routes that render <Toaster />; none does yet. The pages still
+  // hydrate cleanly and client-side navigation keeps working.
+  const hydrationErrors: string[] = [];
+  const track = (text: string) => {
+    if (/hydrat|did not match|server rendered/i.test(text)) hydrationErrors.push(text);
+  };
+  page.on("console", (msg) => msg.type() === "error" && track(msg.text()));
+  page.on("pageerror", (err) => track(err.message));
+
+  await page.goto("/en/sign-in");
+  await expect(page.getByRole("region", { name: "Notifications" })).toHaveCount(0);
+  const { documentsUrl } = await ownerWithDraft(page, baseURL!);
+  await page.goto(documentsUrl);
+  await expect(page.getByRole("region", { name: "Notifications" })).toHaveCount(0);
+  // Client-side navigation from the documents list to the dashboard and back.
+  await page.goto("/en");
+  if ((page.viewportSize()?.width ?? 0) < 1024)
+    await page.getByRole("button", { name: "Open menu" }).click();
+  await page.getByRole("link", { name: "Documents" }).first().click();
+  await expect(page).toHaveURL(new RegExp(`${documentsUrl}$`));
+  await expect(page.getByTestId("delete-draft").first()).toBeVisible();
+  expect(hydrationErrors).toEqual([]);
 });

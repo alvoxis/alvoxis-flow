@@ -12,10 +12,14 @@ import { cn } from "@/lib/utils";
  *
  * Toasts are for confirmations that need no action. Errors and anything with a link or a decision
  * stay in an inline <Alert>, next to the form they belong to.
+ *
+ * Not mounted globally: render <Toaster /> in the layout or page of the routes that show toasts.
+ * Next.js splits client code per route, so this module (and Base UI's toast code) is then loaded
+ * only there, and the live region is present before the first toast is announced.
  */
 export const toast = ToastPrimitive.createToastManager();
 
-/** Mount once per layout; renders the live region (role="region", polite) and the toasts. */
+/** Renders the live region (role="region", polite) and the toasts; one per route tree. */
 export function Toaster({ children }: { children?: ReactNode }) {
   const t = useTranslations("ui.toast");
   return (
