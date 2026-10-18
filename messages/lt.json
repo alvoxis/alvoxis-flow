@@ -479,7 +479,19 @@
         },
         "total": {
           "mustBeNegative": "Kreditinės sąskaitos suma turi būti neigiama."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "Kredituojamas kiekis viršija sąskaitos faktūros eilutės likutį (įskaitant išrašytas kreditines sąskaitas).",
+          "invalid": "Kredituojamas kiekis turi būti didesnis už nulį."
+        },
+        "amount": {
+          "exceedsRemaining": "Kredituojama suma viršija sąskaitos faktūros eilutės likutį (įskaitant išrašytas kreditines sąskaitas)."
+        },
+        "nothingRemaining": "Ši sąskaita faktūra jau visiškai kredituota.",
+        "sourceLine": {
+          "unknown": "Kredituojamos eilutės nėra pradinėje sąskaitoje faktūroje."
+        },
+        "dateBeforeOriginal": "Kreditinės sąskaitos data negali būti ankstesnė už sąskaitos faktūros datą."
       },
       "deliveryNote": {
         "line": {
@@ -584,6 +596,34 @@
     "deleteConfirmBodyEditor": "Juodraštis bus ištrintas negrįžtamai ir jo nebus galima atkurti. Visi šiame redaktoriuje neišsaugoti pakeitimai bus prarasti. Išrašytų dokumentų ištrinti negalima.",
     "colBuyer": "Pirkėjas",
     "creditNoteBank": "Kreditinė sąskaita išlaiko pradinės sąskaitos banko rekvizitus.",
+    "creditNote": {
+      "create": "Sukurti kreditinę sąskaitą",
+      "title": "Kreditinė sąskaita sąskaitai faktūrai {number}",
+      "description": "Bus sukurtas kreditinės sąskaitos juodraštis, kurį prieš išrašant galima patikrinti redaktoriuje. Pati sąskaita faktūra nekeičiama.",
+      "mode": "Ką kredituoti",
+      "full": {
+        "label": "Visą likutį",
+        "hint": "Kredituojamos visos dar nekredituotos sąskaitos faktūros eilutės."
+      },
+      "partial": {
+        "label": "Pasirinktas eilutes",
+        "hint": "Kredituojami tik žemiau įvesti kiekiai."
+      },
+      "linesTitle": "Kredituojami kiekiai",
+      "linesHint": "Palikite eilutę tuščią, jei jos nekredituojate. Jau išrašytos kreditinės sąskaitos įvertinamos kuriant juodraštį.",
+      "invoiced": "Sąskaitoje: {quantity}",
+      "quantityFor": "Kredituojamas kiekis, eilutė {n}: {description}",
+      "submit": "Sukurti juodraštį",
+      "refused": "Kreditinės sąskaitos juodraštis nesukurtas.",
+      "notCreditable": "Kredituoti galima tik išrašytą sąskaitą faktūrą.",
+      "errors": {
+        "dateRequired": "Įveskite kreditinės sąskaitos datą.",
+        "dateBeforeInvoice": "Kreditinės sąskaitos data negali būti ankstesnė už sąskaitos faktūros datą.",
+        "noLines": "Įveskite kiekį bent vienai eilutei.",
+        "quantityInvalid": "Įveskite už nulį didesnį skaičių, ne daugiau kaip 4 skaitmenys po kablelio.",
+        "quantityTooHigh": "Tai daugiau nei sąskaitoje faktūroje nurodytas kiekis."
+      }
+    },
     "pdf": {
       "open": "Atidaryti PDF",
       "download": "Atsisiųsti PDF",

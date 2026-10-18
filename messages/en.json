@@ -479,7 +479,19 @@
         },
         "total": {
           "mustBeNegative": "The credit note total must be negative."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "The quantity to credit is more than what remains on an invoice line (issued credit notes included).",
+          "invalid": "The quantity to credit must be greater than zero."
+        },
+        "amount": {
+          "exceedsRemaining": "The amount to credit is more than what remains on an invoice line (issued credit notes included)."
+        },
+        "nothingRemaining": "This invoice has already been credited in full.",
+        "sourceLine": {
+          "unknown": "A credited line is not on the original invoice."
+        },
+        "dateBeforeOriginal": "The credit note date cannot be earlier than the invoice date."
       },
       "deliveryNote": {
         "line": {
@@ -584,6 +596,34 @@
     "deleteConfirmBodyEditor": "The draft is deleted permanently and cannot be restored. All unsaved changes in this editor will be lost. Issued documents cannot be deleted.",
     "colBuyer": "Buyer",
     "creditNoteBank": "Credit notes keep the bank details of the original invoice.",
+    "creditNote": {
+      "create": "Create credit note",
+      "title": "Credit note for invoice {number}",
+      "description": "Creates a credit note draft that you can check in the editor before issuing it. The invoice itself is never changed.",
+      "mode": "What to credit",
+      "full": {
+        "label": "Everything that remains",
+        "hint": "Credits every invoice line that has not been credited yet."
+      },
+      "partial": {
+        "label": "Selected lines",
+        "hint": "Credits only the quantities you enter below."
+      },
+      "linesTitle": "Quantities to credit",
+      "linesHint": "Leave a line empty to skip it. Quantities already credited by issued credit notes are checked when the draft is created.",
+      "invoiced": "Invoiced: {quantity}",
+      "quantityFor": "Quantity to credit, line {n}: {description}",
+      "submit": "Create draft",
+      "refused": "The credit note draft was not created.",
+      "notCreditable": "Only an issued invoice can be credited.",
+      "errors": {
+        "dateRequired": "Enter the credit note date.",
+        "dateBeforeInvoice": "The credit note date cannot be earlier than the invoice date.",
+        "noLines": "Enter a quantity for at least one line.",
+        "quantityInvalid": "Enter a number greater than zero with at most 4 decimal places.",
+        "quantityTooHigh": "This is more than the invoiced quantity."
+      }
+    },
     "pdf": {
       "open": "Open PDF",
       "download": "Download PDF",

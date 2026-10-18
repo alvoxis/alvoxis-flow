@@ -1,12 +1,21 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useId, useState } from "react";
+import { useRef, useState } from "react";
 import { BankAccountSelect } from "@/components/documents/bank-account-select";
 import { DeleteDraftButton } from "@/components/documents/delete-draft-button";
 import { BankDetails, Totals } from "@/components/documents/document-view";
 import { PdfLinks } from "@/components/documents/pdf-links";
 import { IssueList } from "@/components/documents/issue-list";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Alert, Button, Field } from "@/components/ui/form";
 import { type BankAccountItem, formatIban } from "@/features/bank-accounts/model";
 import {
@@ -83,7 +92,9 @@ export function DocumentEditor({
   const tCat = useTranslations("taxCategories");
   const tBank = useTranslations("bankAccounts");
   const router = useRouter();
-  const confirmId = useId();
+  const cancelIssueRef = useRef<HTMLButtonElement>(null);
+  // Blocks a second "Issue now" click that lands before React re-renders the disabled button.
+  const issuing = useRef(false);
   const [draft, setDraft] = useState<DocumentDraft>(document.draft);
   const [version, setVersion] = useState(document.version);
   const [issues, setIssues] = useState<ApiIssue[]>(document.issues);
@@ -157,8 +168,11 @@ export function DocumentEditor({
   }
 
   async function issue() {
+    if (issuing.current) return;
+    issuing.current = true;
     setPending(true);
     const outcome = await send(`${url}/issue`, "POST", { expectedVersion: version });
+    issuing.current = false;
     setPending(false);
     setConfirming(false);
     // The page re-renders from the server and shows the issued, read-only document.
@@ -569,18 +583,45 @@ export function DocumentEditor({
             {t("save")}
           </Button>
         ) : null}
-        {canIssue && !confirming ? (
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={pending || dirty}
-            onClick={() => {
-              setNotice(null);
-              setConfirming(true);
+        {canIssue ? (
+          // Modal confirmation (Base UI AlertDialog): focus starts on Cancel; while the request
+          // runs the dialog cannot be closed and "Issue now" is disabled, so it is sent once.
+          <AlertDialog
+            open={confirming}
+            onOpenChange={(next) => {
+              if (issuing.current) return;
+              if (next) setNotice(null);
+              setConfirming(next);
             }}
           >
-            {t("issue")}
-          </Button>
+            <AlertDialogTrigger
+              render={<Button type="button" variant="secondary" />}
+              disabled={pending || dirty}
+            >
+              {t("issue")}
+            </AlertDialogTrigger>
+            <AlertDialogContent initialFocus={cancelIssueRef} data-testid="issue-confirm">
+              <AlertDialogTitle className="text-base font-semibold text-text">
+                {t("issueConfirmTitle")}
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-sm text-muted">
+                {t("issueConfirmBody")}
+              </AlertDialogDescription>
+              <AlertDialogFooter>
+                <Button
+                  type="button"
+                  disabled={pending}
+                  aria-busy={pending || undefined}
+                  onClick={() => void issue()}
+                >
+                  {t("issueConfirm")}
+                </Button>
+                <AlertDialogCancel ref={cancelIssueRef} disabled={pending}>
+                  {t("cancel")}
+                </AlertDialogCancel>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         ) : null}
       </div>
 
@@ -596,36 +637,6 @@ export function DocumentEditor({
       {canEdit ? (
         <div className="border-t border-border pt-4">
           <DeleteDraftButton companyId={companyId} documentId={document.id} fromEditor />
-        </div>
-      ) : null}
-
-      {confirming ? (
-        <div
-          role="alertdialog"
-          aria-labelledby={`${confirmId}-title`}
-          aria-describedby={`${confirmId}-body`}
-          className="space-y-3 rounded-xl border border-accent/50 bg-accent-soft/40 p-4"
-          data-testid="issue-confirm"
-        >
-          <p id={`${confirmId}-title`} className="text-sm font-semibold text-text">
-            {t("issueConfirmTitle")}
-          </p>
-          <p id={`${confirmId}-body`} className="text-sm text-muted">
-            {t("issueConfirmBody")}
-          </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button type="button" disabled={pending} onClick={() => void issue()}>
-              {t("issueConfirm")}
-            </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={pending}
-              onClick={() => setConfirming(false)}
-            >
-              {t("cancel")}
-            </Button>
-          </div>
         </div>
       ) : null}
     </form>

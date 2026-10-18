@@ -2,6 +2,7 @@ import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { type Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CreditNoteDialog } from "@/components/documents/credit-note-dialog";
 import { DocumentEditor } from "@/components/documents/document-editor";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { DocumentView } from "@/components/documents/document-view";
@@ -70,6 +71,24 @@ export default async function DocumentPage({ params }: Params) {
             </span>
           </Alert>
           <PdfLinks companyId={companyId} documentId={document.id} draft={false} />
+          {/* Credit notes start from an issued invoice; the server re-checks access and rules. */}
+          {document.draft.type === "invoice" && permissions.canEdit ? (
+            <CreditNoteDialog
+              companyId={companyId}
+              invoice={{
+                id: document.id,
+                number: document.number ?? "",
+                issueDate: document.draft.issueDate,
+                language: document.draft.language,
+                lines: document.draft.lines.map((l) => ({
+                  id: l.id,
+                  description: l.description,
+                  quantity: l.quantity,
+                  unit: l.unit,
+                })),
+              }}
+            />
+          ) : null}
           <DocumentView document={document} />
         </div>
       ) : (

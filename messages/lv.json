@@ -479,7 +479,19 @@
         },
         "total": {
           "mustBeNegative": "Kredītrēķina summai jābūt negatīvai."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "Kreditējamais daudzums pārsniedz rēķina rindas atlikumu (ieskaitot izrakstītos kredītrēķinus).",
+          "invalid": "Kreditējamajam daudzumam jābūt lielākam par nulli."
+        },
+        "amount": {
+          "exceedsRemaining": "Kreditējamā summa pārsniedz rēķina rindas atlikumu (ieskaitot izrakstītos kredītrēķinus)."
+        },
+        "nothingRemaining": "Šis rēķins jau ir pilnībā kreditēts.",
+        "sourceLine": {
+          "unknown": "Kreditētā rinda nav atrodama sākotnējā rēķinā."
+        },
+        "dateBeforeOriginal": "Kredītrēķina datums nevar būt agrāks par rēķina datumu."
       },
       "deliveryNote": {
         "line": {
@@ -584,6 +596,34 @@
     "deleteConfirmBodyEditor": "Melnraksts tiks dzēsts neatgriezeniski, un to nevarēs atjaunot. Visas šajā redaktorā nesaglabātās izmaiņas tiks zaudētas. Izrakstītus dokumentus dzēst nevar.",
     "colBuyer": "Pircējs",
     "creditNoteBank": "Kredītrēķins saglabā sākotnējā rēķina bankas rekvizītus.",
+    "creditNote": {
+      "create": "Izveidot kredītrēķinu",
+      "title": "Kredītrēķins rēķinam {number}",
+      "description": "Tiks izveidots kredītrēķina melnraksts, ko pirms izrakstīšanas var pārbaudīt redaktorā. Pats rēķins netiek mainīts.",
+      "mode": "Ko kreditēt",
+      "full": {
+        "label": "Visu atlikumu",
+        "hint": "Kreditē visas rēķina rindas, kas vēl nav kreditētas."
+      },
+      "partial": {
+        "label": "Izvēlētās rindas",
+        "hint": "Kreditē tikai zemāk ievadītos daudzumus."
+      },
+      "linesTitle": "Kreditējamie daudzumi",
+      "linesHint": "Atstājiet rindu tukšu, lai to izlaistu. Jau izrakstītie kredītrēķini tiek ņemti vērā, veidojot melnrakstu.",
+      "invoiced": "Rēķinā: {quantity}",
+      "quantityFor": "Kreditējamais daudzums, rinda {n}: {description}",
+      "submit": "Izveidot melnrakstu",
+      "refused": "Kredītrēķina melnraksts netika izveidots.",
+      "notCreditable": "Kreditēt var tikai izrakstītu rēķinu.",
+      "errors": {
+        "dateRequired": "Ievadiet kredītrēķina datumu.",
+        "dateBeforeInvoice": "Kredītrēķina datums nevar būt agrāks par rēķina datumu.",
+        "noLines": "Ievadiet daudzumu vismaz vienai rindai.",
+        "quantityInvalid": "Ievadiet skaitli, kas lielāks par nulli, ar ne vairāk kā 4 cipariem aiz komata.",
+        "quantityTooHigh": "Tas ir vairāk nekā rēķinā norādītais daudzums."
+      }
+    },
     "pdf": {
       "open": "Atvērt PDF",
       "download": "Lejupielādēt PDF",
