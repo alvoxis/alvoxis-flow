@@ -725,5 +725,11 @@
       "archived": "Arhiveeritud konto {iban}",
       "unlinked": "Salvestatud rekvisiidid {iban} (kontoga sidumata)"
     }
+  },
+  "ui": {
+    "toast": {
+      "region": "Teavitused",
+      "close": "Sulge teavitus"
+    }
   }
 }

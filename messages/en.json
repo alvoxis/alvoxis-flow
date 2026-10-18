@@ -725,5 +725,11 @@
       "archived": "Archived account {iban}",
       "unlinked": "Saved details {iban} (not linked to an account)"
     }
+  },
+  "ui": {
+    "toast": {
+      "region": "Notifications",
+      "close": "Close notification"
+    }
   }
 }

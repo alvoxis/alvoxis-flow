@@ -30,6 +30,16 @@ body {
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  /* Base UI (iOS 26+ Safari): dialog backdrops are position: absolute against the body so that
+     they also cover the area under the browser chrome after scrolling. */
+  position: relative;
+  min-height: 100dvh;
+}
+
+/* Base UI: the app gets its own stacking context, so popups portalled to <body> always sit above
+   the page whatever z-index the page content uses. */
+.root {
+  isolation: isolate;
 }
 
 :focus-visible {
@@ -39,4 +49,17 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* Users who ask for less motion get no transitions or animations (dialogs and toasts then open
+   and close instantly; Base UI waits for transitions only when there are any). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
