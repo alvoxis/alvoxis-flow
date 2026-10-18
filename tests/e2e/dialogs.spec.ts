@@ -45,6 +45,11 @@ async function ownerWithDraft(page: Page, baseURL: string) {
   return { companyId, documentsUrl, id, headers };
 }
 
+// The app's service worker has a fetch handler, so API calls pass through it; Playwright's WebKit
+// does not route requests that go through a service worker (Chromium does). Without it here,
+// page.route below sees the DELETE in every browser.
+test.use({ serviceWorkers: "block" });
+
 function rowOf(page: Page, id: string) {
   return page.locator(`[data-testid="document-row"][data-document-id="${id}"]`);
 }
