@@ -204,7 +204,7 @@ export function NewDocumentForm({
         </Button>
         <Link
           href={`/companies/${companyId}/documents`}
-          className="inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm text-accent hover:underline"
+          className="inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm text-violet-300 hover:underline"
         >
           {t("cancel")}
         </Link>

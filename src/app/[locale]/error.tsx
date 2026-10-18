@@ -32,7 +32,7 @@ export default function LocaleError({
         <button
           type="button"
           onClick={() => reset()}
-          className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-accent"
+          className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-violet-700"
         >
           {t("retry")}
         </button>

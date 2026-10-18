@@ -89,7 +89,7 @@ export function DocumentFilters({
         <div className="col-span-2 flex flex-wrap items-center gap-3 lg:col-span-6">
           <button
             type="submit"
-            className="min-h-11 rounded-lg bg-accent-strong px-4 text-sm font-medium text-white hover:bg-accent"
+            className="min-h-11 rounded-lg bg-accent-strong px-4 text-sm font-medium text-white hover:bg-violet-700"
           >
             {t("apply")}
           </button>

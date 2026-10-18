@@ -7,7 +7,7 @@ export default function GlobalNotFound() {
   return (
     <html lang="en">
       <body className="flex min-h-dvh items-center justify-center">
-        <Link href="/en" className="text-accent underline">
+        <Link href="/en" className="text-violet-300 underline">
           ALVOXIS Flow
         </Link>
       </body>

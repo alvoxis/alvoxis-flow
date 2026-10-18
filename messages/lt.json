@@ -20,10 +20,15 @@
     "closeMenu": "Uždaryti meniu"
   },
   "topbar": {
-    "noCompany": "Įmonė nepasirinkta",
+    "noCompany": "Įmonės dar nėra",
     "language": "Kalba",
     "account": "Paskyra",
-    "notSignedIn": "Neprisijungta"
+    "notSignedIn": "Neprisijungta",
+    "currentCompany": "Dabartinė įmonė"
+  },
+  "environment": {
+    "label": "Bandomoji aplinka",
+    "testBanner": "Tai ne gamybinė aplinka. Naudokite tik išgalvotus duomenis: jokių tikrų sąskaitų, klientų ar banko rekvizitų."
   },
   "dashboard": {
     "title": "Apžvalga",
@@ -32,10 +37,13 @@
       "title": "Dokumentai",
       "drafts": "Juodraščiai",
       "issued": "Išrašyti",
-      "issuedTotal": "Išrašytų suma",
+      "invoicedNet": "Išrašyta sąskaitomis, atėmus kreditines sąskaitas",
       "empty": "Dokumentų dar nėra.",
       "unavailable": "Dokumentai nepasiekiami jūsų vaidmeniui arba kol nenustatytas dviejų veiksnių autentifikavimas.",
-      "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų."
+      "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų.",
+      "loadError": "Dokumentų rodiklių šiuo metu įkelti nepavyko. Patiems dokumentams tai neturi įtakos; bandykite vėliau.",
+      "createFirst": "Sukurti pirmą dokumentą",
+      "paymentsNotTracked": "Mokėjimai dar neapskaitomi, todėl čia nerodoma, kas apmokėta, neapmokėta ar pradelsta."
     }
   },
   "documentType": {

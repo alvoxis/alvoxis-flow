@@ -40,7 +40,7 @@ export default async function DocumentPage({ params, searchParams }: Props) {
   const back = (
     <Link
       href={`/companies/${companyId}/documents${backQuery}`}
-      className="text-sm text-accent hover:underline"
+      className="text-sm text-violet-300 hover:underline"
       data-testid="documents-back-link"
     >
       {t("back")}

@@ -20,10 +20,15 @@
     "closeMenu": "Sulge menüü"
   },
   "topbar": {
-    "noCompany": "Ettevõtet pole valitud",
+    "noCompany": "Ettevõtet veel pole",
     "language": "Keel",
     "account": "Konto",
-    "notSignedIn": "Pole sisse logitud"
+    "notSignedIn": "Pole sisse logitud",
+    "currentCompany": "Praegune ettevõte"
+  },
+  "environment": {
+    "label": "Testkeskkond",
+    "testBanner": "See ei ole tootmiskeskkond. Kasutage ainult väljamõeldud andmeid: mitte päris arveid, kliente ega pangaandmeid."
   },
   "dashboard": {
     "title": "Ülevaade",
@@ -32,10 +37,13 @@
       "title": "Dokumendid",
       "drafts": "Mustandid",
       "issued": "Väljastatud",
-      "issuedTotal": "Väljastatute summa",
+      "invoicedNet": "Arveldatud, miinus kreeditarved",
       "empty": "Dokumente veel pole.",
       "unavailable": "Dokumendid ei ole teie rollile kättesaadavad või enne kaheastmelise autentimise seadistamist.",
-      "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta."
+      "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta.",
+      "loadError": "Dokumentide näitajaid ei õnnestunud praegu laadida. Dokumente see ei mõjuta; proovige hiljem uuesti.",
+      "createFirst": "Loo esimene dokument",
+      "paymentsNotTracked": "Makseid veel ei arvestata, seega ei näe siin, mis on tasutud, tasumata või tähtaja ületanud."
     }
   },
   "documentType": {

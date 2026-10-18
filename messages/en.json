@@ -20,10 +20,15 @@
     "closeMenu": "Close menu"
   },
   "topbar": {
-    "noCompany": "No company selected",
+    "noCompany": "No company yet",
     "language": "Language",
     "account": "Account",
-    "notSignedIn": "Not signed in"
+    "notSignedIn": "Not signed in",
+    "currentCompany": "Current company"
+  },
+  "environment": {
+    "label": "Test environment",
+    "testBanner": "Not production. Use synthetic data only: no real invoices, customers or bank details."
   },
   "dashboard": {
     "title": "Dashboard",
@@ -32,10 +37,13 @@
       "title": "Documents",
       "drafts": "Drafts",
       "issued": "Issued",
-      "issuedTotal": "Issued total",
+      "invoicedNet": "Invoiced, net of credit notes",
       "empty": "No documents yet.",
       "unavailable": "Documents are not available with your role, or until two-factor authentication is set up.",
-      "currencyNote": "Totals are shown per document currency and are never added across currencies."
+      "currencyNote": "Totals are shown per document currency and are never added across currencies.",
+      "loadError": "The document figures could not be loaded right now. Your documents are not affected; try again later.",
+      "createFirst": "Create the first document",
+      "paymentsNotTracked": "Payments are not tracked yet, so nothing here shows what is paid, outstanding or overdue."
     }
   },
   "documentType": {

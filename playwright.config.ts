@@ -43,6 +43,8 @@ export default defineConfig({
       BETTER_AUTH_SECRET:
         process.env.E2E_BETTER_AUTH_SECRET ?? "e2e-test-secret-not-for-production-000000001",
       EMAIL_TRANSPORT: "file",
+      // The e2e server is a test environment and says so (the banner is checked in app.spec.ts).
+      APP_TEST_MODE: "1",
       // Each test context sends its own client IP so rate limits are per client, as in production.
       TRUSTED_IP_HEADER: "x-forwarded-for",
       EMAIL_FILE_DIR: E2E_MAIL_DIR,

@@ -11,8 +11,8 @@ const quickLink =
   "inline-flex min-h-10 items-center rounded-full border border-border bg-surface-2/70 px-3.5 text-sm font-medium text-violet-200 transition-colors hover:border-accent/60 hover:text-violet-100";
 
 /**
- * One company on the dashboard: who it is, its real document figures (or why there are none) and
- * the ways into it. Server-rendered; the depth comes from CSS only (surface-raised).
+ * One company on the dashboard: who it is, its real document figures (or why there are none: no
+ * documents yet, no access, or a loading error) and the ways into it. Server-rendered; the depth comes from CSS only (surface-raised).
  */
 export function CompanyOverviewCard({ company: c }: { company: Company }) {
   const tOn = useTranslations("onboarding");
@@ -41,22 +41,39 @@ export function CompanyOverviewCard({ company: c }: { company: Company }) {
         <Badge tone="accent">{tRoles(c.roleKey as "owner")}</Badge>
       </div>
 
-      {c.documents === null ? (
+      {c.documents.status === "no_access" ? (
         <p
           className="rounded-xl border border-border bg-surface-2/50 px-4 py-3 text-sm text-muted"
           data-testid="overview-unavailable"
         >
           {t("unavailable")}
         </p>
-      ) : c.documents.drafts + c.documents.issued === 0 ? (
+      ) : c.documents.status === "error" ? (
         <p
-          className="rounded-xl border border-dashed border-border px-4 py-3 text-sm text-muted"
+          role="alert"
+          className="rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-amber-100"
+          data-testid="overview-error"
+        >
+          {t("loadError")}
+        </p>
+      ) : c.documents.overview.drafts + c.documents.overview.issued === 0 ? (
+        <div
+          className="space-y-3 rounded-xl border border-dashed border-border px-4 py-3 text-sm text-muted"
           data-testid="overview-empty"
         >
-          {t("empty")}
-        </p>
+          <p>{t("empty")}</p>
+          {c.documents.canCreate ? (
+            <Link
+              href={`/companies/${c.id}/documents/new`}
+              className="inline-flex min-h-11 items-center rounded-lg bg-accent-strong px-4 text-sm font-medium text-white hover:bg-violet-700"
+              data-testid="overview-create-document"
+            >
+              {t("createFirst")}
+            </Link>
+          ) : null}
+        </div>
       ) : (
-        <DocumentsFigures overview={c.documents} companyId={c.id} />
+        <DocumentsFigures overview={c.documents.overview} companyId={c.id} />
       )}
 
       <div className="mt-auto flex flex-wrap gap-2">
@@ -122,15 +139,15 @@ function DocumentsFigures({
         </div>
         <div className="col-span-2 min-w-0 rounded-xl bg-accent-soft/40 px-4 py-3 ring-1 ring-accent/25 ring-inset">
           <dt className="text-xs font-medium tracking-wide text-violet-200 uppercase">
-            {t("issuedTotal")}
+            {t("invoicedNet")}
           </dt>
           <dd
             className="tabular mt-1 text-2xl font-semibold break-words text-text glow-accent sm:text-3xl"
             data-testid="overview-totals"
           >
-            {overview.issuedTotals.length === 0
+            {overview.invoicedTotals.length === 0
               ? "—"
-              : overview.issuedTotals.map((x) => (
+              : overview.invoicedTotals.map((x) => (
                   // One currency per line: amounts are never added across currencies.
                   <span key={x.currency} className="block" data-currency={x.currency}>
                     {formatMoney(x.amount, x.currency, locale)}

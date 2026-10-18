@@ -7,6 +7,7 @@ export interface CurrencyTotal {
 
 /** One row of the company document list, as returned by listDocuments. */
 export interface DocumentRow {
+  type: "invoice" | "proforma" | "credit_note" | "delivery_note";
   status: "draft" | "issued";
   currency: CurrencyCode;
   /** Stored for issued priced documents only; null for drafts and delivery notes. */
@@ -16,8 +17,12 @@ export interface DocumentRow {
 export interface DocumentsOverview {
   drafts: number;
   issued: number;
-  /** Gross totals of issued documents, per currency (never added across currencies). */
-  issuedTotals: CurrencyTotal[];
+  /**
+   * Invoiced gross amount per currency (never added across currencies): issued invoices minus issued
+   * credit notes (their totals are negative). Proformas are offers, not invoices, and delivery notes
+   * have no amount, so neither is counted.
+   */
+  invoicedTotals: CurrencyTotal[];
 }
 
 /**
@@ -29,16 +34,21 @@ export function issuedShare(overview: Pick<DocumentsOverview, "drafts" | "issued
   return all === 0 ? 0 : Math.round((overview.issued / all) * 100);
 }
 
-/** Real per-company counts and totals for the dashboard; no payment status exists yet. */
+const INVOICED_TYPES: ReadonlySet<DocumentRow["type"]> = new Set(["invoice", "credit_note"]);
+
+/**
+ * Real per-company counts and invoiced totals for the dashboard. There is no payment status yet, so
+ * nothing here says what is paid, outstanding or overdue.
+ */
 export function summarizeDocuments(rows: readonly DocumentRow[]): DocumentsOverview {
   const issuedRows = rows.filter((r) => r.status === "issued");
-  const issuedTotals = SUPPORTED_CURRENCIES.map((currency) => ({
+  const invoicedTotals = SUPPORTED_CURRENCIES.map((currency) => ({
     currency,
     amount: issuedRows
-      .filter((r) => r.currency === currency && r.grossTotal !== null)
+      .filter((r) => INVOICED_TYPES.has(r.type) && r.currency === currency && r.grossTotal !== null)
       .reduce((acc, r) => acc.add(Money.of(r.grossTotal!, currency)), Money.zero(currency)),
   }))
     .filter((t) => !t.amount.isZero())
     .map((t) => ({ currency: t.currency, amount: t.amount.toFixed() }));
-  return { drafts: rows.length - issuedRows.length, issued: issuedRows.length, issuedTotals };
+  return { drafts: rows.length - issuedRows.length, issued: issuedRows.length, invoicedTotals };
 }

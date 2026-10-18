@@ -65,7 +65,7 @@ export default async function SecurityPage({ params }: { params: Promise<{ local
               <p className="text-sm text-muted">{tAuth("setup.intro")}</p>
               <Link
                 href="/account/two-factor"
-                className="inline-flex rounded-lg bg-accent-strong px-4 py-2.5 text-sm font-medium text-white hover:bg-accent"
+                className="inline-flex rounded-lg bg-accent-strong px-4 py-2.5 text-sm font-medium text-white hover:bg-violet-700"
                 data-testid="setup-two-factor"
               >
                 {t("enable")}
