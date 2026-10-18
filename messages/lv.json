@@ -637,6 +637,44 @@
       "choose": "Izvēlieties uzņēmumu, lai atvērtu tā dokumentus.",
       "none": "Dokumenti pieder uzņēmumam. Vispirms izveidojiet uzņēmumu.",
       "createCompany": "Izveidot uzņēmumu"
+    },
+    "filters": {
+      "search": "Meklēt",
+      "searchPlaceholder": "Numurs vai pircējs",
+      "type": "Veids",
+      "anyType": "Visi veidi",
+      "status": "Statuss",
+      "anyStatus": "Visi statusi",
+      "from": "Izrakstīts no",
+      "to": "Izrakstīts līdz",
+      "sort": "Kārtot pēc",
+      "sorts": {
+        "date_desc": "Jaunākie vispirms",
+        "date_asc": "Vecākie vispirms",
+        "number_asc": "Numurs (A–Z)",
+        "number_desc": "Numurs (Z–A)",
+        "amount_desc": "Summa (lielākā vispirms)",
+        "amount_asc": "Summa (mazākā vispirms)"
+      },
+      "apply": "Lietot",
+      "reset": "Notīrīt filtrus",
+      "noMatches": "Meklēšanai vai filtriem neatbilst neviens dokuments.",
+      "amountSortHint": "Summas tiek kārtotas katras valūtas ietvaros; melnrakstiem vēl nav kopsummas, tie ir beigās.",
+      "showing": "{start}–{end} no {total}",
+      "previous": "Iepriekšējā lapa",
+      "next": "Nākamā lapa",
+      "pagination": "Dokumentu saraksta lapas"
+    },
+    "related": {
+      "creditNotesTitle": "Šī rēķina kredītrēķini",
+      "empty": "Šim rēķinam vēl nav kredītrēķinu.",
+      "loadError": "Šī rēķina kredītrēķinus neizdevās ielādēt. Pārlādējiet lapu, lai mēģinātu vēlreiz."
+    },
+    "relation": {
+      "credits": "Kredītrēķins rēķinam <link>{number}</link> no {date}",
+      "converted_from": "Izrakstīts, pamatojoties uz avansa rēķinu <link>{number}</link> no {date}",
+      "delivers": "Pavadzīme rēķinam <link>{number}</link> no {date}",
+      "replaces": "Aizstāj rēķinu <link>{number}</link> no {date}"
     }
   },
   "taxCategories": {

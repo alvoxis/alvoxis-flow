@@ -4,9 +4,12 @@ import {
   type BankAccountView,
   listBankAccounts,
 } from "@/modules/documents/server/bank-account-service";
+import { type DocumentListQuery, EMPTY_DOCUMENT_QUERY } from "@/features/documents/list-query";
 import {
   getDocument,
-  listDocuments,
+  type listDocuments,
+  listRelatedDocuments,
+  searchDocuments,
   type StoredDocument,
 } from "@/modules/documents/server/document-service";
 import { DocumentNotFoundError } from "@/modules/documents/server/errors";
@@ -34,7 +37,10 @@ type Denied = { status: "two_factor_required" } | { status: "not_found" };
 export type DocumentsListPageData =
   | {
       status: "ok";
+      /** One page of documents matching the query. */
       documents: DocumentListItem[];
+      /** All documents matching the query (for paging and the "nothing found" state). */
+      total: number;
       permissions: DocumentPermissions;
       /** Whether the company has at least one active tax category (empty-catalog hint). */
       hasTaxCategories: boolean;
@@ -50,6 +56,11 @@ export type DocumentPageData =
       taxCategories: TaxCategoryView[];
       /** Active company bank accounts offered in the account picker (drafts only). */
       bankAccounts: BankAccountView[];
+      /**
+       * Credit notes of an issued invoice (null for other documents). Loaded separately: if it
+       * fails, the invoice is still shown, with a notice instead of the list.
+       */
+      creditNotes: { status: "ok"; items: DocumentListItem[] } | { status: "error" } | null;
     }
   | Denied;
 
@@ -65,6 +76,11 @@ async function permissionsFor(user: AuthenticatedUser, companyId: string) {
   };
 }
 
+/** Error class only: messages may carry business data and stay out of the logs. */
+function errName(err: unknown): string {
+  return err instanceof Error ? err.name : typeof err;
+}
+
 function denied(err: unknown): Denied {
   if (err instanceof TwoFactorRequiredError) return { status: "two_factor_required" };
   // Non-members, archived companies, missing permission and unknown documents look the same.
@@ -77,14 +93,15 @@ function denied(err: unknown): Denied {
 export async function documentsListData(
   user: AuthenticatedUser,
   companyId: string,
+  query: DocumentListQuery = EMPTY_DOCUMENT_QUERY,
 ): Promise<DocumentsListPageData> {
   if (!z.uuid().safeParse(companyId).success) return { status: "not_found" };
   try {
     const permissions = await permissionsFor(user, companyId);
-    const documents = (await listDocuments(getDb(), toActor(user), companyId)).reverse();
+    const { documents, total } = await searchDocuments(getDb(), toActor(user), companyId, query);
     const hasTaxCategories =
       (await listTaxCategories(getDb(), toActor(user), companyId)).length > 0;
-    return { status: "ok", documents, permissions, hasTaxCategories };
+    return { status: "ok", documents, total, permissions, hasTaxCategories };
   } catch (err) {
     return denied(err);
   }
@@ -104,7 +121,23 @@ export async function documentPageData(
     const taxCategories = await listTaxCategories(getDb(), toActor(user), companyId);
     const bankAccounts =
       document.status === "draft" ? await listBankAccounts(getDb(), toActor(user), companyId) : [];
-    return { status: "ok", document, permissions, taxCategories, bankAccounts };
+    let creditNotes: Extract<DocumentPageData, { status: "ok" }>["creditNotes"] = null;
+    if (document.status === "issued" && document.draft.type === "invoice") {
+      try {
+        const items = await listRelatedDocuments(
+          getDb(),
+          toActor(user),
+          companyId,
+          documentId,
+          "credits",
+        );
+        creditNotes = { status: "ok", items };
+      } catch (err) {
+        console.error("[documents] credit notes of an invoice could not be loaded", errName(err));
+        creditNotes = { status: "error" };
+      }
+    }
+    return { status: "ok", document, permissions, taxCategories, bankAccounts, creditNotes };
   } catch (err) {
     return denied(err);
   }
