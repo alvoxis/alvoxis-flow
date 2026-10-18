@@ -2,7 +2,12 @@ import { randomUUID } from "node:crypto";
 import { and, eq } from "drizzle-orm";
 import { type Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import { createDraft, issueDocument } from "@/modules/documents/server/document-service";
+import type * as DocumentService from "@/modules/documents/server/document-service";
+import {
+  createCreditNoteDraft,
+  createDraft,
+  issueDocument,
+} from "@/modules/documents/server/document-service";
 import { ensureDefaultNumberSeries } from "@/modules/documents/server/numbering-service";
 import { type Actor } from "@/server/auth/authorization";
 import { type AuthenticatedUser } from "@/server/auth/session";
@@ -14,11 +19,22 @@ import { addFixtureTaxCategories, withCategoryIds } from "../support/tax-categor
 import { openTestDb } from "./test-db";
 
 /** Dashboard and "Documents" entry loaders: real figures, same access rules. Synthetic data. */
-const state = vi.hoisted(() => ({ db: undefined as unknown }));
+const state = vi.hoisted(() => ({ db: undefined as unknown, failList: false }));
 vi.mock("@/server/db/client", async (importOriginal) => ({
   ...(await importOriginal<object>()),
   getDb: () => state.db,
 }));
+// `failList` simulates the document figures failing to load (e.g. a database timeout).
+vi.mock("@/modules/documents/server/document-service", async (importOriginal) => {
+  const actual = await importOriginal<typeof DocumentService>();
+  return {
+    ...actual,
+    listDocuments: (...args: Parameters<typeof actual.listDocuments>) => {
+      if (state.failList) throw new Error("synthetic outage");
+      return actual.listDocuments(...args);
+    },
+  };
+});
 vi.mock("@/server/auth/instance", () => ({ getMailer: () => ({ configured: false }) }));
 
 const { dashboardData, documentsEntryData } = await import("@/server/account/page-data");
@@ -70,11 +86,11 @@ async function companyWithDocuments(name: string) {
   await createDraft(db, owner, companyId, input);
   const toIssue = await createDraft(db, owner, companyId, input);
   const issued = await issueDocument(db, owner, companyId, toIssue.id, toIssue.version);
-  return { owner, companyId, issuedGross: issued.totals!.grossTotal };
+  return { owner, companyId, input, issued, issuedGross: issued.totals!.grossTotal };
 }
 
 describe("dashboard data", () => {
-  it("shows real counts and per-currency issued totals for the owner's company", async () => {
+  it("shows real counts and per-currency invoiced totals for the owner's company", async () => {
     const { owner, companyId, issuedGross } = await companyWithDocuments("Pārskats SIA");
     const { companies: list, twoFactorMissing } = await dashboardData(pageUser(owner.userId));
     expect(twoFactorMissing).toBe(false);
@@ -83,12 +99,43 @@ describe("dashboard data", () => {
         id: companyId,
         roleKey: "owner",
         documents: {
-          drafts: 1,
-          issued: 1,
-          issuedTotals: [{ currency: "EUR", amount: issuedGross }],
+          status: "ok",
+          canCreate: true,
+          overview: {
+            drafts: 1,
+            issued: 1,
+            invoicedTotals: [{ currency: "EUR", amount: issuedGross }],
+          },
         },
       }),
     ]);
+  });
+
+  it("invoiced totals: credit notes subtract, proformas are not invoices, currencies stay apart", async () => {
+    const { owner, companyId, input, issued, issuedGross } =
+      await companyWithDocuments("Kredīts SIA");
+    // A full credit note of the invoice: the EUR total goes to zero (and disappears).
+    const note = await createCreditNoteDraft(db, owner, companyId, issued.id, "full", {
+      issueDate: "2026-03-10",
+    });
+    await issueDocument(db, owner, companyId, note.id, note.version);
+    // An issued proforma and an issued PLN invoice.
+    const proforma = await createDraft(db, owner, companyId, { ...input, type: "proforma" });
+    await issueDocument(db, owner, companyId, proforma.id, proforma.version);
+    const pln = await createDraft(db, owner, companyId, { ...input, currency: "PLN" });
+    const plnIssued = await issueDocument(db, owner, companyId, pln.id, pln.version);
+
+    const [card] = (await dashboardData(pageUser(owner.userId))).companies;
+    expect(card!.documents).toEqual({
+      status: "ok",
+      canCreate: true,
+      overview: {
+        drafts: 1,
+        issued: 4,
+        invoicedTotals: [{ currency: "PLN", amount: plnIssued.totals!.grossTotal }],
+      },
+    });
+    expect(issuedGross).not.toBe("0.00");
   });
 
   it("an empty company has zero figures, not sample data", async () => {
@@ -98,7 +145,11 @@ describe("dashboard data", () => {
     expect(list).toEqual([
       expect.objectContaining({
         id: companyId,
-        documents: { drafts: 0, issued: 0, issuedTotals: [] },
+        documents: {
+          status: "ok",
+          canCreate: true,
+          overview: { drafts: 0, issued: 0, invoicedTotals: [] },
+        },
       }),
     ]);
   });
@@ -109,17 +160,39 @@ describe("dashboard data", () => {
     const noTwoFactor = await dashboardData(pageUser(owner.userId, false));
     expect(noTwoFactor.twoFactorMissing).toBe(true);
     expect(noTwoFactor.companies).toEqual([
-      expect.objectContaining({ id: companyId, documents: null }),
+      expect.objectContaining({ id: companyId, documents: { status: "no_access" } }),
     ]);
     // No documents.view (production employee) → null; documents.view (warehouse) → figures.
     const production = await dashboardData(
       pageUser(await member(companyId, "production_employee")),
     );
     expect(production.companies).toEqual([
-      expect.objectContaining({ id: companyId, documents: null }),
+      expect.objectContaining({ id: companyId, documents: { status: "no_access" } }),
     ]);
+    // documents.view without documents.create: figures, but no "create" action.
     const warehouse = await dashboardData(pageUser(await member(companyId, "warehouse_employee")));
-    expect(warehouse.companies[0]!.documents).toMatchObject({ drafts: 1, issued: 1 });
+    expect(warehouse.companies[0]!.documents).toMatchObject({
+      status: "ok",
+      canCreate: false,
+      overview: { drafts: 1, issued: 1 },
+    });
+  });
+
+  it("a loading failure is an error state, not an empty company, and logs no data", async () => {
+    const { owner, companyId } = await companyWithDocuments("Kļūda SIA");
+    const logged = vi.spyOn(console, "error").mockImplementation(() => {});
+    state.failList = true;
+    try {
+      const { companies: list } = await dashboardData(pageUser(owner.userId));
+      expect(list).toEqual([
+        expect.objectContaining({ id: companyId, documents: { status: "error" } }),
+      ]);
+      expect(JSON.stringify(logged.mock.calls)).not.toContain("synthetic outage");
+      expect(JSON.stringify(logged.mock.calls)).not.toContain("Kļūda SIA");
+    } finally {
+      state.failList = false;
+      logged.mockRestore();
+    }
   });
 
   it("never includes other tenants, on the dashboard or in the Documents entry", async () => {

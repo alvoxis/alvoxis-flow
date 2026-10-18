@@ -36,7 +36,7 @@ export default async function DocumentsEntryPage({ params }: Params) {
             <li key={c.id} className="py-2.5 text-sm">
               <Link
                 href={`/companies/${c.id}/documents`}
-                className="font-medium text-text hover:text-accent"
+                className="font-medium text-text hover:text-violet-300"
               >
                 {c.name}
               </Link>
@@ -46,7 +46,7 @@ export default async function DocumentsEntryPage({ params }: Params) {
       ) : (
         <Link
           href="/"
-          className="inline-block rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-accent"
+          className="inline-block rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-violet-700"
           data-testid="documents-create-company-link"
         >
           {t("createCompany")}

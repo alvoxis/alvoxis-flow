@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { type ReactNode } from "react";
+import { EnvironmentBanner } from "@/components/layout/environment-banner";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
 import { routing } from "@/i18n/routing";
 
@@ -57,7 +58,10 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider>
           {/* .root: own stacking context, so Base UI popups (portalled to <body>) stay on top. */}
-          <div className="root">{children}</div>
+          <div className="root">
+            <EnvironmentBanner />
+            {children}
+          </div>
         </NextIntlClientProvider>
         <ServiceWorkerRegistration />
       </body>

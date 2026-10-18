@@ -3,6 +3,7 @@ import { type ReactNode } from "react";
 import { SignOutButton } from "@/components/auth/two-factor-forms";
 import { Link } from "@/i18n/navigation";
 import { Brand } from "./brand";
+import { type CompanyChoice, CompanyContext } from "./company-context";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
 import { NavList } from "./nav-list";
@@ -10,9 +11,12 @@ import { NavList } from "./nav-list";
 export async function AppShell({
   children,
   user,
+  companies,
 }: {
   children: ReactNode;
   user: { email: string; displayName: string | null };
+  /** The user's companies, for the company shown in the top bar. */
+  companies: readonly CompanyChoice[];
 }) {
   const t = await getTranslations();
 
@@ -34,10 +38,7 @@ export async function AppShell({
           <div className="hidden sm:block lg:hidden">
             <Brand />
           </div>
-          <div className="hidden min-w-0 items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-muted sm:flex">
-            <span className="size-2 rounded-full bg-muted/50" aria-hidden="true" />
-            <span className="truncate">{t("topbar.noCompany")}</span>
-          </div>
+          <CompanyContext companies={companies} />
           <div className="ml-auto flex items-center gap-3">
             <LocaleSwitcher />
             <div className="flex items-center gap-2 text-sm text-muted" title={t("topbar.account")}>

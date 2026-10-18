@@ -20,10 +20,15 @@
     "closeMenu": "Aizvērt izvēlni"
   },
   "topbar": {
-    "noCompany": "Uzņēmums nav izvēlēts",
+    "noCompany": "Uzņēmuma vēl nav",
     "language": "Valoda",
     "account": "Konts",
-    "notSignedIn": "Nav pieteicies"
+    "notSignedIn": "Nav pieteicies",
+    "currentCompany": "Pašreizējais uzņēmums"
+  },
+  "environment": {
+    "label": "Testa vide",
+    "testBanner": "Šī nav produkcijas vide. Izmantojiet tikai izdomātus datus: nekādus īstus rēķinus, klientus vai bankas rekvizītus."
   },
   "dashboard": {
     "title": "Pārskats",
@@ -32,10 +37,13 @@
       "title": "Dokumenti",
       "drafts": "Melnraksti",
       "issued": "Izrakstīti",
-      "issuedTotal": "Izrakstīto summa",
+      "invoicedNet": "Izrakstīts rēķinos, atskaitot kredītrēķinus",
       "empty": "Dokumentu vēl nav.",
       "unavailable": "Dokumenti nav pieejami jūsu lomai vai līdz divfaktoru autentifikācijas iestatīšanai.",
-      "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām."
+      "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām.",
+      "loadError": "Dokumentu rādītājus šobrīd neizdevās ielādēt. Pašus dokumentus tas neietekmē; mēģiniet vēlāk vēlreiz.",
+      "createFirst": "Izveidot pirmo dokumentu",
+      "paymentsNotTracked": "Maksājumi vēl netiek uzskaitīti, tāpēc šeit nav redzams, kas ir apmaksāts, neapmaksāts vai kavēts."
     }
   },
   "documentType": {

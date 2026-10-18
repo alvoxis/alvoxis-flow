@@ -43,7 +43,7 @@ export function Button({
       {...props}
       className={clsx(
         "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60",
-        variant === "primary" && "bg-accent-strong text-white hover:bg-accent",
+        variant === "primary" && "bg-accent-strong text-white hover:bg-violet-700",
         variant === "secondary" &&
           "border border-border bg-surface-2 text-text hover:border-accent/60",
         variant === "danger" &&

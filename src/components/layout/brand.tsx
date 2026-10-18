@@ -4,7 +4,7 @@ export function Brand() {
       {/* eslint-disable-next-line @next/next/no-img-element -- static SVG logo */}
       <img src="/icons/icon.svg" alt="" width={32} height={32} className="size-8 rounded-lg" />
       <span className="text-[15px] font-semibold tracking-tight whitespace-nowrap text-text">
-        ALVOXIS <span className="text-accent">Flow</span>
+        ALVOXIS <span className="text-violet-300">Flow</span>
       </span>
     </div>
   );

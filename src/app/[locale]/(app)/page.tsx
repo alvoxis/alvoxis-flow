@@ -55,7 +55,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           </div>
           <Link
             href="/account/two-factor"
-            className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-accent"
+            className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-violet-700"
           >
             {tOn("setUpNow")}
           </Link>
@@ -85,7 +85,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               <CompanyOverviewCard key={c.id} company={c} />
             ))}
           </ul>
-          <p className="text-xs text-muted">{tOverview("currencyNote")}</p>
+          <p className="text-xs text-muted" data-testid="overview-notes">
+            {tOverview("currencyNote")} {tOverview("paymentsNotTracked")}
+          </p>
         </section>
       )}
     </div>

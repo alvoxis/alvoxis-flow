@@ -28,7 +28,7 @@ export default async function TaxCategoriesPage({ params }: Params) {
   const back = (
     <Link
       href={`/companies/${companyId}/documents`}
-      className="text-sm text-accent hover:underline"
+      className="text-sm text-violet-300 hover:underline"
     >
       {tDocs("back")}
     </Link>
