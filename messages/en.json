@@ -564,6 +564,18 @@
       },
       "total": {
         "mustBePositive": "The total must be greater than zero."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Some findings of the import have not been checked yet."
+        },
+        "duplicates": {
+          "unacknowledged": "Confirm the possible duplicate before creating a draft."
+        },
+        "line": {
+          "incomplete": "A line needs a quantity and a unit price.",
+          "flagsUnresolved": "A line has findings that have not been checked."
+        }
       }
     },
     "taxCategory": "Tax category",
@@ -675,6 +687,127 @@
       "converted_from": "Issued on the basis of proforma invoice <link>{number}</link> dated {date}",
       "delivers": "Delivery note for invoice <link>{number}</link> dated {date}",
       "replaces": "Replaces invoice <link>{number}</link> dated {date}"
+    },
+    "import": {
+      "open": "Import PDF",
+      "title": "Import a PDF invoice",
+      "description": "Read an invoice PDF of your company and check the extracted data before a draft is created.",
+      "fileLabel": "PDF file",
+      "fileHint": "A text-based PDF up to {size} MB and 20 pages. Scanned images cannot be read yet.",
+      "privacy": "The file is read on our server only to extract the data, is not stored and is not sent to any other service.",
+      "read": "Read PDF",
+      "reading": "Reading…",
+      "noFile": "Choose a PDF file first.",
+      "tooLarge": "The file is larger than {size} MB.",
+      "notPdf": "This file is not a PDF.",
+      "unreadable": "The PDF could not be read. Scanned documents without a text layer are not supported yet.",
+      "fileRead": "{name}: {pages, plural, one {# page} other {# pages}} read",
+      "startOver": "Choose another file",
+      "findingsTitle": "Findings to check",
+      "findingsHint": "Check each finding below before a draft can be created.",
+      "checked": "I have checked this",
+      "duplicatesTitle": "A similar document may already exist in this company:",
+      "duplicateStrength": {
+        "certain": "almost certainly the same",
+        "likely": "likely the same",
+        "possible": "possibly the same"
+      },
+      "duplicateConfirm": "I have checked the existing document and still want to create a new draft.",
+      "documentTitle": "Document",
+      "numberHint": "Read from the file for reference; the draft gets its own number when it is issued.",
+      "partiesTitle": "Seller and buyer",
+      "sellerFixed": "Seller: your company ({name}), from the company profile.",
+      "sellerRead": "Seller found in the file: {name}",
+      "buyerName": "Buyer name",
+      "buyerRegistrationNumber": "Buyer registration number",
+      "buyerVatNumber": "Buyer VAT number",
+      "taxTitle": "Tax",
+      "taxHint": "Tax treatment is never taken from the file: choose the category for the lines explicitly. You can change it per line in the editor.",
+      "taxCategory": "Tax category for all lines",
+      "noCategories": "Add a tax category before importing.",
+      "linesTitle": "Lines",
+      "printedTotal": "Printed line total: {amount}",
+      "noLines": "No lines were found in the file.",
+      "totalsTitle": "Totals printed in the file",
+      "totalsHint": "For comparison only: the draft's totals are calculated from its lines.",
+      "statementsTitle": "Text that may have tax or legal meaning",
+      "statementsHint": "Shown for your attention; it is not interpreted.",
+      "problems": {
+        "currency": "Choose a currency.",
+        "issueDate": "Enter the issue date.",
+        "buyerName": "Enter the buyer's name.",
+        "taxCategory": "Choose a tax category.",
+        "lines": "Every line needs a description, a quantity other than zero and a unit price.",
+        "findings": "Check every finding.",
+        "duplicates": "Confirm that you want to create a new draft despite the possible duplicate."
+      },
+      "flags": {
+        "generic": "Check this value.",
+        "amount": {
+          "ambiguous": "An amount can be read in more than one way (e.g. 1,234). Check the numbers."
+        },
+        "bankAccount": {
+          "ibanInvalid": "An IBAN in the file has an invalid checksum."
+        },
+        "buyer": {
+          "notFound": "The buyer was not found in the file."
+        },
+        "currency": {
+          "multiple": "More than one currency appears in the file.",
+          "notFound": "No currency was found in the file."
+        },
+        "date": {
+          "formatAmbiguous": "A date can be read in more than one way (e.g. 02/03/2026). Check the dates."
+        },
+        "documentType": {
+          "unknown": "The document type was not recognised."
+        },
+        "dueDate": {
+          "beforeIssueDate": "The due date is before the issue date."
+        },
+        "duplicate": {
+          "possible": "A similar document may already exist in this company."
+        },
+        "file": {
+          "noTextLayer": "The file has no text layer (it looks like a scan) and cannot be read."
+        },
+        "identifier": {
+          "labelMismatch": "A registration or VAT number does not match its label.",
+          "unlabelled": "A number that may be a registration or VAT number has no label."
+        },
+        "issueDate": {
+          "notFound": "No issue date was found.",
+          "unlabelled": "The issue date was taken from a date without a label."
+        },
+        "line": {
+          "arithmeticMismatch": "Quantity × unit price does not match the printed line total."
+        },
+        "lines": {
+          "arithmeticMismatch": "Some lines do not add up (quantity × unit price ≠ line total).",
+          "notFound": "No lines were found."
+        },
+        "number": {
+          "notFound": "No document number was found."
+        },
+        "seller": {
+          "notFound": "The seller was not found in the file."
+        },
+        "statements": {
+          "found": "The file contains text that may have tax or legal meaning (shown below)."
+        },
+        "tax": {
+          "notShown": "No tax amount is shown in the file.",
+          "treatmentRequiresConfirmation": "Tax treatment is never taken from the file: choose a tax category.",
+          "zeroRateUnexplained": "A 0 % tax rate is shown without an explanation."
+        },
+        "total": {
+          "notFound": "No total was found."
+        },
+        "totals": {
+          "linesMismatch": "The lines do not add up to the printed subtotal.",
+          "sumMismatch": "Subtotal and tax do not add up to the printed total."
+        }
+      }
     }
   },
   "taxCategories": {

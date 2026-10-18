@@ -55,13 +55,22 @@ export default async function DocumentsPage({ params, searchParams }: Props) {
         description={t("description")}
         action={
           data.status === "ok" && data.permissions.canEdit ? (
-            <Link
-              href={`/companies/${companyId}/documents/new`}
-              className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-accent"
-              data-testid="new-document-link"
-            >
-              {t("new.title")}
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href={`/companies/${companyId}/documents/import`}
+                className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-text hover:border-accent/60"
+                data-testid="import-pdf-link"
+              >
+                {t("import.open")}
+              </Link>
+              <Link
+                href={`/companies/${companyId}/documents/new`}
+                className="rounded-lg bg-accent-strong px-4 py-2 text-sm font-medium text-white hover:bg-accent"
+                data-testid="new-document-link"
+              >
+                {t("new.title")}
+              </Link>
+            </div>
           ) : null
         }
       />

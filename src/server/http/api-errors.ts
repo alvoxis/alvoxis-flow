@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { DocumentRuleError } from "@/modules/documents/domain/derive";
+import { ImportDecisionError } from "@/modules/documents/import/to-draft";
 import {
   BankAccountIbanTakenError,
   BankAccountNotFoundError,
@@ -54,6 +55,11 @@ export function apiError(err: unknown): NextResponse {
       : json(422, "validation_failed", {
           issues: [{ code: err.code, severity: "error", path: "" }],
         });
+  // An import whose review is incomplete (unacknowledged findings, duplicates, incomplete lines).
+  if (err instanceof ImportDecisionError)
+    return json(422, "validation_failed", {
+      issues: [{ code: err.code, severity: "error", path: "" }],
+    });
   if (err instanceof ZodError) return json(400, "invalid_request");
   console.error("[api] unexpected error", err instanceof Error ? err.name : err);
   return json(500, "internal_error");
