@@ -96,7 +96,7 @@ export function DocumentRelationLink({
         link: (chunks) => (
           <Link
             href={`/companies/${companyId}/documents/${relation.documentId}`}
-            className="font-medium text-accent underline-offset-2 hover:underline"
+            className="font-medium text-violet-300 underline-offset-2 hover:underline"
             data-testid="document-relation-link"
           >
             {chunks}

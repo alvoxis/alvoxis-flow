@@ -96,7 +96,7 @@ export function DocumentFilters({
           {isFiltered(query) || query.sort !== "date_desc" ? (
             <Link
               href={listUrl}
-              className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-accent hover:underline"
+              className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-violet-300 hover:underline"
               data-testid="document-filters-reset"
             >
               {t("reset")}

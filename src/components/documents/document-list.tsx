@@ -45,7 +45,7 @@ export function DocumentList({
         <p className="text-sm text-text">{t("filters.noMatches")}</p>
         <Link
           href={`/companies/${companyId}/documents`}
-          className="inline-flex min-h-11 items-center text-sm text-accent hover:underline"
+          className="inline-flex min-h-11 items-center text-sm text-violet-300 hover:underline"
         >
           {t("filters.reset")}
         </Link>
