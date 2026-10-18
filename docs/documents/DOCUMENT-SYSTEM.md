@@ -170,6 +170,7 @@ inside the service; no business logic in the routes):
 | `DELETE …/documents/{documentId}` (drafts only)            | `documents.create`  | —                            |
 | `POST …/documents/{documentId}/issue`                      | `documents.approve` | `{ expectedVersion }`        |
 | `GET …/documents/{documentId}/pdf` (`?download=1` to save) | `documents.view`    | —                            |
+| `POST …/documents/{documentId}/credit-note` (201)          | `documents.create`  | see below                    |
 
 | Method and path (`/api/companies/{companyId}/tax-categories…`) | Permission              | Body                                            |
 | -------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -197,6 +198,24 @@ or catalog changes never appear); the file is named after the number. Drafts ren
 saved content with the "not issued" watermark and no number (`draft-<type>-<id>.pdf`). Errors are
 the usual JSON answers (401/403/404/400).
 
+`POST …/documents/{documentId}/credit-note` creates a credit-note **draft** for an issued invoice
+through `createCreditNoteDraft`. Body: `{ issueDate, language?, lines }`, where `lines` is
+`"full"` (everything that remains) or `[{ sourceLineId, quantity }]` (positive quantities of
+invoice lines; unknown fields, e.g. a unit price, are refused with 422). The draft copies the
+invoice's buyer, currency, exchange-rate snapshot, bank details and each line's tax category;
+the seller comes from the current company profile. It has no number: it is issued with
+`POST …/issue` (`documents.approve`), which allocates the next number of the company's
+credit-note series and re-checks the remaining amounts against credit notes issued in the
+meantime, in the same transaction (a refused issue uses no number). The invoice row, snapshot and
+hash are never changed. Answers: a draft source is `409 invalid_state` `source.notIssued`; an
+issued document that is not an invoice is `409` `source.invalid`; crediting more than remains is
+`422` `creditNote.quantity.exceedsRemaining` / `creditNote.amount.exceedsRemaining`, at creation
+and at issue; other rule findings are `422` too (`creditNote.nothingRemaining`,
+`creditNote.quantity.invalid`, `creditNote.sourceLine.unknown`, `creditNote.dateBeforeOriginal`
+— earlier than the invoice's issue date); another company's invoice is `404`. Note: `"full"` on a
+source without anything positive left to credit (e.g. an issued credit note) answers
+`creditNote.nothingRemaining` before the kind check.
+
 `GET …/documents` returns `{ documents: [{ id, type, status, number, issueDate, currency,
 grossTotal, buyerName }] }`, ordered by issue date. `buyerName` is the buyer's name stored on the
 document row (`buyer->>'name'`); issued rows are immutable, so it is the name in the frozen
@@ -209,7 +228,8 @@ permission — identical whether or not the company exists) or `two_factor_enrol
 `404 not_found` (no such document in this company), `409 version_conflict` (stale
 `expectedVersion`), `409 invalid_state` with a `code` (e.g. `document.alreadyIssued`,
 `document.notDraft`), `422 validation_failed` with `issues` (`{ code, severity, path }`; shape
-errors use `input.*` codes, blocking business rules use the `validateDocument` codes). Issuing is
+errors use `input.*` codes, blocking business rules use the `validateDocument` codes, credit-note
+rules the `creditNote.*` codes with an empty `path`). Issuing is
 one transaction, so a refused or failed issue never uses a number, and a repeated issue is a 409
 that keeps the original number.
 
