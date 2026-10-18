@@ -248,6 +248,38 @@ numbers are always the server's; the editor shows `issues` translated by code
 messages (a version conflict offers a reload). Non-members, archived companies and missing
 `documents.view` get 404; roles that need 2FA without it see the 2FA notice.
 
+### Search, filters and related documents
+
+The list is searched, filtered, sorted and paged **in the database** (`searchDocuments`, one
+query with a window count; 25 rows per page). The browser never receives the whole list.
+
+- **Search** (`q`): the document number or the buyer's name, case-insensitive. Extra spaces are
+  ignored, and `%`/`_` match literally.
+- **Filters:** `type`, `status`, and an issue-date range `from`–`to` (inclusive; a reversed range
+  is swapped).
+- **Sorting** (`sort`): by date (newest first by default), by number, or by amount. Amounts are
+  sorted within each currency, never across currencies. Documents without a number or total
+  (drafts) come last.
+- **URL state:** the values live in the URL, are parsed tolerantly and rebuilt canonically
+  (`src/features/documents/list-query.ts`). Invalid values are dropped, and a non-canonical URL
+  redirects to the clean one.
+- **Filter form:** a plain GET form, so it works without JavaScript. "Reset filters" returns to the
+  full list. An empty result with filters says that nothing matches.
+- **Back link:** opening a document keeps the list view in `?back=`. Only list parameters are
+  read from it, so it can never point elsewhere.
+
+**Related documents:**
+
+- An **issued invoice** lists its credit notes (`listRelatedDocuments`, relation `credits`,
+  `documents.view`, company-scoped; the database also refuses relations across companies):
+  - issued notes first, then drafts;
+  - each with number (or "not issued yet"), status, date and total, linking to the note;
+  - drafts are visibly different;
+  - a table from `md`, cards on phones;
+  - if the list cannot be loaded, the invoice is still shown with a notice.
+- Every document with a relation (credit note, invoice from a proforma, delivery note, replacement)
+  shows it with a link to the source document, taken from the document's own relation.
+
 ### PDF
 
 The document page offers "Open PDF" (new tab) and "Download PDF" for issued documents, and a

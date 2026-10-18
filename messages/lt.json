@@ -637,6 +637,44 @@
       "choose": "Pasirinkite įmonę, kad atidarytumėte jos dokumentus.",
       "none": "Dokumentai priklauso įmonei. Pirmiausia sukurkite įmonę.",
       "createCompany": "Sukurti įmonę"
+    },
+    "filters": {
+      "search": "Paieška",
+      "searchPlaceholder": "Numeris arba pirkėjas",
+      "type": "Tipas",
+      "anyType": "Visi tipai",
+      "status": "Būsena",
+      "anyStatus": "Visos būsenos",
+      "from": "Išrašyta nuo",
+      "to": "Išrašyta iki",
+      "sort": "Rikiuoti pagal",
+      "sorts": {
+        "date_desc": "Naujausi pirmiau",
+        "date_asc": "Seniausi pirmiau",
+        "number_asc": "Numeris (A–Z)",
+        "number_desc": "Numeris (Z–A)",
+        "amount_desc": "Suma (didžiausia pirmiau)",
+        "amount_asc": "Suma (mažiausia pirmiau)"
+      },
+      "apply": "Taikyti",
+      "reset": "Išvalyti filtrus",
+      "noMatches": "Pagal paiešką ar filtrus dokumentų nerasta.",
+      "amountSortHint": "Sumos rikiuojamos kiekvienos valiutos viduje; juodraščiai dar neturi sumos ir rodomi pabaigoje.",
+      "showing": "{start}–{end} iš {total}",
+      "previous": "Ankstesnis puslapis",
+      "next": "Kitas puslapis",
+      "pagination": "Dokumentų sąrašo puslapiai"
+    },
+    "related": {
+      "creditNotesTitle": "Šios sąskaitos kreditinės sąskaitos",
+      "empty": "Šiai sąskaitai kreditinių sąskaitų dar nėra.",
+      "loadError": "Nepavyko įkelti šios sąskaitos kreditinių sąskaitų. Įkelkite puslapį iš naujo ir bandykite dar kartą."
+    },
+    "relation": {
+      "credits": "Kreditinė sąskaita sąskaitai faktūrai <link>{number}</link>, išrašytai {date}",
+      "converted_from": "Išrašyta pagal išankstinę sąskaitą <link>{number}</link>, išrašytą {date}",
+      "delivers": "Važtaraštis sąskaitai faktūrai <link>{number}</link>, išrašytai {date}",
+      "replaces": "Pakeičia sąskaitą faktūrą <link>{number}</link>, išrašytą {date}"
     }
   },
   "taxCategories": {

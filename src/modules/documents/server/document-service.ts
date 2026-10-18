@@ -1,6 +1,7 @@
 import "server-only";
 import { createHash, randomUUID } from "node:crypto";
-import { and, asc, eq, ne, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, lte, ne, or, type SQL, sql } from "drizzle-orm";
+import { DOCUMENT_PAGE_SIZE, type DocumentListQuery } from "@/features/documents/list-query";
 import { recordAudit } from "@/server/audit/audit-log";
 import { type Actor, requireCompanyAccess } from "@/server/auth/authorization";
 import { type Database, type DbOrTx } from "@/server/db/client";
@@ -386,23 +387,125 @@ export async function getDocument(
   return toStored(await loadRow(db, companyId, documentId));
 }
 
+/** The columns of a document list row (list API, list page, related documents). */
+const listColumns = {
+  id: documents.id,
+  type: documents.type,
+  status: documents.status,
+  number: documents.number,
+  issueDate: documents.issueDate,
+  currency: documents.currency,
+  grossTotal: documents.grossTotal,
+  // The buyer as stored on the row; issued rows are immutable and match their snapshot.
+  buyerName: sql<string | null>`${documents.buyer}->>'name'`,
+};
+
 export async function listDocuments(db: DbOrTx, actor: Actor, companyId: string) {
   const ctx = await requireCompanyAccess(db, actor, companyId, "documents.view");
   return db
-    .select({
-      id: documents.id,
-      type: documents.type,
-      status: documents.status,
-      number: documents.number,
-      issueDate: documents.issueDate,
-      currency: documents.currency,
-      grossTotal: documents.grossTotal,
-      // The buyer as stored on the row; issued rows are immutable and match their snapshot.
-      buyerName: sql<string | null>`${documents.buyer}->>'name'`,
-    })
+    .select(listColumns)
     .from(documents)
     .where(tenantFilter(documents.companyId, ctx))
     .orderBy(asc(documents.issueDate));
+}
+
+/** `%`, `_` and `\` match themselves in a LIKE pattern. */
+function likeContains(text: string): string {
+  return `%${text.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
+}
+
+/**
+ * One page of the company's documents (documents.view), searched, filtered and sorted in the
+ * database: the browser never receives the whole list. Search matches the document number or the
+ * buyer's name, case-insensitively. Amounts are sorted within each currency (amounts in different
+ * currencies are never compared); documents without a number or total (drafts) come last.
+ * One query: the total row count comes from a window function.
+ */
+export async function searchDocuments(
+  db: DbOrTx,
+  actor: Actor,
+  companyId: string,
+  query: DocumentListQuery,
+) {
+  const ctx = await requireCompanyAccess(db, actor, companyId, "documents.view");
+  const conditions: SQL[] = [tenantFilter(documents.companyId, ctx)];
+  if (query.q) {
+    const pattern = likeContains(query.q);
+    conditions.push(
+      or(ilike(documents.number, pattern), ilike(sql`${documents.buyer}->>'name'`, pattern))!,
+    );
+  }
+  if (query.type) conditions.push(eq(documents.type, query.type));
+  if (query.status) conditions.push(eq(documents.status, query.status));
+  if (query.from) conditions.push(gte(documents.issueDate, query.from));
+  if (query.to) conditions.push(lte(documents.issueDate, query.to));
+
+  const dir = (asc_: boolean) => (asc_ ? sql`asc` : sql`desc`);
+  const ascending = query.sort.endsWith("_asc");
+  const order: SQL[] = query.sort.startsWith("number")
+    ? [sql`${documents.number} ${dir(ascending)} nulls last`, desc(documents.issueDate)]
+    : query.sort.startsWith("amount")
+      ? [
+          asc(documents.currency),
+          sql`${documents.grossTotal} ${dir(ascending)} nulls last`,
+          desc(documents.issueDate),
+        ]
+      : [ascending ? asc(documents.issueDate) : desc(documents.issueDate)];
+  // Stable order for equal keys, so paging never repeats or skips a row.
+  order.push(ascending ? asc(documents.createdAt) : desc(documents.createdAt), asc(documents.id));
+
+  const offset = (query.page - 1) * DOCUMENT_PAGE_SIZE;
+  const rows = await db
+    .select({ ...listColumns, total: sql<number>`count(*) over ()`.mapWith(Number) })
+    .from(documents)
+    .where(and(...conditions))
+    .orderBy(...order)
+    .limit(DOCUMENT_PAGE_SIZE)
+    .offset(offset);
+  let total = rows[0]?.total ?? 0;
+  if (rows.length === 0 && offset > 0) {
+    // A page past the end: count separately so the caller can offer the last page.
+    const [count] = await db
+      .select({ n: sql<number>`count(*)`.mapWith(Number) })
+      .from(documents)
+      .where(and(...conditions));
+    total = count?.n ?? 0;
+  }
+  return { documents: rows.map(({ total: _t, ...row }) => row), total };
+}
+
+/**
+ * Documents that refer to `documentId` with a relation of `kind` (e.g. the credit notes of an
+ * invoice), drafts and issued alike (documents.view). Only this company's documents: the filter is
+ * in the query, and the database refuses relations across companies (composite foreign key).
+ */
+export async function listRelatedDocuments(
+  db: DbOrTx,
+  actor: Actor,
+  companyId: string,
+  documentId: string,
+  kind: NonNullable<DocumentDraft["relation"]>["kind"],
+) {
+  const ctx = await requireCompanyAccess(db, actor, companyId, "documents.view");
+  return (
+    db
+      .select(listColumns)
+      .from(documents)
+      .where(
+        and(
+          tenantFilter(documents.companyId, ctx),
+          eq(documents.relatedDocumentId, documentId),
+          eq(documents.relationKind, kind),
+        ),
+      )
+      // Issued first in date and number order, then drafts.
+      .orderBy(
+        desc(sql`${documents.status} = 'issued'`),
+        asc(documents.issueDate),
+        sql`${documents.number} asc nulls last`,
+        asc(documents.createdAt),
+      )
+  );
 }
 
 async function loadIssued(

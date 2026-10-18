@@ -637,6 +637,44 @@
       "choose": "Choose a company to open its documents.",
       "none": "Documents belong to a company. Create your company first.",
       "createCompany": "Create a company"
+    },
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Number or buyer",
+      "type": "Type",
+      "anyType": "All types",
+      "status": "Status",
+      "anyStatus": "All statuses",
+      "from": "Issued from",
+      "to": "Issued to",
+      "sort": "Sort by",
+      "sorts": {
+        "date_desc": "Newest first",
+        "date_asc": "Oldest first",
+        "number_asc": "Number (A–Z)",
+        "number_desc": "Number (Z–A)",
+        "amount_desc": "Amount (highest first)",
+        "amount_asc": "Amount (lowest first)"
+      },
+      "apply": "Apply",
+      "reset": "Reset filters",
+      "noMatches": "No documents match your search or filters.",
+      "amountSortHint": "Amounts are sorted within each currency; drafts have no total yet and come last.",
+      "showing": "{start}–{end} of {total}",
+      "previous": "Previous page",
+      "next": "Next page",
+      "pagination": "Pages of the document list"
+    },
+    "related": {
+      "creditNotesTitle": "Credit notes for this invoice",
+      "empty": "No credit notes for this invoice yet.",
+      "loadError": "The credit notes of this invoice could not be loaded. Reload the page to try again."
+    },
+    "relation": {
+      "credits": "Credit note for invoice <link>{number}</link> dated {date}",
+      "converted_from": "Issued on the basis of proforma invoice <link>{number}</link> dated {date}",
+      "delivers": "Delivery note for invoice <link>{number}</link> dated {date}",
+      "replaces": "Replaces invoice <link>{number}</link> dated {date}"
     }
   },
   "taxCategories": {

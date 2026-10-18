@@ -637,6 +637,44 @@
       "choose": "Valige ettevõte, et avada selle dokumendid.",
       "none": "Dokumendid kuuluvad ettevõttele. Looge kõigepealt ettevõte.",
       "createCompany": "Loo ettevõte"
+    },
+    "filters": {
+      "search": "Otsing",
+      "searchPlaceholder": "Number või ostja",
+      "type": "Liik",
+      "anyType": "Kõik liigid",
+      "status": "Olek",
+      "anyStatus": "Kõik olekud",
+      "from": "Väljastatud alates",
+      "to": "Väljastatud kuni",
+      "sort": "Sorteeri",
+      "sorts": {
+        "date_desc": "Uuemad eespool",
+        "date_asc": "Vanemad eespool",
+        "number_asc": "Number (kasvav)",
+        "number_desc": "Number (kahanev)",
+        "amount_desc": "Summa (suurim eespool)",
+        "amount_asc": "Summa (väikseim eespool)"
+      },
+      "apply": "Rakenda",
+      "reset": "Lähtesta filtrid",
+      "noMatches": "Otsingule või filtritele ei vasta ükski dokument.",
+      "amountSortHint": "Summad sorteeritakse iga valuuta piires; mustanditel pole veel kogusummat ja need on lõpus.",
+      "showing": "{start}–{end} / {total}",
+      "previous": "Eelmine leht",
+      "next": "Järgmine leht",
+      "pagination": "Dokumentide loendi lehed"
+    },
+    "related": {
+      "creditNotesTitle": "Selle arve kreeditarved",
+      "empty": "Sellel arvel pole veel kreeditarveid.",
+      "loadError": "Selle arve kreeditarveid ei õnnestunud laadida. Laadige leht uuesti, et uuesti proovida."
+    },
+    "relation": {
+      "credits": "Kreeditarve arvele <link>{number}</link> kuupäevaga {date}",
+      "converted_from": "Väljastatud ettemaksuarve <link>{number}</link> alusel kuupäevaga {date}",
+      "delivers": "Saateleht arvele <link>{number}</link> kuupäevaga {date}",
+      "replaces": "Asendab arvet <link>{number}</link> kuupäevaga {date}"
     }
   },
   "taxCategories": {
