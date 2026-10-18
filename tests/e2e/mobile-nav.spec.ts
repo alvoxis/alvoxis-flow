@@ -118,14 +118,17 @@ test("keyboard focus stays inside the open drawer", async ({ page, baseURL }) =>
   await signedInPage(page, baseURL!);
   await page.goto("/en");
   const drawer = await openDrawer(page);
-  await expect.poll(() => drawer.evaluate((el) => el.contains(document.activeElement))).toBe(true);
+  const focusInside = () => drawer.evaluate((el) => el.contains(document.activeElement));
+  await expect.poll(focusInside).toBe(true);
+  // At either end of the list Base UI's focus guard (outside the drawer) holds focus for a moment
+  // and then moves it back into the drawer, so each step waits for focus to settle inside.
   for (let i = 0; i < 6; i++) {
     await page.keyboard.press("Tab");
-    expect(await drawer.evaluate((el) => el.contains(document.activeElement))).toBe(true);
+    await expect.poll(focusInside).toBe(true);
   }
   for (let i = 0; i < 3; i++) {
     await page.keyboard.press("Shift+Tab");
-    expect(await drawer.evaluate((el) => el.contains(document.activeElement))).toBe(true);
+    await expect.poll(focusInside).toBe(true);
   }
 });
 
