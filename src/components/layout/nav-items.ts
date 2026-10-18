@@ -16,6 +16,8 @@ export interface NavItem {
   icon: string;
   /** Module not implemented yet: rendered disabled with a "soon" badge. */
   soon: boolean;
+  /** Other paths (without locale) that belong to this item, e.g. a company's documents. */
+  alsoActiveOn?: RegExp;
 }
 
 /** SVG path data (24×24, stroke icons). */
@@ -29,7 +31,8 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     key: "documents",
     href: "/documents",
-    soon: true,
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/documents(\/|$)/,
     icon: "M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h8M9 17h6",
   },
   {
@@ -71,3 +74,9 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7.4-3a7.4 7.4 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2-1.2L14.5 3h-5l-.4 2.6a7.6 7.6 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7.4 7.4 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2 1.2l.4 2.6h5l.4-2.6a7.6 7.6 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2Z",
   },
 ];
+
+/** Whether `item` is the current section for `pathname` (a path without the locale prefix). */
+export function isNavItemActive(item: NavItem, pathname: string): boolean {
+  if (item.soon) return false;
+  return pathname === item.href || Boolean(item.alsoActiveOn?.test(pathname));
+}

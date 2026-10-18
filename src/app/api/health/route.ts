@@ -8,10 +8,12 @@ let pool: Pool | undefined;
 
 /**
  * Liveness + readiness. Returns 200 only when configuration is valid and the database
- * answers. Does not expose connection strings or error details.
+ * answers. Does not expose connection strings or error details: on invalid configuration it
+ * lists only the names of the variables to fix (the names are public in this repository).
  */
 export async function GET() {
   let database: "ok" | "unavailable" | "not_configured" = "unavailable";
+  let invalid: string[] | undefined;
   try {
     const env = getServerEnv();
     pool ??= new Pool({
@@ -22,11 +24,21 @@ export async function GET() {
     await pool.query("select 1");
     database = "ok";
   } catch (err) {
-    database = err instanceof EnvValidationError ? "not_configured" : "unavailable";
+    if (err instanceof EnvValidationError) {
+      database = "not_configured";
+      invalid = err.variables;
+    } else {
+      database = "unavailable";
+    }
   }
   const ok = database === "ok";
   return NextResponse.json(
-    { status: ok ? "ok" : "degraded", database, time: new Date().toISOString() },
+    {
+      status: ok ? "ok" : "degraded",
+      database,
+      ...(invalid ? { invalid } : {}),
+      time: new Date().toISOString(),
+    },
     { status: ok ? 200 : 503, headers: { "Cache-Control": "no-store" } },
   );
 }

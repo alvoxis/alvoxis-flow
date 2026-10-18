@@ -19,7 +19,11 @@ test("signed-in users see the dashboard", async ({ page, baseURL }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/en$/);
   await expect(page.getByRole("heading", { level: 1, name: "Dashboard" })).toBeVisible();
-  await expect(page.getByTestId("sample-data-banner")).toBeVisible();
+  // No sample figures: a new user without a company is asked to create one.
+  await expect(page.getByTestId("create-company")).toBeVisible();
+  await expect(page.getByTestId("sample-data-banner")).toHaveCount(0);
+  await expect(page.getByTestId("kpi-grid")).toHaveCount(0);
+  await expect(page.getByTestId("documents-overview")).toHaveCount(0);
 });
 
 for (const [locale, title] of Object.entries(TITLES)) {
@@ -30,14 +34,6 @@ for (const [locale, title] of Object.entries(TITLES)) {
     await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
   });
 }
-
-test("shows per-currency totals without mixing EUR and PLN", async ({ page, baseURL }) => {
-  await signedInPage(page, baseURL!);
-  await page.goto("/en");
-  const grid = page.getByTestId("kpi-grid");
-  await expect(grid.locator('[data-currency="EUR"]').first()).toHaveText("€8,560.40");
-  await expect(grid.locator('[data-currency="PLN"]').first()).toHaveText("PLN 12,450.50");
-});
 
 test("switches language and keeps the user on the same page", async ({ page, baseURL }) => {
   await signedInPage(page, baseURL!);
@@ -62,22 +58,20 @@ test("layout has no horizontal overflow", async ({ page, baseURL }) => {
   expect(overflow).toBeLessThanOrEqual(0);
 });
 
-test("uses a table on wide screens and a list on phones", async ({ page, baseURL, isMobile }) => {
+test("the main navigation is reachable on every screen size", async ({ page, baseURL }) => {
   await signedInPage(page, baseURL!);
   await page.goto("/en");
-  const table = page.getByTestId("recent-documents-table");
-  if (isMobile) {
-    await expect(table).toBeHidden();
+  // Below the lg breakpoint (phones and tablets) the navigation lives in a drawer.
+  if ((page.viewportSize()?.width ?? 0) < 1024) {
     await page.getByRole("button", { name: "Open menu" }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.getByRole("link", { name: "Dashboard" })).toBeVisible();
+    await expect(dialog.getByRole("link", { name: "Documents" })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
   } else {
-    await expect(table).toBeVisible();
-    await table.scrollIntoViewIfNeeded();
-    // The amount column must be on screen without horizontal scrolling.
-    await expect(table.getByRole("columnheader", { name: "Amount" })).toBeInViewport({ ratio: 1 });
+    const nav = page.getByRole("navigation").first();
+    await expect(nav.getByRole("link", { name: "Documents" })).toBeVisible();
   }
 });
 
