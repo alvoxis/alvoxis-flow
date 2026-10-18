@@ -13,6 +13,7 @@ import {
   type StoredDocument,
 } from "@/modules/documents/server/document-service";
 import { DocumentNotFoundError } from "@/modules/documents/server/errors";
+import { loadSellerIdentity } from "@/modules/documents/server/seller-profile";
 import {
   listTaxCategories,
   type TaxCategoryView,
@@ -153,6 +154,38 @@ export async function newDocumentPageData(
     const permissions = await permissionsFor(user, companyId);
     const bankAccounts = await listBankAccounts(getDb(), toActor(user), companyId);
     return { status: "ok", permissions, bankAccounts };
+  } catch (err) {
+    return denied(err);
+  }
+}
+
+export type ImportPageData =
+  | {
+      status: "ok";
+      /** The company's name as seller (from its profile): imported drafts always use it. */
+      companyName: string;
+      /** Active categories, one of which must be chosen for the imported lines. */
+      taxCategories: TaxCategoryView[];
+      bankAccounts: BankAccountView[];
+    }
+  | Denied;
+
+/** "Import PDF" page: only for users who may create documents (documents.create). */
+export async function importPageData(
+  user: AuthenticatedUser,
+  companyId: string,
+): Promise<ImportPageData> {
+  if (!z.uuid().safeParse(companyId).success) return { status: "not_found" };
+  try {
+    const permissions = await permissionsFor(user, companyId);
+    if (!permissions.canEdit) return { status: "not_found" };
+    const actor = toActor(user);
+    const [identity, taxCategories, bankAccounts] = await Promise.all([
+      loadSellerIdentity(getDb(), companyId),
+      listTaxCategories(getDb(), actor, companyId),
+      listBankAccounts(getDb(), actor, companyId),
+    ]);
+    return { status: "ok", companyName: identity.name, taxCategories, bankAccounts };
   } catch (err) {
     return denied(err);
   }
