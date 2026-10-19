@@ -55,6 +55,25 @@ describe("GET /api/health", () => {
     expect(r.text).not.toMatch(/postgres:\/\//);
   });
 
+  it("a preview pointing at another database is refused before connecting, by name only", async () => {
+    const r = await health({
+      NODE_ENV: "production",
+      VERCEL: "1",
+      VERCEL_ENV: "preview",
+      VERCEL_BRANCH_URL: "app-git-main-team.vercel.app",
+      VERCEL_PROJECT_PRODUCTION_URL: "app.vercel.app",
+      APP_URL: undefined,
+      TRUSTED_IP_HEADER: "x-real-ip",
+      PREVIEW_DATABASE_HOST: "ep-test-1.c-8.eu-central-1.aws.neon.tech",
+      DATABASE_URL: `postgres://u:${FAKE_SECRET}@ep-production-1.c-7.eu-central-1.aws.neon.tech/db`,
+      BETTER_AUTH_SECRET: `${FAKE_SECRET}-${"x".repeat(32)}`,
+    });
+    expect(r.status).toBe(503);
+    expect(r.body).toMatchObject({ database: "not_configured", invalid: ["DATABASE_URL"] });
+    expect(r.text).not.toContain(FAKE_SECRET);
+    expect(r.text).not.toMatch(/ep-production|ep-test|neon\.tech/);
+  });
+
   it("valid configuration but no reachable database: 503 unavailable, no variable list", async () => {
     const r = await health({
       NODE_ENV: "test",

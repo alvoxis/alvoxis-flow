@@ -253,69 +253,102 @@ runs on the migrated schema; schema changes are never rolled back by hand.
 
 ## 12. Test Mode on preview deployments (the `alvoxis-flow` project)
 
-The project `alvoxis-flow` already has a production deployment with its own database. Its
-environment variables are all scoped to **Production** (checked on 2026-10-18 from the variable
-list, without reading any value). A preview deployment therefore has no database and no auth
-secret: `/api/health` answers `503 {"database":"not_configured","invalid":["BETTER_AUTH_SECRET","DATABASE_URL"]}`.
-That is safe (a preview can never reach the production data) but it means previews cannot be used
-for testing until they get **their own** values. Nothing in the repository can do this; the owner
-does it in the dashboards.
+The project `alvoxis-flow` has a production deployment with its own database; all its environment
+variables are scoped to **Production**. Preview deployments (every branch and PR, including
+`main`) get **their own** values, scoped to **Preview**, pointing to the separate Neon project
+`alvoxis-flow-test`. Until they exist a preview answers `503` on `/api/health` with
+`"database":"not_configured"` — safe: it cannot reach any database.
 
-What the application already does for a test deployment:
+### What the application enforces on a preview (`VERCEL_ENV=preview`)
 
-- Every page shows a **"Test environment"** banner ("not production, synthetic data only") on a
-  Vercel preview (`VERCEL_ENV=preview`, set by Vercel) or wherever `APP_TEST_MODE=1` is set.
-  Production (`VERCEL_ENV=production`) never shows it.
-- Authentication, email verification, 2FA for owners/administrators, roles and company isolation
-  work exactly as in production. There is no test account, no shared password and no bypass.
+The server refuses to start (pages answer 500, `/api/health` lists only the variable **names**)
+unless:
+
+- `PREVIEW_DATABASE_HOST` is set and `DATABASE_URL` points to exactly that host (the pooled and
+  the direct host of one Neon endpoint count as the same). A production connection string copied
+  into Preview by mistake is therefore refused, not used;
+- `APP_URL`, when set, is this preview's own URL (`VERCEL_BRANCH_URL` or `VERCEL_URL`) and never
+  the production domain (`VERCEL_PROJECT_PRODUCTION_URL`). When `APP_URL` is **not** set, the
+  branch URL is used, so every branch's preview has the right sign-in origin and email links;
+- with `EMAIL_TRANSPORT=smtp`, `SMTP_HOST` is an email sandbox (`sandbox.smtp.mailtrap.io`), so
+  a preview can never email real people.
+
+Every page shows the yellow **"Test environment"** banner on a preview (or with `APP_TEST_MODE=1`;
+never on production). The banner is the only thing "test mode" changes: authentication, email
+verification, 2FA for owners/administrators, roles and company isolation work exactly as in
+production. There is no test account, no shared password and no bypass.
+
+### Neon (test project `alvoxis-flow-test`)
+
+- Branch `main`: the clean, migrated baseline (13 migrations, permission catalog, no data).
+- Branch `before-test`, child of `main`: the **working** database of the previews. It can be
+  returned to the clean baseline with Neon's "Reset from parent" when a test round is over.
+- Never branch the production project: a Neon branch copies its data.
 
 ### Steps for the owner
 
-1. **Neon:** create a **new, separate Neon project** for testing (e.g. `alvoxis-flow-test`, EU
-   region, PostgreSQL 16+). Do **not** create a branch of the production project: a Neon branch
-   copies the production data.
-2. **Migrations:** run the manual workflow "Neon test database migrations" (§5, "Without a
-   computer") with the **direct** string of that test project in the `neon-test` environment.
-   Then create a Neon branch `before-test` of the test project, to reset it later.
-3. **Vercel → Project `alvoxis-flow` → Settings → Environment Variables**, add each variable below
-   with environment **Preview** only, and limit it to the git branch `main` (Vercel's
-   "Preview → select a branch" option). Mark secrets as **Sensitive**. Never copy a production
-   value.
+1. **Neon → `alvoxis-flow-test` → branch `before-test` → Connect** (database `neondb`, role
+   `neondb_owner`):
+   - copy the **pooled** connection string (host with `-pooler`) for Vercel;
+   - note the host of the **direct** string (pooling off, `ep-….neon.tech`, no `-pooler`), it is
+     not a secret.
+     In both strings use `sslmode=verify-full` (replace `require`); `channel_binding` may be removed.
+2. **Vercel → Project `alvoxis-flow` → Settings → Environment Variables → Add**, for each row:
+   environment **Preview only** (untick Production and Development), all branches. Mark the secrets
+   **Sensitive**. Never copy or change a Production value.
 
-   | Variable             | Value                                                                       |
-   | -------------------- | --------------------------------------------------------------------------- |
-   | `DATABASE_URL`       | **pooled** string of the **test** Neon project, `sslmode=verify-full`       |
-   | `BETTER_AUTH_SECRET` | a **new** random value (§4), used nowhere else                              |
-   | `APP_URL`            | `https://alvoxis-flow-git-main-alvoxis1.vercel.app` (the `main` branch URL) |
-   | `TRUSTED_IP_HEADER`  | `x-real-ip`                                                                 |
-   | `EMAIL_TRANSPORT`    | `smtp`                                                                      |
-   | `EMAIL_FROM`         | `ALVOXIS Flow Test <no-reply@example.test>`                                 |
-   | `SMTP_*`             | a Mailtrap **Email Sandbox** inbox (§6): catches mail, delivers nothing     |
+   | Variable                | Value                                                       |
+   | ----------------------- | ----------------------------------------------------------- |
+   | `DATABASE_URL`          | pooled string of `before-test` (secret)                     |
+   | `PREVIEW_DATABASE_HOST` | the `before-test` endpoint host (direct form, not a secret) |
+   | `BETTER_AUTH_SECRET`    | a **new** random value (§4), used nowhere else (secret)     |
+   | `TRUSTED_IP_HEADER`     | `x-real-ip`                                                 |
+   | `EMAIL_TRANSPORT`       | `smtp`                                                      |
+   | `EMAIL_FROM`            | `ALVOXIS Flow Test <no-reply@example.test>`                 |
+   | `SMTP_HOST`             | `sandbox.smtp.mailtrap.io`                                  |
+   | `SMTP_PORT`             | `2525`                                                      |
+   | `SMTP_SECURE`           | `false`                                                     |
+   | `SMTP_USER`             | Mailtrap Email Sandbox inbox user (secret)                  |
+   | `SMTP_PASSWORD`         | Mailtrap Email Sandbox inbox password (secret)              |
 
-   Sign-up needs a verification email, so a sandbox inbox is required to create test users; it
-   sends nothing to real recipients and is free (§9). Using it is the owner's decision.
+   Do **not** add `APP_URL` for Preview: the branch URL is used automatically. Sign-up needs the
+   verification email, so the sandbox inbox (§6) is required to create test users.
 
-4. **Deployment Protection:** keep Vercel Authentication on for preview deployments (§7 step 4).
-5. **Redeploy** the latest `main` preview (variables apply to new deployments only), then check
-   `https://alvoxis-flow-git-main-alvoxis1.vercel.app/api/health` → `200 {"status":"ok"}` and the
-   yellow "Test environment" banner on the sign-in page.
+3. **GitHub → Settings → Environments → `neon-test`**: set the secret `NEON_TEST_DATABASE_URL` to
+   the **direct** string of `before-test` and the variable `NEON_TEST_DB_HOST` to its direct host,
+   so the manual workflows (migrations, test data) write to the same branch the previews use.
+4. **Vercel → Deployments →** the latest deployment of `main` **→ ⋯ → Redeploy** (variables apply to
+   new deployments only), then open
+   `https://alvoxis-flow-git-main-alvoxis1.vercel.app/api/health` → `200 {"status":"ok"}`.
 
 ### Proving the preview uses the test database
 
-After step 5, sign up on the preview with an `…@example.test` address and create a company named
-e.g. `Preview Proof SIA`. It must appear in the **test** Neon project (Neon → Tables →
-`companies`) and **not** in production. Never run this check the other way round.
+Sign up on the preview with an `…@example.test` address (verification mail in Mailtrap), enable
+2FA, create a company `Preview Proof SIA`. Neon → `alvoxis-flow-test` → `before-test` → Tables →
+`companies` must show it. The production project is not opened for this check.
+
+### Synthetic test data (optional, repeatable)
+
+GitHub → Actions → **"Neon test database — synthetic test data"** → Run workflow (from `main`),
+confirmation `seed-neon-test-data`, `owner_email` = an existing test user (`…@example.test`).
+It adds two fictitious companies of that owner (31 and 3 documents: EUR and PLN invoices, drafts,
+a proforma, a delivery note, a full and a partial credit note) through the regular services, so
+every business rule applies. Running it again changes nothing. It refuses any host other than
+`NEON_TEST_DB_HOST`, non-`@example.test` owners and users that do not exist. Locally:
+`pnpm db:test-data` with `TEST_DATA_CONFIRM`, `TEST_DATA_DB_HOST`, `TEST_DATA_OWNER_EMAIL`
+(`scripts/seed-test-data.ts`).
 
 ### Repeatable test round
 
-1. Reset the test database: Neon → test project → restore to the `before-test` branch state.
-2. Sign up `tester1@example.test` (verification mail in Mailtrap), sign in, enable 2FA.
-3. Follow §8 (company, tax categories, bank accounts, documents, PDF) with synthetic data, then:
-   search, filters, sorting and paging on the document list; a full and a partial credit note and
-   the links between invoice and credit note; PDF import of an app-generated sample PDF
-   (`pnpm docs:samples <dir> en`), never a real invoice.
-4. Phone checks: the menu, the dashboard and the documents list at phone width, portrait and
-   landscape.
+1. Optional reset: Neon → `before-test` → **Reset from parent** (back to the clean baseline; all
+   test users and data are deleted).
+2. Sign up `tester1@example.test` and `tester2@example.test`; enable 2FA for both.
+3. Optional: run the test-data workflow for `tester1@example.test`.
+4. Follow §8 with synthetic data, then: search, filters, sorting and paging; a full and a partial
+   credit note and the links between invoice and credit note; PDF import of an app-generated sample
+   PDF (`pnpm docs:samples <dir> en`), never a real invoice. `tester2` must not see `tester1`'s
+   companies or documents (open a copied document URL: 404).
+5. Phone checks: the menu, the dashboard and the documents list, portrait and landscape.
 
 Roles other than owner cannot be assigned in the app yet (no invitations), so they are covered by
 the automated tests only.

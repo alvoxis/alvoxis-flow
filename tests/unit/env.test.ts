@@ -141,3 +141,102 @@ describe("parseServerEnv", () => {
     );
   });
 });
+
+describe("preview deployments (VERCEL_ENV=preview): the test environment", () => {
+  // Fictitious hosts: the test database endpoint, another endpoint and the Vercel URLs.
+  const TEST_DB = "ep-test-endpoint-123456.c-8.eu-central-1.aws.neon.tech";
+  const OTHER_DB = "ep-other-endpoint-654321.c-7.eu-central-1.aws.neon.tech";
+  const preview = {
+    ...base,
+    NODE_ENV: "production",
+    VERCEL: "1",
+    VERCEL_ENV: "preview",
+    VERCEL_BRANCH_URL: "app-git-main-team.vercel.app",
+    VERCEL_URL: "app-abc123-team.vercel.app",
+    VERCEL_PROJECT_PRODUCTION_URL: "app.vercel.app",
+    TRUSTED_IP_HEADER: "x-real-ip",
+    DATABASE_URL: `postgresql://u:p@${TEST_DB.replace(/^([^.]+)/, "$1-pooler")}/neondb?sslmode=verify-full`,
+    PREVIEW_DATABASE_HOST: TEST_DB,
+  };
+  const issuesOf = (env: Record<string, string | undefined>) => {
+    try {
+      parseServerEnv(env);
+      return [];
+    } catch (err) {
+      return (err as EnvValidationError).variables;
+    }
+  };
+
+  it("accepts the test database (pooled or direct host) and uses the branch URL as APP_URL", () => {
+    const env = parseServerEnv(preview);
+    expect(env.APP_URL).toBe("https://app-git-main-team.vercel.app");
+    expect(
+      parseServerEnv({ ...preview, DATABASE_URL: `postgres://u:p@${TEST_DB}/neondb` }).APP_URL,
+    ).toBe("https://app-git-main-team.vercel.app");
+    expect(
+      parseServerEnv({ ...preview, APP_URL: "https://app-abc123-team.vercel.app" }).APP_URL,
+    ).toBe("https://app-abc123-team.vercel.app");
+  });
+
+  it("refuses any database other than the declared test database", () => {
+    expect(issuesOf({ ...preview, PREVIEW_DATABASE_HOST: undefined })).toEqual([
+      "PREVIEW_DATABASE_HOST",
+    ]);
+    expect(issuesOf({ ...preview, DATABASE_URL: `postgresql://u:p@${OTHER_DB}/neondb` })).toEqual([
+      "DATABASE_URL",
+    ]);
+    // A look-alike host is not the same endpoint.
+    expect(
+      issuesOf({ ...preview, DATABASE_URL: `postgresql://u:p@${TEST_DB}.evil.test/neondb` }),
+    ).toEqual(["DATABASE_URL"]);
+  });
+
+  it("never uses the production domain or another site as APP_URL", () => {
+    expect(issuesOf({ ...preview, APP_URL: "https://app.vercel.app" })).toEqual(["APP_URL"]);
+    expect(issuesOf({ ...preview, APP_URL: "https://elsewhere.example.test" })).toEqual([
+      "APP_URL",
+    ]);
+    // Without the branch URL and without APP_URL there is no safe default.
+    expect(issuesOf({ ...preview, VERCEL_BRANCH_URL: undefined, VERCEL_URL: undefined })).toEqual([
+      "APP_URL",
+    ]);
+  });
+
+  it("sends email only through a sandbox", () => {
+    const smtp = { EMAIL_TRANSPORT: "smtp", EMAIL_FROM: "Test <no-reply@example.test>" };
+    expect(
+      parseServerEnv({ ...preview, ...smtp, SMTP_HOST: "sandbox.smtp.mailtrap.io" }).SMTP_HOST,
+    ).toBe("sandbox.smtp.mailtrap.io");
+    expect(issuesOf({ ...preview, ...smtp, SMTP_HOST: "smtp.real-mail.example.test" })).toEqual([
+      "SMTP_HOST",
+    ]);
+  });
+
+  it("error messages name variables, never their values", () => {
+    let message = "";
+    try {
+      parseServerEnv({
+        ...preview,
+        DATABASE_URL: `postgresql://user:Sup3rS3cret@${OTHER_DB}/neondb`,
+      });
+    } catch (err) {
+      message = (err as Error).message;
+    }
+    expect(message).toMatch(/DATABASE_URL/);
+    expect(message).not.toMatch(/Sup3rS3cret|ep-other|ep-test/);
+  });
+
+  it("production and local runs are unaffected by the preview rules", () => {
+    const production = {
+      ...preview,
+      VERCEL_ENV: "production",
+      PREVIEW_DATABASE_HOST: undefined,
+      APP_URL: "https://app.vercel.app",
+      DATABASE_URL: `postgresql://u:p@${OTHER_DB}/neondb`,
+    };
+    expect(parseServerEnv(production).APP_URL).toBe("https://app.vercel.app");
+    // Production never falls back to the branch URL: APP_URL stays required there.
+    expect(issuesOf({ ...production, APP_URL: undefined })).toEqual(["APP_URL"]);
+    expect(parseServerEnv(base).APP_URL).toBe("http://localhost:3000");
+  });
+});

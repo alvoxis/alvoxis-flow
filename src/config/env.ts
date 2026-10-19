@@ -23,6 +23,18 @@ const baseSchema = z.object({
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug"]).default("info"),
   /** Set to "1" by Vercel on its build and runtime machines (read-only platform signal). */
   VERCEL: optionalNonEmpty,
+  /** Set by Vercel: "production", "preview" or "development" (read-only platform signals). */
+  VERCEL_ENV: optionalNonEmpty,
+  /** Set by Vercel: host of the branch alias, of this deployment and of the production domain. */
+  VERCEL_BRANCH_URL: optionalNonEmpty,
+  VERCEL_URL: optionalNonEmpty,
+  VERCEL_PROJECT_PRODUCTION_URL: optionalNonEmpty,
+  /**
+   * Preview deployments only (required there): the host of the separate TEST database, e.g. the
+   * Neon endpoint host. DATABASE_URL must point to exactly this host, so a production connection
+   * string copied into Preview by mistake is refused instead of used. Not a secret.
+   */
+  PREVIEW_DATABASE_HOST: optionalNonEmpty,
 
   /** Signs/encrypts session cookies, 2FA secrets and backup codes. ≥ 32 random characters. */
   BETTER_AUTH_SECRET: z.string().min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
@@ -114,9 +126,54 @@ export function isLocalhostUrl(url: string): boolean {
 
 const DEFAULT_APP_URL = "http://localhost:3000";
 
+/**
+ * SMTP hosts a preview deployment may use: sandboxes that catch every message and deliver
+ * nothing to the recipients, so testing can never email real people.
+ */
+export const PREVIEW_SMTP_SANDBOX_HOSTS: readonly string[] = ["sandbox.smtp.mailtrap.io"];
+
+/** Host of a postgres:// URL in lower case, or undefined when it cannot be parsed. */
+function databaseHost(url: string): string | undefined {
+  try {
+    return new URL(url).hostname.toLowerCase() || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** A Neon endpoint's pooled and direct hosts differ only by "-pooler" in the first label. */
+function sameDatabaseEndpoint(a: string, b: string): boolean {
+  const normalize = (host: string) =>
+    host
+      .trim()
+      .toLowerCase()
+      .replace(/^([^.]+)-pooler\./, "$1.");
+  return normalize(a) === normalize(b);
+}
+
+/** Host part of an origin or a bare host name (Vercel's VERCEL_* URLs carry no scheme). */
+function hostOf(value: string): string {
+  try {
+    return new URL(value.includes("://") ? value : `https://${value}`).host.toLowerCase();
+  } catch {
+    return value.toLowerCase();
+  }
+}
+
+/**
+ * The public origin: APP_URL, or on a Vercel preview without APP_URL the branch alias Vercel
+ * assigns (https://<project>-git-<branch>-<team>.vercel.app), never the production domain.
+ */
+function effectiveAppUrl(env: z.infer<typeof baseSchema>): string | undefined {
+  if (env.APP_URL) return env.APP_URL;
+  if (env.VERCEL_ENV === "preview" && env.VERCEL_BRANCH_URL)
+    return `https://${hostOf(env.VERCEL_BRANCH_URL)}`;
+  return undefined;
+}
+
 export const serverEnvSchema = baseSchema
   .superRefine((env, ctx) => {
-    if (env.VERCEL === "1" && !env.APP_URL) {
+    if (env.VERCEL === "1" && !effectiveAppUrl(env)) {
       // The localhost default would silently become the auth base URL, the only trusted origin
       // and the host of every email link, so sign-in on the deployment could never work.
       ctx.addIssue({
@@ -125,7 +182,8 @@ export const serverEnvSchema = baseSchema
         message: "APP_URL is required on Vercel (the deployment's public https:// origin)",
       });
     }
-    const appUrl = env.APP_URL ?? DEFAULT_APP_URL;
+    const appUrl = effectiveAppUrl(env) ?? DEFAULT_APP_URL;
+    if (env.VERCEL_ENV === "preview") checkPreview(env, appUrl, ctx);
     const realDeployment = env.NODE_ENV === "production" && !isLocalhostUrl(appUrl);
     if (Boolean(env.GOOGLE_CLIENT_ID) !== Boolean(env.GOOGLE_CLIENT_SECRET)) {
       ctx.addIssue({
@@ -176,7 +234,60 @@ export const serverEnvSchema = baseSchema
       });
     }
   })
-  .transform((env) => ({ ...env, APP_URL: env.APP_URL ?? DEFAULT_APP_URL }));
+  .transform((env) => ({ ...env, APP_URL: effectiveAppUrl(env) ?? DEFAULT_APP_URL }));
+
+/**
+ * Extra rules for Vercel preview deployments, the test environment: the database must be the
+ * declared test database, the public URL must be this preview (never the production domain) and
+ * email may only go to a sandbox. Messages name variables, never their values.
+ */
+function checkPreview(env: z.infer<typeof baseSchema>, appUrl: string, ctx: z.RefinementCtx) {
+  const dbHost = databaseHost(env.DATABASE_URL);
+  if (!env.PREVIEW_DATABASE_HOST) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["PREVIEW_DATABASE_HOST"],
+      message:
+        "PREVIEW_DATABASE_HOST is required on preview deployments (the host of the separate test database)",
+    });
+  } else if (!dbHost || !sameDatabaseEndpoint(dbHost, env.PREVIEW_DATABASE_HOST)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["DATABASE_URL"],
+      message:
+        "On preview deployments DATABASE_URL must point to the test database host given in PREVIEW_DATABASE_HOST",
+    });
+  }
+  const appHost = hostOf(appUrl);
+  if (env.VERCEL_PROJECT_PRODUCTION_URL && appHost === hostOf(env.VERCEL_PROJECT_PRODUCTION_URL)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["APP_URL"],
+      message: "On preview deployments APP_URL must not be the production domain",
+    });
+  } else {
+    const ownHosts = [env.VERCEL_BRANCH_URL, env.VERCEL_URL].filter(Boolean).map((h) => hostOf(h!));
+    if (ownHosts.length > 0 && !ownHosts.includes(appHost)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["APP_URL"],
+        message:
+          "On preview deployments APP_URL must be this preview's own URL (leave it unset to use the branch URL)",
+      });
+    }
+  }
+  if (
+    env.EMAIL_TRANSPORT === "smtp" &&
+    env.SMTP_HOST &&
+    !PREVIEW_SMTP_SANDBOX_HOSTS.includes(env.SMTP_HOST.trim().toLowerCase())
+  ) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["SMTP_HOST"],
+      message: `On preview deployments SMTP_HOST must be an email sandbox host (${PREVIEW_SMTP_SANDBOX_HOSTS.join(", ")})`,
+    });
+  }
+}
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
 
