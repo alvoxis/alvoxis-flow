@@ -395,7 +395,7 @@
       "draft": "Draft",
       "issued": "Issued"
     },
-    "issuedNotice": "This document is issued as No. {number}. Issued documents cannot be edited.",
+    "issuedNotice": "This document is issued as No. <num>{number}</num>. Issued documents cannot be edited.",
     "readOnlyDraft": "You can view this draft. Your role cannot change it.",
     "sellerHint": "The seller details come from the company profile.",
     "sections": {

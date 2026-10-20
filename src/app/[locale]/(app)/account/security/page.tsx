@@ -95,10 +95,20 @@ export default async function SecurityPage({ params }: { params: Promise<{ local
                   {s.current ? <Badge tone="accent">{t("thisDevice")}</Badge> : null}
                   {s.twoFactorVerified ? <Badge tone="success">{t("secondFactor")}</Badge> : null}
                 </p>
-                <p className="text-xs text-muted">
-                  {t("signedIn")}: {fmt.format(s.createdAt)} · {t("lastActive")}:{" "}
-                  {fmt.format(s.lastActiveAt)}
-                  {s.ipAddress ? ` · ${t("ipAddress")}: ${s.ipAddress}` : ""}
+                {/* Each fact stays on one line; whole facts wrap on narrow screens. */}
+                <p className="flex flex-wrap gap-x-2 text-xs text-muted">
+                  <span className="whitespace-nowrap">
+                    {t("signedIn")}: {fmt.format(s.createdAt)}
+                  </span>
+                  <span className="whitespace-nowrap">
+                    · {t("lastActive")}: {fmt.format(s.lastActiveAt)}
+                  </span>
+                  {s.ipAddress ? (
+                    // An IPv6 address can be longer than a phone screen: it may break anywhere.
+                    <span className="min-w-0 break-all">
+                      · {t("ipAddress")}: {s.ipAddress}
+                    </span>
+                  ) : null}
                 </p>
               </div>
               <form action={revokeSessionAction}>

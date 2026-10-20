@@ -395,7 +395,7 @@
       "draft": "Juodraštis",
       "issued": "Išrašytas"
     },
-    "issuedNotice": "Dokumentas išrašytas Nr. {number}. Išrašytų dokumentų keisti negalima.",
+    "issuedNotice": "Dokumentas išrašytas Nr. <num>{number}</num>. Išrašytų dokumentų keisti negalima.",
     "readOnlyDraft": "Galite peržiūrėti šį juodraštį. Jūsų vaidmuo neleidžia jo keisti.",
     "sellerHint": "Pardavėjo duomenys imami iš įmonės profilio.",
     "sections": {

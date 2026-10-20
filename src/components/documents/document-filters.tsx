@@ -31,10 +31,10 @@ export function DocumentFilters({
     <div role="search">
       <form
         method="get"
-        className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-surface-2/40 p-3 lg:grid-cols-[1.5fr_1fr_1.15fr_1fr_1fr_1.25fr]"
+        className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-surface-2/40 p-3 min-[360px]:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1.15fr_1fr_1fr_1.25fr]"
         data-testid="document-filters"
       >
-        <label className="col-span-2 block space-y-1 lg:col-span-1">
+        <label className="block space-y-1 min-[360px]:col-span-2 lg:col-span-1">
           <span className="block text-xs font-medium text-muted">{t("search")}</span>
           <input
             type="search"
@@ -76,7 +76,7 @@ export function DocumentFilters({
           <span className="block text-xs font-medium text-muted">{t("to")}</span>
           <input type="date" name="to" defaultValue={query.to ?? ""} className={control} />
         </label>
-        <label className="col-span-2 block space-y-1 lg:col-span-1">
+        <label className="block space-y-1 min-[360px]:col-span-2 lg:col-span-1">
           <span className="block text-xs font-medium text-muted">{t("sort")}</span>
           <select name="sort" defaultValue={query.sort} className={control}>
             {DOCUMENT_SORTS.map((sort) => (
@@ -86,7 +86,7 @@ export function DocumentFilters({
             ))}
           </select>
         </label>
-        <div className="col-span-2 flex flex-wrap items-center gap-3 lg:col-span-6">
+        <div className="flex flex-wrap items-center gap-3 min-[360px]:col-span-2 lg:col-span-6">
           <button
             type="submit"
             className="min-h-11 rounded-lg bg-accent-strong px-4 text-sm font-medium text-white hover:bg-violet-700"

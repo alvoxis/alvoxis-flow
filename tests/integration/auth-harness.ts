@@ -30,13 +30,15 @@ export class AuthClient {
     private readonly auth: Auth,
     ip?: string,
     readonly userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
+    /** The site the browser is on (must match the auth instance's APP_URL). */
+    readonly origin = TEST_APP_URL,
   ) {
     this.ip = ip ?? `10.${rand()}.${rand()}.${rand()}`;
   }
 
   headers(): Headers {
     const h = new Headers({
-      origin: TEST_APP_URL,
+      origin: this.origin,
       "user-agent": this.userAgent,
       "x-forwarded-for": this.ip,
     });
@@ -49,7 +51,7 @@ export class AuthClient {
     const headers = this.headers();
     if (init.body !== undefined) headers.set("content-type", "application/json");
     const res = await this.auth.handler(
-      new Request(`${TEST_APP_URL}/api/auth${path}`, {
+      new Request(`${this.origin}/api/auth${path}`, {
         method: init.method ?? (init.body !== undefined ? "POST" : "GET"),
         headers,
         body: init.body !== undefined ? JSON.stringify(init.body) : undefined,

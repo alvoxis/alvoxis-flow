@@ -65,7 +65,10 @@ export default async function DocumentPage({ params, searchParams }: Props) {
         title={
           <span className="flex flex-wrap items-center gap-2">
             <span data-testid="document-heading">
-              {tType(document.draft.type)} {document.number ?? `(${t("draftHeading")})`}
+              {tType(document.draft.type)} {/* Document numbers never break at their hyphens. */}
+              <span className="whitespace-nowrap">
+                {document.number ?? `(${t("draftHeading")})`}
+              </span>
             </span>
             <DocumentStatusBadge status={document.status} />
           </span>
@@ -81,7 +84,10 @@ export default async function DocumentPage({ params, searchParams }: Props) {
         <div className="space-y-6">
           <Alert tone="success">
             <span data-testid="issued-notice">
-              {t("issuedNotice", { number: document.number ?? "" })}
+              {t.rich("issuedNotice", {
+                number: document.number ?? "",
+                num: (chunks) => <span className="whitespace-nowrap">{chunks}</span>,
+              })}
             </span>
           </Alert>
           <PdfLinks companyId={companyId} documentId={document.id} draft={false} />
