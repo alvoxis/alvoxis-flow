@@ -262,4 +262,18 @@ describe("preview deployments (VERCEL_ENV=preview): the test environment", () =>
     expect(issuesOf({ ...production, APP_URL: undefined })).toEqual(["APP_URL"]);
     expect(parseServerEnv(base).APP_URL).toBe("http://localhost:3000");
   });
+
+  it("production refuses the declared test database, pooled or direct", () => {
+    const production = { ...preview, VERCEL_ENV: "production", APP_URL: "https://app.vercel.app" };
+    // Preview-only variables leaked into production: DATABASE_URL is the test database.
+    expect(issuesOf(production)).toEqual(["DATABASE_URL"]);
+    expect(issuesOf({ ...production, DATABASE_URL: `postgres://u:p@${TEST_DB}/neondb` })).toEqual([
+      "DATABASE_URL",
+    ]);
+    // Its own database is fine even when PREVIEW_DATABASE_HOST is visible to production.
+    expect(
+      parseServerEnv({ ...production, DATABASE_URL: `postgresql://u:p@${OTHER_DB}/neondb` })
+        .APP_URL,
+    ).toBe("https://app.vercel.app");
+  });
 });

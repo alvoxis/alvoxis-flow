@@ -273,6 +273,10 @@ unless:
 - with `EMAIL_TRANSPORT=smtp`, `SMTP_HOST` is an email sandbox (`sandbox.smtp.mailtrap.io`), so
   a preview can never email real people.
 
+The reverse holds as well: a production deployment (`VERCEL_ENV=production`) refuses to start
+when `PREVIEW_DATABASE_HOST` is visible to it and `DATABASE_URL` points to that test database, so
+Preview variables applied to "All Environments" by mistake cannot put production on test data.
+
 Every page shows the yellow **"Test environment"** banner on a preview (or with `APP_TEST_MODE=1`;
 never on production). The banner is the only thing "test mode" changes: authentication, email
 verification, 2FA for owners/administrators, roles and company isolation work exactly as in

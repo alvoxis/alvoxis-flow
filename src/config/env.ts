@@ -184,6 +184,18 @@ export const serverEnvSchema = baseSchema
     }
     const appUrl = effectiveAppUrl(env) ?? DEFAULT_APP_URL;
     if (env.VERCEL_ENV === "preview") checkPreview(env, appUrl, ctx);
+    else if (env.VERCEL_ENV === "production" && env.PREVIEW_DATABASE_HOST) {
+      // The reverse mistake: a variable meant for previews also applied to production. Production
+      // must never run on (or write real data into) the declared test database.
+      const dbHost = databaseHost(env.DATABASE_URL);
+      if (dbHost && sameDatabaseEndpoint(dbHost, env.PREVIEW_DATABASE_HOST))
+        ctx.addIssue({
+          code: "custom",
+          path: ["DATABASE_URL"],
+          message:
+            "Production must not use the test database given in PREVIEW_DATABASE_HOST; set DATABASE_URL for Preview only",
+        });
+    }
     const realDeployment = env.NODE_ENV === "production" && !isLocalhostUrl(appUrl);
     if (Boolean(env.GOOGLE_CLIENT_ID) !== Boolean(env.GOOGLE_CLIENT_SECRET)) {
       ctx.addIssue({
