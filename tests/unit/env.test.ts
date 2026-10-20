@@ -226,6 +226,29 @@ describe("preview deployments (VERCEL_ENV=preview): the test environment", () =>
     expect(message).not.toMatch(/Sup3rS3cret|ep-other|ep-test/);
   });
 
+  it("lists every missing preview variable at once, even before the secrets are set", () => {
+    // A fresh preview: Vercel's own variables only, nothing configured yet.
+    const fresh = {
+      NODE_ENV: "production",
+      VERCEL: "1",
+      VERCEL_ENV: "preview",
+      VERCEL_BRANCH_URL: "app-git-main-team.vercel.app",
+    };
+    expect(issuesOf(fresh)).toEqual([
+      "BETTER_AUTH_SECRET",
+      "DATABASE_URL",
+      "PREVIEW_DATABASE_HOST",
+      "TRUSTED_IP_HEADER",
+    ]);
+    // Without a branch URL from Vercel, APP_URL is reported too.
+    expect(issuesOf({ ...fresh, VERCEL_BRANCH_URL: undefined })).toContain("APP_URL");
+    // Not on production or local runs.
+    expect(issuesOf({ ...fresh, VERCEL_ENV: "production" })).toEqual([
+      "BETTER_AUTH_SECRET",
+      "DATABASE_URL",
+    ]);
+  });
+
   it("production and local runs are unaffected by the preview rules", () => {
     const production = {
       ...preview,

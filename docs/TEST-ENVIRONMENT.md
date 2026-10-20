@@ -311,15 +311,36 @@ production. There is no test account, no shared password and no bypass.
    | `SMTP_USER`             | Mailtrap Email Sandbox inbox user (secret)                  |
    | `SMTP_PASSWORD`         | Mailtrap Email Sandbox inbox password (secret)              |
 
-   Do **not** add `APP_URL` for Preview: the branch URL is used automatically. Sign-up needs the
-   verification email, so the sandbox inbox (§6) is required to create test users.
+   Do **not** add `APP_URL` for Preview. On a preview the server uses the branch URL Vercel
+   provides (`VERCEL_BRANCH_URL`), so every branch's preview gets its own sign-in origin; one
+   `APP_URL` for all previews would be wrong for every branch but one, and the server refuses an
+   `APP_URL` that is not the preview's own URL. `/api/health` lists `APP_URL` only if Vercel gave
+   no branch URL ("Automatically expose System Environment Variables" switched off). Open the
+   preview through its **branch URL**; sign-in from a per-deployment URL
+   (`alvoxis-flow-<hash>-alvoxis1.vercel.app`) is refused as a foreign origin.
 
-3. **GitHub → Settings → Environments → `neon-test`**: set the secret `NEON_TEST_DATABASE_URL` to
-   the **direct** string of `before-test` and the variable `NEON_TEST_DB_HOST` to its direct host,
-   so the manual workflows (migrations, test data) write to the same branch the previews use.
-4. **Vercel → Deployments →** the latest deployment of `main` **→ ⋯ → Redeploy** (variables apply to
-   new deployments only), then open
-   `https://alvoxis-flow-git-main-alvoxis1.vercel.app/api/health` → `200 {"status":"ok"}`.
+   Sign-up needs the verification email, so the sandbox inbox (§6) is required to create test
+   users. Use the **Email Sandbox** SMTP credentials (`sandbox.smtp.mailtrap.io`); the server
+   refuses any other SMTP host on a preview, including Mailtrap's real sending host.
+
+3. **GitHub → Settings → Environments → `neon-test`** (create it if missing):
+   - Deployment branches and tags → **Selected branches and tags** → add `main`;
+   - optionally **Required reviewers** → yourself (every run then waits for your approval);
+   - Environment secrets → `NEON_TEST_DATABASE_URL` = the **direct** string of `before-test`;
+   - Environment variables → `NEON_TEST_DB_HOST` = its direct host.
+
+   Only the two manual workflows that declare `environment: neon-test` (migrations, test data)
+   can read them; both refuse a URL whose host is not `NEON_TEST_DB_HOST`.
+
+4. **Vercel → Deployments →** the latest deployment of the branch to test (`main`, or a pull
+   request's branch) **→ ⋯ → Redeploy** (variables apply to new deployments only), then open
+   `https://alvoxis-flow-git-<branch>-alvoxis1.vercel.app/api/health` → `200 {"status":"ok"}`.
+   While something is missing it answers `503` and lists only the **names** of the variables to
+   fix. These steps need the code of this section on that branch (the preview checks and the
+   branch URL); older code requires `APP_URL` instead.
+
+The Neon branch name plays no part in any of this: connection strings and hosts contain the
+endpoint id (`ep-…`), not the branch name, so renaming the branch changes nothing here.
 
 ### Proving the preview uses the test database
 

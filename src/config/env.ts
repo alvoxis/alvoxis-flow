@@ -304,12 +304,47 @@ export class EnvValidationError extends Error {
   }
 }
 
+/**
+ * Preview rules that do not depend on any other variable. Zod runs the schema's own refinements
+ * only once every field is valid, so while e.g. DATABASE_URL is still missing these would stay
+ * hidden; reporting them too lets one look at /api/health list everything a preview lacks.
+ */
+function earlyPreviewIssues(source: Record<string, string | undefined>) {
+  if (source.VERCEL_ENV !== "preview") return [];
+  const set = (key: string) => Boolean(source[key]?.trim());
+  const issues: { path: string; message: string }[] = [];
+  if (!set("PREVIEW_DATABASE_HOST"))
+    issues.push({
+      path: "PREVIEW_DATABASE_HOST",
+      message:
+        "PREVIEW_DATABASE_HOST is required on preview deployments (the host of the separate test database)",
+    });
+  if (!set("APP_URL") && !set("VERCEL_BRANCH_URL"))
+    issues.push({
+      path: "APP_URL",
+      message: "APP_URL is required on Vercel (no branch URL is available for this preview)",
+    });
+  if (!set("TRUSTED_IP_HEADER"))
+    issues.push({
+      path: "TRUSTED_IP_HEADER",
+      message: "TRUSTED_IP_HEADER is required on preview deployments (x-real-ip on Vercel)",
+    });
+  return issues;
+}
+
 export function parseServerEnv(source: Record<string, string | undefined>): ServerEnv {
   const result = serverEnvSchema.safeParse(source);
   if (!result.success) {
+    const issues = result.error.issues.map((i) => ({
+      path: String(i.path[0] ?? "(root)"),
+      message: `${i.path.join(".") || "(root)"}: ${i.message}`,
+    }));
+    for (const extra of earlyPreviewIssues(source))
+      if (!issues.some((i) => i.path === extra.path))
+        issues.push({ path: extra.path, message: `${extra.path}: ${extra.message}` });
     throw new EnvValidationError(
-      result.error.issues.map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`),
-      result.error.issues.map((i) => String(i.path[0] ?? "(root)")),
+      issues.map((i) => i.message),
+      issues.map((i) => i.path),
     );
   }
   return result.data;
