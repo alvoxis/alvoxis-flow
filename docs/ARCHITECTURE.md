@@ -69,6 +69,15 @@ client side). Modules:
   A run copies names, countries, currencies and rates into its lines; a gross amount can be
   changed for one month (kept on recalculation); an approved run is final. CSV export with BOM,
   formula-injection-safe cells. Audit entries never carry names or amounts.
+- `analytics` — read-only figures of a calendar year (`analytics.view` + `documents.view`):
+  net sales of issued invoices and credit notes per month and currency (never converted), top
+  customers by buyer, top lines by description, and — only with their own permission — stock
+  value, payroll employer cost of approved months and production order counts.
+- Settings (`/companies/[id]/settings`) — links to the settings pages the role may open and the
+  members list (`members.view`); with `members.manage` roles can be changed and members
+  suspended. Nobody changes their own membership, only owners manage owners, and the last active
+  owner stays (company memberships are locked while this is checked). Inviting new members is not
+  part of this change.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.

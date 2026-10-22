@@ -1436,5 +1436,116 @@
       "periodTaken": "Šim mēnesim aprēķins jau ir.",
       "approved": "Šis mēnesis jau ir apstiprināts un nevar mainīties."
     }
+  },
+  "analytics": {
+    "description": "Pārdošana no izrakstītajiem rēķiniem un kredītrēķiniem bez PVN, pa valūtām; kā arī atlikumi, algas un ražošana, ja jūsu loma tos redz.",
+    "year": "Gads",
+    "net": "Neto",
+    "none": "Šim gadam vēl nekā nav.",
+    "noSales": "{year}. gadā nav izrakstītu rēķinu.",
+    "sales": {
+      "title": "Neto pārdošana, {currency}",
+      "hint": "Norādiet uz mēnesi vai pieskarieties tam, lai redzētu detaļas.",
+      "counts": "rēķini: {invoices}, kredītrēķini: {creditNotes}",
+      "aria": "Mēneša neto pārdošana {currency}, kopā {total}",
+      "table": "Rādīt tabulā",
+      "month": "Mēnesis",
+      "invoices": "Rēķini",
+      "creditNotes": "Kredītrēķini"
+    },
+    "customers": {
+      "title": "Lielākie klienti",
+      "name": "Klients",
+      "documents": "Dokumenti"
+    },
+    "items": {
+      "title": "Lielākās pozīcijas",
+      "description": "Apraksts",
+      "quantity": "Daudzums"
+    },
+    "other": {
+      "title": "Citi rādītāji",
+      "stock": "Atlikumu vērtība iepirkuma cenās",
+      "payroll": "Darba devēja izmaksas par apstiprinātajām algām, {year}",
+      "production": "Ražošanas pasūtījumi, {year}",
+      "productionValue": "pabeigti: {completed} · plānoti: {planned}"
+    },
+    "month": {
+      "1": "Janvāris",
+      "2": "Februāris",
+      "3": "Marts",
+      "4": "Aprīlis",
+      "5": "Maijs",
+      "6": "Jūnijs",
+      "7": "Jūlijs",
+      "8": "Augusts",
+      "9": "Septembris",
+      "10": "Oktobris",
+      "11": "Novembris",
+      "12": "Decembris"
+    },
+    "monthShort": {
+      "1": "jan",
+      "2": "feb",
+      "3": "mar",
+      "4": "apr",
+      "5": "mai",
+      "6": "jūn",
+      "7": "jūl",
+      "8": "aug",
+      "9": "sep",
+      "10": "okt",
+      "11": "nov",
+      "12": "dec"
+    }
+  },
+  "settings": {
+    "description": "Uzņēmuma iestatījumi un jūsu konts.",
+    "company": "Uzņēmums",
+    "account": "Jūsu konts",
+    "links": {
+      "profile": {
+        "title": "Uzņēmuma profils",
+        "text": "Nosaukums, reģistrācijas un PVN numurs, adrese."
+      },
+      "taxCategories": {
+        "title": "Nodokļu kategorijas",
+        "text": "PVN likmes un režīmi dokumentu rindām."
+      },
+      "bankAccounts": {
+        "title": "Bankas konti",
+        "text": "Konti, kas tiek drukāti dokumentos."
+      },
+      "warehouses": {
+        "title": "Noliktavas",
+        "text": "Vietas, kur glabājas preces."
+      },
+      "payrollRates": {
+        "title": "Algu likmes",
+        "text": "Sociālās iemaksas un nodokļi pa valstīm."
+      },
+      "security": {
+        "title": "Drošība un sesijas",
+        "text": "Parole, ierīces, kurās esat pieteicies."
+      },
+      "twoFactor": {
+        "title": "Divfaktoru autentifikācija",
+        "text": "Autentifikācijas lietotne un rezerves kodi."
+      }
+    },
+    "members": {
+      "title": "Dalībnieki",
+      "description": "Personas ar piekļuvi šim uzņēmumam un viņu lomas.",
+      "you": "jūs",
+      "role": "Loma",
+      "suspend": "Apturēt",
+      "reactivate": "Atjaunot piekļuvi",
+      "saved": "Dalībnieks atjaunināts.",
+      "lastOwner": "Uzņēmumam jābūt vismaz vienam aktīvam īpašniekam.",
+      "status": {
+        "invited": "Uzaicināts",
+        "suspended": "Apturēts"
+      }
+    }
   }
 }

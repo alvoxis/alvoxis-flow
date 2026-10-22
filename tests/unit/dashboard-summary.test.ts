@@ -80,6 +80,8 @@ describe("main navigation", () => {
     "inventory",
     "production",
     "payroll",
+    "analytics",
+    "settings",
   ];
 
   it.each(COMPANY_MODULES)("%s is enabled and active on its pages only", (key) => {
@@ -92,12 +94,11 @@ describe("main navigation", () => {
     expect(isNavItemActive(item, "/companies/abc/documents")).toBe(false);
   });
 
-  it("modules that do not exist stay disabled and are never active", () => {
-    const built = new Set(["dashboard", "documents", ...COMPANY_MODULES]);
-    for (const item of NAV_ITEMS.filter((i) => !built.has(i.key))) {
-      expect(item.soon, item.key).toBe(true);
-      expect(isNavItemActive(item, item.href)).toBe(false);
-    }
+  it("every navigation entry is a working module (none is marked as coming soon)", () => {
+    expect(NAV_ITEMS.filter((i) => i.soon).map((i) => i.key)).toEqual([]);
+    expect(NAV_ITEMS.map((i) => i.key).sort()).toEqual(
+      ["dashboard", "documents", ...COMPANY_MODULES].sort(),
+    );
   });
 });
 

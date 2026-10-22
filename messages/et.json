@@ -1436,5 +1436,116 @@
       "periodTaken": "Sellel kuul on palgaarvestus juba olemas.",
       "approved": "See kuu on juba kinnitatud ega saa muutuda."
     }
+  },
+  "analytics": {
+    "description": "Müük väljastatud arvetelt ja kreeditarvetelt km-ta, valuutade kaupa; lisaks laojäägid, palk ja tootmine, kui teie roll neid näeb.",
+    "year": "Aasta",
+    "net": "Neto",
+    "none": "Selle aasta kohta veel midagi pole.",
+    "noSales": "{year}. aastal pole väljastatud arveid.",
+    "sales": {
+      "title": "Netomüük, {currency}",
+      "hint": "Üksikasjade nägemiseks osutage kuule või puudutage seda.",
+      "counts": "arveid: {invoices}, kreeditarveid: {creditNotes}",
+      "aria": "Kuu netomüük valuutas {currency}, kokku {total}",
+      "table": "Näita tabelina",
+      "month": "Kuu",
+      "invoices": "Arved",
+      "creditNotes": "Kreeditarved"
+    },
+    "customers": {
+      "title": "Suurimad kliendid",
+      "name": "Klient",
+      "documents": "Dokumendid"
+    },
+    "items": {
+      "title": "Suurimad read",
+      "description": "Kirjeldus",
+      "quantity": "Kogus"
+    },
+    "other": {
+      "title": "Muud näitajad",
+      "stock": "Laojäägi väärtus ostuhindades",
+      "payroll": "Kinnitatud palga tööandja kulu, {year}",
+      "production": "Tootmistellimused, {year}",
+      "productionValue": "lõpetatud: {completed} · planeeritud: {planned}"
+    },
+    "month": {
+      "1": "Jaanuar",
+      "2": "Veebruar",
+      "3": "Märts",
+      "4": "Aprill",
+      "5": "Mai",
+      "6": "Juuni",
+      "7": "Juuli",
+      "8": "August",
+      "9": "September",
+      "10": "Oktoober",
+      "11": "November",
+      "12": "Detsember"
+    },
+    "monthShort": {
+      "1": "jaan",
+      "2": "veebr",
+      "3": "märts",
+      "4": "apr",
+      "5": "mai",
+      "6": "juuni",
+      "7": "juuli",
+      "8": "aug",
+      "9": "sept",
+      "10": "okt",
+      "11": "nov",
+      "12": "dets"
+    }
+  },
+  "settings": {
+    "description": "Ettevõtte seaded ja teie konto.",
+    "company": "Ettevõte",
+    "account": "Teie konto",
+    "links": {
+      "profile": {
+        "title": "Ettevõtte profiil",
+        "text": "Nimi, registri- ja KMKR number, aadress."
+      },
+      "taxCategories": {
+        "title": "Maksukategooriad",
+        "text": "Käibemaksumäärad ja -režiimid dokumendiridadele."
+      },
+      "bankAccounts": {
+        "title": "Pangakontod",
+        "text": "Dokumentidele trükitavad kontod."
+      },
+      "warehouses": {
+        "title": "Laod",
+        "text": "Kohad, kus kaupa hoitakse."
+      },
+      "payrollRates": {
+        "title": "Palgamäärad",
+        "text": "Sotsiaalmaksed ja maksud riikide kaupa."
+      },
+      "security": {
+        "title": "Turvalisus ja seansid",
+        "text": "Parool, seadmed, kuhu olete sisse logitud."
+      },
+      "twoFactor": {
+        "title": "Kaheastmeline autentimine",
+        "text": "Autentimisrakendus ja varukoodid."
+      }
+    },
+    "members": {
+      "title": "Liikmed",
+      "description": "Inimesed, kellel on juurdepääs sellele ettevõttele, ja nende rollid.",
+      "you": "teie",
+      "role": "Roll",
+      "suspend": "Peata",
+      "reactivate": "Taasta juurdepääs",
+      "saved": "Liige uuendatud.",
+      "lastOwner": "Ettevõttel peab olema vähemalt üks aktiivne omanik.",
+      "status": {
+        "invited": "Kutsutud",
+        "suspended": "Peatatud"
+      }
+    }
   }
 }
