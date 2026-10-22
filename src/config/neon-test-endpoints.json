@@ -1,0 +1,7 @@
+{
+  "description": "Neon endpoints of the separate TEST project alvoxis-flow-test (super-breeze-06069180). Preview deployments and the test-database workflows accept only these; the production workflow and production deployments refuse them. Endpoint ids are not secrets. Changing this list needs a reviewed PR. See docs/TEST-ENVIRONMENT.md §12.",
+  "endpoints": {
+    "ep-rapid-grass-bap8luwv": "branch before-test: the working database of the previews",
+    "ep-young-queen-ba1c9tj8": "branch main: the clean, migrated baseline"
+  }
+}
