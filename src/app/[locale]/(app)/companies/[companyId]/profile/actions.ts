@@ -34,9 +34,12 @@ export async function saveCompanyProfileAction(
   const companyId = z.uuid().safeParse(formData.get("companyId"));
   const locale = z.enum(["en", "ru", "lv", "lt", "et"]).safeParse(formData.get("locale"));
   if (!companyId.success || !locale.success) return { status: "error" };
-  const input = Object.fromEntries(
+  const input: Record<string, unknown> = Object.fromEntries(
     FIELDS.map((f) => [f, typeof formData.get(f) === "string" ? formData.get(f) : ""]),
   );
+  // Optional: only sent by forms that show the PDF colour choice; validated against the palette.
+  const pdfAccent = formData.get("pdfAccent");
+  if (typeof pdfAccent === "string") input.pdfAccent = pdfAccent;
   try {
     const db = getDb();
     const user = await requireUser(getAuth(), db, await headers());

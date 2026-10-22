@@ -29,7 +29,7 @@ describe("document PDF rendering", { timeout: 30_000 }, () => {
     });
 
     for (const expected of [
-      "Invoice",
+      "INVOICE", // title, printed in capitals
       "INV-2026-0001",
       "Example Workwear SIA",
       "Sample Shipping Agency Ltd",
@@ -42,7 +42,7 @@ describe("document PDF rendering", { timeout: 30_000 }, () => {
       "TAX NOTES",
       "SELLER",
       "Explanatory note entered by the user (sample).",
-      "Please pay by 16/03/2026",
+      "DUE DATE 16/03/2026 Amount due €1,423.00", // the due-date block
       "LV80 BANK 0000 4351 9500 1",
       "Document fingerprint 0000000000000000",
       "Page 1 of 1",
@@ -53,20 +53,20 @@ describe("document PDF rendering", { timeout: 30_000 }, () => {
 
   it("uses the document language for labels, dates and number formats", async () => {
     const lv = (await pdfText(sampleModels("lv").invoice!)).text;
-    expect(lv).toContain("Rēķins");
+    expect(lv).toContain("RĒĶINS");
     expect(lv).toContain("IZRAKSTĪŠANAS DATUMS"); // small-caps label
     expect(lv).toContain("02.03.2026");
     expect(lv).toContain("1423,00 €"); // CLDR: Latvian does not group 4-digit numbers
 
     const ru = (await pdfText(sampleModels("ru").invoice!)).text;
-    expect(ru).toContain("Счёт");
+    expect(ru).toContain("СЧЁТ");
     expect(ru).toContain("Освобождено");
-    expect(ru).toContain("Просим оплатить до 16.03.2026");
+    expect(ru).toContain("СРОК ОПЛАТЫ 16.03.2026 К оплате 1 423,00 €");
   });
 
   it("renders credit notes with the reference to the original invoice and negative totals", async () => {
     const { text } = await pdfText(sampleModels("lv")["credit-note"]!);
-    expect(text).toContain("Kredītrēķins");
+    expect(text).toContain("KREDĪTRĒĶINS");
     expect(text).toContain("CN-2026-0001");
     expect(text).toContain("Kredītrēķins rēķinam INV-2026-0001, 02.03.2026");
     expect(text).toContain("Kopā kreditēts");
@@ -76,7 +76,7 @@ describe("document PDF rendering", { timeout: 30_000 }, () => {
 
   it("renders delivery notes without prices and with signature fields", async () => {
     const { text } = await pdfText(sampleModels("ru")["delivery-note"]!);
-    expect(text).toContain("Накладная");
+    expect(text).toContain("НАКЛАДНАЯ");
     expect(text).toContain("Связанный счёт: INV-2026-0001 от 02.03.2026");
     expect(text).toContain("Общий вес, кг");
     expect(text).toContain("Получил");
@@ -87,9 +87,11 @@ describe("document PDF rendering", { timeout: 30_000 }, () => {
 
   it("renders proformas with validity date and without a due-date payment request", async () => {
     const { text } = await pdfText(sampleModels("et").proforma!);
-    expect(text).toContain("Ettemaksuarve");
+    expect(text).toContain("ETTEMAKSUARVE");
     expect(text).toContain("KEHTIB KUNI");
-    expect(text).not.toContain("Palume tasuda");
+    // The prominent due-date block is for invoices only.
+    expect(text).not.toContain("MAKSETÄHTAEG");
+    expect(text).not.toContain("Tasumisele kuulub");
   });
 
   it("prints converted totals with the rate, its date and source, in the document's format", async () => {

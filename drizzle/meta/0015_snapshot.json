@@ -1,6 +1,6 @@
 {
-  "id": "9a5e49e4-18b0-49b7-afb1-60d6b3098d73",
-  "prevId": "64a3d0a2-acbb-44d0-b7f2-5cc01a7fc840",
+  "id": "048a6f00-003d-4fc2-956c-318d1a53ed3e",
+  "prevId": "4b70a2ea-d3fa-4c8a-a44f-f255ce85e125",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -218,6 +218,13 @@
           "notNull": true,
           "default": "'en'"
         },
+        "pdf_accent": {
+          "name": "pdf_accent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'navy'"
+        },
         "archived_at": {
           "name": "archived_at",
           "type": "timestamp with time zone",
@@ -248,6 +255,10 @@
         "companies_name_not_blank_ck": {
           "name": "companies_name_not_blank_ck",
           "value": "length(trim(\"companies\".\"name\")) > 0"
+        },
+        "companies_pdf_accent_ck": {
+          "name": "companies_pdf_accent_ck",
+          "value": "\"companies\".\"pdf_accent\" in ('navy', 'graphite', 'blue', 'teal', 'green', 'burgundy')"
         }
       },
       "isRLSEnabled": false
@@ -2829,367 +2840,6 @@
         }
       },
       "isRLSEnabled": false
-    },
-    "public.stock_movements": {
-      "name": "stock_movements",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "company_id": {
-          "name": "company_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "warehouse_id": {
-          "name": "warehouse_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "stock_movement_kind",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "quantity": {
-          "name": "quantity",
-          "type": "numeric(18, 4)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "unit_cost": {
-          "name": "unit_cost",
-          "type": "numeric(18, 4)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "occurred_on": {
-          "name": "occurred_on",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "reference": {
-          "name": "reference",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "note": {
-          "name": "note",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "group_id": {
-          "name": "group_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_by_user_id": {
-          "name": "created_by_user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "stock_movements_balance_idx": {
-          "name": "stock_movements_balance_idx",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "product_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "warehouse_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "stock_movements_company_created_idx": {
-          "name": "stock_movements_company_created_idx",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "stock_movements_group_idx": {
-          "name": "stock_movements_group_idx",
-          "columns": [
-            {
-              "expression": "group_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "stock_movements_company_id_companies_id_fk": {
-          "name": "stock_movements_company_id_companies_id_fk",
-          "tableFrom": "stock_movements",
-          "tableTo": "companies",
-          "columnsFrom": [
-            "company_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "stock_movements_created_by_user_id_users_id_fk": {
-          "name": "stock_movements_created_by_user_id_users_id_fk",
-          "tableFrom": "stock_movements",
-          "tableTo": "users",
-          "columnsFrom": [
-            "created_by_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "stock_movements_product_same_company_fk": {
-          "name": "stock_movements_product_same_company_fk",
-          "tableFrom": "stock_movements",
-          "tableTo": "products",
-          "columnsFrom": [
-            "product_id",
-            "company_id"
-          ],
-          "columnsTo": [
-            "id",
-            "company_id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        },
-        "stock_movements_warehouse_same_company_fk": {
-          "name": "stock_movements_warehouse_same_company_fk",
-          "tableFrom": "stock_movements",
-          "tableTo": "warehouses",
-          "columnsFrom": [
-            "warehouse_id",
-            "company_id"
-          ],
-          "columnsTo": [
-            "id",
-            "company_id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {
-        "stock_movements_quantity_ck": {
-          "name": "stock_movements_quantity_ck",
-          "value": "\"stock_movements\".\"quantity\" <> 0"
-        },
-        "stock_movements_sign_ck": {
-          "name": "stock_movements_sign_ck",
-          "value": "(\"stock_movements\".\"kind\" in ('receipt', 'transfer_in', 'production_output') and \"stock_movements\".\"quantity\" > 0)\n        or (\"stock_movements\".\"kind\" in ('issue', 'transfer_out', 'production_consume') and \"stock_movements\".\"quantity\" < 0)\n        or \"stock_movements\".\"kind\" = 'adjustment'"
-        },
-        "stock_movements_unit_cost_ck": {
-          "name": "stock_movements_unit_cost_ck",
-          "value": "\"stock_movements\".\"unit_cost\" is null or \"stock_movements\".\"unit_cost\" >= 0"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.warehouses": {
-      "name": "warehouses",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "company_id": {
-          "name": "company_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "code": {
-          "name": "code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "is_default": {
-          "name": "is_default",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "archived_at": {
-          "name": "archived_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "warehouses_one_default_uq": {
-          "name": "warehouses_one_default_uq",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"warehouses\".\"is_default\" and \"warehouses\".\"archived_at\" is null",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "warehouses_company_id_companies_id_fk": {
-          "name": "warehouses_company_id_companies_id_fk",
-          "tableFrom": "warehouses",
-          "tableTo": "companies",
-          "columnsFrom": [
-            "company_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "warehouses_id_company_uq": {
-          "name": "warehouses_id_company_uq",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id",
-            "company_id"
-          ]
-        },
-        "warehouses_company_code_uq": {
-          "name": "warehouses_company_code_uq",
-          "nullsNotDistinct": false,
-          "columns": [
-            "company_id",
-            "code"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "warehouses_code_ck": {
-          "name": "warehouses_code_ck",
-          "value": "\"warehouses\".\"code\" ~ '^[A-Z0-9][A-Z0-9_-]{0,19}$'"
-        },
-        "warehouses_name_ck": {
-          "name": "warehouses_name_ck",
-          "value": "length(trim(\"warehouses\".\"name\")) > 0"
-        },
-        "warehouses_version_ck": {
-          "name": "warehouses_version_ck",
-          "value": "\"warehouses\".\"version\" > 0"
-        }
-      },
-      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -3300,19 +2950,6 @@
       "values": [
         "goods",
         "service"
-      ]
-    },
-    "public.stock_movement_kind": {
-      "name": "stock_movement_kind",
-      "schema": "public",
-      "values": [
-        "receipt",
-        "issue",
-        "adjustment",
-        "transfer_out",
-        "transfer_in",
-        "production_consume",
-        "production_output"
       ]
     }
   },
