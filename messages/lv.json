@@ -94,6 +94,7 @@
     "number": "Nr.",
     "issueDate": "Izrakstīšanas datums",
     "dueDate": "Apmaksas termiņš",
+    "amountDue": "Apmaksājamā summa",
     "supplyDate": "Piegādes datums",
     "validUntil": "Derīgs līdz",
     "buyerReference": "Pasūtījuma numurs",
@@ -135,7 +136,6 @@
     "bank": "Banka",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Lūdzam apmaksāt līdz {date}",
     "notes": "Piezīmes",
     "relation": {
       "credits": "Kredītrēķins rēķinam {number}, {date}",
@@ -375,6 +375,21 @@
       "addressLine2": "Līdz 200 rakstzīmēm.",
       "postalCode": "Līdz 16 rakstzīmēm.",
       "city": "Līdz 100 rakstzīmēm."
+    },
+    "pdfAccent": {
+      "legend": "Dokumentu krāsa",
+      "hint": "Rēķinu un citu PDF dokumentu akcenta krāsa: virsraksts, plānās līnijas, apmaksas termiņš un kopsumma. Fons paliek balts un teksts tumšs, tāpēc dokumentus labi var izdrukāt ar jebkuru printeri.",
+      "default": "Noklusējums",
+      "previewLabel": "Rēķina paraugs krāsā “{colour}”",
+      "previewCaption": "Paraugs: kur krāsa parādās PDF dokumentā. Summas un saturs nemainās.",
+      "options": {
+        "navy": "Tumši zila",
+        "graphite": "Grafīta",
+        "blue": "Zila",
+        "teal": "Tirkīza",
+        "green": "Zaļa",
+        "burgundy": "Bordo"
+      }
     }
   },
   "documents": {

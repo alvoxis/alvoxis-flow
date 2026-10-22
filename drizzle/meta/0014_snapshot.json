@@ -1,6 +1,6 @@
 {
-  "id": "64a3d0a2-acbb-44d0-b7f2-5cc01a7fc840",
-  "prevId": "cfdd3910-4e06-4f20-af6c-687e11f81970",
+  "id": "4b70a2ea-d3fa-4c8a-a44f-f255ce85e125",
+  "prevId": "7fa18aa7-32cb-4377-870a-728c08d53718",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -218,6 +218,13 @@
           "notNull": true,
           "default": "'en'"
         },
+        "pdf_accent": {
+          "name": "pdf_accent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'navy'"
+        },
         "archived_at": {
           "name": "archived_at",
           "type": "timestamp with time zone",
@@ -248,6 +255,10 @@
         "companies_name_not_blank_ck": {
           "name": "companies_name_not_blank_ck",
           "value": "length(trim(\"companies\".\"name\")) > 0"
+        },
+        "companies_pdf_accent_ck": {
+          "name": "companies_pdf_accent_ck",
+          "value": "\"companies\".\"pdf_accent\" in ('navy', 'graphite', 'blue', 'teal', 'green', 'burgundy')"
         }
       },
       "isRLSEnabled": false
@@ -2575,260 +2586,6 @@
         }
       },
       "isRLSEnabled": false
-    },
-    "public.products": {
-      "name": "products",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "company_id": {
-          "name": "company_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "product_kind",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'goods'"
-        },
-        "sku": {
-          "name": "sku",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "unit": {
-          "name": "unit",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'pcs'"
-        },
-        "barcode": {
-          "name": "barcode",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "currency": {
-          "name": "currency",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'EUR'"
-        },
-        "sale_price": {
-          "name": "sale_price",
-          "type": "numeric(18, 4)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "purchase_price": {
-          "name": "purchase_price",
-          "type": "numeric(18, 4)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "tax_category_id": {
-          "name": "tax_category_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "track_stock": {
-          "name": "track_stock",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "archived_at": {
-          "name": "archived_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_by_user_id": {
-          "name": "created_by_user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "products_active_sku_uq": {
-          "name": "products_active_sku_uq",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "sku",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"products\".\"archived_at\" is null and \"products\".\"sku\" is not null",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "products_company_name_idx": {
-          "name": "products_company_name_idx",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "products_company_id_companies_id_fk": {
-          "name": "products_company_id_companies_id_fk",
-          "tableFrom": "products",
-          "tableTo": "companies",
-          "columnsFrom": [
-            "company_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "products_created_by_user_id_users_id_fk": {
-          "name": "products_created_by_user_id_users_id_fk",
-          "tableFrom": "products",
-          "tableTo": "users",
-          "columnsFrom": [
-            "created_by_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "products_tax_category_same_company_fk": {
-          "name": "products_tax_category_same_company_fk",
-          "tableFrom": "products",
-          "tableTo": "tax_categories",
-          "columnsFrom": [
-            "tax_category_id",
-            "company_id"
-          ],
-          "columnsTo": [
-            "id",
-            "company_id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "products_id_company_uq": {
-          "name": "products_id_company_uq",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id",
-            "company_id"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "products_name_ck": {
-          "name": "products_name_ck",
-          "value": "length(trim(\"products\".\"name\")) > 0"
-        },
-        "products_unit_ck": {
-          "name": "products_unit_ck",
-          "value": "length(trim(\"products\".\"unit\")) > 0"
-        },
-        "products_currency_ck": {
-          "name": "products_currency_ck",
-          "value": "\"products\".\"currency\" in ('EUR', 'PLN')"
-        },
-        "products_sale_price_ck": {
-          "name": "products_sale_price_ck",
-          "value": "\"products\".\"sale_price\" is null or \"products\".\"sale_price\" >= 0"
-        },
-        "products_purchase_price_ck": {
-          "name": "products_purchase_price_ck",
-          "value": "\"products\".\"purchase_price\" is null or \"products\".\"purchase_price\" >= 0"
-        },
-        "products_track_stock_ck": {
-          "name": "products_track_stock_ck",
-          "value": "not \"products\".\"track_stock\" or \"products\".\"kind\" = 'goods'"
-        },
-        "products_version_ck": {
-          "name": "products_version_ck",
-          "value": "\"products\".\"version\" > 0"
-        }
-      },
-      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -2931,14 +2688,6 @@
         "exempt",
         "reverse_charge",
         "outside_scope"
-      ]
-    },
-    "public.product_kind": {
-      "name": "product_kind",
-      "schema": "public",
-      "values": [
-        "goods",
-        "service"
       ]
     }
   },

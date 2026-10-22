@@ -94,6 +94,7 @@
     "number": "No.",
     "issueDate": "Issue date",
     "dueDate": "Due date",
+    "amountDue": "Amount due",
     "supplyDate": "Date of supply",
     "validUntil": "Valid until",
     "buyerReference": "Order reference",
@@ -135,7 +136,6 @@
     "bank": "Bank",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Please pay by {date}",
     "notes": "Notes",
     "relation": {
       "credits": "Credit note for invoice {number} dated {date}",
@@ -375,6 +375,21 @@
       "addressLine2": "Up to 200 characters.",
       "postalCode": "Up to 16 characters.",
       "city": "Up to 100 characters."
+    },
+    "pdfAccent": {
+      "legend": "Document colour",
+      "hint": "Accent colour of your invoices and other document PDFs: title, thin lines, due date and total. The page stays white and the text dark, so documents print well on any printer.",
+      "default": "Default",
+      "previewLabel": "Invoice preview in {colour}",
+      "previewCaption": "Preview: where the colour appears on the PDF. Amounts and content are not affected.",
+      "options": {
+        "navy": "Dark blue",
+        "graphite": "Graphite",
+        "blue": "Blue",
+        "teal": "Teal",
+        "green": "Green",
+        "burgundy": "Burgundy"
+      }
     }
   },
   "documents": {

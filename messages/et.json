@@ -94,6 +94,7 @@
     "number": "Nr.",
     "issueDate": "Väljastamise kuupäev",
     "dueDate": "Maksetähtaeg",
+    "amountDue": "Tasumisele kuulub",
     "supplyDate": "Tarnekuupäev",
     "validUntil": "Kehtib kuni",
     "buyerReference": "Tellimuse number",
@@ -135,7 +136,6 @@
     "bank": "Pank",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Palume tasuda hiljemalt {date}",
     "notes": "Märkused",
     "relation": {
       "credits": "Kreeditarve arvele {number}, {date}",
@@ -375,6 +375,21 @@
       "addressLine2": "Kuni 200 tähemärki.",
       "postalCode": "Kuni 16 tähemärki.",
       "city": "Kuni 100 tähemärki."
+    },
+    "pdfAccent": {
+      "legend": "Dokumentide värv",
+      "hint": "Arvete ja teiste PDF-dokumentide aktsentvärv: pealkiri, peened jooned, maksetähtaeg ja kogusumma. Taust jääb valgeks ja tekst tumedaks, nii et dokumendid prinditakse hästi igal printeril.",
+      "default": "Vaikimisi",
+      "previewLabel": "Arve näidis värviga „{colour}“",
+      "previewCaption": "Näidis: kus värv PDF-is ilmub. Summad ja sisu ei muutu.",
+      "options": {
+        "navy": "Tumesinine",
+        "graphite": "Grafiithall",
+        "blue": "Sinine",
+        "teal": "Sinakasroheline",
+        "green": "Roheline",
+        "burgundy": "Burgundia"
+      }
     }
   },
   "documents": {
