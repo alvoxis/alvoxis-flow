@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isListedTestDatabase } from "./test-database";
 
 /**
  * Server-side environment schema. Values are validated lazily on first access so that
@@ -184,16 +185,20 @@ export const serverEnvSchema = baseSchema
     }
     const appUrl = effectiveAppUrl(env) ?? DEFAULT_APP_URL;
     if (env.VERCEL_ENV === "preview") checkPreview(env, appUrl, ctx);
-    else if (env.VERCEL_ENV === "production" && env.PREVIEW_DATABASE_HOST) {
+    else if (env.VERCEL_ENV === "production") {
       // The reverse mistake: a variable meant for previews also applied to production. Production
-      // must never run on (or write real data into) the declared test database.
+      // must never run on (or write real data into) the declared or a listed test database.
       const dbHost = databaseHost(env.DATABASE_URL);
-      if (dbHost && sameDatabaseEndpoint(dbHost, env.PREVIEW_DATABASE_HOST))
+      if (
+        dbHost &&
+        ((env.PREVIEW_DATABASE_HOST && sameDatabaseEndpoint(dbHost, env.PREVIEW_DATABASE_HOST)) ||
+          isListedTestDatabase(dbHost))
+      )
         ctx.addIssue({
           code: "custom",
           path: ["DATABASE_URL"],
           message:
-            "Production must not use the test database given in PREVIEW_DATABASE_HOST; set DATABASE_URL for Preview only",
+            "Production must not use a test database (PREVIEW_DATABASE_HOST or src/config/neon-test-endpoints.json); set DATABASE_URL for Preview only",
         });
     }
     const realDeployment = env.NODE_ENV === "production" && !isLocalhostUrl(appUrl);
@@ -261,6 +266,15 @@ function checkPreview(env: z.infer<typeof baseSchema>, appUrl: string, ctx: z.Re
       path: ["PREVIEW_DATABASE_HOST"],
       message:
         "PREVIEW_DATABASE_HOST is required on preview deployments (the host of the separate test database)",
+    });
+  } else if (!isListedTestDatabase(env.PREVIEW_DATABASE_HOST)) {
+    // Both variables are typed in by hand: a production string pasted with its own host would
+    // match itself. Only the test endpoints committed to the repository are accepted.
+    ctx.addIssue({
+      code: "custom",
+      path: ["PREVIEW_DATABASE_HOST"],
+      message:
+        "PREVIEW_DATABASE_HOST must be a test database endpoint listed in src/config/neon-test-endpoints.json",
     });
   } else if (!dbHost || !sameDatabaseEndpoint(dbHost, env.PREVIEW_DATABASE_HOST)) {
     ctx.addIssue({
@@ -330,6 +344,12 @@ function earlyPreviewIssues(source: Record<string, string | undefined>) {
       path: "PREVIEW_DATABASE_HOST",
       message:
         "PREVIEW_DATABASE_HOST is required on preview deployments (the host of the separate test database)",
+    });
+  else if (!isListedTestDatabase(source.PREVIEW_DATABASE_HOST!))
+    issues.push({
+      path: "PREVIEW_DATABASE_HOST",
+      message:
+        "PREVIEW_DATABASE_HOST must be a test database endpoint listed in src/config/neon-test-endpoints.json",
     });
   if (!set("APP_URL") && !set("VERCEL_BRANCH_URL"))
     issues.push({

@@ -6,8 +6,12 @@
  * - the run is confirmed with TEST_DATA_CONFIRM=synthetic-test-data;
  * - it is not a production deployment (VERCEL_ENV=production);
  * - DATABASE_URL is a postgres:// URL whose host equals TEST_DATA_DB_HOST exactly (the pooled
- *   and direct host of one Neon endpoint count as the same), declared separately on purpose.
+ *   and direct host of one Neon endpoint count as the same), declared separately on purpose;
+ * - that host is a local database or a test endpoint committed to src/config/neon-test-endpoints.json
+ *   (both variables are typed in by hand, so a production URL with its own host is refused too).
  */
+import { isListedTestDatabase } from "@/config/test-database";
+
 export const TEST_DATA_CONFIRMATION = "synthetic-test-data";
 
 export type TestDataTarget = { ok: true } | { ok: false; error: string };
@@ -33,5 +37,9 @@ export function checkTestDataTarget(
   const endpoint = (h: string) => h.replace(/^([^.]+)-pooler\./, "$1.");
   if (endpoint(host) !== endpoint(expected))
     return fail("The DATABASE_URL host is not TEST_DATA_DB_HOST; nothing was written");
+  if (!["localhost", "127.0.0.1", "::1", "[::1]"].includes(host) && !isListedTestDatabase(host))
+    return fail(
+      "The DATABASE_URL host is not a local database or a listed test endpoint (src/config/neon-test-endpoints.json); nothing was written",
+    );
   return { ok: true };
 }

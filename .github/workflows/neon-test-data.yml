@@ -63,6 +63,8 @@ jobs:
             exit 1
           fi
           node --no-warnings scripts/ci/neon-test-url.ts check
+          # Not a secret: the endpoint id, listed in src/config/neon-test-endpoints.json.
+          echo "Target: Neon test endpoint ${NEON_TEST_DB_HOST%%.*}"
 
       # The secret is not in the environment of the install step.
       - run: pnpm install --frozen-lockfile

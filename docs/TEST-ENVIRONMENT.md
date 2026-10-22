@@ -273,9 +273,18 @@ unless:
 - with `EMAIL_TRANSPORT=smtp`, `SMTP_HOST` is an email sandbox (`sandbox.smtp.mailtrap.io`), so
   a preview can never email real people.
 
+- `PREVIEW_DATABASE_HOST` is one of the test endpoints committed to
+  [`src/config/neon-test-endpoints.json`](../src/config/neon-test-endpoints.json)
+  (`ep-rapid-grass-bap8luwv` = `before-test`, `ep-young-queen-ba1c9tj8` = `main` of
+  `alvoxis-flow-test`). Both Preview variables are typed in by hand, so a production string pasted
+  together with its own host would otherwise pass; only a reviewed PR can add an endpoint. The
+  test workflows (migrations, test data) and `pnpm db:test-data` accept only these endpoints (or a
+  local database), and the production migration workflow refuses them.
+
 The reverse holds as well: a production deployment (`VERCEL_ENV=production`) refuses to start
 when `PREVIEW_DATABASE_HOST` is visible to it and `DATABASE_URL` points to that test database, so
-Preview variables applied to "All Environments" by mistake cannot put production on test data.
+Preview variables applied to "All Environments" by mistake cannot put production on test data;
+production also refuses any endpoint in the committed test list.
 
 Every page shows the yellow **"Test environment"** banner on a preview (or with `APP_TEST_MODE=1`;
 never on production). The banner is the only thing "test mode" changes: authentication, email

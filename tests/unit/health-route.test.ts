@@ -64,14 +64,14 @@ describe("GET /api/health", () => {
       VERCEL_PROJECT_PRODUCTION_URL: "app.vercel.app",
       APP_URL: undefined,
       TRUSTED_IP_HEADER: "x-real-ip",
-      PREVIEW_DATABASE_HOST: "ep-test-1.c-8.eu-central-1.aws.neon.tech",
+      PREVIEW_DATABASE_HOST: "ep-rapid-grass-bap8luwv.c-8.eu-central-1.aws.neon.tech", // listed
       DATABASE_URL: `postgres://u:${FAKE_SECRET}@ep-production-1.c-7.eu-central-1.aws.neon.tech/db`,
       BETTER_AUTH_SECRET: `${FAKE_SECRET}-${"x".repeat(32)}`,
     });
     expect(r.status).toBe(503);
     expect(r.body).toMatchObject({ database: "not_configured", invalid: ["DATABASE_URL"] });
     expect(r.text).not.toContain(FAKE_SECRET);
-    expect(r.text).not.toMatch(/ep-production|ep-test|neon\.tech/);
+    expect(r.text).not.toMatch(/ep-production|ep-rapid|neon\.tech/);
   });
 
   it("valid configuration but no reachable database: 503 unavailable, no variable list", async () => {

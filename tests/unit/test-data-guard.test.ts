@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { checkTestDataTarget, TEST_DATA_CONFIRMATION } from "@/server/test-data/target-guard";
 
-// Fictitious hosts and credentials.
-const TEST_HOST = "ep-test-endpoint-123456.c-8.eu-central-1.aws.neon.tech";
+// TEST_HOST is a listed test endpoint (src/config/neon-test-endpoints.json); everything else,
+// including the credentials, is fictitious.
+const TEST_HOST = "ep-rapid-grass-bap8luwv.c-8.eu-central-1.aws.neon.tech";
 const ok = {
   TEST_DATA_CONFIRM: TEST_DATA_CONFIRMATION,
   TEST_DATA_DB_HOST: TEST_HOST,
@@ -38,9 +39,30 @@ describe("checkTestDataTarget (synthetic test data may only go to the declared t
     });
     expect(other).toMatch(/not TEST_DATA_DB_HOST/);
     // Never echoes the URL, the password or a host.
-    expect(other).not.toMatch(/Secr3t|ep-production|ep-test/);
+    expect(other).not.toMatch(/Secr3t|ep-production|ep-rapid/);
     expect(
       refused({ ...ok, DATABASE_URL: `postgresql://u:p@${TEST_HOST}.attacker.test/neondb` }),
     ).toMatch(/not TEST_DATA_DB_HOST/);
+  });
+
+  it("refuses an unlisted endpoint even when both variables agree; allows a local database", () => {
+    const prod = "ep-production-1.c-7.eu-central-1.aws.neon.tech";
+    const r = checkTestDataTarget({
+      ...ok,
+      TEST_DATA_DB_HOST: prod,
+      DATABASE_URL: `postgresql://u:Secr3t@${prod}/neondb`,
+    });
+    expect(r.ok).toBe(false);
+    if (!r.ok) {
+      expect(r.error).toMatch(/listed test endpoint/);
+      expect(r.error).not.toMatch(/Secr3t|ep-production/);
+    }
+    expect(
+      checkTestDataTarget({
+        ...ok,
+        TEST_DATA_DB_HOST: "localhost",
+        DATABASE_URL: "postgres://u:p@localhost:5432/alvoxis_flow",
+      }),
+    ).toEqual({ ok: true });
   });
 });

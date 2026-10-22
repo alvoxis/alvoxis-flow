@@ -143,8 +143,9 @@ describe("parseServerEnv", () => {
 });
 
 describe("preview deployments (VERCEL_ENV=preview): the test environment", () => {
-  // Fictitious hosts: the test database endpoint, another endpoint and the Vercel URLs.
-  const TEST_DB = "ep-test-endpoint-123456.c-8.eu-central-1.aws.neon.tech";
+  // TEST_DB is a listed test endpoint (src/config/neon-test-endpoints.json; ids are not secrets);
+  // the other hosts and the Vercel URLs are fictitious.
+  const TEST_DB = "ep-rapid-grass-bap8luwv.c-8.eu-central-1.aws.neon.tech";
   const OTHER_DB = "ep-other-endpoint-654321.c-7.eu-central-1.aws.neon.tech";
   const preview = {
     ...base,
@@ -191,6 +192,44 @@ describe("preview deployments (VERCEL_ENV=preview): the test environment", () =>
     ).toEqual(["DATABASE_URL"]);
   });
 
+  it("accepts only test endpoints committed to the repository, whatever the variables say", () => {
+    // The common paste mistake done twice: a production string together with its own host.
+    expect(
+      issuesOf({
+        ...preview,
+        DATABASE_URL: `postgresql://u:p@${OTHER_DB}/neondb`,
+        PREVIEW_DATABASE_HOST: OTHER_DB,
+      }),
+    ).toEqual(["PREVIEW_DATABASE_HOST"]);
+    expect(
+      issuesOf({
+        ...preview,
+        DATABASE_URL: "postgresql://u:p@db.example.test/neondb",
+        PREVIEW_DATABASE_HOST: "db.example.test",
+      }),
+    ).toEqual(["PREVIEW_DATABASE_HOST"]);
+    // The other listed endpoint (the baseline branch) is accepted.
+    const baseline = "ep-young-queen-ba1c9tj8.c-8.eu-central-1.aws.neon.tech";
+    expect(
+      issuesOf({
+        ...preview,
+        DATABASE_URL: `postgresql://u:p@${baseline}/neondb`,
+        PREVIEW_DATABASE_HOST: baseline,
+      }),
+    ).toEqual([]);
+    // Listed early too, while the secrets are still missing.
+    expect(
+      issuesOf({
+        NODE_ENV: "production",
+        VERCEL: "1",
+        VERCEL_ENV: "preview",
+        VERCEL_BRANCH_URL: "app-git-main-team.vercel.app",
+        TRUSTED_IP_HEADER: "x-real-ip",
+        PREVIEW_DATABASE_HOST: OTHER_DB,
+      }),
+    ).toContain("PREVIEW_DATABASE_HOST");
+  });
+
   it("never uses the production domain or another site as APP_URL", () => {
     expect(issuesOf({ ...preview, APP_URL: "https://app.vercel.app" })).toEqual(["APP_URL"]);
     expect(issuesOf({ ...preview, APP_URL: "https://elsewhere.example.test" })).toEqual([
@@ -223,7 +262,7 @@ describe("preview deployments (VERCEL_ENV=preview): the test environment", () =>
       message = (err as Error).message;
     }
     expect(message).toMatch(/DATABASE_URL/);
-    expect(message).not.toMatch(/Sup3rS3cret|ep-other|ep-test/);
+    expect(message).not.toMatch(/Sup3rS3cret|ep-other|ep-rapid/);
   });
 
   it("lists every missing preview variable at once, even before the secrets are set", () => {
@@ -270,6 +309,14 @@ describe("preview deployments (VERCEL_ENV=preview): the test environment", () =>
     expect(issuesOf({ ...production, DATABASE_URL: `postgres://u:p@${TEST_DB}/neondb` })).toEqual([
       "DATABASE_URL",
     ]);
+    // A listed test endpoint is refused even without PREVIEW_DATABASE_HOST.
+    expect(
+      issuesOf({
+        ...production,
+        PREVIEW_DATABASE_HOST: undefined,
+        DATABASE_URL: `postgres://u:p@${TEST_DB}/neondb`,
+      }),
+    ).toEqual(["DATABASE_URL"]);
     // Its own database is fine even when PREVIEW_DATABASE_HOST is visible to production.
     expect(
       parseServerEnv({ ...production, DATABASE_URL: `postgresql://u:p@${OTHER_DB}/neondb` })
