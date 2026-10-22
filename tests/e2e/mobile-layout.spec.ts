@@ -134,6 +134,7 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     `${company}/suppliers`,
     `${company}/products`,
     `${company}/inventory`,
+    `${company}/production`,
     "/account/security",
     "/account/two-factor",
   ];

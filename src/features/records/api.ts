@@ -42,7 +42,7 @@ export function interpretRecordResponse<T>(
 /** Sends JSON and classifies the answer; network failures are `error`. */
 export async function sendRecord<T>(
   url: string,
-  method: "POST" | "PATCH" | "DELETE",
+  method: "POST" | "PUT" | "PATCH" | "DELETE",
   body: unknown,
   key: string,
 ): Promise<RecordOutcome<T>> {

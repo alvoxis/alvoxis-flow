@@ -658,6 +658,29 @@
         "name": {
           "required": "Ievadiet nosaukumu."
         }
+      },
+      "production": {
+        "product": {
+          "unknown": "Izvēlieties vienu no uzņēmuma precēm.",
+          "notTracked": "Izstrādājumam jāuzskaita atlikumi.",
+          "archived": "Šī prece ir arhivēta."
+        },
+        "component": {
+          "self": "Izstrādājums nevar būt pats sava komponente.",
+          "unknown": "Izvēlieties vienu no uzņēmuma precēm.",
+          "notTracked": "Komponentēm jāuzskaita atlikumi.",
+          "duplicate": "Katru komponenti tikai vienu reizi."
+        },
+        "quantity": {
+          "invalid": "Ievadiet daudzumu, kas lielāks par 0 (līdz 4 decimālzīmēm).",
+          "tooSmall": "Daudzums ir pārāk mazs šai specifikācijai."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "bom": {
+          "missing": "Šai precei vēl nav specifikācijas."
+        }
       }
     },
     "taxCategory": "Nodokļu kategorija",
@@ -1238,6 +1261,57 @@
     "outcome": {
       "codeTaken": "Noliktava ar šo kodu jau pastāv.",
       "notEmpty": "Šajā noliktavā vēl ir atlikumi. Vispirms pārvietojiet vai izsniedziet tos."
+    }
+  },
+  "production": {
+    "description": "Specifikācijas un ražošanas pasūtījumi. Pabeidzot pasūtījumu, komponentes tiek norakstītas no noliktavas un gatavais izstrādājums pieņemts.",
+    "readOnly": "Jūs varat skatīt ražošanu. Pasūtījumu plānošanai un pabeigšanai nepieciešama loma ar ražošanas pārvaldības atļauju.",
+    "planNeeds": "Lai plānotu pasūtījumu, nepieciešama noliktava un prece ar specifikāciju (zemāk).",
+    "status": {
+      "planned": "Plānots",
+      "completed": "Pabeigts",
+      "cancelled": "Atcelts"
+    },
+    "orders": {
+      "title": "Pasūtījumi",
+      "empty": "Ražošanas pasūtījumu vēl nav.",
+      "meta": "Noliktava {warehouse} · plānots {planned}",
+      "completedOn": "pabeigts {date}",
+      "available": "pieejams {quantity}",
+      "completedOnLabel": "Pabeigšanas datums",
+      "complete": "Pabeigt",
+      "cancel": "Atcelt pasūtījumu"
+    },
+    "plan": {
+      "title": "Plānot pasūtījumu",
+      "product": "Izstrādājums",
+      "chooseProduct": "Izvēlieties preci…",
+      "warehouse": "Noliktava",
+      "quantity": "Daudzums",
+      "plannedOn": "Plānotais datums",
+      "submit": "Plānot"
+    },
+    "bom": {
+      "title": "Specifikācijas",
+      "hint": "No kā sastāv viena izstrādājuma vienība. Izmaiņas attiecas tikai uz jauniem pasūtījumiem.",
+      "empty": "Specifikāciju vēl nav.",
+      "edit": "Labot",
+      "product": "Izstrādājums",
+      "component": "Komponente {n}",
+      "chooseComponent": "Izvēlieties komponenti…",
+      "quantity": "Daudzums uz vienību",
+      "remove": "Noņemt",
+      "addComponent": "Pievienot komponenti",
+      "save": "Saglabāt specifikāciju"
+    },
+    "done": {
+      "planned": "Pasūtījums {number} plānots.",
+      "completed": "Pasūtījums {number} pabeigts; atlikumi atjaunināti.",
+      "cancelled": "Pasūtījums {number} atcelts.",
+      "bomSaved": "Specifikācija saglabāta."
+    },
+    "outcome": {
+      "notPlanned": "Šis pasūtījums jau ir pabeigts vai atcelts."
     }
   }
 }

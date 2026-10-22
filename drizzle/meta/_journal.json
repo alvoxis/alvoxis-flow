@@ -120,6 +120,13 @@
       "when": 1792707105688,
       "tag": "0016_stock_ledger_append_only",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792709612722,
+      "tag": "0017_production",
+      "breakpoints": true
     }
   ]
 }

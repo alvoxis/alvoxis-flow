@@ -231,3 +231,123 @@ export const stockMovements = pgTable(
     check("stock_movements_unit_cost_ck", sql`${t.unitCost} is null or ${t.unitCost} >= 0`),
   ],
 );
+
+/**
+ * Bill of materials: how much of each component one unit of a product needs. Products and
+ * components belong to the same company (composite foreign keys).
+ */
+export const productComponents = pgTable(
+  "product_components",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    productId: uuid("product_id").notNull(),
+    componentId: uuid("component_id").notNull(),
+    /** Per one unit of the product. */
+    quantity: numeric("quantity", { precision: 18, scale: 4 }).notNull(),
+    /** Order of the components as entered (0-based). */
+    position: integer("position").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    unique("product_components_product_component_uq").on(t.productId, t.componentId),
+    foreignKey({
+      name: "product_components_product_same_company_fk",
+      columns: [t.productId, t.companyId],
+      foreignColumns: [products.id, products.companyId],
+    }).onDelete("cascade"),
+    foreignKey({
+      name: "product_components_component_same_company_fk",
+      columns: [t.componentId, t.companyId],
+      foreignColumns: [products.id, products.companyId],
+    }).onDelete("restrict"),
+    check("product_components_quantity_ck", sql`${t.quantity} > 0`),
+    check("product_components_not_self_ck", sql`${t.productId} <> ${t.componentId}`),
+  ],
+);
+
+export const productionOrderStatus = pgEnum("production_order_status", [
+  "planned",
+  "completed",
+  "cancelled",
+]);
+
+/**
+ * A production order: make `quantity` of a product in a warehouse. Its components are copied from
+ * the bill of materials when the order is created. Completing it consumes the components and adds
+ * the product in one transaction (stock movements grouped by the order id).
+ */
+export const productionOrders = pgTable(
+  "production_orders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "restrict" }),
+    /** PRD-YYYY-NNNN, sequential per company and year. */
+    number: text("number").notNull(),
+    productId: uuid("product_id").notNull(),
+    warehouseId: uuid("warehouse_id").notNull(),
+    quantity: numeric("quantity", { precision: 18, scale: 4 }).notNull(),
+    status: productionOrderStatus("status").notNull().default("planned"),
+    plannedOn: date("planned_on", { mode: "string" }).notNull(),
+    completedOn: date("completed_on", { mode: "string" }),
+    note: text("note"),
+    version: integer("version").notNull().default(1),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("production_orders_id_company_uq").on(t.id, t.companyId),
+    unique("production_orders_company_number_uq").on(t.companyId, t.number),
+    foreignKey({
+      name: "production_orders_product_same_company_fk",
+      columns: [t.productId, t.companyId],
+      foreignColumns: [products.id, products.companyId],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: "production_orders_warehouse_same_company_fk",
+      columns: [t.warehouseId, t.companyId],
+      foreignColumns: [warehouses.id, warehouses.companyId],
+    }).onDelete("restrict"),
+    index("production_orders_company_status_idx").on(t.companyId, t.status),
+    check("production_orders_quantity_ck", sql`${t.quantity} > 0`),
+    check(
+      "production_orders_completed_ck",
+      sql`(${t.status} = 'completed') = (${t.completedOn} is not null)`,
+    ),
+    check("production_orders_version_ck", sql`${t.version} > 0`),
+  ],
+);
+
+/** Components of an order (total quantities for the whole order), copied from the BOM. */
+export const productionOrderComponents = pgTable(
+  "production_order_components",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id").notNull(),
+    orderId: uuid("order_id").notNull(),
+    componentId: uuid("component_id").notNull(),
+    quantity: numeric("quantity", { precision: 18, scale: 4 }).notNull(),
+    /** Order as in the bill of materials when the order was planned. */
+    position: integer("position").notNull(),
+  },
+  (t) => [
+    unique("production_order_components_uq").on(t.orderId, t.componentId),
+    foreignKey({
+      name: "production_order_components_order_fk",
+      columns: [t.orderId, t.companyId],
+      foreignColumns: [productionOrders.id, productionOrders.companyId],
+    }).onDelete("cascade"),
+    foreignKey({
+      name: "production_order_components_component_fk",
+      columns: [t.componentId, t.companyId],
+      foreignColumns: [products.id, products.companyId],
+    }).onDelete("restrict"),
+    check("production_order_components_quantity_ck", sql`${t.quantity} > 0`),
+  ],
+);
