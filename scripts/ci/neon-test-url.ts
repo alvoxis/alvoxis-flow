@@ -12,10 +12,20 @@
  * variables but never contain the URL, the password or any part of the secret.
  */
 
+import { readFileSync } from "node:fs";
+
 export type NeonUrlResult = { ok: true; url: string } | { ok: false; error: string };
 export interface NeonUrlNames {
   url: string;
   host: string;
+}
+/**
+ * Endpoint ids from src/config/neon-test-endpoints.json: the test workflows accept only `allow`,
+ * the production workflow refuses `deny` (the same list), whatever the hand-typed variables say.
+ */
+export interface NeonEndpointRules {
+  allow?: readonly string[];
+  deny?: readonly string[];
 }
 const TEST_NAMES: NeonUrlNames = { url: "NEON_TEST_DATABASE_URL", host: "NEON_TEST_DB_HOST" };
 /** Only these variable names may be read: never arbitrary environment variables. */
@@ -32,6 +42,7 @@ export function checkNeonTestUrl(
   rawUrl: string | undefined,
   rawExpectedHost: string | undefined,
   names: NeonUrlNames = TEST_NAMES,
+  endpoints: NeonEndpointRules = {},
 ): NeonUrlResult {
   const fail = (error: string): NeonUrlResult => ({ ok: false, error });
   const URL_VAR = names.url;
@@ -57,6 +68,11 @@ export function checkNeonTestUrl(
   if (u.hostname.includes("-pooler"))
     return fail("Use the direct (non-pooled) Neon connection string for migrations");
   if (u.hostname !== expected) return fail(`The ${URL_VAR} host is not ${HOST_VAR}`);
+  const endpointId = expected.split(".")[0]!;
+  if (endpoints.allow && !endpoints.allow.includes(endpointId))
+    return fail(`${HOST_VAR} is not a test endpoint listed in src/config/neon-test-endpoints.json`);
+  if (endpoints.deny?.includes(endpointId))
+    return fail(`${HOST_VAR} is a test endpoint (src/config/neon-test-endpoints.json)`);
 
   const sslmode = u.searchParams.getAll("sslmode");
   if (sslmode.length !== 1 || !ACCEPTED_SSLMODES.has(sslmode[0]!))
@@ -77,7 +93,16 @@ function main(mode: string | undefined, urlVar?: string, hostVar?: string): void
     console.error("::error::Usage: neon-test-url.ts check|print [NEON_…_URL_VAR NEON_…_HOST_VAR]");
     process.exit(2);
   }
-  const result = checkNeonTestUrl(process.env[names.url], process.env[names.host], names);
+  // The test names may only reach listed test endpoints; any other names (production) never may.
+  const listed = Object.keys(
+    (
+      JSON.parse(
+        readFileSync(new URL("../../src/config/neon-test-endpoints.json", import.meta.url), "utf8"),
+      ) as { endpoints: Record<string, string> }
+    ).endpoints,
+  );
+  const rules = names.url === TEST_NAMES.url ? { allow: listed } : { deny: listed };
+  const result = checkNeonTestUrl(process.env[names.url], process.env[names.host], names, rules);
   if (!result.ok) {
     console.error(`::error::${result.error}; nothing was done.`);
     process.exit(1);

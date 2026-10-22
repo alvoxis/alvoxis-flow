@@ -23,6 +23,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed-permissions.ts",
+    "db:test-data": "tsx --require ./scripts/support/server-only-shim.cjs scripts/seed-test-data.ts",
     "db:studio": "drizzle-kit studio",
     "auth:reset-2fa": "tsx --require ./scripts/support/server-only-shim.cjs scripts/reset-two-factor.ts",
     "auth:reencrypt-2fa": "tsx --require ./scripts/support/server-only-shim.cjs scripts/reencrypt-two-factor.ts",
