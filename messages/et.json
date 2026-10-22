@@ -395,7 +395,7 @@
       "draft": "Mustand",
       "issued": "Väljastatud"
     },
-    "issuedNotice": "Dokument on väljastatud numbriga {number}. Väljastatud dokumente ei saa muuta.",
+    "issuedNotice": "Dokument on väljastatud numbriga <num>{number}</num>. Väljastatud dokumente ei saa muuta.",
     "readOnlyDraft": "Saate seda mustandit vaadata. Teie roll ei luba seda muuta.",
     "sellerHint": "Müüja andmed võetakse ettevõtte profiilist.",
     "sections": {

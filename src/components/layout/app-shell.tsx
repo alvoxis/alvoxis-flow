@@ -35,11 +35,12 @@ export async function AppShell({
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg/85 px-4 py-3 backdrop-blur sm:px-6">
           <MobileNav />
           {/* The mobile drawer shows the brand; on phones the bar keeps only essentials. */}
-          <div className="hidden sm:block lg:hidden">
+          {/* Never shrinks: the company name gives way (ellipsis) instead of covering the brand. */}
+          <div className="hidden shrink-0 sm:block lg:hidden" data-testid="topbar-brand">
             <Brand />
           </div>
           <CompanyContext companies={companies} />
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-3" data-testid="topbar-actions">
             <LocaleSwitcher />
             <div className="flex items-center gap-2 text-sm text-muted" title={t("topbar.account")}>
               <Link
@@ -53,7 +54,7 @@ export async function AppShell({
                 >
                   {(user.displayName ?? user.email).slice(0, 1)}
                 </span>
-                <span className="hidden max-w-48 truncate md:inline">{user.email}</span>
+                <span className="hidden max-w-48 truncate xl:inline">{user.email}</span>
                 <span className="sr-only">{t("account.security")}</span>
               </Link>
               <SignOutButton label={t("account.signOut")} className="px-2" />

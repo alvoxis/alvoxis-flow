@@ -51,7 +51,9 @@ export function RelatedCreditNotes({
                   href={`/companies/${companyId}/documents/${d.id}`}
                   className={`grid min-h-11 grid-cols-2 items-center gap-x-3 gap-y-1 rounded-lg border px-3 py-2.5 text-sm hover:bg-surface-2/60 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:rounded-none md:border-0 md:px-1 ${draft ? "border-dashed border-border text-muted" : "border-border text-text"}`}
                 >
-                  <span className={draft ? "italic" : "font-medium"}>{label}</span>
+                  <span className={`whitespace-nowrap ${draft ? "italic" : "font-medium"}`}>
+                    {label}
+                  </span>
                   <span className="justify-self-end md:justify-self-start">
                     <Badge tone={draft ? "neutral" : "success"}>{t(`status.${d.status}`)}</Badge>
                   </span>
@@ -96,7 +98,7 @@ export function DocumentRelationLink({
         link: (chunks) => (
           <Link
             href={`/companies/${companyId}/documents/${relation.documentId}`}
-            className="font-medium text-violet-300 underline-offset-2 hover:underline"
+            className="font-medium whitespace-nowrap text-violet-300 underline-offset-2 hover:underline"
             data-testid="document-relation-link"
           >
             {chunks}

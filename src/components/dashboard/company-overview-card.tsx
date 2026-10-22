@@ -31,7 +31,7 @@ export function CompanyOverviewCard({ company: c }: { company: Company }) {
         <div className="min-w-0">
           <Link
             href={`/companies/${c.id}/profile`}
-            className="block truncate text-lg font-semibold tracking-tight text-text hover:text-violet-200"
+            className="line-clamp-2 block text-lg font-semibold tracking-tight break-words text-text hover:text-violet-200"
             data-testid="company-profile-link"
           >
             {c.name}

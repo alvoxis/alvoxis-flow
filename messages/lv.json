@@ -395,7 +395,7 @@
       "draft": "Melnraksts",
       "issued": "Izrakstīts"
     },
-    "issuedNotice": "Dokuments izrakstīts ar Nr. {number}. Izrakstītus dokumentus nevar labot.",
+    "issuedNotice": "Dokuments izrakstīts ar Nr. <num>{number}</num>. Izrakstītus dokumentus nevar labot.",
     "readOnlyDraft": "Jūs varat skatīt šo melnrakstu. Jūsu loma neļauj to mainīt.",
     "sellerHint": "Pārdevēja dati tiek ņemti no uzņēmuma profila.",
     "sections": {
