@@ -681,6 +681,36 @@
         "bom": {
           "missing": "Ši prekė dar neturi specifikacijos."
         }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Įveskite procentą nuo 0 iki 99.999."
+        },
+        "amount": {
+          "invalid": "Įveskite sumą, pvz., 1500 arba 1500.50."
+        },
+        "firstName": {
+          "required": "Įveskite vardą."
+        },
+        "lastName": {
+          "required": "Įveskite pavardę."
+        },
+        "email": {
+          "invalid": "Įveskite teisingą el. pašto adresą."
+        },
+        "country": {
+          "invalid": "Pasirinkite Latviją, Lietuvą, Estiją arba Lenkiją."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą.",
+          "endBeforeStart": "Pabaigos data negali būti ankstesnė už pradžios datą."
+        },
+        "period": {
+          "invalid": "Pasirinkite mėnesį."
+        },
+        "run": {
+          "noEmployees": "Šį mėnesį niekas nedirbo."
+        }
       }
     },
     "taxCategory": "Mokesčių kategorija",
@@ -1312,6 +1342,99 @@
     },
     "outcome": {
       "notPlanned": "Šis užsakymas jau užbaigtas arba atšauktas."
+    }
+  },
+  "payroll": {
+    "description": "Darbuotojai ir mėnesio darbo užmokestis Latvijai, Lietuvai, Estijai ir Lenkijai.",
+    "disclaimer": "Skaičiavimo pagalbininkas, ne mokesčių deklaracija. Tarifai yra įmonės nustatymai su pradinėmis reikšmėmis, kurias turi patikrinti jūsų buhalteris; specialūs režimai, progresiniai tarifai ir lubos nemodeliuojami.",
+    "readOnly": "Galite peržiūrėti darbo užmokestį. Norint jį keisti, reikia rolės su darbo užmokesčio valdymo teise.",
+    "archived": "archyvuotas",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "status": {
+      "draft": "Juodraštis",
+      "approved": "Patvirtintas"
+    },
+    "country": {
+      "LV": "Latvija (EUR)",
+      "LT": "Lietuva (EUR)",
+      "EE": "Estija (EUR)",
+      "PL": "Lenkija (PLN)"
+    },
+    "cols": {
+      "gross": "Bruto",
+      "employeeSocial": "Darbuotojo soc. įmokos",
+      "health": "Sveikatos draudimas",
+      "incomeTax": "Pajamų mokestis",
+      "net": "Išmokėti",
+      "employerSocial": "Darbdavio soc. įmokos",
+      "employerCost": "Darbdavio sąnaudos"
+    },
+    "runs": {
+      "title": "Atlyginimų mėnesiai",
+      "period": "Mėnuo",
+      "start": "Pradėti mėnesio skaičiavimą",
+      "empty": "Atlyginimų mėnesių dar nėra.",
+      "lines": "{count, plural, one {# darbuotojas} few {# darbuotojai} other {# darbuotojų}}",
+      "show": "Rodyti išsamiai",
+      "hide": "Slėpti",
+      "grossThisMonth": "Bruto šį mėnesį",
+      "applyGross": "Taikyti",
+      "csv": "Atsisiųsti CSV",
+      "recalculate": "Perskaičiuoti",
+      "approve": "Patvirtinti",
+      "delete": "Ištrinti juodraštį",
+      "approveTitle": "Patvirtinti šį mėnesį?",
+      "approveBody": "Patvirtintas mėnuo yra galutinis: jo sumų nebegalima keisti. Pirmiausia patikrinkite darbuotojus ir sumas."
+    },
+    "employees": {
+      "title": "Darbuotojai",
+      "add": "Pridėti darbuotoją",
+      "empty": "Darbuotojų dar nėra.",
+      "month": "mėn."
+    },
+    "fields": {
+      "firstName": "Vardas",
+      "lastName": "Pavardė",
+      "position": "Pareigos",
+      "email": "El. paštas",
+      "taxCountry": "Apmokestinimo šalis",
+      "employmentStart": "Dirba nuo",
+      "employmentEnd": "Dirba iki",
+      "monthlyGross": "Mėnesio bruto atlyginimas",
+      "monthlyAllowance": "Neapmokestinama suma per mėnesį",
+      "allowanceHint": "pvz., NPD; 0, jei nėra.",
+      "monthlyTaxCredit": "Mokesčio lengvata per mėnesį",
+      "taxCreditHint": "Atimama iš pajamų mokesčio (pvz., Lenkijoje); 0, jei nėra."
+    },
+    "rates": {
+      "title": "Tarifai pagal šalį",
+      "hint": "Procentai kiekvienam naujam ar perskaičiuotam mėnesiui. Išsaugoti tarifai pakeičia pradines reikšmes.",
+      "default": "Pradinės reikšmės — patikrinkite",
+      "employeeSocialRate": "Darbuotojo soc. įmokos",
+      "employerSocialRate": "Darbdavio soc. įmokos",
+      "incomeTaxRate": "Pajamų mokestis",
+      "employeeHealthRate": "Sveikatos draudimas",
+      "save": "Išsaugoti tarifus"
+    },
+    "done": {
+      "started": "Skaičiavimas už {period} pradėtas.",
+      "grossSet": "Bruto suma pritaikyta.",
+      "recalculated": "Mėnuo perskaičiuotas.",
+      "approved": "Mėnuo {period} patvirtintas.",
+      "deleted": "Juodraštis {period} ištrintas.",
+      "employeeAdded": "Darbuotojas pridėtas.",
+      "employeeSaved": "Pakeitimai išsaugoti.",
+      "employeeArchived": "Darbuotojas archyvuotas.",
+      "employeeRestored": "Darbuotojas atkurtas.",
+      "ratesSaved": "Tarifai šaliai {country} išsaugoti."
+    },
+    "outcome": {
+      "periodTaken": "Šiam mėnesiui skaičiavimas jau yra.",
+      "approved": "Šis mėnuo jau patvirtintas ir negali keistis."
     }
   }
 }

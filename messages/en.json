@@ -681,6 +681,36 @@
         "bom": {
           "missing": "This product has no bill of materials yet."
         }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Enter a percentage from 0 to 99.999."
+        },
+        "amount": {
+          "invalid": "Enter an amount like 1500 or 1500.50."
+        },
+        "firstName": {
+          "required": "Enter the first name."
+        },
+        "lastName": {
+          "required": "Enter the last name."
+        },
+        "email": {
+          "invalid": "Enter a valid email address."
+        },
+        "country": {
+          "invalid": "Choose Latvia, Lithuania, Estonia or Poland."
+        },
+        "date": {
+          "invalid": "Enter a valid date.",
+          "endBeforeStart": "The end date cannot be before the start date."
+        },
+        "period": {
+          "invalid": "Choose a month."
+        },
+        "run": {
+          "noEmployees": "Nobody is employed in this month."
+        }
       }
     },
     "taxCategory": "Tax category",
@@ -1312,6 +1342,99 @@
     },
     "outcome": {
       "notPlanned": "This order is already completed or cancelled."
+    }
+  },
+  "payroll": {
+    "description": "Employees and monthly payroll for Latvia, Lithuania, Estonia and Poland.",
+    "disclaimer": "A calculation aid, not a tax declaration. The rates are company settings with starting values that must be checked by your accountant; special regimes, progressive brackets and caps are not modelled.",
+    "readOnly": "You can view payroll. Changing it needs a role with permission to manage payroll.",
+    "archived": "archived",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "restore": "Restore",
+    "status": {
+      "draft": "Draft",
+      "approved": "Approved"
+    },
+    "country": {
+      "LV": "Latvia (EUR)",
+      "LT": "Lithuania (EUR)",
+      "EE": "Estonia (EUR)",
+      "PL": "Poland (PLN)"
+    },
+    "cols": {
+      "gross": "Gross",
+      "employeeSocial": "Employee social",
+      "health": "Health insurance",
+      "incomeTax": "Income tax",
+      "net": "Net pay",
+      "employerSocial": "Employer social",
+      "employerCost": "Employer cost"
+    },
+    "runs": {
+      "title": "Payroll months",
+      "period": "Month",
+      "start": "Start payroll month",
+      "empty": "No payroll months yet.",
+      "lines": "{count, plural, one {# employee} other {# employees}}",
+      "show": "Show details",
+      "hide": "Hide details",
+      "grossThisMonth": "Gross this month",
+      "applyGross": "Apply",
+      "csv": "Download CSV",
+      "recalculate": "Recalculate",
+      "approve": "Approve",
+      "delete": "Delete draft",
+      "approveTitle": "Approve this payroll month?",
+      "approveBody": "An approved month is final: its figures can no longer change. Check the employees and amounts first."
+    },
+    "employees": {
+      "title": "Employees",
+      "add": "Add employee",
+      "empty": "No employees yet.",
+      "month": "month"
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "position": "Position",
+      "email": "Email",
+      "taxCountry": "Country of taxation",
+      "employmentStart": "Employed from",
+      "employmentEnd": "Employed until",
+      "monthlyGross": "Monthly gross salary",
+      "monthlyAllowance": "Monthly non-taxable amount",
+      "allowanceHint": "e.g. the basic allowance; 0 if none.",
+      "monthlyTaxCredit": "Monthly tax credit",
+      "taxCreditHint": "Subtracted from the income tax (e.g. Poland); 0 if none."
+    },
+    "rates": {
+      "title": "Rates per country",
+      "hint": "Percentages applied to every new or recalculated month. Saved rates replace the starting values.",
+      "default": "Starting values — check",
+      "employeeSocialRate": "Employee social",
+      "employerSocialRate": "Employer social",
+      "incomeTaxRate": "Income tax",
+      "employeeHealthRate": "Health insurance",
+      "save": "Save rates"
+    },
+    "done": {
+      "started": "Payroll month {period} started.",
+      "grossSet": "Gross amount applied.",
+      "recalculated": "Month recalculated.",
+      "approved": "Payroll month {period} approved.",
+      "deleted": "Draft {period} deleted.",
+      "employeeAdded": "Employee added.",
+      "employeeSaved": "Changes saved.",
+      "employeeArchived": "Employee archived.",
+      "employeeRestored": "Employee restored.",
+      "ratesSaved": "Rates for {country} saved."
+    },
+    "outcome": {
+      "periodTaken": "This month already has a payroll.",
+      "approved": "This month is already approved and cannot change."
     }
   }
 }

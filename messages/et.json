@@ -681,6 +681,36 @@
         "bom": {
           "missing": "Sellel tootel pole veel koosseisu."
         }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Sisestage protsent vahemikus 0 kuni 99.999."
+        },
+        "amount": {
+          "invalid": "Sisestage summa kujul 1500 või 1500.50."
+        },
+        "firstName": {
+          "required": "Sisestage eesnimi."
+        },
+        "lastName": {
+          "required": "Sisestage perekonnanimi."
+        },
+        "email": {
+          "invalid": "Sisestage kehtiv e-posti aadress."
+        },
+        "country": {
+          "invalid": "Valige Läti, Leedu, Eesti või Poola."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev.",
+          "endBeforeStart": "Lõppkuupäev ei saa olla enne alguskuupäeva."
+        },
+        "period": {
+          "invalid": "Valige kuu."
+        },
+        "run": {
+          "noEmployees": "Sel kuul ei töötanud kedagi."
+        }
       }
     },
     "taxCategory": "Maksukategooria",
@@ -1312,6 +1342,99 @@
     },
     "outcome": {
       "notPlanned": "See tellimus on juba lõpetatud või tühistatud."
+    }
+  },
+  "payroll": {
+    "description": "Töötajad ja kuupalk Läti, Leedu, Eesti ja Poola jaoks.",
+    "disclaimer": "Arvutusabi, mitte maksudeklaratsioon. Määrad on ettevõtte seaded algväärtustega, mida peab kontrollima teie raamatupidaja; erirežiime, astmelisi määrasid ja ülempiire ei modelleerita.",
+    "readOnly": "Saate palka vaadata. Muutmiseks on vaja palga haldusõigusega rolli.",
+    "archived": "arhiveeritud",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "status": {
+      "draft": "Mustand",
+      "approved": "Kinnitatud"
+    },
+    "country": {
+      "LV": "Läti (EUR)",
+      "LT": "Leedu (EUR)",
+      "EE": "Eesti (EUR)",
+      "PL": "Poola (PLN)"
+    },
+    "cols": {
+      "gross": "Bruto",
+      "employeeSocial": "Töötaja maksed",
+      "health": "Ravikindlustus",
+      "incomeTax": "Tulumaks",
+      "net": "Väljamaksmisele",
+      "employerSocial": "Tööandja maksed",
+      "employerCost": "Tööandja kulu"
+    },
+    "runs": {
+      "title": "Palgakuud",
+      "period": "Kuu",
+      "start": "Alusta kuu arvestust",
+      "empty": "Palgakuid veel pole.",
+      "lines": "{count, plural, one {# töötaja} other {# töötajat}}",
+      "show": "Näita üksikasju",
+      "hide": "Peida üksikasjad",
+      "grossThisMonth": "Bruto sel kuul",
+      "applyGross": "Rakenda",
+      "csv": "Laadi alla CSV",
+      "recalculate": "Arvuta uuesti",
+      "approve": "Kinnita",
+      "delete": "Kustuta mustand",
+      "approveTitle": "Kas kinnitada see palgakuu?",
+      "approveBody": "Kinnitatud kuu on lõplik: selle summasid ei saa enam muuta. Kontrollige esmalt töötajaid ja summasid."
+    },
+    "employees": {
+      "title": "Töötajad",
+      "add": "Lisa töötaja",
+      "empty": "Töötajaid veel pole.",
+      "month": "kuu"
+    },
+    "fields": {
+      "firstName": "Eesnimi",
+      "lastName": "Perekonnanimi",
+      "position": "Ametikoht",
+      "email": "E-post",
+      "taxCountry": "Maksustamise riik",
+      "employmentStart": "Töötab alates",
+      "employmentEnd": "Töötab kuni",
+      "monthlyGross": "Kuu brutopalk",
+      "monthlyAllowance": "Maksuvaba summa kuus",
+      "allowanceHint": "nt maksuvaba tulu; 0, kui puudub.",
+      "monthlyTaxCredit": "Maksusoodustus kuus",
+      "taxCreditHint": "Lahutatakse tulumaksust (nt Poolas); 0, kui puudub."
+    },
+    "rates": {
+      "title": "Määrad riikide kaupa",
+      "hint": "Protsendid igale uuele või ümberarvutatud kuule. Salvestatud määrad asendavad algväärtused.",
+      "default": "Algväärtused — kontrollige",
+      "employeeSocialRate": "Töötaja maksed",
+      "employerSocialRate": "Tööandja maksed",
+      "incomeTaxRate": "Tulumaks",
+      "employeeHealthRate": "Ravikindlustus",
+      "save": "Salvesta määrad"
+    },
+    "done": {
+      "started": "Palgaarvestus {period} alustatud.",
+      "grossSet": "Brutosumma rakendatud.",
+      "recalculated": "Kuu arvutati uuesti.",
+      "approved": "Palgakuu {period} kinnitatud.",
+      "deleted": "Mustand {period} kustutatud.",
+      "employeeAdded": "Töötaja lisatud.",
+      "employeeSaved": "Muudatused salvestatud.",
+      "employeeArchived": "Töötaja arhiveeritud.",
+      "employeeRestored": "Töötaja taastatud.",
+      "ratesSaved": "Riigi {country} määrad salvestatud."
+    },
+    "outcome": {
+      "periodTaken": "Sellel kuul on palgaarvestus juba olemas.",
+      "approved": "See kuu on juba kinnitatud ega saa muutuda."
     }
   }
 }

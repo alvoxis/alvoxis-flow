@@ -73,7 +73,8 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     key: "payroll",
     href: "/payroll",
-    soon: true,
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/payroll(\/|$)/,
     icon: "M3 6h18v12H3V6Zm9 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 9v.01M18 15v.01",
   },
   { key: "analytics", href: "/analytics", soon: true, icon: "M4 20V10m6 10V4m6 16v-7m4 7H2" },

@@ -61,6 +61,14 @@ client side). Modules:
   components and adds the product through `applyStockChanges` in one transaction (refused while
   stock is short; the movements share the order id); completed and cancelled orders are final.
   Production roles move stock this way without `inventory.manage`.
+- `payroll` — employees, rates per country and monthly runs (`payroll.view` / `payroll.manage`).
+  A calculation aid, not a tax declaration: rates (employee social, employer social, income tax,
+  health insurance) are company settings whose built-in starting values must be checked by the
+  accountant; special regimes, progressive brackets and caps are not modelled. The pure
+  calculation (`modules/payroll/domain/calculate.ts`) works in integer cents and rounds half up.
+  A run copies names, countries, currencies and rates into its lines; a gross amount can be
+  changed for one month (kept on recalculation); an approved run is final. CSV export with BOM,
+  formula-injection-safe cells. Audit entries never carry names or amounts.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
