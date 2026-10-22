@@ -1,0 +1,2 @@
+ALTER TABLE "companies" ADD COLUMN "pdf_accent" text DEFAULT 'navy' NOT NULL;--> statement-breakpoint
+ALTER TABLE "companies" ADD CONSTRAINT "companies_pdf_accent_ck" CHECK ("companies"."pdf_accent" in ('navy', 'graphite', 'blue', 'teal', 'green', 'burgundy'));

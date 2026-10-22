@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { PDF_ACCENTS, type PdfAccent } from "@/lib/pdf-accent";
 import { recordAudit } from "@/server/audit/audit-log";
 import { type Actor, requireCompanyAccess } from "@/server/auth/authorization";
 import { type Database } from "@/server/db/client";
@@ -23,6 +24,8 @@ export interface CompanyProfile {
   addressLine2: string | null;
   postalCode: string | null;
   city: string | null;
+  /** Accent colour of the company's document PDFs (fixed palette; presentation only). */
+  pdfAccent: PdfAccent;
   updatedAt: Date;
 }
 
@@ -53,6 +56,7 @@ const profileFields = z.object({
   addressLine2: optionalText(200),
   postalCode: optionalText(16),
   city: optionalText(100),
+  pdfAccent: z.enum(PDF_ACCENTS).optional(),
 });
 
 export type CompanyProfileInput = z.input<typeof profileFields>;
@@ -83,6 +87,7 @@ const profileColumns = {
   addressLine2: companies.addressLine2,
   postalCode: companies.postalCode,
   city: companies.city,
+  pdfAccent: companies.pdfAccent,
   updatedAt: companies.updatedAt,
 };
 
