@@ -31,6 +31,18 @@ Larger features live in `src/modules/<name>/` with a fixed internal layout:
 `requireCompanyAccess` and write audit entries), and feature-specific folders (e.g. `pdf/`,
 `import/`). The first module is `documents` — see [documents/DOCUMENT-SYSTEM.md](documents/DOCUMENT-SYSTEM.md).
 
+Company record modules follow one pattern: a service in `src/modules/<name>/server/` (permission
+check, validation with every finding at once, optimistic `version`, archive instead of delete, an
+audit entry with field names only), route handlers under `/api/companies/[companyId]/…`, a page
+under `/companies/[companyId]/…` plus a navigation entry that picks the company. Shared pieces:
+`src/server/records/errors.ts` (mapped once in `apiError`) and `src/features/records/api.ts` (the
+client side). Modules:
+
+- `counterparties` — customers and suppliers (one record may be both; `customers.*` and
+  `suppliers.*` permissions apply per role). Unique registration number among active records.
+  Choosing a customer in the document editor copies its details into the draft's buyer (and sets
+  an invoice's due date from the payment term); documents keep their own copy.
+
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
 

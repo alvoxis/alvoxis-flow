@@ -4,6 +4,10 @@ import {
   type BankAccountView,
   listBankAccounts,
 } from "@/modules/documents/server/bank-account-service";
+import {
+  type CounterpartyView,
+  listCounterparties,
+} from "@/modules/counterparties/server/counterparty-service";
 import { type DocumentListQuery, EMPTY_DOCUMENT_QUERY } from "@/features/documents/list-query";
 import {
   getDocument,
@@ -57,6 +61,8 @@ export type DocumentPageData =
       taxCategories: TaxCategoryView[];
       /** Active company bank accounts offered in the account picker (drafts only). */
       bankAccounts: BankAccountView[];
+      /** Active customers for the buyer picker (editable drafts with customers.view only). */
+      customers: CounterpartyView[];
       /**
        * Credit notes of an issued invoice (null for other documents). Loaded separately: if it
        * fails, the invoice is still shown, with a notice instead of the list.
@@ -108,6 +114,16 @@ export async function documentsListData(
   }
 }
 
+/** Active customers for the editor's buyer picker, or none when the role cannot see customers. */
+async function listCustomersIfAllowed(user: AuthenticatedUser, companyId: string) {
+  try {
+    return await listCounterparties(getDb(), toActor(user), companyId, "customer");
+  } catch (err) {
+    if (err instanceof ForbiddenError) return [];
+    throw err;
+  }
+}
+
 /** One document (documents.view); issued documents come from their frozen snapshot. */
 export async function documentPageData(
   user: AuthenticatedUser,
@@ -122,6 +138,10 @@ export async function documentPageData(
     const taxCategories = await listTaxCategories(getDb(), toActor(user), companyId);
     const bankAccounts =
       document.status === "draft" ? await listBankAccounts(getDb(), toActor(user), companyId) : [];
+    const customers =
+      document.status === "draft" && permissions.canEdit
+        ? await listCustomersIfAllowed(user, companyId)
+        : [];
     let creditNotes: Extract<DocumentPageData, { status: "ok" }>["creditNotes"] = null;
     if (document.status === "issued" && document.draft.type === "invoice") {
       try {
@@ -138,7 +158,15 @@ export async function documentPageData(
         creditNotes = { status: "error" };
       }
     }
-    return { status: "ok", document, permissions, taxCategories, bankAccounts, creditNotes };
+    return {
+      status: "ok",
+      document,
+      permissions,
+      taxCategories,
+      bankAccounts,
+      customers,
+      creditNotes,
+    };
   } catch (err) {
     return denied(err);
   }

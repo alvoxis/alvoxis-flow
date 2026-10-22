@@ -19,6 +19,11 @@ import {
 import { Alert, Button, Field } from "@/components/ui/form";
 import { type BankAccountItem, formatIban } from "@/features/bank-accounts/model";
 import {
+  addDays,
+  buyerFromCounterparty,
+  type CounterpartyItem,
+} from "@/features/counterparties/model";
+import {
   type ApiDocument,
   type ApiIssue,
   type ApiOutcome,
@@ -51,6 +56,8 @@ export interface DocumentEditorProps {
   canManageTaxCategories: boolean;
   /** Active company bank accounts offered in the account picker, default first. */
   bankAccounts: BankAccountItem[];
+  /** Active customers offered to fill in the buyer (empty without customers.view). */
+  customers?: CounterpartyItem[];
 }
 
 /** Picker value for saved details that are not linked to an account (entered before accounts). */
@@ -85,12 +92,14 @@ export function DocumentEditor({
   taxCategories,
   canManageTaxCategories,
   bankAccounts,
+  customers = [],
 }: DocumentEditorProps) {
   const t = useTranslations("documents");
   const tPdf = useTranslations("documentPdf");
   const tCompany = useTranslations("company");
   const tCat = useTranslations("taxCategories");
   const tBank = useTranslations("bankAccounts");
+  const tParty = useTranslations("counterparties");
   const router = useRouter();
   const cancelIssueRef = useRef<HTMLButtonElement>(null);
   // Blocks a second "Issue now" click that lands before React re-renders the disabled button.
@@ -365,6 +374,40 @@ export function DocumentEditor({
 
       <fieldset className="space-y-3">
         <legend className="mb-2 text-sm font-semibold text-text">{t("sections.buyer")}</legend>
+        {canEdit && customers.length ? (
+          <div className="space-y-1.5" data-testid="customer-picker">
+            <label htmlFor="customer-picker" className="block text-sm font-medium text-text">
+              {tParty("picker.label")}
+            </label>
+            <select
+              id="customer-picker"
+              value=""
+              disabled={readOnly}
+              onChange={(e) => {
+                const c = customers.find((x) => x.id === e.target.value);
+                if (!c) return;
+                // The payment term sets the due date of invoices; the buyer is a copy.
+                const due =
+                  draft.type === "invoice" && c.paymentTermDays !== null && draft.issueDate
+                    ? { dueDate: addDays(draft.issueDate, c.paymentTermDays) }
+                    : {};
+                update({ buyer: buyerFromCounterparty(c), ...due });
+              }}
+              aria-describedby="customer-picker-hint"
+              className="w-full rounded-lg border border-border bg-surface-2 px-3 py-2.5 text-sm text-text focus:border-accent focus:outline-none"
+            >
+              <option value="">{tParty("picker.placeholder")}</option>
+              {customers.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.registrationNumber ? `${c.name} (${c.registrationNumber})` : c.name}
+                </option>
+              ))}
+            </select>
+            <p id="customer-picker-hint" className="text-xs text-muted">
+              {tParty("picker.hint")}
+            </p>
+          </div>
+        ) : null}
         <div className="grid gap-4 sm:grid-cols-2">
           {text(t("name"), "buyer.name", draft.buyer.name, (v) => updateBuyer({ name: v }), {
             maxLength: 300,

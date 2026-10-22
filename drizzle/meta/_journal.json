@@ -92,6 +92,13 @@
       "when": 1792178668000,
       "tag": "0012_company_bank_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792704740834,
+      "tag": "0013_counterparties",
+      "breakpoints": true
     }
   ]
 }

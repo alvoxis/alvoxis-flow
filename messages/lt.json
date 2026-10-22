@@ -584,6 +584,26 @@
           "incomplete": "Eilutei reikia kiekio ir vieneto kainos.",
           "flagsUnresolved": "Eilutėje yra nepatikrintų punktų."
         }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Įveskite pavadinimą."
+        },
+        "role": {
+          "required": "Pasirinkite bent vieną rolę: klientas ar tiekėjas."
+        },
+        "email": {
+          "invalid": "Įveskite teisingą el. pašto adresą."
+        },
+        "countryCode": {
+          "invalid": "Naudokite dviejų raidžių šalies kodą, pvz., LV."
+        },
+        "vatNumber": {
+          "invalid": "Įveskite PVM kodą su šalies priešdėliu, pvz., LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "Mokėjimo terminas turi būti nuo 0 iki 365 dienų."
+        }
       }
     },
     "taxCategory": "Mokesčių kategorija",
@@ -949,6 +969,89 @@
     "toast": {
       "region": "Pranešimai",
       "close": "Uždaryti pranešimą"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Pasirinkite įmonę.",
+      "none": "Pirmiausia sukurkite įmonę.",
+      "createCompany": "Sukurti įmonę"
+    },
+    "outcome": {
+      "invalid": "Patikrinkite pažymėtus laukus.",
+      "conflict": "Šis įrašas buvo pakeistas kitur. Įkelkite iš naujo, kad matytumėte naujausią versiją.",
+      "signedOut": "Jūsų sesija baigėsi. Prisijunkite dar kartą.",
+      "twoFactor": "Šiam veiksmui jūsų rolei reikalingas dviejų veiksnių autentifikavimas.",
+      "forbidden": "Neturite teisės atlikti šio veiksmo arba įmonė nebeaktyvi.",
+      "notFound": "Šio įrašo nebėra.",
+      "error": "Kažkas nepavyko. Bandykite dar kartą."
+    },
+    "reload": "Įkelti iš naujo"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "Asmenys ir įmonės, kuriems parduodate. Pasirinkite juos dokumentuose, kad užpildytumėte pirkėją.",
+      "supplier": "Įmonės, iš kurių perkate."
+    },
+    "readOnly": "Galite peržiūrėti šį sąrašą. Norint jį keisti, reikia rolės su valdymo teise.",
+    "search": "Paieška",
+    "searchPlaceholder": "Pavadinimas, įmonės ar PVM kodas, el. paštas",
+    "showArchived": "Rodyti archyvuotus",
+    "add": {
+      "customer": "Pridėti klientą",
+      "supplier": "Pridėti tiekėją"
+    },
+    "empty": {
+      "customer": "Klientų dar nėra.",
+      "supplier": "Tiekėjų dar nėra."
+    },
+    "noMatches": "Nieko nerasta.",
+    "create": "Pridėti",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "documents": "Dokumentai",
+    "archiveConfirmTitle": "Archyvuoti šį įrašą?",
+    "archiveConfirmBody": "Jis nebebus siūlomas kuriant dokumentus. Esami dokumentai nesikeis. Įrašą galėsite atkurti vėliau.",
+    "paymentTerm": "Mokėjimo terminas: {days} d.",
+    "role": {
+      "customer": "Klientas",
+      "supplier": "Tiekėjas"
+    },
+    "status": {
+      "archived": "Archyvuotas"
+    },
+    "fields": {
+      "name": "Pavadinimas",
+      "registrationNumber": "Įmonės kodas",
+      "vatNumber": "PVM mokėtojo kodas",
+      "email": "El. paštas",
+      "phone": "Telefonas",
+      "contactName": "Kontaktinis asmuo",
+      "addressLine1": "Adresas",
+      "addressLine2": "Adresas (2 eilutė)",
+      "postalCode": "Pašto kodas",
+      "city": "Miestas",
+      "countryCode": "Šalies kodas (LV, LT, EE, PL…)",
+      "paymentTermDays": "Mokėjimo terminas, dienos",
+      "notes": "Pastabos",
+      "roles": "Rolė"
+    },
+    "done": {
+      "created": "Įrašas pridėtas.",
+      "saved": "Pakeitimai išsaugoti.",
+      "archived": "Įrašas archyvuotas.",
+      "restored": "Įrašas atkurtas."
+    },
+    "outcome": {
+      "registrationTaken": "Aktyvus įrašas su šiuo įmonės kodu jau yra."
+    },
+    "picker": {
+      "label": "Užpildyti iš klientų",
+      "placeholder": "Pasirinkite klientą…",
+      "hint": "Nukopijuoja kliento duomenis į pirkėjo laukus; juos vis tiek galima redaguoti."
     }
   }
 }

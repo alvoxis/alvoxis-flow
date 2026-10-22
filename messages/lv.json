@@ -584,6 +584,26 @@
           "incomplete": "Rindai vajag daudzumu un vienības cenu.",
           "flagsUnresolved": "Rindai ir nepārbaudīti punkti."
         }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Ievadiet nosaukumu."
+        },
+        "role": {
+          "required": "Izvēlieties vismaz vienu lomu: klients vai piegādātājs."
+        },
+        "email": {
+          "invalid": "Ievadiet derīgu e-pasta adresi."
+        },
+        "countryCode": {
+          "invalid": "Izmantojiet divu burtu valsts kodu, piemēram, LV."
+        },
+        "vatNumber": {
+          "invalid": "Ievadiet PVN numuru ar valsts prefiksu, piemēram, LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "Apmaksas termiņam jābūt no 0 līdz 365 dienām."
+        }
       }
     },
     "taxCategory": "Nodokļu kategorija",
@@ -949,6 +969,89 @@
     "toast": {
       "region": "Paziņojumi",
       "close": "Aizvērt paziņojumu"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Izvēlieties uzņēmumu.",
+      "none": "Vispirms izveidojiet uzņēmumu.",
+      "createCompany": "Izveidot uzņēmumu"
+    },
+    "outcome": {
+      "invalid": "Lūdzu, pārbaudiet iezīmētos laukus.",
+      "conflict": "Šis ieraksts tika mainīts citur. Pārlādējiet, lai redzētu jaunāko versiju.",
+      "signedOut": "Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.",
+      "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
+      "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
+      "notFound": "Šis ieraksts vairs nepastāv.",
+      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz."
+    },
+    "reload": "Pārlādēt"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "Personas un uzņēmumi, kuriem pārdodat. Izvēlieties tos dokumentos, lai aizpildītu pircēju.",
+      "supplier": "Uzņēmumi, no kuriem pērkat."
+    },
+    "readOnly": "Jūs varat skatīt šo sarakstu. Lai to mainītu, nepieciešama loma ar pārvaldības atļauju.",
+    "search": "Meklēt",
+    "searchPlaceholder": "Nosaukums, reģistrācijas vai PVN numurs, e-pasts",
+    "showArchived": "Rādīt arhivētos",
+    "add": {
+      "customer": "Pievienot klientu",
+      "supplier": "Pievienot piegādātāju"
+    },
+    "empty": {
+      "customer": "Klientu vēl nav.",
+      "supplier": "Piegādātāju vēl nav."
+    },
+    "noMatches": "Nekas netika atrasts.",
+    "create": "Pievienot",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "documents": "Dokumenti",
+    "archiveConfirmTitle": "Arhivēt šo ierakstu?",
+    "archiveConfirmBody": "To vairs nepiedāvās, veidojot dokumentus. Esošie dokumenti nemainās. Ierakstu var atjaunot vēlāk.",
+    "paymentTerm": "Apmaksas termiņš: {days} dienas",
+    "role": {
+      "customer": "Klients",
+      "supplier": "Piegādātājs"
+    },
+    "status": {
+      "archived": "Arhivēts"
+    },
+    "fields": {
+      "name": "Nosaukums",
+      "registrationNumber": "Reģistrācijas numurs",
+      "vatNumber": "PVN numurs",
+      "email": "E-pasts",
+      "phone": "Tālrunis",
+      "contactName": "Kontaktpersona",
+      "addressLine1": "Adrese",
+      "addressLine2": "Adrese (2. rinda)",
+      "postalCode": "Pasta indekss",
+      "city": "Pilsēta",
+      "countryCode": "Valsts kods (LV, LT, EE, PL…)",
+      "paymentTermDays": "Apmaksas termiņš, dienas",
+      "notes": "Piezīmes",
+      "roles": "Loma"
+    },
+    "done": {
+      "created": "Ieraksts pievienots.",
+      "saved": "Izmaiņas saglabātas.",
+      "archived": "Ieraksts arhivēts.",
+      "restored": "Ieraksts atjaunots."
+    },
+    "outcome": {
+      "registrationTaken": "Aktīvs ieraksts ar šo reģistrācijas numuru jau pastāv."
+    },
+    "picker": {
+      "label": "Aizpildīt no klientiem",
+      "placeholder": "Izvēlieties klientu…",
+      "hint": "Iekopē klienta datus pircēja laukos; tos joprojām var labot."
     }
   }
 }

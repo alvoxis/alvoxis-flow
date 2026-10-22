@@ -584,6 +584,26 @@
           "incomplete": "Real peab olema kogus ja ühikuhind.",
           "flagsUnresolved": "Real on kontrollimata punkte."
         }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Sisestage nimi."
+        },
+        "role": {
+          "required": "Valige vähemalt üks roll: klient või tarnija."
+        },
+        "email": {
+          "invalid": "Sisestage kehtiv e-posti aadress."
+        },
+        "countryCode": {
+          "invalid": "Kasutage kahetähelist riigikoodi, nt LV."
+        },
+        "vatNumber": {
+          "invalid": "Sisestage KMKR number koos riigi eesliitega, nt LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "Maksetähtaeg peab olema 0 kuni 365 päeva."
+        }
       }
     },
     "taxCategory": "Maksukategooria",
@@ -949,6 +969,89 @@
     "toast": {
       "region": "Teavitused",
       "close": "Sulge teavitus"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Valige ettevõte.",
+      "none": "Looge esmalt ettevõte.",
+      "createCompany": "Loo ettevõte"
+    },
+    "outcome": {
+      "invalid": "Palun kontrollige esiletõstetud välju.",
+      "conflict": "Seda kirjet muudeti mujal. Laadige uuesti, et näha viimast versiooni.",
+      "signedOut": "Teie seanss on lõppenud. Palun logige uuesti sisse.",
+      "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
+      "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
+      "notFound": "Seda kirjet enam ei ole.",
+      "error": "Midagi läks valesti. Palun proovige uuesti."
+    },
+    "reload": "Laadi uuesti"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "Isikud ja ettevõtted, kellele müüte. Valige need dokumentides ostja andmete täitmiseks.",
+      "supplier": "Ettevõtted, kellelt ostate."
+    },
+    "readOnly": "Saate seda loendit vaadata. Muutmiseks on vaja haldusõigusega rolli.",
+    "search": "Otsi",
+    "searchPlaceholder": "Nimi, registri- või KMKR number, e-post",
+    "showArchived": "Näita arhiveerituid",
+    "add": {
+      "customer": "Lisa klient",
+      "supplier": "Lisa tarnija"
+    },
+    "empty": {
+      "customer": "Kliente veel pole.",
+      "supplier": "Tarnijaid veel pole."
+    },
+    "noMatches": "Otsingule vastet ei leitud.",
+    "create": "Lisa",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "documents": "Dokumendid",
+    "archiveConfirmTitle": "Kas arhiveerida see kirje?",
+    "archiveConfirmBody": "Seda ei pakuta enam dokumentide loomisel. Olemasolevad dokumendid ei muutu. Kirje saab hiljem taastada.",
+    "paymentTerm": "Maksetähtaeg: {days} päeva",
+    "role": {
+      "customer": "Klient",
+      "supplier": "Tarnija"
+    },
+    "status": {
+      "archived": "Arhiveeritud"
+    },
+    "fields": {
+      "name": "Nimi",
+      "registrationNumber": "Registrikood",
+      "vatNumber": "KMKR number",
+      "email": "E-post",
+      "phone": "Telefon",
+      "contactName": "Kontaktisik",
+      "addressLine1": "Aadress",
+      "addressLine2": "Aadress (2. rida)",
+      "postalCode": "Postiindeks",
+      "city": "Linn",
+      "countryCode": "Riigikood (LV, LT, EE, PL…)",
+      "paymentTermDays": "Maksetähtaeg, päeva",
+      "notes": "Märkused",
+      "roles": "Roll"
+    },
+    "done": {
+      "created": "Kirje lisatud.",
+      "saved": "Muudatused salvestatud.",
+      "archived": "Kirje arhiveeritud.",
+      "restored": "Kirje taastatud."
+    },
+    "outcome": {
+      "registrationTaken": "Selle registrikoodiga aktiivne kirje on juba olemas."
+    },
+    "picker": {
+      "label": "Täida klientide hulgast",
+      "placeholder": "Valige klient…",
+      "hint": "Kopeerib kliendi andmed ostja väljadele; neid saab endiselt muuta."
     }
   }
 }

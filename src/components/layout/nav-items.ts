@@ -38,13 +38,15 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     key: "customers",
     href: "/customers",
-    soon: true,
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/customers(\/|$)/,
     icon: "M16 20v-2a4 4 0 0 0-8 0v2M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8 8v-2a4 4 0 0 0-3-3.87M4 20v-2a4 4 0 0 1 3-3.87",
   },
   {
     key: "suppliers",
     href: "/suppliers",
-    soon: true,
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/suppliers(\/|$)/,
     icon: "M3 7h11v10H3V7Zm11 3h4l3 3v4h-7v-7ZM7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
   },
   {

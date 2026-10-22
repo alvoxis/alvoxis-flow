@@ -72,8 +72,22 @@ describe("main navigation", () => {
     expect(isNavItemActive(dashboard, "/companies/abc/documents")).toBe(false);
   });
 
+  // Company modules: active on their entry page and on any company's pages of that module.
+  const COMPANY_MODULES = ["customers", "suppliers"];
+
+  it.each(COMPANY_MODULES)("%s is enabled and active on its pages only", (key) => {
+    const item = NAV_ITEMS.find((i) => i.key === key)!;
+    expect(item.soon).toBe(false);
+    expect(isNavItemActive(item, `/${key}`)).toBe(true);
+    expect(isNavItemActive(item, `/companies/abc/${key}`)).toBe(true);
+    expect(isNavItemActive(item, `/companies/abc/${key}/xyz`)).toBe(true);
+    expect(isNavItemActive(item, `/companies/abc/${key}-old`)).toBe(false);
+    expect(isNavItemActive(item, "/companies/abc/documents")).toBe(false);
+  });
+
   it("modules that do not exist stay disabled and are never active", () => {
-    for (const item of NAV_ITEMS.filter((i) => i.key !== "dashboard" && i.key !== "documents")) {
+    const built = new Set(["dashboard", "documents", ...COMPANY_MODULES]);
+    for (const item of NAV_ITEMS.filter((i) => !built.has(i.key))) {
       expect(item.soon, item.key).toBe(true);
       expect(isNavItemActive(item, item.href)).toBe(false);
     }

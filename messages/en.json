@@ -584,6 +584,26 @@
           "incomplete": "A line needs a quantity and a unit price.",
           "flagsUnresolved": "A line has findings that have not been checked."
         }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Enter a name."
+        },
+        "role": {
+          "required": "Choose at least one role: customer or supplier."
+        },
+        "email": {
+          "invalid": "Enter a valid email address."
+        },
+        "countryCode": {
+          "invalid": "Use a two-letter country code, e.g. LV."
+        },
+        "vatNumber": {
+          "invalid": "Enter the VAT number with its country prefix, e.g. LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "The payment term must be between 0 and 365 days."
+        }
       }
     },
     "taxCategory": "Tax category",
@@ -949,6 +969,89 @@
     "toast": {
       "region": "Notifications",
       "close": "Close notification"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Choose a company.",
+      "none": "Create a company first.",
+      "createCompany": "Create a company"
+    },
+    "outcome": {
+      "invalid": "Please check the highlighted fields.",
+      "conflict": "This record was changed elsewhere. Reload to see the latest version.",
+      "signedOut": "Your session has ended. Please sign in again.",
+      "twoFactor": "Your role requires two-factor authentication for this action.",
+      "forbidden": "You do not have permission for this action, or the company is no longer active.",
+      "notFound": "This record no longer exists.",
+      "error": "Something went wrong. Please try again."
+    },
+    "reload": "Reload"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "The people and companies you sell to. Choose them in documents to fill in the buyer.",
+      "supplier": "The companies you buy from."
+    },
+    "readOnly": "You can view this list. Changing it needs a role with permission to manage it.",
+    "search": "Search",
+    "searchPlaceholder": "Name, registration or VAT number, email",
+    "showArchived": "Show archived",
+    "add": {
+      "customer": "Add customer",
+      "supplier": "Add supplier"
+    },
+    "empty": {
+      "customer": "No customers yet.",
+      "supplier": "No suppliers yet."
+    },
+    "noMatches": "Nothing matches the search.",
+    "create": "Add",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "restore": "Restore",
+    "documents": "Documents",
+    "archiveConfirmTitle": "Archive this record?",
+    "archiveConfirmBody": "It will no longer be offered when creating documents. Existing documents do not change. You can restore it later.",
+    "paymentTerm": "Payment term: {days} days",
+    "role": {
+      "customer": "Customer",
+      "supplier": "Supplier"
+    },
+    "status": {
+      "archived": "Archived"
+    },
+    "fields": {
+      "name": "Name",
+      "registrationNumber": "Registration number",
+      "vatNumber": "VAT number",
+      "email": "Email",
+      "phone": "Phone",
+      "contactName": "Contact person",
+      "addressLine1": "Address",
+      "addressLine2": "Address (line 2)",
+      "postalCode": "Postal code",
+      "city": "City",
+      "countryCode": "Country code (LV, LT, EE, PL…)",
+      "paymentTermDays": "Payment term, days",
+      "notes": "Notes",
+      "roles": "Role"
+    },
+    "done": {
+      "created": "Record added.",
+      "saved": "Changes saved.",
+      "archived": "Record archived.",
+      "restored": "Record restored."
+    },
+    "outcome": {
+      "registrationTaken": "An active record with this registration number already exists."
+    },
+    "picker": {
+      "label": "Fill in from customers",
+      "placeholder": "Choose a customer…",
+      "hint": "Copies the customer's details into the buyer fields; you can still edit them."
     }
   }
 }
