@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { type PdfAccent } from "@/lib/pdf-accent";
 import {
   boolean,
   check,
@@ -70,10 +71,18 @@ export const companies = pgTable(
     postalCode: text("postal_code"),
     city: text("city"),
     defaultLocale: localeCode("default_locale").notNull().default("en"),
+    /** Accent colour of the company's document PDFs, from the fixed palette in lib/pdf-accent. */
+    pdfAccent: text("pdf_accent").$type<PdfAccent>().notNull().default("navy"),
     archivedAt: timestamp("archived_at", { withTimezone: true }),
     ...timestamps,
   },
-  (t) => [check("companies_name_not_blank_ck", sql`length(trim(${t.name})) > 0`)],
+  (t) => [
+    check("companies_name_not_blank_ck", sql`length(trim(${t.name})) > 0`),
+    check(
+      "companies_pdf_accent_ck",
+      sql`${t.pdfAccent} in ('navy', 'graphite', 'blue', 'teal', 'green', 'burgundy')`,
+    ),
+  ],
 );
 
 /** Global catalog of permission keys (mirrors src/server/auth/permissions.ts). */
