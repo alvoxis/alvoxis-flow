@@ -1,5 +1,5 @@
 {
-  "id": "cfdd3910-4e06-4f20-af6c-687e11f81970",
+  "id": "7fa18aa7-32cb-4377-870a-728c08d53718",
   "prevId": "05dc7739-5898-4913-b674-36306fa8749f",
   "version": "7",
   "dialect": "postgresql",
@@ -218,6 +218,13 @@
           "notNull": true,
           "default": "'en'"
         },
+        "pdf_accent": {
+          "name": "pdf_accent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'navy'"
+        },
         "archived_at": {
           "name": "archived_at",
           "type": "timestamp with time zone",
@@ -248,6 +255,10 @@
         "companies_name_not_blank_ck": {
           "name": "companies_name_not_blank_ck",
           "value": "length(trim(\"companies\".\"name\")) > 0"
+        },
+        "companies_pdf_accent_ck": {
+          "name": "companies_pdf_accent_ck",
+          "value": "\"companies\".\"pdf_accent\" in ('navy', 'graphite', 'blue', 'teal', 'green', 'burgundy')"
         }
       },
       "isRLSEnabled": false
@@ -2322,258 +2333,6 @@
       },
       "policies": {},
       "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.counterparties": {
-      "name": "counterparties",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "company_id": {
-          "name": "company_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "is_customer": {
-          "name": "is_customer",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "is_supplier": {
-          "name": "is_supplier",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "registration_number": {
-          "name": "registration_number",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "vat_number": {
-          "name": "vat_number",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "email": {
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "contact_name": {
-          "name": "contact_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "address_line1": {
-          "name": "address_line1",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "address_line2": {
-          "name": "address_line2",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "postal_code": {
-          "name": "postal_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "city": {
-          "name": "city",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "country_code": {
-          "name": "country_code",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "payment_term_days": {
-          "name": "payment_term_days",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "notes": {
-          "name": "notes",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "version": {
-          "name": "version",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "archived_at": {
-          "name": "archived_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_by_user_id": {
-          "name": "created_by_user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "counterparties_active_registration_uq": {
-          "name": "counterparties_active_registration_uq",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "registration_number",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "where": "\"counterparties\".\"archived_at\" is null and \"counterparties\".\"registration_number\" is not null",
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "counterparties_company_name_idx": {
-          "name": "counterparties_company_name_idx",
-          "columns": [
-            {
-              "expression": "company_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "counterparties_company_id_companies_id_fk": {
-          "name": "counterparties_company_id_companies_id_fk",
-          "tableFrom": "counterparties",
-          "tableTo": "companies",
-          "columnsFrom": [
-            "company_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "counterparties_created_by_user_id_users_id_fk": {
-          "name": "counterparties_created_by_user_id_users_id_fk",
-          "tableFrom": "counterparties",
-          "tableTo": "users",
-          "columnsFrom": [
-            "created_by_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "counterparties_id_company_uq": {
-          "name": "counterparties_id_company_uq",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id",
-            "company_id"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "counterparties_role_ck": {
-          "name": "counterparties_role_ck",
-          "value": "\"counterparties\".\"is_customer\" or \"counterparties\".\"is_supplier\""
-        },
-        "counterparties_name_ck": {
-          "name": "counterparties_name_ck",
-          "value": "length(trim(\"counterparties\".\"name\")) > 0"
-        },
-        "counterparties_country_ck": {
-          "name": "counterparties_country_ck",
-          "value": "\"counterparties\".\"country_code\" is null or \"counterparties\".\"country_code\" ~ '^[A-Z]{2}$'"
-        },
-        "counterparties_payment_term_ck": {
-          "name": "counterparties_payment_term_ck",
-          "value": "\"counterparties\".\"payment_term_days\" is null or \"counterparties\".\"payment_term_days\" between 0 and 365"
-        },
-        "counterparties_version_ck": {
-          "name": "counterparties_version_ck",
-          "value": "\"counterparties\".\"version\" > 0"
-        }
-      },
       "isRLSEnabled": false
     }
   },
