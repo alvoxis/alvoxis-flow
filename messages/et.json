@@ -20,10 +20,15 @@
     "closeMenu": "Sulge menüü"
   },
   "topbar": {
-    "noCompany": "Ettevõtet pole valitud",
+    "noCompany": "Ettevõtet veel pole",
     "language": "Keel",
     "account": "Konto",
-    "notSignedIn": "Pole sisse logitud"
+    "notSignedIn": "Pole sisse logitud",
+    "currentCompany": "Praegune ettevõte"
+  },
+  "environment": {
+    "label": "Testkeskkond",
+    "testBanner": "See ei ole tootmiskeskkond. Kasutage ainult väljamõeldud andmeid: mitte päris arveid, kliente ega pangaandmeid."
   },
   "dashboard": {
     "title": "Ülevaade",
@@ -32,10 +37,13 @@
       "title": "Dokumendid",
       "drafts": "Mustandid",
       "issued": "Väljastatud",
-      "issuedTotal": "Väljastatute summa",
+      "invoicedNet": "Arveldatud, miinus kreeditarved",
       "empty": "Dokumente veel pole.",
       "unavailable": "Dokumendid ei ole teie rollile kättesaadavad või enne kaheastmelise autentimise seadistamist.",
-      "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta."
+      "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta.",
+      "loadError": "Dokumentide näitajaid ei õnnestunud praegu laadida. Dokumente see ei mõjuta; proovige hiljem uuesti.",
+      "createFirst": "Loo esimene dokument",
+      "paymentsNotTracked": "Makseid veel ei arvestata, seega ei näe siin, mis on tasutud, tasumata või tähtaja ületanud."
     }
   },
   "documentType": {
@@ -402,7 +410,7 @@
       "draft": "Mustand",
       "issued": "Väljastatud"
     },
-    "issuedNotice": "Dokument on väljastatud numbriga {number}. Väljastatud dokumente ei saa muuta.",
+    "issuedNotice": "Dokument on väljastatud numbriga <num>{number}</num>. Väljastatud dokumente ei saa muuta.",
     "readOnlyDraft": "Saate seda mustandit vaadata. Teie roll ei luba seda muuta.",
     "sellerHint": "Müüja andmed võetakse ettevõtte profiilist.",
     "sections": {
@@ -579,6 +587,18 @@
       },
       "total": {
         "mustBePositive": "Summa peab olema suurem kui null."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Mõned impordi punktid on veel kontrollimata."
+        },
+        "duplicates": {
+          "unacknowledged": "Kinnitage enne mustandi loomist võimalik duplikaat."
+        },
+        "line": {
+          "incomplete": "Real peab olema kogus ja ühikuhind.",
+          "flagsUnresolved": "Real on kontrollimata punkte."
+        }
       }
     },
     "taxCategory": "Maksukategooria",
@@ -652,6 +672,165 @@
       "choose": "Valige ettevõte, et avada selle dokumendid.",
       "none": "Dokumendid kuuluvad ettevõttele. Looge kõigepealt ettevõte.",
       "createCompany": "Loo ettevõte"
+    },
+    "filters": {
+      "search": "Otsing",
+      "searchPlaceholder": "Number või ostja",
+      "type": "Liik",
+      "anyType": "Kõik liigid",
+      "status": "Olek",
+      "anyStatus": "Kõik olekud",
+      "from": "Väljastatud alates",
+      "to": "Väljastatud kuni",
+      "sort": "Sorteeri",
+      "sorts": {
+        "date_desc": "Uuemad eespool",
+        "date_asc": "Vanemad eespool",
+        "number_asc": "Number (kasvav)",
+        "number_desc": "Number (kahanev)",
+        "amount_desc": "Summa (suurim eespool)",
+        "amount_asc": "Summa (väikseim eespool)"
+      },
+      "apply": "Rakenda",
+      "reset": "Lähtesta filtrid",
+      "noMatches": "Otsingule või filtritele ei vasta ükski dokument.",
+      "amountSortHint": "Summad sorteeritakse iga valuuta piires; mustanditel pole veel kogusummat ja need on lõpus.",
+      "showing": "{start}–{end} / {total}",
+      "previous": "Eelmine leht",
+      "next": "Järgmine leht",
+      "pagination": "Dokumentide loendi lehed"
+    },
+    "related": {
+      "creditNotesTitle": "Selle arve kreeditarved",
+      "empty": "Sellel arvel pole veel kreeditarveid.",
+      "loadError": "Selle arve kreeditarveid ei õnnestunud laadida. Laadige leht uuesti, et uuesti proovida."
+    },
+    "relation": {
+      "credits": "Kreeditarve arvele <link>{number}</link> kuupäevaga {date}",
+      "converted_from": "Väljastatud ettemaksuarve <link>{number}</link> alusel kuupäevaga {date}",
+      "delivers": "Saateleht arvele <link>{number}</link> kuupäevaga {date}",
+      "replaces": "Asendab arvet <link>{number}</link> kuupäevaga {date}"
+    },
+    "import": {
+      "open": "Impordi PDF",
+      "title": "Arve import PDF-ist",
+      "description": "Laadige üles oma ettevõtte arve PDF-ina ja kontrollige loetud andmeid enne mustandi loomist.",
+      "fileLabel": "PDF-fail",
+      "fileHint": "Tekstikihiga PDF, kuni {size} MB ja 20 lehekülge. Skannitud pilte veel lugeda ei saa.",
+      "privacy": "Faili loetakse meie serveris ainult andmete eraldamiseks, seda ei salvestata ega saadeta teistele teenustele.",
+      "read": "Loe PDF",
+      "reading": "Loen…",
+      "noFile": "Valige kõigepealt PDF-fail.",
+      "tooLarge": "Fail on suurem kui {size} MB.",
+      "notPdf": "See fail ei ole PDF.",
+      "unreadable": "PDF-i ei õnnestunud lugeda. Tekstikihita skannitud dokumente veel ei toetata.",
+      "fileRead": "{name}: loetud lehekülgi – {pages}",
+      "startOver": "Vali teine fail",
+      "findingsTitle": "Mida kontrollida",
+      "findingsHint": "Kontrollige iga allolevat punkti, muidu mustandit ei looda.",
+      "checked": "Olen seda kontrollinud",
+      "duplicatesTitle": "Sarnane dokument võib selles ettevõttes juba olemas olla:",
+      "duplicateStrength": {
+        "certain": "peaaegu kindlasti sama",
+        "likely": "tõenäoliselt sama",
+        "possible": "võib-olla sama"
+      },
+      "duplicateConfirm": "Olen olemasolevat dokumenti kontrollinud ja soovin siiski luua uue mustandi.",
+      "documentTitle": "Dokument",
+      "numberHint": "Failist loetud teadmiseks; mustand saab väljastamisel oma numbri.",
+      "partiesTitle": "Müüja ja ostja",
+      "sellerFixed": "Müüja: teie ettevõte ({name}) ettevõtte profiilist.",
+      "sellerRead": "Failist leitud müüja: {name}",
+      "buyerName": "Ostja nimi",
+      "buyerRegistrationNumber": "Ostja registrikood",
+      "buyerVatNumber": "Ostja KMKR number",
+      "taxTitle": "Maks",
+      "taxHint": "Maksukohtlemist ei võeta kunagi failist: valige ridadele kategooria selgesõnaliselt. Redaktoris saab seda iga rea jaoks muuta.",
+      "taxCategory": "Maksukategooria kõigile ridadele",
+      "noCategories": "Lisage enne importi maksukategooria.",
+      "linesTitle": "Read",
+      "printedTotal": "Rea summa failis: {amount}",
+      "noLines": "Failist ridu ei leitud.",
+      "totalsTitle": "Failis märgitud summad",
+      "totalsHint": "Ainult võrdluseks: mustandi summad arvutatakse selle ridade põhjal.",
+      "statementsTitle": "Tekst, millel võib olla maksu- või õiguslik tähendus",
+      "statementsHint": "Näidatud teie tähelepanuks, seda ei tõlgendata.",
+      "problems": {
+        "currency": "Valige valuuta.",
+        "issueDate": "Sisestage väljastamise kuupäev.",
+        "buyerName": "Sisestage ostja nimi.",
+        "taxCategory": "Valige maksukategooria.",
+        "lines": "Igal real peab olema kirjeldus, nullist erinev kogus ja ühikuhind.",
+        "findings": "Kontrollige kõiki punkte.",
+        "duplicates": "Kinnitage, et soovite võimalikule duplikaadile vaatamata luua uue mustandi."
+      },
+      "flags": {
+        "generic": "Kontrollige seda väärtust.",
+        "amount": {
+          "ambiguous": "Summat saab lugeda mitmel viisil (nt 1,234). Kontrollige numbreid."
+        },
+        "bankAccount": {
+          "ibanInvalid": "Failis oleva IBAN-i kontrollsumma on vale."
+        },
+        "buyer": {
+          "notFound": "Ostjat failist ei leitud."
+        },
+        "currency": {
+          "multiple": "Failis on rohkem kui üks valuuta.",
+          "notFound": "Failist valuutat ei leitud."
+        },
+        "date": {
+          "formatAmbiguous": "Kuupäeva saab lugeda mitmel viisil (nt 02/03/2026). Kontrollige kuupäevi."
+        },
+        "documentType": {
+          "unknown": "Dokumendi liiki ei tuvastatud."
+        },
+        "dueDate": {
+          "beforeIssueDate": "Maksetähtaeg on enne väljastamise kuupäeva."
+        },
+        "duplicate": {
+          "possible": "Sarnane dokument võib selles ettevõttes juba olemas olla."
+        },
+        "file": {
+          "noTextLayer": "Failil puudub tekstikiht (näib olevat skann), seda ei saa lugeda."
+        },
+        "identifier": {
+          "labelMismatch": "Registrikood või KMKR number ei vasta oma nimetusele.",
+          "unlabelled": "Number, mis võib olla registrikood või KMKR number, on ilma nimetuseta."
+        },
+        "issueDate": {
+          "notFound": "Väljastamise kuupäeva ei leitud.",
+          "unlabelled": "Väljastamise kuupäev võeti nimetuseta kuupäevast."
+        },
+        "line": {
+          "arithmeticMismatch": "Kogus × hind ei vasta failis märgitud rea summale."
+        },
+        "lines": {
+          "arithmeticMismatch": "Mõned read ei klapi (kogus × hind ≠ rea summa).",
+          "notFound": "Ridu ei leitud."
+        },
+        "number": {
+          "notFound": "Dokumendi numbrit ei leitud."
+        },
+        "seller": {
+          "notFound": "Müüjat failist ei leitud."
+        },
+        "statements": {
+          "found": "Failis on teksti, millel võib olla maksu- või õiguslik tähendus (näidatud allpool)."
+        },
+        "tax": {
+          "notShown": "Failis ei ole maksusummat.",
+          "treatmentRequiresConfirmation": "Maksukohtlemist ei võeta failist: valige maksukategooria.",
+          "zeroRateUnexplained": "Näidatud on 0 % maksumäär ilma selgituseta."
+        },
+        "total": {
+          "notFound": "Kogusummat ei leitud."
+        },
+        "totals": {
+          "linesMismatch": "Ridade summa ei vasta failis märgitud vahesummale.",
+          "sumMismatch": "Vahesumma ja maks ei anna kokku failis märgitud kogusummat."
+        }
+      }
     }
   },
   "taxCategories": {

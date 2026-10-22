@@ -20,10 +20,15 @@
     "closeMenu": "Aizvērt izvēlni"
   },
   "topbar": {
-    "noCompany": "Uzņēmums nav izvēlēts",
+    "noCompany": "Uzņēmuma vēl nav",
     "language": "Valoda",
     "account": "Konts",
-    "notSignedIn": "Nav pieteicies"
+    "notSignedIn": "Nav pieteicies",
+    "currentCompany": "Pašreizējais uzņēmums"
+  },
+  "environment": {
+    "label": "Testa vide",
+    "testBanner": "Šī nav produkcijas vide. Izmantojiet tikai izdomātus datus: nekādus īstus rēķinus, klientus vai bankas rekvizītus."
   },
   "dashboard": {
     "title": "Pārskats",
@@ -32,10 +37,13 @@
       "title": "Dokumenti",
       "drafts": "Melnraksti",
       "issued": "Izrakstīti",
-      "issuedTotal": "Izrakstīto summa",
+      "invoicedNet": "Izrakstīts rēķinos, atskaitot kredītrēķinus",
       "empty": "Dokumentu vēl nav.",
       "unavailable": "Dokumenti nav pieejami jūsu lomai vai līdz divfaktoru autentifikācijas iestatīšanai.",
-      "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām."
+      "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām.",
+      "loadError": "Dokumentu rādītājus šobrīd neizdevās ielādēt. Pašus dokumentus tas neietekmē; mēģiniet vēlāk vēlreiz.",
+      "createFirst": "Izveidot pirmo dokumentu",
+      "paymentsNotTracked": "Maksājumi vēl netiek uzskaitīti, tāpēc šeit nav redzams, kas ir apmaksāts, neapmaksāts vai kavēts."
     }
   },
   "documentType": {
@@ -402,7 +410,7 @@
       "draft": "Melnraksts",
       "issued": "Izrakstīts"
     },
-    "issuedNotice": "Dokuments izrakstīts ar Nr. {number}. Izrakstītus dokumentus nevar labot.",
+    "issuedNotice": "Dokuments izrakstīts ar Nr. <num>{number}</num>. Izrakstītus dokumentus nevar labot.",
     "readOnlyDraft": "Jūs varat skatīt šo melnrakstu. Jūsu loma neļauj to mainīt.",
     "sellerHint": "Pārdevēja dati tiek ņemti no uzņēmuma profila.",
     "sections": {
@@ -579,6 +587,18 @@
       },
       "total": {
         "mustBePositive": "Summai jābūt lielākai par nulli."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Daži importa punkti vēl nav pārbaudīti."
+        },
+        "duplicates": {
+          "unacknowledged": "Pirms melnraksta izveides apstipriniet iespējamo dublikātu."
+        },
+        "line": {
+          "incomplete": "Rindai vajag daudzumu un vienības cenu.",
+          "flagsUnresolved": "Rindai ir nepārbaudīti punkti."
+        }
       }
     },
     "taxCategory": "Nodokļu kategorija",
@@ -652,6 +672,165 @@
       "choose": "Izvēlieties uzņēmumu, lai atvērtu tā dokumentus.",
       "none": "Dokumenti pieder uzņēmumam. Vispirms izveidojiet uzņēmumu.",
       "createCompany": "Izveidot uzņēmumu"
+    },
+    "filters": {
+      "search": "Meklēt",
+      "searchPlaceholder": "Numurs vai pircējs",
+      "type": "Veids",
+      "anyType": "Visi veidi",
+      "status": "Statuss",
+      "anyStatus": "Visi statusi",
+      "from": "Izrakstīts no",
+      "to": "Izrakstīts līdz",
+      "sort": "Kārtot pēc",
+      "sorts": {
+        "date_desc": "Jaunākie vispirms",
+        "date_asc": "Vecākie vispirms",
+        "number_asc": "Numurs (A–Z)",
+        "number_desc": "Numurs (Z–A)",
+        "amount_desc": "Summa (lielākā vispirms)",
+        "amount_asc": "Summa (mazākā vispirms)"
+      },
+      "apply": "Lietot",
+      "reset": "Notīrīt filtrus",
+      "noMatches": "Meklēšanai vai filtriem neatbilst neviens dokuments.",
+      "amountSortHint": "Summas tiek kārtotas katras valūtas ietvaros; melnrakstiem vēl nav kopsummas, tie ir beigās.",
+      "showing": "{start}–{end} no {total}",
+      "previous": "Iepriekšējā lapa",
+      "next": "Nākamā lapa",
+      "pagination": "Dokumentu saraksta lapas"
+    },
+    "related": {
+      "creditNotesTitle": "Šī rēķina kredītrēķini",
+      "empty": "Šim rēķinam vēl nav kredītrēķinu.",
+      "loadError": "Šī rēķina kredītrēķinus neizdevās ielādēt. Pārlādējiet lapu, lai mēģinātu vēlreiz."
+    },
+    "relation": {
+      "credits": "Kredītrēķins rēķinam <link>{number}</link> no {date}",
+      "converted_from": "Izrakstīts, pamatojoties uz avansa rēķinu <link>{number}</link> no {date}",
+      "delivers": "Pavadzīme rēķinam <link>{number}</link> no {date}",
+      "replaces": "Aizstāj rēķinu <link>{number}</link> no {date}"
+    },
+    "import": {
+      "open": "Importēt PDF",
+      "title": "Rēķina imports no PDF",
+      "description": "Nolasiet jūsu uzņēmuma rēķinu PDF formātā un pārbaudiet iegūtos datus, pirms tiek izveidots melnraksts.",
+      "fileLabel": "PDF fails",
+      "fileHint": "PDF ar teksta slāni, līdz {size} MB un 20 lapām. Skenētus attēlus pagaidām nevar nolasīt.",
+      "privacy": "Fails tiek nolasīts mūsu serverī tikai datu iegūšanai, netiek saglabāts un netiek nosūtīts citiem pakalpojumiem.",
+      "read": "Nolasīt PDF",
+      "reading": "Nolasa…",
+      "noFile": "Vispirms izvēlieties PDF failu.",
+      "tooLarge": "Fails ir lielāks par {size} MB.",
+      "notPdf": "Šis fails nav PDF.",
+      "unreadable": "PDF neizdevās nolasīt. Skenēti dokumenti bez teksta slāņa pagaidām netiek atbalstīti.",
+      "fileRead": "{name}: nolasītas lapas — {pages}",
+      "startOver": "Izvēlēties citu failu",
+      "findingsTitle": "Kas jāpārbauda",
+      "findingsHint": "Pārbaudiet katru punktu zemāk, citādi melnraksts netiks izveidots.",
+      "checked": "Esmu to pārbaudījis",
+      "duplicatesTitle": "Līdzīgs dokuments šajā uzņēmumā jau var būt:",
+      "duplicateStrength": {
+        "certain": "gandrīz noteikti tas pats",
+        "likely": "visticamāk tas pats",
+        "possible": "iespējams, tas pats"
+      },
+      "duplicateConfirm": "Esmu pārbaudījis esošo dokumentu un tomēr vēlos izveidot jaunu melnrakstu.",
+      "documentTitle": "Dokuments",
+      "numberHint": "Nolasīts no faila uzziņai; melnraksts saņems savu numuru, kad tiks izrakstīts.",
+      "partiesTitle": "Pārdevējs un pircējs",
+      "sellerFixed": "Pārdevējs: jūsu uzņēmums ({name}) no uzņēmuma profila.",
+      "sellerRead": "Failā atrastais pārdevējs: {name}",
+      "buyerName": "Pircēja nosaukums",
+      "buyerRegistrationNumber": "Pircēja reģistrācijas numurs",
+      "buyerVatNumber": "Pircēja PVN numurs",
+      "taxTitle": "Nodoklis",
+      "taxHint": "Nodokļa režīms nekad netiek ņemts no faila: izvēlieties kategoriju rindām tieši. Redaktorā to var mainīt katrai rindai.",
+      "taxCategory": "Nodokļa kategorija visām rindām",
+      "noCategories": "Pirms importa pievienojiet nodokļa kategoriju.",
+      "linesTitle": "Rindas",
+      "printedTotal": "Rindas summa failā: {amount}",
+      "noLines": "Failā rindas netika atrastas.",
+      "totalsTitle": "Failā norādītās kopsummas",
+      "totalsHint": "Tikai salīdzināšanai: melnraksta kopsummas aprēķina no tā rindām.",
+      "statementsTitle": "Teksts, kam var būt nodokļu vai juridiska nozīme",
+      "statementsHint": "Parādīts jūsu uzmanībai, netiek interpretēts.",
+      "problems": {
+        "currency": "Izvēlieties valūtu.",
+        "issueDate": "Ievadiet izrakstīšanas datumu.",
+        "buyerName": "Ievadiet pircēja nosaukumu.",
+        "taxCategory": "Izvēlieties nodokļa kategoriju.",
+        "lines": "Katrai rindai vajag aprakstu, daudzumu, kas nav nulle, un vienības cenu.",
+        "findings": "Pārbaudiet visus punktus.",
+        "duplicates": "Apstipriniet, ka vēlaties izveidot jaunu melnrakstu, neskatoties uz iespējamo dublikātu."
+      },
+      "flags": {
+        "generic": "Pārbaudiet šo vērtību.",
+        "amount": {
+          "ambiguous": "Summu var nolasīt dažādi (piem., 1,234). Pārbaudiet skaitļus."
+        },
+        "bankAccount": {
+          "ibanInvalid": "Failā esošajam IBAN ir nepareiza kontrolsumma."
+        },
+        "buyer": {
+          "notFound": "Pircējs failā netika atrasts."
+        },
+        "currency": {
+          "multiple": "Failā ir vairāk nekā viena valūta.",
+          "notFound": "Failā netika atrasta valūta."
+        },
+        "date": {
+          "formatAmbiguous": "Datumu var nolasīt dažādi (piem., 02/03/2026). Pārbaudiet datumus."
+        },
+        "documentType": {
+          "unknown": "Dokumenta veids netika atpazīts."
+        },
+        "dueDate": {
+          "beforeIssueDate": "Apmaksas termiņš ir pirms izrakstīšanas datuma."
+        },
+        "duplicate": {
+          "possible": "Līdzīgs dokuments šajā uzņēmumā jau var būt."
+        },
+        "file": {
+          "noTextLayer": "Failam nav teksta slāņa (izskatās pēc skenējuma), to nevar nolasīt."
+        },
+        "identifier": {
+          "labelMismatch": "Reģistrācijas vai PVN numurs neatbilst savam nosaukumam.",
+          "unlabelled": "Numurs, kas varētu būt reģistrācijas vai PVN numurs, norādīts bez nosaukuma."
+        },
+        "issueDate": {
+          "notFound": "Izrakstīšanas datums netika atrasts.",
+          "unlabelled": "Izrakstīšanas datums ņemts no datuma bez nosaukuma."
+        },
+        "line": {
+          "arithmeticMismatch": "Daudzums × cena nesakrīt ar rindas summu failā."
+        },
+        "lines": {
+          "arithmeticMismatch": "Dažas rindas nesakrīt (daudzums × cena ≠ rindas summa).",
+          "notFound": "Rindas netika atrastas."
+        },
+        "number": {
+          "notFound": "Dokumenta numurs netika atrasts."
+        },
+        "seller": {
+          "notFound": "Pārdevējs failā netika atrasts."
+        },
+        "statements": {
+          "found": "Failā ir teksts, kam var būt nodokļu vai juridiska nozīme (parādīts zemāk)."
+        },
+        "tax": {
+          "notShown": "Failā nav norādīta nodokļa summa.",
+          "treatmentRequiresConfirmation": "Nodokļa režīms netiek ņemts no faila: izvēlieties nodokļa kategoriju.",
+          "zeroRateUnexplained": "Norādīta 0 % nodokļa likme bez paskaidrojuma."
+        },
+        "total": {
+          "notFound": "Kopsumma netika atrasta."
+        },
+        "totals": {
+          "linesMismatch": "Rindu summa nesakrīt ar failā norādīto starpsummu.",
+          "sumMismatch": "Starpsumma un nodoklis nesakrīt ar failā norādīto kopsummu."
+        }
+      }
     }
   },
   "taxCategories": {

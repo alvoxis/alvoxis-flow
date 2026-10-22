@@ -4,27 +4,44 @@ import { issuedShare, summarizeDocuments } from "@/features/dashboard/summary";
 import { localeOfPath } from "@/features/errors/locale";
 
 describe("summarizeDocuments", () => {
-  it("counts drafts and issued documents and sums issued totals per currency", () => {
+  it("counts drafts and issued documents and sums invoiced totals per currency", () => {
     const s = summarizeDocuments([
-      { status: "draft", currency: "EUR", grossTotal: null },
-      { status: "issued", currency: "EUR", grossTotal: "121.00" },
-      { status: "issued", currency: "EUR", grossTotal: "0.10" },
-      { status: "issued", currency: "PLN", grossTotal: "1000.50" },
+      { type: "invoice", status: "draft", currency: "EUR", grossTotal: null },
+      { type: "invoice", status: "issued", currency: "EUR", grossTotal: "121.00" },
+      { type: "invoice", status: "issued", currency: "EUR", grossTotal: "0.10" },
+      { type: "invoice", status: "issued", currency: "PLN", grossTotal: "1000.50" },
       // Issued delivery notes have no amount.
-      { status: "issued", currency: "EUR", grossTotal: null },
+      { type: "delivery_note", status: "issued", currency: "EUR", grossTotal: null },
     ]);
     expect(s.drafts).toBe(1);
     expect(s.issued).toBe(4);
-    expect(s.issuedTotals).toEqual([
+    expect(s.invoicedTotals).toEqual([
       { currency: "EUR", amount: "121.10" },
       { currency: "PLN", amount: "1000.50" },
     ]);
   });
 
+  it("subtracts issued credit notes and leaves proformas out", () => {
+    const s = summarizeDocuments([
+      { type: "invoice", status: "issued", currency: "EUR", grossTotal: "1320.00" },
+      { type: "credit_note", status: "issued", currency: "EUR", grossTotal: "-324.00" },
+      // A draft credit note has not reduced anything yet.
+      { type: "credit_note", status: "draft", currency: "EUR", grossTotal: "-996.00" },
+      { type: "proforma", status: "issued", currency: "EUR", grossTotal: "5000.00" },
+      { type: "invoice", status: "issued", currency: "PLN", grossTotal: "200.00" },
+      { type: "credit_note", status: "issued", currency: "PLN", grossTotal: "-200.00" },
+    ]);
+    expect(s.issued).toBe(5);
+    // PLN is fully credited: zero is not shown as an amount.
+    expect(s.invoicedTotals).toEqual([{ currency: "EUR", amount: "996.00" }]);
+  });
+
   it("is empty without documents and never invents amounts for drafts", () => {
-    expect(summarizeDocuments([])).toEqual({ drafts: 0, issued: 0, issuedTotals: [] });
+    expect(summarizeDocuments([])).toEqual({ drafts: 0, issued: 0, invoicedTotals: [] });
     expect(
-      summarizeDocuments([{ status: "draft", currency: "EUR", grossTotal: "50.00" }]).issuedTotals,
+      summarizeDocuments([
+        { type: "invoice", status: "draft", currency: "EUR", grossTotal: "50.00" },
+      ]).invoicedTotals,
     ).toEqual([]);
   });
 });

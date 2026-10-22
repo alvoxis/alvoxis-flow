@@ -7,21 +7,29 @@ import { DocumentEditor } from "@/components/documents/document-editor";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { DocumentView } from "@/components/documents/document-view";
 import { PdfLinks } from "@/components/documents/pdf-links";
+import { DocumentRelationLink, RelatedCreditNotes } from "@/components/documents/related-documents";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Alert } from "@/components/ui/form";
+import { parseDocumentListQuery, toQueryString } from "@/features/documents/list-query";
 import { Link } from "@/i18n/navigation";
 import { requirePageUser } from "@/server/auth/page-session";
 import { documentPageData } from "@/server/documents/page-data";
 
 type Params = { params: Promise<{ locale: Locale; companyId: string; documentId: string }> };
+type Props = Params & { searchParams: Promise<{ back?: string | string[] }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const t = await getTranslations({ locale: (await params).locale, namespace: "documents" });
   return { title: t("title") };
 }
 
-export default async function DocumentPage({ params }: Params) {
+export default async function DocumentPage({ params, searchParams }: Props) {
   const { locale, companyId, documentId } = await params;
+  // The list view to return to, rebuilt from known parameters only (never a free URL).
+  const { back: rawBack } = await searchParams;
+  const backQuery = toQueryString(
+    parseDocumentListQuery(new URLSearchParams(Array.isArray(rawBack) ? rawBack[0] : rawBack)),
+  );
   setRequestLocale(locale);
   const user = await requirePageUser(locale);
   const data = await documentPageData(user, companyId, documentId);
@@ -31,8 +39,9 @@ export default async function DocumentPage({ params }: Params) {
   const tType = await getTranslations("documentPdf.title");
   const back = (
     <Link
-      href={`/companies/${companyId}/documents`}
-      className="text-sm text-accent hover:underline"
+      href={`/companies/${companyId}/documents${backQuery}`}
+      className="text-sm text-violet-300 hover:underline"
+      data-testid="documents-back-link"
     >
       {t("back")}
     </Link>
@@ -56,18 +65,29 @@ export default async function DocumentPage({ params }: Params) {
         title={
           <span className="flex flex-wrap items-center gap-2">
             <span data-testid="document-heading">
-              {tType(document.draft.type)} {document.number ?? `(${t("draftHeading")})`}
+              {tType(document.draft.type)} {/* Document numbers never break at their hyphens. */}
+              <span className="whitespace-nowrap">
+                {document.number ?? `(${t("draftHeading")})`}
+              </span>
             </span>
             <DocumentStatusBadge status={document.status} />
           </span>
         }
         action={back}
       />
+      {document.draft.relation ? (
+        <div className="mb-4">
+          <DocumentRelationLink companyId={companyId} relation={document.draft.relation} />
+        </div>
+      ) : null}
       {issued ? (
         <div className="space-y-6">
           <Alert tone="success">
             <span data-testid="issued-notice">
-              {t("issuedNotice", { number: document.number ?? "" })}
+              {t.rich("issuedNotice", {
+                number: document.number ?? "",
+                num: (chunks) => <span className="whitespace-nowrap">{chunks}</span>,
+              })}
             </span>
           </Alert>
           <PdfLinks companyId={companyId} documentId={document.id} draft={false} />
@@ -87,6 +107,12 @@ export default async function DocumentPage({ params }: Params) {
                   unit: l.unit,
                 })),
               }}
+            />
+          ) : null}
+          {data.creditNotes ? (
+            <RelatedCreditNotes
+              companyId={companyId}
+              items={data.creditNotes.status === "ok" ? data.creditNotes.items : null}
             />
           ) : null}
           <DocumentView document={document} />

@@ -20,10 +20,15 @@
     "closeMenu": "Uždaryti meniu"
   },
   "topbar": {
-    "noCompany": "Įmonė nepasirinkta",
+    "noCompany": "Įmonės dar nėra",
     "language": "Kalba",
     "account": "Paskyra",
-    "notSignedIn": "Neprisijungta"
+    "notSignedIn": "Neprisijungta",
+    "currentCompany": "Dabartinė įmonė"
+  },
+  "environment": {
+    "label": "Bandomoji aplinka",
+    "testBanner": "Tai ne gamybinė aplinka. Naudokite tik išgalvotus duomenis: jokių tikrų sąskaitų, klientų ar banko rekvizitų."
   },
   "dashboard": {
     "title": "Apžvalga",
@@ -32,10 +37,13 @@
       "title": "Dokumentai",
       "drafts": "Juodraščiai",
       "issued": "Išrašyti",
-      "issuedTotal": "Išrašytų suma",
+      "invoicedNet": "Išrašyta sąskaitomis, atėmus kreditines sąskaitas",
       "empty": "Dokumentų dar nėra.",
       "unavailable": "Dokumentai nepasiekiami jūsų vaidmeniui arba kol nenustatytas dviejų veiksnių autentifikavimas.",
-      "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų."
+      "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų.",
+      "loadError": "Dokumentų rodiklių šiuo metu įkelti nepavyko. Patiems dokumentams tai neturi įtakos; bandykite vėliau.",
+      "createFirst": "Sukurti pirmą dokumentą",
+      "paymentsNotTracked": "Mokėjimai dar neapskaitomi, todėl čia nerodoma, kas apmokėta, neapmokėta ar pradelsta."
     }
   },
   "documentType": {
@@ -402,7 +410,7 @@
       "draft": "Juodraštis",
       "issued": "Išrašytas"
     },
-    "issuedNotice": "Dokumentas išrašytas Nr. {number}. Išrašytų dokumentų keisti negalima.",
+    "issuedNotice": "Dokumentas išrašytas Nr. <num>{number}</num>. Išrašytų dokumentų keisti negalima.",
     "readOnlyDraft": "Galite peržiūrėti šį juodraštį. Jūsų vaidmuo neleidžia jo keisti.",
     "sellerHint": "Pardavėjo duomenys imami iš įmonės profilio.",
     "sections": {
@@ -579,6 +587,18 @@
       },
       "total": {
         "mustBePositive": "Suma turi būti didesnė už nulį."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Kai kurie importo punktai dar nepatikrinti."
+        },
+        "duplicates": {
+          "unacknowledged": "Prieš kurdami juodraštį patvirtinkite galimą dublikatą."
+        },
+        "line": {
+          "incomplete": "Eilutei reikia kiekio ir vieneto kainos.",
+          "flagsUnresolved": "Eilutėje yra nepatikrintų punktų."
+        }
       }
     },
     "taxCategory": "Mokesčių kategorija",
@@ -652,6 +672,165 @@
       "choose": "Pasirinkite įmonę, kad atidarytumėte jos dokumentus.",
       "none": "Dokumentai priklauso įmonei. Pirmiausia sukurkite įmonę.",
       "createCompany": "Sukurti įmonę"
+    },
+    "filters": {
+      "search": "Paieška",
+      "searchPlaceholder": "Numeris arba pirkėjas",
+      "type": "Tipas",
+      "anyType": "Visi tipai",
+      "status": "Būsena",
+      "anyStatus": "Visos būsenos",
+      "from": "Išrašyta nuo",
+      "to": "Išrašyta iki",
+      "sort": "Rikiuoti pagal",
+      "sorts": {
+        "date_desc": "Naujausi pirmiau",
+        "date_asc": "Seniausi pirmiau",
+        "number_asc": "Numeris (A–Z)",
+        "number_desc": "Numeris (Z–A)",
+        "amount_desc": "Suma (didžiausia pirmiau)",
+        "amount_asc": "Suma (mažiausia pirmiau)"
+      },
+      "apply": "Taikyti",
+      "reset": "Išvalyti filtrus",
+      "noMatches": "Pagal paiešką ar filtrus dokumentų nerasta.",
+      "amountSortHint": "Sumos rikiuojamos kiekvienos valiutos viduje; juodraščiai dar neturi sumos ir rodomi pabaigoje.",
+      "showing": "{start}–{end} iš {total}",
+      "previous": "Ankstesnis puslapis",
+      "next": "Kitas puslapis",
+      "pagination": "Dokumentų sąrašo puslapiai"
+    },
+    "related": {
+      "creditNotesTitle": "Šios sąskaitos kreditinės sąskaitos",
+      "empty": "Šiai sąskaitai kreditinių sąskaitų dar nėra.",
+      "loadError": "Nepavyko įkelti šios sąskaitos kreditinių sąskaitų. Įkelkite puslapį iš naujo ir bandykite dar kartą."
+    },
+    "relation": {
+      "credits": "Kreditinė sąskaita sąskaitai faktūrai <link>{number}</link>, išrašytai {date}",
+      "converted_from": "Išrašyta pagal išankstinę sąskaitą <link>{number}</link>, išrašytą {date}",
+      "delivers": "Važtaraštis sąskaitai faktūrai <link>{number}</link>, išrašytai {date}",
+      "replaces": "Pakeičia sąskaitą faktūrą <link>{number}</link>, išrašytą {date}"
+    },
+    "import": {
+      "open": "Importuoti PDF",
+      "title": "Sąskaitos importas iš PDF",
+      "description": "Įkelkite savo įmonės sąskaitą PDF formatu ir patikrinkite išgautus duomenis prieš sukuriant juodraštį.",
+      "fileLabel": "PDF failas",
+      "fileHint": "PDF su teksto sluoksniu, iki {size} MB ir 20 puslapių. Nuskenuotų vaizdų kol kas nuskaityti negalima.",
+      "privacy": "Failas mūsų serveryje skaitomas tik duomenims išgauti, nesaugomas ir neperduodamas kitoms paslaugoms.",
+      "read": "Nuskaityti PDF",
+      "reading": "Skaitoma…",
+      "noFile": "Pirmiausia pasirinkite PDF failą.",
+      "tooLarge": "Failas didesnis nei {size} MB.",
+      "notPdf": "Šis failas nėra PDF.",
+      "unreadable": "PDF nepavyko nuskaityti. Nuskenuoti dokumentai be teksto sluoksnio kol kas nepalaikomi.",
+      "fileRead": "{name}: nuskaityta puslapių – {pages}",
+      "startOver": "Pasirinkti kitą failą",
+      "findingsTitle": "Ką reikia patikrinti",
+      "findingsHint": "Patikrinkite kiekvieną punktą žemiau, kitaip juodraštis nebus sukurtas.",
+      "checked": "Patikrinau",
+      "duplicatesTitle": "Panašus dokumentas šioje įmonėje jau gali būti:",
+      "duplicateStrength": {
+        "certain": "beveik tikrai tas pats",
+        "likely": "tikriausiai tas pats",
+        "possible": "galbūt tas pats"
+      },
+      "duplicateConfirm": "Patikrinau esamą dokumentą ir vis tiek noriu sukurti naują juodraštį.",
+      "documentTitle": "Dokumentas",
+      "numberHint": "Nuskaitytas iš failo informacijai; juodraštis gaus savo numerį, kai bus išrašytas.",
+      "partiesTitle": "Pardavėjas ir pirkėjas",
+      "sellerFixed": "Pardavėjas: jūsų įmonė ({name}) iš įmonės profilio.",
+      "sellerRead": "Faile rastas pardavėjas: {name}",
+      "buyerName": "Pirkėjo pavadinimas",
+      "buyerRegistrationNumber": "Pirkėjo įmonės kodas",
+      "buyerVatNumber": "Pirkėjo PVM kodas",
+      "taxTitle": "Mokestis",
+      "taxHint": "Mokesčių režimas niekada neimamas iš failo: pasirinkite kategoriją eilutėms aiškiai. Redaktoriuje ją galima pakeisti kiekvienai eilutei.",
+      "taxCategory": "Mokesčio kategorija visoms eilutėms",
+      "noCategories": "Prieš importuodami pridėkite mokesčio kategoriją.",
+      "linesTitle": "Eilutės",
+      "printedTotal": "Eilutės suma faile: {amount}",
+      "noLines": "Faile eilučių nerasta.",
+      "totalsTitle": "Faile nurodytos sumos",
+      "totalsHint": "Tik palyginimui: juodraščio sumos skaičiuojamos iš jo eilučių.",
+      "statementsTitle": "Tekstas, galintis turėti mokestinę ar teisinę reikšmę",
+      "statementsHint": "Parodytas jūsų dėmesiui, neinterpretuojamas.",
+      "problems": {
+        "currency": "Pasirinkite valiutą.",
+        "issueDate": "Įveskite išrašymo datą.",
+        "buyerName": "Įveskite pirkėjo pavadinimą.",
+        "taxCategory": "Pasirinkite mokesčio kategoriją.",
+        "lines": "Kiekvienai eilutei reikia aprašymo, nenulinio kiekio ir vieneto kainos.",
+        "findings": "Patikrinkite visus punktus.",
+        "duplicates": "Patvirtinkite, kad norite sukurti naują juodraštį nepaisant galimo dublikato."
+      },
+      "flags": {
+        "generic": "Patikrinkite šią reikšmę.",
+        "amount": {
+          "ambiguous": "Sumą galima perskaityti skirtingai (pvz., 1,234). Patikrinkite skaičius."
+        },
+        "bankAccount": {
+          "ibanInvalid": "Faile esančio IBAN kontrolinė suma neteisinga."
+        },
+        "buyer": {
+          "notFound": "Pirkėjas faile nerastas."
+        },
+        "currency": {
+          "multiple": "Faile yra daugiau nei viena valiuta.",
+          "notFound": "Faile valiuta nerasta."
+        },
+        "date": {
+          "formatAmbiguous": "Datą galima perskaityti skirtingai (pvz., 02/03/2026). Patikrinkite datas."
+        },
+        "documentType": {
+          "unknown": "Dokumento tipas neatpažintas."
+        },
+        "dueDate": {
+          "beforeIssueDate": "Apmokėjimo terminas yra ankstesnis už išrašymo datą."
+        },
+        "duplicate": {
+          "possible": "Panašus dokumentas šioje įmonėje jau gali būti."
+        },
+        "file": {
+          "noTextLayer": "Faile nėra teksto sluoksnio (panašu į skenuotą), jo nuskaityti negalima."
+        },
+        "identifier": {
+          "labelMismatch": "Įmonės ar PVM kodas neatitinka savo pavadinimo.",
+          "unlabelled": "Numeris, galintis būti įmonės ar PVM kodu, nurodytas be pavadinimo."
+        },
+        "issueDate": {
+          "notFound": "Išrašymo data nerasta.",
+          "unlabelled": "Išrašymo data paimta iš datos be pavadinimo."
+        },
+        "line": {
+          "arithmeticMismatch": "Kiekis × kaina nesutampa su eilutės suma faile."
+        },
+        "lines": {
+          "arithmeticMismatch": "Kai kurios eilutės nesutampa (kiekis × kaina ≠ eilutės suma).",
+          "notFound": "Eilučių nerasta."
+        },
+        "number": {
+          "notFound": "Dokumento numeris nerastas."
+        },
+        "seller": {
+          "notFound": "Pardavėjas faile nerastas."
+        },
+        "statements": {
+          "found": "Faile yra teksto, galinčio turėti mokestinę ar teisinę reikšmę (parodyta žemiau)."
+        },
+        "tax": {
+          "notShown": "Faile nenurodyta mokesčio suma.",
+          "treatmentRequiresConfirmation": "Mokesčių režimas neimamas iš failo: pasirinkite mokesčio kategoriją.",
+          "zeroRateUnexplained": "Nurodytas 0 % mokesčio tarifas be paaiškinimo."
+        },
+        "total": {
+          "notFound": "Bendra suma nerasta."
+        },
+        "totals": {
+          "linesMismatch": "Eilučių suma nesutampa su faile nurodyta tarpine suma.",
+          "sumMismatch": "Tarpinė suma ir mokestis nesutampa su faile nurodyta bendra suma."
+        }
+      }
     }
   },
   "taxCategories": {

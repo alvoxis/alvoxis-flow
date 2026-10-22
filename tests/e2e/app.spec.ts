@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, signedInPage, test } from "./support";
 
 const TITLES = {
@@ -73,6 +74,24 @@ test("the main navigation is reachable on every screen size", async ({ page, bas
     const nav = page.getByRole("navigation").first();
     await expect(nav.getByRole("link", { name: "Documents" })).toBeVisible();
   }
+});
+
+test("a test environment says so on every page, before and after signing in", async ({
+  page,
+  baseURL,
+}) => {
+  await page.goto("/en/sign-in");
+  const banner = page.getByTestId("test-environment-banner");
+  await expect(banner).toBeVisible();
+  await expect(banner).toContainText("Test environment");
+  await expect(banner).toContainText("synthetic data only");
+  await signedInPage(page, baseURL!);
+  await page.goto("/ru");
+  await expect(banner).toContainText("Тестовая среда");
+  const axe = await new AxeBuilder({ page })
+    .include('[data-testid="test-environment-banner"]')
+    .analyze();
+  expect(axe.violations).toEqual([]);
 });
 
 test("sends security headers and serves the PWA manifest", async ({ request }) => {

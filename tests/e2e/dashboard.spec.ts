@@ -147,6 +147,13 @@ test("each company has its own card with its real figures, on every screen size"
     "href",
     `/en/companies/${beta}/documents`,
   );
+  // The empty state leads to creating the first document; payments are said to be untracked.
+  await expect(b.getByTestId("overview-create-document")).toHaveAttribute(
+    "href",
+    `/en/companies/${beta}/documents/new`,
+  );
+  await expect(page.getByTestId("overview-notes")).toContainText("Payments are not tracked yet");
+  await expect(a.getByText("Invoiced, net of credit notes")).toBeVisible();
 
   // No accessibility violations on the dashboard (WCAG 2.1 A/AA rules).
   const axe = await new AxeBuilder({ page })
@@ -160,6 +167,13 @@ test("each company has its own card with its real figures, on every screen size"
     await expect(a.getByTestId("overview-totals")).toBeVisible();
     expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
   }
+
+  // The top bar names the company of the current page (shown from sm), never "no company".
+  await page.setViewportSize({ width: 820, height: 900 });
+  await expect(page.getByTestId("topbar-company")).toHaveCount(0);
+  await a.getByTestId("company-documents-link").click();
+  await expect(page.getByTestId("topbar-company")).toHaveText(/Alfa Kartīte SIA/);
+  await page.goto("/en");
 
   // With reduced motion the cards have no transitions.
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -203,6 +217,7 @@ test("a role without documents.view sees no figures; other tenants' companies ne
   const c = card(page, shared);
   await expect(c.getByTestId("overview-unavailable")).toBeVisible();
   await expect(c.getByTestId("overview-totals")).toHaveCount(0);
+  await expect(c.getByTestId("overview-create-document")).toHaveCount(0);
   await expect(page.getByText("€12.00")).toHaveCount(0);
   await expect(page.getByText("Slēpta Kartīte SIA")).toHaveCount(0);
   expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);

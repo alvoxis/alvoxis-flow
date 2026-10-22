@@ -151,6 +151,47 @@ Untrusted input is shape-checked with Zod (`draftInputSchema`) before business v
 
 Scanned PDFs without a text layer are reported as unreadable (OCR is not implemented).
 
+### Import in the UI and HTTP API
+
+`/{locale}/companies/{companyId}/documents/import` is reached through "Import PDF" on the list.
+It is only for `documents.create`; other roles get a 404, and the API refuses them.
+
+- `POST …/documents/import/preview` (multipart: exactly one `file`) returns `{ review }`.
+- `POST …/documents/import` (multipart: `file` + `decisions` JSON, checked by the strict
+  `importDecisionsSchema`) returns `201 { document }`, the new draft.
+
+**How files are handled:**
+
+- The file is read **in memory** and never stored.
+- It is not sent to any other service: there is no external OCR or AI.
+- Uploads are limited to 4 MB, below the 4.5 MB request limit of serverless hosting.
+  - An oversized body is refused from its `Content-Length` before it is read (`413`).
+  - Missing or multiple files give `400`.
+  - A file that is not a PDF gives `409 import.file.notPdf`.
+- The service's own limits (10 MB, 20 pages) still apply.
+- Anonymous requests are refused before the body is read.
+
+**Review screen:**
+
+- **Findings:** shows every finding with a translated text; each warning or error needs an
+  explicit "I have checked this".
+- **Duplicates:** shows them with links; a certain or likely duplicate needs a separate
+  confirmation.
+- **Editable fields:**
+  - type, language, currency, dates;
+  - buyer name, registration number, VAT number;
+  - order reference, payment terms, bank account;
+  - every line: description, quantity, unit, unit price, with the printed line total for
+    comparison.
+- **Seller:** always the company itself, from its profile (`createDraft` enforces this). The seller
+  read from the file is shown for comparison only.
+- **Tax category:** chosen explicitly; it is never taken from the file.
+- **Totals and statements:** the printed totals and possible tax or legal statements are shown,
+  never interpreted.
+
+**Creating the draft:** the server reads the file again (`createDraftFromImport`), and refuses with
+`422 import.*` while anything is unresolved. The draft then opens in the editor.
+
 ## Tax categories (company catalog)
 
 Each company keeps its own catalog in `tax_categories` (`code`, `kind`, `ratePercent`, `label`,
@@ -273,6 +314,38 @@ numbers are always the server's; the editor shows `issues` translated by code
 (`documents.issues.*`, generic text for unknown codes) and maps 409/401/403/404 answers to
 messages (a version conflict offers a reload). Non-members, archived companies and missing
 `documents.view` get 404; roles that need 2FA without it see the 2FA notice.
+
+### Search, filters and related documents
+
+The list is searched, filtered, sorted and paged **in the database** (`searchDocuments`, one
+query with a window count; 25 rows per page). The browser never receives the whole list.
+
+- **Search** (`q`): the document number or the buyer's name, case-insensitive. Extra spaces are
+  ignored, and `%`/`_` match literally.
+- **Filters:** `type`, `status`, and an issue-date range `from`–`to` (inclusive; a reversed range
+  is swapped).
+- **Sorting** (`sort`): by date (newest first by default), by number, or by amount. Amounts are
+  sorted within each currency, never across currencies. Documents without a number or total
+  (drafts) come last.
+- **URL state:** the values live in the URL, are parsed tolerantly and rebuilt canonically
+  (`src/features/documents/list-query.ts`). Invalid values are dropped, and a non-canonical URL
+  redirects to the clean one.
+- **Filter form:** a plain GET form, so it works without JavaScript. "Reset filters" returns to the
+  full list. An empty result with filters says that nothing matches.
+- **Back link:** opening a document keeps the list view in `?back=`. Only list parameters are
+  read from it, so it can never point elsewhere.
+
+**Related documents:**
+
+- An **issued invoice** lists its credit notes (`listRelatedDocuments`, relation `credits`,
+  `documents.view`, company-scoped; the database also refuses relations across companies):
+  - issued notes first, then drafts;
+  - each with number (or "not issued yet"), status, date and total, linking to the note;
+  - drafts are visibly different;
+  - a table from `md`, cards on phones;
+  - if the list cannot be loaded, the invoice is still shown with a notice.
+- Every document with a relation (credit note, invoice from a proforma, delivery note, replacement)
+  shows it with a link to the source document, taken from the document's own relation.
 
 ### PDF
 
