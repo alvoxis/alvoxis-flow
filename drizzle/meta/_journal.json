@@ -92,6 +92,13 @@
       "when": 1792178668000,
       "tag": "0012_company_bank_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792339984450,
+      "tag": "0013_company_pdf_accent",
+      "breakpoints": true
     }
   ]
 }
