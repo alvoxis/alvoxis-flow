@@ -106,8 +106,34 @@ Untrusted input is shape-checked with Zod (`draftInputSchema`) before business v
 - Shows: tax summary per category, tax notes, converted totals with rate provenance, relation to
   the original document, payment details (invoices/proformas), signature fields (delivery notes),
   draft watermark, document fingerprint and page numbers.
+- **Layout:** white A4 page with dark text and light-grey rules.
+  - The seller's identity is top left; the document title and number are top right, above a thin
+    accent rule.
+  - Invoices with a due date get a framed block with the due date and the amount due.
+  - The line table has an accent rule under its head.
+  - The grand total has a double accent rule.
+  - Blocks for missing optional data (due date, order reference, bank details, notes, party
+    identifiers) are left out.
+  - Long single words wrap with a hyphen in the description and tax columns. Numbers, amounts
+    and IBANs are never split.
+- **Company colour:** `companies.pdf_accent` (migration `0013`) stores one value from a fixed
+  palette in `src/lib/pdf-accent.ts`: `navy` (dark blue, default), `graphite`, `blue`, `teal`,
+  `green` or `burgundy`.
+  - The database check constraint and the profile validation accept nothing else: no free colours,
+    CSS or HTML. A missing or unknown value renders as the default.
+  - Every accent has at least 4.5:1 contrast on white and on its tint.
+  - The colour is presentation only. It is applied when the PDF is rendered, for drafts and issued
+    documents alike, like the template itself. Content, totals, number and content hash still come
+    from the frozen snapshot.
+  - Owners and administrators (`company.manage`) choose it in the company profile, with a preview.
 - Noto Sans (SIL OFL 1.1, `assets/fonts/`) covers Baltic and Polish diacritics and Cyrillic.
-- `pnpm docs:samples [dir] [lang]` renders the fictitious samples for visual review.
+- `pnpm docs:samples [dir] [lang] [accent]` renders the fictitious samples for visual review,
+  including a long multi-page invoice (`invoice-long`).
+- `tests/unit/documents-pdf-layout.test.ts` checks the rendered PDFs:
+  - A4 size and no empty pages;
+  - no text outside the margins, and no text runs that overlap or touch, in all five languages;
+  - the accent colours actually used;
+  - the totals exactly as calculated.
 
 ## PDF import (review first)
 

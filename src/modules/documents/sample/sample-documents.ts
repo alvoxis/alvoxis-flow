@@ -100,6 +100,44 @@ export function sampleInvoice(language: AppLocale = "en"): IssuedDocument {
   };
 }
 
+/**
+ * A long FICTITIOUS invoice for layout checks: long party names, a legal address, multi-line
+ * descriptions, discounts, notes and enough lines to span several A4 pages.
+ */
+export function sampleLongInvoice(language: AppLocale = "en", lineCount = 48): DocumentDraft {
+  const base = sampleInvoice(language);
+  const long =
+    "with reinforced seams, reflective tape on sleeves and back, inner fleece lining and two zipped chest pockets";
+  return {
+    ...base,
+    seller: {
+      ...base.seller,
+      name: "Example Industrial Workwear Manufacturing and Distribution Company SIA",
+      legalAddress: {
+        lines: ["Parauga iela 100, birojs 12"],
+        postalCode: "LV-1000",
+        city: "Rīga",
+        countryCode: "LV",
+      },
+      phone: "+371 20000000",
+    },
+    buyer: {
+      ...base.buyer,
+      name: "Sample International Shipping, Freight Forwarding and Customs Agency Limited",
+      registrationNumber: "SAMPLE-000-111",
+    },
+    notes:
+      "Sample note: goods remain the property of the seller until paid in full. Please quote the invoice number with your payment. This text is long on purpose to check wrapping.",
+    lines: Array.from({ length: lineCount }, (_, i) => ({
+      ...base.lines[i % 2]!,
+      id: `long-${i}`,
+      description: `Sample item ${i + 1}: winter jacket, size ${["S", "M", "L", "XL"][i % 4]}, ${i % 3 === 0 ? long : "standard"}`,
+      quantity: String((i % 7) + 1),
+      discountPercent: i % 5 === 0 ? "7.5" : undefined,
+    })),
+  };
+}
+
 export function sampleModels(language: AppLocale = "en"): Record<string, DocumentPdfModel> {
   const inv = sampleInvoice(language);
   let n = 0;
@@ -109,6 +147,7 @@ export function sampleModels(language: AppLocale = "en"): Record<string, Documen
     issueDate: "2026-03-10",
   });
   const delivery = buildDeliveryNoteFromInvoice(inv, { newLineId, issueDate: "2026-03-03" });
+  const longInvoice = sampleLongInvoice(language);
   const proforma: DocumentDraft = {
     ...inv,
     type: "proforma",
@@ -155,5 +194,12 @@ export function sampleModels(language: AppLocale = "en"): Record<string, Documen
     },
     "delivery-note": { document: delivery, status: "issued", number: "DN-2026-0001", totals: null },
     "invoice-draft": { document: inv, status: "draft", number: null, totals: inv.totals },
+    "invoice-long": {
+      document: longInvoice,
+      status: "issued",
+      number: "INV-2026-0100",
+      totals: calculateTotals(longInvoice),
+      contentHash: inv.contentHash,
+    },
   };
 }

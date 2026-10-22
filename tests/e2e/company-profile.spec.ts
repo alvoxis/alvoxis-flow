@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { type Page } from "@playwright/test";
 import { secretFromOtpauthUri } from "../support/totp";
 import {
@@ -92,4 +93,54 @@ test("profile access: 2FA required for the owner, invisible to other users", asy
   });
   expect(api.status()).toBe(403);
   await other.close();
+});
+
+test("document colour: the owner picks a palette colour, sees the preview and it is saved", async ({
+  page,
+  baseURL,
+}) => {
+  const { profileUrl } = await ownerWithCompany(page, baseURL!);
+  await page.goto(profileUrl);
+  const colours = page.getByTestId("pdf-accent");
+  const preview = page.getByTestId("pdf-accent-preview");
+  await expect(colours.getByRole("radio")).toHaveCount(6);
+  await expect(colours.getByRole("radio", { name: /Dark blue/ })).toBeChecked();
+  await expect(preview).toHaveAttribute("data-accent", "navy");
+  await expect(preview).toHaveAccessibleName("Invoice preview in Dark blue");
+
+  await colours.getByRole("radio", { name: "Teal" }).check();
+  await expect(preview).toHaveAttribute("data-accent", "teal");
+  await expect(preview).toHaveAccessibleName("Invoice preview in Teal");
+
+  // No accessibility violations on the profile form with the colour choice (WCAG 2.1 A/AA).
+  const axe = await new AxeBuilder({ page })
+    .include('[data-testid="company-profile-form"]')
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+  expect(axe.violations).toEqual([]);
+  // Fits a phone without horizontal scrolling.
+  await page.setViewportSize({ width: 375, height: 800 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    ),
+  ).toBeLessThanOrEqual(0);
+
+  await page
+    .getByTestId("company-profile-form")
+    .getByRole("button", { name: "Save profile" })
+    .click();
+  await expect(page.getByRole("status").filter({ hasText: "Profile saved." })).toBeVisible();
+  await page.reload();
+  await expect(colours.getByRole("radio", { name: "Teal" })).toBeChecked();
+  await expect(preview).toHaveAttribute("data-accent", "teal");
+
+  // The API refuses anything outside the palette.
+  const companyId = profileUrl.split("/").at(-2)!;
+  const bad = await page.request.patch(`/api/companies/${companyId}/profile`, {
+    data: { name: "Profils SIA", pdfAccent: "#ff0000" },
+    headers: { origin: baseURL! },
+  });
+  expect(bad.status()).toBe(400);
+  expect((await bad.json()).fieldErrors).toHaveProperty("pdfAccent");
 });
