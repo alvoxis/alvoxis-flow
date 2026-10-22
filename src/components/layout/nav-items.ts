@@ -52,7 +52,8 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     key: "products",
     href: "/products",
-    soon: true,
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/products(\/|$)/,
     icon: "M21 8 12 3 3 8v8l9 5 9-5V8ZM3 8l9 5 9-5M12 13v8",
   },
   {

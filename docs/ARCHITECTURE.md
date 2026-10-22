@@ -42,6 +42,11 @@ client side). Modules:
   `suppliers.*` permissions apply per role). Unique registration number among active records.
   Choosing a customer in the document editor copies its details into the draft's buyer (and sets
   an invoice's due date from the payment term); documents keep their own copy.
+- `products` — goods and services (`products.view` / `products.manage`): SKU unique among active
+  products, net prices with up to 4 decimals in EUR or PLN, an optional default tax category (an
+  active category of the same company, enforced by a composite foreign key), stock tracking for
+  goods. "Add from catalog" in the document editor adds a line with the name, unit and — on priced
+  documents in the same currency — the sale price and tax category.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.

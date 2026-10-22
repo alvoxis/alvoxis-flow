@@ -8,6 +8,7 @@ import {
   type CounterpartyView,
   listCounterparties,
 } from "@/modules/counterparties/server/counterparty-service";
+import { listProducts, type ProductView } from "@/modules/products/server/product-service";
 import { type DocumentListQuery, EMPTY_DOCUMENT_QUERY } from "@/features/documents/list-query";
 import {
   getDocument,
@@ -63,6 +64,8 @@ export type DocumentPageData =
       bankAccounts: BankAccountView[];
       /** Active customers for the buyer picker (editable drafts with customers.view only). */
       customers: CounterpartyView[];
+      /** Active products for the line picker (editable drafts with products.view only). */
+      products: ProductView[];
       /**
        * Credit notes of an issued invoice (null for other documents). Loaded separately: if it
        * fails, the invoice is still shown, with a notice instead of the list.
@@ -124,6 +127,16 @@ async function listCustomersIfAllowed(user: AuthenticatedUser, companyId: string
   }
 }
 
+/** Active products for the editor's line picker, or none when the role cannot see products. */
+async function listProductsIfAllowed(user: AuthenticatedUser, companyId: string) {
+  try {
+    return await listProducts(getDb(), toActor(user), companyId);
+  } catch (err) {
+    if (err instanceof ForbiddenError) return [];
+    throw err;
+  }
+}
+
 /** One document (documents.view); issued documents come from their frozen snapshot. */
 export async function documentPageData(
   user: AuthenticatedUser,
@@ -138,10 +151,13 @@ export async function documentPageData(
     const taxCategories = await listTaxCategories(getDb(), toActor(user), companyId);
     const bankAccounts =
       document.status === "draft" ? await listBankAccounts(getDb(), toActor(user), companyId) : [];
-    const customers =
-      document.status === "draft" && permissions.canEdit
-        ? await listCustomersIfAllowed(user, companyId)
-        : [];
+    const editing = document.status === "draft" && permissions.canEdit;
+    const [customers, products] = editing
+      ? await Promise.all([
+          listCustomersIfAllowed(user, companyId),
+          listProductsIfAllowed(user, companyId),
+        ])
+      : [[], []];
     let creditNotes: Extract<DocumentPageData, { status: "ok" }>["creditNotes"] = null;
     if (document.status === "issued" && document.draft.type === "invoice") {
       try {
@@ -165,6 +181,7 @@ export async function documentPageData(
       taxCategories,
       bankAccounts,
       customers,
+      products,
       creditNotes,
     };
   } catch (err) {

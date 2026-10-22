@@ -99,6 +99,13 @@
       "when": 1792704740834,
       "tag": "0013_counterparties",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792706099306,
+      "tag": "0014_products",
+      "breakpoints": true
     }
   ]
 }

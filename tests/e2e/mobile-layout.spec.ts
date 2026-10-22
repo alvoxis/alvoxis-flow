@@ -83,6 +83,19 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     headers,
   });
   expect(party.status()).toBe(201);
+  const product = await page.request.post(`/api/companies/${companyId}/products`, {
+    data: {
+      name: "Ļoti garš preces nosaukums ar daudziem vārdiem un izmēriem 120×80×45 cm (TEST)",
+      sku: "VERY-LONG-SKU-CODE-0001",
+      unit: "pcs",
+      salePrice: "1234567.8912",
+      purchasePrice: "999999.99",
+      taxCategoryId,
+      trackStock: true,
+    },
+    headers,
+  });
+  expect(product.status()).toBe(201);
 
   const company = `/companies/${companyId}`;
   const paths = [
@@ -99,6 +112,7 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     `${company}/bank-accounts`,
     `${company}/customers`,
     `${company}/suppliers`,
+    `${company}/products`,
     "/account/security",
     "/account/two-factor",
   ];

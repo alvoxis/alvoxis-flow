@@ -604,6 +604,24 @@
         "paymentTermDays": {
           "range": "Apmaksas termiņam jābūt no 0 līdz 365 dienām."
         }
+      },
+      "product": {
+        "name": {
+          "required": "Ievadiet nosaukumu."
+        },
+        "unit": {
+          "required": "Ievadiet mērvienību, piemēram, gab."
+        },
+        "currency": {
+          "invalid": "Izvēlieties EUR vai PLN."
+        },
+        "price": {
+          "invalid": "Ievadiet cenu, piemēram, 12.50 (līdz 4 decimālzīmēm)."
+        },
+        "taxCategory": {
+          "unknown": "Izvēlieties vienu no uzņēmuma nodokļu kategorijām.",
+          "archived": "Šī nodokļu kategorija ir arhivēta; izvēlieties aktīvu."
+        }
       }
     },
     "taxCategory": "Nodokļu kategorija",
@@ -1052,6 +1070,60 @@
       "label": "Aizpildīt no klientiem",
       "placeholder": "Izvēlieties klientu…",
       "hint": "Iekopē klienta datus pircēja laukos; tos joprojām var labot."
+    }
+  },
+  "products": {
+    "description": "Preces un pakalpojumi, ko pārdodat vai pērkat. Pievienojiet tos dokumentiem kā rindas vienā solī.",
+    "readOnly": "Jūs varat skatīt katalogu. Lai to mainītu, nepieciešama loma ar preču pārvaldības atļauju.",
+    "search": "Meklēt",
+    "searchPlaceholder": "Nosaukums, kods vai svītrkods",
+    "showArchived": "Rādīt arhivētos",
+    "add": "Pievienot preci",
+    "empty": "Preču vēl nav.",
+    "noMatches": "Nekas netika atrasts.",
+    "create": "Pievienot",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "archiveConfirmTitle": "Arhivēt šo preci?",
+    "archiveConfirmBody": "To vairs nepiedāvās dokumentos. Esošie dokumenti nemainās. Preci var atjaunot vēlāk.",
+    "tracked": "Atlikumu uzskaite",
+    "noCategory": "Bez noklusējuma",
+    "archivedCategory": "Pašreizējā kategorija (vairs netiek piedāvāta)",
+    "kind": {
+      "goods": "Prece",
+      "service": "Pakalpojums"
+    },
+    "status": {
+      "archived": "Arhivēta"
+    },
+    "fields": {
+      "name": "Nosaukums",
+      "kind": "Veids",
+      "sku": "Kods",
+      "unit": "Mērvienība",
+      "barcode": "Svītrkods",
+      "currency": "Valūta",
+      "salePrice": "Pārdošanas cena (bez PVN)",
+      "purchasePrice": "Iepirkuma cena (bez PVN)",
+      "taxCategoryId": "Noklusējuma nodokļu kategorija",
+      "trackStock": "Uzskaitīt atlikumus noliktavā",
+      "description": "Apraksts"
+    },
+    "done": {
+      "created": "Prece pievienota.",
+      "saved": "Izmaiņas saglabātas.",
+      "archived": "Prece arhivēta.",
+      "restored": "Prece atjaunota."
+    },
+    "outcome": {
+      "skuTaken": "Aktīva prece ar šo kodu jau pastāv."
+    },
+    "picker": {
+      "label": "Pievienot no kataloga",
+      "placeholder": "Izvēlieties preci…"
     }
   }
 }

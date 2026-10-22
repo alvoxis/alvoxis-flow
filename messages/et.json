@@ -604,6 +604,24 @@
         "paymentTermDays": {
           "range": "Maksetähtaeg peab olema 0 kuni 365 päeva."
         }
+      },
+      "product": {
+        "name": {
+          "required": "Sisestage nimi."
+        },
+        "unit": {
+          "required": "Sisestage ühik, nt tk."
+        },
+        "currency": {
+          "invalid": "Valige EUR või PLN."
+        },
+        "price": {
+          "invalid": "Sisestage hind kujul 12.50 (kuni 4 komakohta)."
+        },
+        "taxCategory": {
+          "unknown": "Valige üks ettevõtte maksukategooriatest.",
+          "archived": "See maksukategooria on arhiveeritud; valige aktiivne."
+        }
       }
     },
     "taxCategory": "Maksukategooria",
@@ -1052,6 +1070,60 @@
       "label": "Täida klientide hulgast",
       "placeholder": "Valige klient…",
       "hint": "Kopeerib kliendi andmed ostja väljadele; neid saab endiselt muuta."
+    }
+  },
+  "products": {
+    "description": "Kaubad ja teenused, mida müüte või ostate. Lisage need dokumentidele reana ühe sammuga.",
+    "readOnly": "Saate kataloogi vaadata. Muutmiseks on vaja toodete haldusõigusega rolli.",
+    "search": "Otsi",
+    "searchPlaceholder": "Nimi, tootekood või ribakood",
+    "showArchived": "Näita arhiveerituid",
+    "add": "Lisa toode",
+    "empty": "Tooteid veel pole.",
+    "noMatches": "Otsingule vastet ei leitud.",
+    "create": "Lisa",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "archiveConfirmTitle": "Kas arhiveerida see toode?",
+    "archiveConfirmBody": "Seda ei pakuta enam dokumentides. Olemasolevad dokumendid ei muutu. Toote saab hiljem taastada.",
+    "tracked": "Laoarvestus",
+    "noCategory": "Vaikimisi puudub",
+    "archivedCategory": "Praegune kategooria (enam ei pakuta)",
+    "kind": {
+      "goods": "Kaup",
+      "service": "Teenus"
+    },
+    "status": {
+      "archived": "Arhiveeritud"
+    },
+    "fields": {
+      "name": "Nimi",
+      "kind": "Tüüp",
+      "sku": "Tootekood",
+      "unit": "Ühik",
+      "barcode": "Ribakood",
+      "currency": "Valuuta",
+      "salePrice": "Müügihind (km-ta)",
+      "purchasePrice": "Ostuhind (km-ta)",
+      "taxCategoryId": "Vaikimisi maksukategooria",
+      "trackStock": "Arvesta laojääki",
+      "description": "Kirjeldus"
+    },
+    "done": {
+      "created": "Toode lisatud.",
+      "saved": "Muudatused salvestatud.",
+      "archived": "Toode arhiveeritud.",
+      "restored": "Toode taastatud."
+    },
+    "outcome": {
+      "skuTaken": "Selle tootekoodiga aktiivne toode on juba olemas."
+    },
+    "picker": {
+      "label": "Lisa kataloogist",
+      "placeholder": "Valige toode…"
     }
   }
 }
