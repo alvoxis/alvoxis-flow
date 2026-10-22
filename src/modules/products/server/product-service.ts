@@ -5,7 +5,7 @@ import { type ValidationIssue } from "@/modules/documents/domain/validation";
 import { recordAudit } from "@/server/audit/audit-log";
 import { type Actor, requireCompanyAccess } from "@/server/auth/authorization";
 import { type Database, type DbOrTx } from "@/server/db/client";
-import { products, taxCategories } from "@/server/db/schema";
+import { products, stockMovements, taxCategories } from "@/server/db/schema";
 import {
   RecordNotFoundError,
   RecordTakenError,
@@ -295,6 +295,18 @@ export async function updateProduct(
       merged.taxCategoryId === current.taxCategoryId ? { ...merged, taxCategoryId: null } : merged,
     );
     if (merged.taxCategoryId === current.taxCategoryId) next.taxCategoryId = current.taxCategoryId;
+    // A product with stock history keeps tracking stock (its ledger would lose its meaning).
+    if (current.trackStock && !next.trackStock) {
+      const [moved] = await tx
+        .select({ id: stockMovements.id })
+        .from(stockMovements)
+        .where(and(eq(stockMovements.companyId, companyId), eq(stockMovements.productId, id)))
+        .limit(1);
+      if (moved)
+        throw new RecordValidationError([
+          { code: "product.trackStock.inUse", severity: "error", path: "trackStock" },
+        ]);
+    }
     const archivedAt =
       archived === undefined
         ? current.archivedAt

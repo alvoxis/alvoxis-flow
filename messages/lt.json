@@ -621,6 +621,42 @@
         "taxCategory": {
           "unknown": "Pasirinkite vieną iš įmonės mokesčių kategorijų.",
           "archived": "Ši mokesčių kategorija archyvuota; pasirinkite aktyvią."
+        },
+        "trackStock": {
+          "inUse": "Ši prekė turi sandėlio judėjimų, todėl likučių apskaita lieka įjungta."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Įveskite kiekį, pvz., 2 arba 1.5 (iki 4 skaitmenų po kablelio).",
+          "insufficient": "Šiame sandėlyje nepakanka likučio."
+        },
+        "unitCost": {
+          "invalid": "Įveskite vieneto savikainą, pvz., 12.50 (tik pajamavimui)."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą.",
+          "future": "Data negali būti ateityje."
+        },
+        "transfer": {
+          "target": "Pasirinkite sandėlį, į kurį perkeliama.",
+          "sameWarehouse": "Pasirinkite du skirtingus sandėlius."
+        },
+        "product": {
+          "unknown": "Pasirinkite vieną iš įmonės prekių.",
+          "notTracked": "Šiai prekei likučiai neapskaitomi."
+        },
+        "warehouse": {
+          "unknown": "Pasirinkite vieną iš įmonės sandėlių.",
+          "archived": "Šis sandėlis archyvuotas."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Naudokite lotyniškas raides ir skaitmenis (iki 20), pvz., MAIN."
+        },
+        "name": {
+          "required": "Įveskite pavadinimą."
         }
       }
     },
@@ -1124,6 +1160,84 @@
     "picker": {
       "label": "Pridėti iš katalogo",
       "placeholder": "Pasirinkite prekę…"
+    }
+  },
+  "inventory": {
+    "description": "Likučiai sandėliuose: pajamavimas, išdavimas, perkėlimas ir inventorizacija. Kiekvienas pakeitimas išsaugomas judėjimų istorijoje.",
+    "readOnly": "Galite peržiūrėti likučius. Norint juos keisti, reikia rolės su sandėlio valdymo teise.",
+    "noWarehouses": "Sandėlių dar nėra. Pridėkite pirmąjį žemiau — jis taps numatytuoju.",
+    "noTrackedProducts": "Dar nė viena prekė neapskaito likučių. Įjunkite „Apskaityti likučius sandėlyje“ prekėms skiltyje Prekės.",
+    "archived": "archyvuota",
+    "stock": {
+      "title": "Likučiai",
+      "empty": "Likučių dar nėra.",
+      "value": "Vertė pirkimo kainomis"
+    },
+    "movements": {
+      "title": "Paskutiniai judėjimai"
+    },
+    "kind": {
+      "receipt": "Pajamavimas",
+      "issue": "Išdavimas",
+      "adjustment": "Inventorizacijos korekcija",
+      "transfer_out": "Perkėlimas (išsiųsta)",
+      "transfer_in": "Perkėlimas (gauta)",
+      "production_consume": "Sunaudota gamyboje",
+      "production_output": "Pagaminta"
+    },
+    "operation": {
+      "title": "Užregistruoti likučio pokytį",
+      "kind": "Operacija",
+      "product": "Prekė",
+      "chooseProduct": "Pasirinkite prekę…",
+      "warehouse": "Sandėlis",
+      "from": "Iš sandėlio",
+      "to": "Į sandėlį",
+      "chooseWarehouse": "Pasirinkite sandėlį…",
+      "quantity": "Kiekis",
+      "counted": "Suskaičiuotas kiekis",
+      "unitCost": "Vieneto savikaina (be PVM, neprivaloma)",
+      "date": "Data",
+      "reference": "Pagrindas (neprivaloma)",
+      "countHint": "Skirtumas nuo dabartinio likučio užregistruojamas kaip inventorizacijos korekcija.",
+      "kinds": {
+        "receipt": "Pajamavimas",
+        "issue": "Išdavimas / nurašymas",
+        "transfer": "Perkėlimas",
+        "count": "Inventorizacija"
+      },
+      "submit": {
+        "receipt": "Užregistruoti pajamavimą",
+        "issue": "Užregistruoti išdavimą",
+        "transfer": "Užregistruoti perkėlimą",
+        "count": "Užregistruoti inventorizaciją"
+      }
+    },
+    "warehouses": {
+      "title": "Sandėliai",
+      "add": "Pridėti sandėlį",
+      "code": "Kodas",
+      "codeHint": "Lotyniškos raidės ir skaitmenys, pvz., MAIN.",
+      "name": "Pavadinimas",
+      "default": "Numatytasis",
+      "makeDefault": "Padaryti numatytuoju",
+      "archive": "Archyvuoti",
+      "restore": "Atkurti"
+    },
+    "done": {
+      "receipt": "Pajamavimas užregistruotas.",
+      "issue": "Išdavimas užregistruotas.",
+      "transfer": "Perkėlimas užregistruotas.",
+      "count": "Inventorizacija užregistruota.",
+      "countUnchanged": "Suskaičiuotas kiekis sutampa su likučiu; niekas nepasikeitė.",
+      "warehouseCreated": "Sandėlis pridėtas.",
+      "warehouseSaved": "Numatytasis sandėlis pakeistas.",
+      "warehouseArchived": "Sandėlis archyvuotas.",
+      "warehouseRestored": "Sandėlis atkurtas."
+    },
+    "outcome": {
+      "codeTaken": "Sandėlis su šiuo kodu jau yra.",
+      "notEmpty": "Šiame sandėlyje dar yra likučių. Pirmiausia perkelkite arba išduokite juos."
     }
   }
 }

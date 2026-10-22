@@ -47,6 +47,14 @@ client side). Modules:
   active category of the same company, enforced by a composite foreign key), stock tracking for
   goods. "Add from catalog" in the document editor adds a line with the name, unit and — on priced
   documents in the same currency — the sale price and tax category.
+- `inventory` — warehouses and the stock ledger (`inventory.view` / `inventory.manage`). A balance
+  is the sum of a product's movements in a warehouse; `stock_movements` is append-only (trigger,
+  like `audit_logs`). Receipts, issues, transfers (two movements with one `groupId`) and counts (the
+  difference is written as an adjustment). Every change that can lower a balance locks the
+  affected products (`FOR UPDATE`, in id order) and is refused below zero; the arithmetic runs in
+  PostgreSQL `numeric`. A warehouse holding stock cannot be archived; a product with movements
+  keeps stock tracking on. `applyStockChanges` is the one entry point for other modules
+  (production).
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
