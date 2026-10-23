@@ -191,6 +191,10 @@
       "subject": "Several failed sign-in attempts",
       "body": "Password sign-in to your ALVOXIS Flow account was paused for 15 minutes after several failed attempts on {time} (UTC). Devices you have signed in from before can still sign in. If this was not you, reset your password:\n{link}"
     },
+    "invitation": {
+      "subject": "Invitation to {company}",
+      "body": "{inviter} invites you to join {company} in ALVOXIS Flow. Open this link to accept:\n{link}\n\nIf you do not have an account yet, sign up with this email address first, then open the link again. The link expires in {days} days."
+    },
     "document": {
       "greeting": "Hello,",
       "attached": "Please find attached {document} from {seller}.",
@@ -1587,6 +1591,44 @@
       "status": {
         "invited": "Invited",
         "suspended": "Suspended"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Invitations",
+    "description": "Invite people by email. The link is valid for 7 days and works only for the invited address.",
+    "email": "Email address",
+    "role": "Role",
+    "invite": "Invite",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "revoke": "Revoke",
+    "revoked": "The invitation was revoked.",
+    "open": "Open invitations",
+    "none": "No open invitations.",
+    "expired": "Expired",
+    "expires": "Valid until {date}",
+    "memberExists": "This person is already a member of the company.",
+    "error": "The invitation could not be created.",
+    "delivery": {
+      "sent": "Invitation sent. You can also share this link:",
+      "not_configured": "Email is not configured, so nothing was sent. Share this link with the person yourself:",
+      "failed": "The email could not be sent. Share this link with the person yourself:"
+    },
+    "accept": "Accept invitation",
+    "home": "Go to the start page",
+    "intro": "You are invited to join {company} as {role}.",
+    "otherEmail": "This invitation is for a different email address. You are signed in as {email}; sign out and sign in with the invited address.",
+    "closed": {
+      "expired": "This invitation has expired. Ask for a new one.",
+      "used": "This invitation has already been used or was revoked.",
+      "not_found": "This invitation link is not valid."
+    },
+    "state": {
+      "invitation": {
+        "closed": "This invitation is no longer valid.",
+        "otherEmail": "This invitation is for a different email address.",
+        "alreadyMember": "You are already a member of this company."
       }
     }
   }
