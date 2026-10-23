@@ -673,6 +673,29 @@
         "name": {
           "required": "Sisestage nimi."
         }
+      },
+      "production": {
+        "product": {
+          "unknown": "Valige üks ettevõtte toodetest.",
+          "notTracked": "Toote laojääki peab arvestama.",
+          "archived": "See toode on arhiveeritud."
+        },
+        "component": {
+          "self": "Toode ei saa olla iseenda komponent.",
+          "unknown": "Valige üks ettevõtte toodetest.",
+          "notTracked": "Komponentide laojääki peab arvestama.",
+          "duplicate": "Iga komponent ainult üks kord."
+        },
+        "quantity": {
+          "invalid": "Sisestage kogus suurem kui 0 (kuni 4 komakohta).",
+          "tooSmall": "Kogus on selle koosseisu jaoks liiga väike."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "bom": {
+          "missing": "Sellel tootel pole veel koosseisu."
+        }
       }
     },
     "taxCategory": "Maksukategooria",
@@ -1253,6 +1276,57 @@
     "outcome": {
       "codeTaken": "Selle koodiga ladu on juba olemas.",
       "notEmpty": "Selles laos on veel jääke. Paigutage või väljastage need esmalt."
+    }
+  },
+  "production": {
+    "description": "Koosseisud ja tootmistellimused. Tellimuse lõpetamisel kantakse komponendid laost maha ja valmistoode võetakse arvele.",
+    "readOnly": "Saate tootmist vaadata. Tellimuste planeerimiseks ja lõpetamiseks on vaja tootmise haldusõigusega rolli.",
+    "planNeeds": "Tellimuse planeerimiseks on vaja ladu ja koosseisuga toodet (allpool).",
+    "status": {
+      "planned": "Planeeritud",
+      "completed": "Lõpetatud",
+      "cancelled": "Tühistatud"
+    },
+    "orders": {
+      "title": "Tellimused",
+      "empty": "Tootmistellimusi veel pole.",
+      "meta": "Ladu {warehouse} · planeeritud {planned}",
+      "completedOn": "lõpetatud {date}",
+      "available": "saadaval {quantity}",
+      "completedOnLabel": "Lõpetamise kuupäev",
+      "complete": "Lõpeta",
+      "cancel": "Tühista tellimus"
+    },
+    "plan": {
+      "title": "Planeeri tellimus",
+      "product": "Toode",
+      "chooseProduct": "Valige toode…",
+      "warehouse": "Ladu",
+      "quantity": "Kogus",
+      "plannedOn": "Planeeritud kuupäev",
+      "submit": "Planeeri"
+    },
+    "bom": {
+      "title": "Koosseisud",
+      "hint": "Millest koosneb üks toote ühik. Muudatused kehtivad ainult uutele tellimustele.",
+      "empty": "Koosseise veel pole.",
+      "edit": "Muuda",
+      "product": "Toode",
+      "component": "Komponent {n}",
+      "chooseComponent": "Valige komponent…",
+      "quantity": "Kogus ühiku kohta",
+      "remove": "Eemalda",
+      "addComponent": "Lisa komponent",
+      "save": "Salvesta koosseis"
+    },
+    "done": {
+      "planned": "Tellimus {number} planeeritud.",
+      "completed": "Tellimus {number} lõpetatud; laojäägid uuendatud.",
+      "cancelled": "Tellimus {number} tühistatud.",
+      "bomSaved": "Koosseis salvestatud."
+    },
+    "outcome": {
+      "notPlanned": "See tellimus on juba lõpetatud või tühistatud."
     }
   }
 }

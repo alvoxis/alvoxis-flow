@@ -673,6 +673,29 @@
         "name": {
           "required": "Enter a name."
         }
+      },
+      "production": {
+        "product": {
+          "unknown": "Choose one of the company's products.",
+          "notTracked": "The product must track stock.",
+          "archived": "This product is archived."
+        },
+        "component": {
+          "self": "A product cannot be its own component.",
+          "unknown": "Choose one of the company's products.",
+          "notTracked": "Components must track stock.",
+          "duplicate": "Each component only once."
+        },
+        "quantity": {
+          "invalid": "Enter a quantity greater than 0 (up to 4 decimals).",
+          "tooSmall": "The quantity is too small for the bill of materials."
+        },
+        "date": {
+          "invalid": "Enter a valid date."
+        },
+        "bom": {
+          "missing": "This product has no bill of materials yet."
+        }
       }
     },
     "taxCategory": "Tax category",
@@ -1253,6 +1276,57 @@
     "outcome": {
       "codeTaken": "A warehouse with this code already exists.",
       "notEmpty": "This warehouse still holds stock. Move or issue it first."
+    }
+  },
+  "production": {
+    "description": "Bills of materials and production orders. Completing an order uses the components from stock and adds the finished product.",
+    "readOnly": "You can view production. Planning and completing orders needs a role with permission to manage production.",
+    "planNeeds": "To plan an order you need a warehouse and a product with a bill of materials (below).",
+    "status": {
+      "planned": "Planned",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "orders": {
+      "title": "Orders",
+      "empty": "No production orders yet.",
+      "meta": "Warehouse {warehouse} · planned for {planned}",
+      "completedOn": "completed {date}",
+      "available": "available {quantity}",
+      "completedOnLabel": "Completion date",
+      "complete": "Complete",
+      "cancel": "Cancel order"
+    },
+    "plan": {
+      "title": "Plan an order",
+      "product": "Product",
+      "chooseProduct": "Choose a product…",
+      "warehouse": "Warehouse",
+      "quantity": "Quantity",
+      "plannedOn": "Planned date",
+      "submit": "Plan order"
+    },
+    "bom": {
+      "title": "Bills of materials",
+      "hint": "What one unit of a product is made of. Changes apply to new orders only.",
+      "empty": "No bills of materials yet.",
+      "edit": "Edit",
+      "product": "Product",
+      "component": "Component {n}",
+      "chooseComponent": "Choose a component…",
+      "quantity": "Quantity per unit",
+      "remove": "Remove",
+      "addComponent": "Add component",
+      "save": "Save bill of materials"
+    },
+    "done": {
+      "planned": "Order {number} planned.",
+      "completed": "Order {number} completed; stock updated.",
+      "cancelled": "Order {number} cancelled.",
+      "bomSaved": "Bill of materials saved."
+    },
+    "outcome": {
+      "notPlanned": "This order is already completed or cancelled."
     }
   }
 }

@@ -673,6 +673,29 @@
         "name": {
           "required": "Įveskite pavadinimą."
         }
+      },
+      "production": {
+        "product": {
+          "unknown": "Pasirinkite vieną iš įmonės prekių.",
+          "notTracked": "Gaminiui turi būti apskaitomi likučiai.",
+          "archived": "Ši prekė archyvuota."
+        },
+        "component": {
+          "self": "Gaminys negali būti savo paties komponentas.",
+          "unknown": "Pasirinkite vieną iš įmonės prekių.",
+          "notTracked": "Komponentams turi būti apskaitomi likučiai.",
+          "duplicate": "Kiekvieną komponentą tik vieną kartą."
+        },
+        "quantity": {
+          "invalid": "Įveskite kiekį, didesnį nei 0 (iki 4 skaitmenų po kablelio).",
+          "tooSmall": "Kiekis per mažas šiai specifikacijai."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą."
+        },
+        "bom": {
+          "missing": "Ši prekė dar neturi specifikacijos."
+        }
       }
     },
     "taxCategory": "Mokesčių kategorija",
@@ -1253,6 +1276,57 @@
     "outcome": {
       "codeTaken": "Sandėlis su šiuo kodu jau yra.",
       "notEmpty": "Šiame sandėlyje dar yra likučių. Pirmiausia perkelkite arba išduokite juos."
+    }
+  },
+  "production": {
+    "description": "Specifikacijos ir gamybos užsakymai. Užbaigus užsakymą, komponentai nurašomi iš sandėlio, o gatavas gaminys pajamuojamas.",
+    "readOnly": "Galite peržiūrėti gamybą. Planuoti ir užbaigti užsakymus gali rolė su gamybos valdymo teise.",
+    "planNeeds": "Norint suplanuoti užsakymą, reikia sandėlio ir prekės su specifikacija (žemiau).",
+    "status": {
+      "planned": "Suplanuotas",
+      "completed": "Užbaigtas",
+      "cancelled": "Atšauktas"
+    },
+    "orders": {
+      "title": "Užsakymai",
+      "empty": "Gamybos užsakymų dar nėra.",
+      "meta": "Sandėlis {warehouse} · suplanuota {planned}",
+      "completedOn": "užbaigta {date}",
+      "available": "turima {quantity}",
+      "completedOnLabel": "Užbaigimo data",
+      "complete": "Užbaigti",
+      "cancel": "Atšaukti užsakymą"
+    },
+    "plan": {
+      "title": "Suplanuoti užsakymą",
+      "product": "Gaminys",
+      "chooseProduct": "Pasirinkite prekę…",
+      "warehouse": "Sandėlis",
+      "quantity": "Kiekis",
+      "plannedOn": "Planuojama data",
+      "submit": "Suplanuoti"
+    },
+    "bom": {
+      "title": "Specifikacijos",
+      "hint": "Iš ko sudarytas vienas gaminio vienetas. Pakeitimai taikomi tik naujiems užsakymams.",
+      "empty": "Specifikacijų dar nėra.",
+      "edit": "Redaguoti",
+      "product": "Gaminys",
+      "component": "Komponentas {n}",
+      "chooseComponent": "Pasirinkite komponentą…",
+      "quantity": "Kiekis vienetui",
+      "remove": "Pašalinti",
+      "addComponent": "Pridėti komponentą",
+      "save": "Išsaugoti specifikaciją"
+    },
+    "done": {
+      "planned": "Užsakymas {number} suplanuotas.",
+      "completed": "Užsakymas {number} užbaigtas; likučiai atnaujinti.",
+      "cancelled": "Užsakymas {number} atšauktas.",
+      "bomSaved": "Specifikacija išsaugota."
+    },
+    "outcome": {
+      "notPlanned": "Šis užsakymas jau užbaigtas arba atšauktas."
     }
   }
 }

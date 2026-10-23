@@ -55,6 +55,12 @@ client side). Modules:
   PostgreSQL `numeric`. A warehouse holding stock cannot be archived; a product with movements
   keeps stock tracking on. `applyStockChanges` is the one entry point for other modules
   (production).
+- `production` — bills of materials and production orders (`production.view` /
+  `production.manage`). An order (`PRD-YYYY-NNNN`, numbered under a per-company advisory lock)
+  copies its component totals from the bill when it is planned. Completing it consumes the
+  components and adds the product through `applyStockChanges` in one transaction (refused while
+  stock is short; the movements share the order id); completed and cancelled orders are final.
+  Production roles move stock this way without `inventory.manage`.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
