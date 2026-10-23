@@ -327,6 +327,9 @@
       "invalidPassword": "Parool ei ole õige.",
       "emailNotConfigured": "Selles serveris pole e-kirjade saatmine seadistatud, seega ei saa kinnitus- ega parooli lähtestamise kirju saata. Võtke ühendust administraatoriga.",
       "generic": "Midagi läks valesti. Proovige uuesti."
+    },
+    "intro": {
+      "skip": "Jäta vahele"
     }
   },
   "account": {

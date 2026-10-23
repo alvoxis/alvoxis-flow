@@ -32,7 +32,7 @@ export default async function SignInPage({
   const t = await getTranslations("auth");
 
   return (
-    <AuthCard title={t("signIn.title")} subtitle={t("signIn.subtitle")}>
+    <AuthCard title={t("signIn.title")} subtitle={t("signIn.subtitle")} intro>
       {sp.verified && !sp.error ? <Alert tone="success">{t("signIn.verified")}</Alert> : null}
       {sp.verified && sp.error ? <Alert tone="error">{t("signIn.verifyFailed")}</Alert> : null}
       {sp.reset ? <Alert tone="success">{t("signIn.resetDone")}</Alert> : null}
