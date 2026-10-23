@@ -190,6 +190,12 @@
     "signInLocked": {
       "subject": "Several failed sign-in attempts",
       "body": "Password sign-in to your ALVOXIS Flow account was paused for 15 minutes after several failed attempts on {time} (UTC). Devices you have signed in from before can still sign in. If this was not you, reset your password:\n{link}"
+    },
+    "document": {
+      "greeting": "Hello,",
+      "attached": "Please find attached {document} from {seller}.",
+      "reply": "You can reply to this email with any questions.",
+      "footer": "Sent on behalf of {seller} by ALVOXIS Flow."
     }
   },
   "auth": {
@@ -956,6 +962,27 @@
         "totals": {
           "linesMismatch": "The lines do not add up to the printed subtotal.",
           "sumMismatch": "Subtotal and tax do not add up to the printed total."
+        }
+      }
+    },
+    "email": {
+      "open": "Send by email",
+      "title": "Send {number} by email",
+      "description": "The PDF is attached. Replies go to your email address.",
+      "to": "Recipient's email",
+      "message": "Message (optional)",
+      "send": "Send",
+      "close": "Close",
+      "sent": "Sent to {to}.",
+      "notConfigured": "Sending documents by email is not available: email is not configured for this site.",
+      "state": {
+        "document": {
+          "notIssued": "Only issued documents can be sent."
+        },
+        "email": {
+          "notConfigured": "Email is not configured for this site.",
+          "rateLimited": "Too many documents were sent in the last hour. Try again later.",
+          "failed": "The email could not be sent. Try again later."
         }
       }
     }

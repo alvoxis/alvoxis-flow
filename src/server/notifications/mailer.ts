@@ -5,12 +5,21 @@ import path from "node:path";
 import { type Transporter } from "nodemailer";
 import { type ServerEnv } from "@/config/env";
 
+export interface EmailAttachment {
+  filename: string;
+  contentType: string;
+  content: Buffer;
+}
+
 export interface EmailMessage {
   to: string;
   subject: string;
   text: string;
   /** Category for logs/metrics only; never includes content. */
   kind: string;
+  /** Where replies go (e.g. the member who sent a document); the sender stays EMAIL_FROM. */
+  replyTo?: string;
+  attachments?: EmailAttachment[];
 }
 
 export type DeliveryResult =
@@ -44,9 +53,15 @@ export class FileMailer implements Mailer {
   async send(message: EmailMessage): Promise<DeliveryResult> {
     await mkdir(this.dir, { recursive: true });
     const file = path.join(this.dir, `${Date.now()}-${randomUUID()}.json`);
+    // Attachments are recorded by name, type and size only, never their content.
+    const attachments = message.attachments?.map((a) => ({
+      filename: a.filename,
+      contentType: a.contentType,
+      size: a.content.length,
+    }));
     await writeFile(
       file,
-      JSON.stringify({ ...message, sentAt: new Date().toISOString() }, null, 2),
+      JSON.stringify({ ...message, attachments, sentAt: new Date().toISOString() }, null, 2),
     );
     return { status: "sent" };
   }
@@ -90,8 +105,10 @@ class SmtpMailer implements Mailer {
       ).sendMail({
         from: this.env.EMAIL_FROM,
         to: message.to,
+        replyTo: message.replyTo,
         subject: message.subject,
         text: message.text,
+        attachments: message.attachments,
       });
       return { status: "sent" };
     } catch (err) {

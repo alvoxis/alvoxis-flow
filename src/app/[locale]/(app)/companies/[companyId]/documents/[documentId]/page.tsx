@@ -6,12 +6,14 @@ import { CreditNoteDialog } from "@/components/documents/credit-note-dialog";
 import { DocumentEditor } from "@/components/documents/document-editor";
 import { DocumentStatusBadge } from "@/components/documents/document-status-badge";
 import { DocumentView } from "@/components/documents/document-view";
+import { EmailDocumentDialog } from "@/components/documents/email-document-dialog";
 import { PdfLinks } from "@/components/documents/pdf-links";
 import { DocumentRelationLink, RelatedCreditNotes } from "@/components/documents/related-documents";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Alert } from "@/components/ui/form";
 import { parseDocumentListQuery, toQueryString } from "@/features/documents/list-query";
 import { Link } from "@/i18n/navigation";
+import { getMailer } from "@/server/auth/instance";
 import { requirePageUser } from "@/server/auth/page-session";
 import { documentPageData } from "@/server/documents/page-data";
 
@@ -91,6 +93,15 @@ export default async function DocumentPage({ params, searchParams }: Props) {
             </span>
           </Alert>
           <PdfLinks companyId={companyId} documentId={document.id} draft={false} />
+          {permissions.canEdit ? (
+            <EmailDocumentDialog
+              companyId={companyId}
+              documentId={document.id}
+              number={document.number ?? ""}
+              buyerEmail={document.draft.buyer.email ?? ""}
+              emailConfigured={getMailer().configured}
+            />
+          ) : null}
           {/* Credit notes start from an issued invoice; the server re-checks access and rules. */}
           {document.draft.type === "invoice" && permissions.canEdit ? (
             <CreditNoteDialog

@@ -190,6 +190,12 @@
     "signInLocked": {
       "subject": "Vairāki neveiksmīgi pieteikšanās mēģinājumi",
       "body": "Pēc vairākiem neveiksmīgiem mēģinājumiem {time} (UTC) pieteikšanās ar paroli jūsu ALVOXIS Flow kontā ir apturēta uz 15 minūtēm. No ierīcēm, no kurām jau esat pieteicies, pieteikties joprojām var. Ja tas nebijāt jūs, atiestatiet paroli:\n{link}"
+    },
+    "document": {
+      "greeting": "Labdien!",
+      "attached": "Pielikumā {document} no {seller}.",
+      "reply": "Ja jums ir jautājumi, atbildiet uz šo e-pastu.",
+      "footer": "Nosūtīts {seller} vārdā ar ALVOXIS Flow."
     }
   },
   "auth": {
@@ -956,6 +962,27 @@
         "totals": {
           "linesMismatch": "Rindu summa nesakrīt ar failā norādīto starpsummu.",
           "sumMismatch": "Starpsumma un nodoklis nesakrīt ar failā norādīto kopsummu."
+        }
+      }
+    },
+    "email": {
+      "open": "Sūtīt pa e-pastu",
+      "title": "Sūtīt {number} pa e-pastu",
+      "description": "PDF tiks pievienots. Atbildes nonāks jūsu e-pastā.",
+      "to": "Saņēmēja e-pasts",
+      "message": "Ziņa (nav obligāta)",
+      "send": "Sūtīt",
+      "close": "Aizvērt",
+      "sent": "Nosūtīts uz {to}.",
+      "notConfigured": "Dokumentu sūtīšana pa e-pastu nav pieejama: vietnei nav konfigurēts e-pasts.",
+      "state": {
+        "document": {
+          "notIssued": "Sūtīt var tikai izrakstītus dokumentus."
+        },
+        "email": {
+          "notConfigured": "Vietnei nav konfigurēts e-pasts.",
+          "rateLimited": "Pēdējās stundas laikā nosūtīts pārāk daudz dokumentu. Mēģiniet vēlāk.",
+          "failed": "E-pastu neizdevās nosūtīt. Mēģiniet vēlāk."
         }
       }
     }

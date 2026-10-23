@@ -40,6 +40,34 @@ export async function mailLink(to: string, kind: string, timeoutMs = 10_000): Pr
   throw new Error(`No "${kind}" email for ${to}`);
 }
 
+/** Waits for the latest email of `kind` to `to` written by the file transport (as recorded). */
+export async function mailOf(
+  to: string,
+  kind: string,
+  timeoutMs = 10_000,
+): Promise<{ subject: string; text: string; replyTo?: string; attachments?: unknown[] }> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    let files: string[] = [];
+    try {
+      files = readdirSync(MAIL_DIR).sort().reverse();
+    } catch {
+      /* directory not created yet */
+    }
+    for (const f of files) {
+      const msg = JSON.parse(readFileSync(path.join(MAIL_DIR, f), "utf8")) as {
+        to: string;
+        kind: string;
+        subject: string;
+        text: string;
+      };
+      if (msg.to === to && msg.kind === kind) return msg;
+    }
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  throw new Error(`No "${kind}" email for ${to}`);
+}
+
 function base32Decode(input: string): Buffer {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
   let bits = "";

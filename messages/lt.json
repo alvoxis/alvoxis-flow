@@ -190,6 +190,12 @@
     "signInLocked": {
       "subject": "Keli nesėkmingi prisijungimo bandymai",
       "body": "Po kelių nesėkmingų bandymų {time} (UTC) prisijungimas slaptažodžiu prie jūsų ALVOXIS Flow paskyros sustabdytas 15 minučių. Iš įrenginių, kuriais jau jungėtės, prisijungti vis dar galima. Jei tai buvote ne jūs, atkurkite slaptažodį:\n{link}"
+    },
+    "document": {
+      "greeting": "Laba diena,",
+      "attached": "Pridedame {document} iš {seller}.",
+      "reply": "Jei turite klausimų, atsakykite į šį laišką.",
+      "footer": "Išsiųsta {seller} vardu per ALVOXIS Flow."
     }
   },
   "auth": {
@@ -956,6 +962,27 @@
         "totals": {
           "linesMismatch": "Eilučių suma nesutampa su faile nurodyta tarpine suma.",
           "sumMismatch": "Tarpinė suma ir mokestis nesutampa su faile nurodyta bendra suma."
+        }
+      }
+    },
+    "email": {
+      "open": "Siųsti el. paštu",
+      "title": "Siųsti {number} el. paštu",
+      "description": "PDF bus pridėtas. Atsakymai ateis į jūsų el. paštą.",
+      "to": "Gavėjo el. paštas",
+      "message": "Žinutė (neprivaloma)",
+      "send": "Siųsti",
+      "close": "Uždaryti",
+      "sent": "Išsiųsta adresu {to}.",
+      "notConfigured": "Dokumentų siuntimas el. paštu negalimas: svetainėje nesukonfigūruotas el. paštas.",
+      "state": {
+        "document": {
+          "notIssued": "Siųsti galima tik išrašytus dokumentus."
+        },
+        "email": {
+          "notConfigured": "Svetainėje nesukonfigūruotas el. paštas.",
+          "rateLimited": "Per paskutinę valandą išsiųsta per daug dokumentų. Bandykite vėliau.",
+          "failed": "El. laiško išsiųsti nepavyko. Bandykite vėliau."
         }
       }
     }
