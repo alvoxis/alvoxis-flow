@@ -43,6 +43,7 @@ export default async function CompanyProfilePage({ params }: Params) {
         canEdit={canEdit}
         country={profile.country}
         countryName={tOn(`countries.${profile.country}`)}
+        pdfAccent={profile.pdfAccent}
         values={{
           name: profile.name,
           legalName: profile.legalName,

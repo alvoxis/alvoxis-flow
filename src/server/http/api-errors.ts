@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { DocumentRuleError } from "@/modules/documents/domain/derive";
+import { ImportDecisionError } from "@/modules/documents/import/to-draft";
 import {
   BankAccountIbanTakenError,
   BankAccountNotFoundError,
@@ -18,6 +20,13 @@ import {
   TwoFactorRequiredError,
   UnauthenticatedError,
 } from "@/server/errors";
+import {
+  RecordNotFoundError,
+  RecordStateError,
+  RecordTakenError,
+  RecordValidationError,
+  RecordVersionConflictError,
+} from "@/server/records/errors";
 
 /** Maps domain/auth errors to stable JSON responses. Messages never include internal detail. */
 export function apiError(err: unknown): NextResponse {
@@ -32,6 +41,12 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof TwoFactorRequiredError) return json(403, "two_factor_enrollment_required");
   if (err instanceof ForbiddenError) return json(403, "forbidden");
   if (err instanceof DocumentNotFoundError) return json(404, "not_found");
+  if (err instanceof RecordNotFoundError) return json(404, "not_found");
+  if (err instanceof RecordVersionConflictError) return json(409, "version_conflict");
+  if (err instanceof RecordTakenError) return json(409, err.code);
+  if (err instanceof RecordStateError) return json(409, "invalid_state", { code: err.code });
+  if (err instanceof RecordValidationError)
+    return json(422, "validation_failed", { issues: err.issues });
   if (err instanceof TaxCategoryNotFoundError || err instanceof BankAccountNotFoundError)
     return json(404, "not_found");
   if (
@@ -45,6 +60,19 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof DocumentStateError) return json(409, "invalid_state", { code: err.code });
   if (err instanceof DocumentValidationError)
     return json(422, "validation_failed", { issues: err.issues });
+  // Derivation rules (credit notes): a source of the wrong kind is a state conflict; everything
+  // else (unknown line, quantity, remaining amount, date) is a finding about the request.
+  if (err instanceof DocumentRuleError)
+    return err.code.startsWith("source.")
+      ? json(409, "invalid_state", { code: err.code })
+      : json(422, "validation_failed", {
+          issues: [{ code: err.code, severity: "error", path: "" }],
+        });
+  // An import whose review is incomplete (unacknowledged findings, duplicates, incomplete lines).
+  if (err instanceof ImportDecisionError)
+    return json(422, "validation_failed", {
+      issues: [{ code: err.code, severity: "error", path: "" }],
+    });
   if (err instanceof ZodError) return json(400, "invalid_request");
   console.error("[api] unexpected error", err instanceof Error ? err.name : err);
   return json(500, "internal_error");

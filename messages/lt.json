@@ -20,45 +20,30 @@
     "closeMenu": "Uždaryti meniu"
   },
   "topbar": {
-    "noCompany": "Įmonė nepasirinkta",
+    "noCompany": "Įmonės dar nėra",
     "language": "Kalba",
     "account": "Paskyra",
-    "notSignedIn": "Neprisijungta"
+    "notSignedIn": "Neprisijungta",
+    "currentCompany": "Dabartinė įmonė"
+  },
+  "environment": {
+    "label": "Bandomoji aplinka",
+    "testBanner": "Tai ne gamybinė aplinka. Naudokite tik išgalvotus duomenis: jokių tikrų sąskaitų, klientų ar banko rekvizitų."
   },
   "dashboard": {
     "title": "Apžvalga",
     "subtitle": "Jūsų įmonės dokumentų ir veiklos suvestinė.",
-    "demoBanner": "Peržiūra su pavyzdiniais duomenimis. Niekas čia dar nesusieta su tikra įmone.",
-    "demoBadge": "Pavyzdiniai duomenys",
-    "kpi": {
-      "revenue": "Išrašyta šį mėnesį",
-      "revenueHint": "Patvirtintos sąskaitos, kiekviena savo dokumento valiuta",
-      "outstanding": "Neapmokėta",
-      "outstandingHint": "{count, plural, one {# neapmokėta sąskaita} few {# neapmokėtos sąskaitos} many {# neapmokėtos sąskaitos} other {# neapmokėtų sąskaitų}}",
-      "overdue": "Vėluojančios",
-      "overdueHint": "{count, plural, one {# sąskaita su praleistu terminu} few {# sąskaitos su praleistu terminu} many {# sąskaitos su praleistu terminu} other {# sąskaitų su praleistu terminu}}",
-      "documents": "Dokumentai šį mėnesį",
-      "documentsHint": "Sąskaitos, išankstinės sąskaitos, kreditinės sąskaitos ir važtaraščiai"
-    },
-    "currencyNote": "Kiekvienas dokumentas išlaiko savo valiutą. Sumos skirtingomis valiutomis niekada nesumuojamos.",
-    "recent": {
-      "title": "Naujausi dokumentai",
-      "description": "Paskutiniai visų tipų dokumentai",
-      "number": "Numeris",
-      "type": "Tipas",
-      "customer": "Klientas",
-      "date": "Data",
-      "status": "Būsena",
-      "amount": "Suma",
-      "creditsInvoice": "Koreguoja {number}",
-      "noAmount": "Netaikoma"
-    },
-    "nextSteps": {
-      "title": "Pradžia",
-      "createCompany": "Sukurkite įmonės profilį",
-      "inviteTeam": "Pakvieskite komandą ir priskirkite roles",
-      "addCustomers": "Pridėkite klientus ir produktus",
-      "firstInvoice": "Išrašykite pirmąją sąskaitą"
+    "documents": {
+      "title": "Dokumentai",
+      "drafts": "Juodraščiai",
+      "issued": "Išrašyti",
+      "invoicedNet": "Išrašyta sąskaitomis, atėmus kreditines sąskaitas",
+      "empty": "Dokumentų dar nėra.",
+      "unavailable": "Dokumentai nepasiekiami jūsų vaidmeniui arba kol nenustatytas dviejų veiksnių autentifikavimas.",
+      "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų.",
+      "loadError": "Dokumentų rodiklių šiuo metu įkelti nepavyko. Patiems dokumentams tai neturi įtakos; bandykite vėliau.",
+      "createFirst": "Sukurti pirmą dokumentą",
+      "paymentsNotTracked": "Mokėjimai dar neapskaitomi, todėl čia nerodoma, kas apmokėta, neapmokėta ar pradelsta."
     }
   },
   "documentType": {
@@ -88,6 +73,13 @@
     "description": "Ieškomas puslapis neegzistuoja arba buvo perkeltas.",
     "backHome": "Grįžti į apžvalgą"
   },
+  "errorPage": {
+    "title": "Įvyko klaida",
+    "description": "Puslapio nepavyko parodyti. Bandykite dar kartą. Jei klaida kartojasi, nurodykite klaidos kodą.",
+    "digest": "Klaidos kodas: {digest}",
+    "retry": "Bandyti dar kartą",
+    "home": "Grįžti į apžvalgą"
+  },
   "offline": {
     "title": "Nėra interneto ryšio",
     "description": "Patikrinkite interneto ryšį. Jūsų duomenys šiame įrenginyje nesaugomi."
@@ -102,6 +94,7 @@
     "number": "Nr.",
     "issueDate": "Išrašymo data",
     "dueDate": "Apmokėti iki",
+    "amountDue": "Mokėtina suma",
     "supplyDate": "Tiekimo data",
     "validUntil": "Galioja iki",
     "buyerReference": "Užsakymo numeris",
@@ -143,7 +136,6 @@
     "bank": "Bankas",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Prašome apmokėti iki {date}",
     "notes": "Pastabos",
     "relation": {
       "credits": "Kreditinė sąskaita sąskaitai {number}, {date}",
@@ -198,6 +190,16 @@
     "signInLocked": {
       "subject": "Keli nesėkmingi prisijungimo bandymai",
       "body": "Po kelių nesėkmingų bandymų {time} (UTC) prisijungimas slaptažodžiu prie jūsų ALVOXIS Flow paskyros sustabdytas 15 minučių. Iš įrenginių, kuriais jau jungėtės, prisijungti vis dar galima. Jei tai buvote ne jūs, atkurkite slaptažodį:\n{link}"
+    },
+    "invitation": {
+      "subject": "Kvietimas į {company}",
+      "body": "{inviter} kviečia jus prisijungti prie {company} ALVOXIS Flow. Norėdami priimti, atidarykite nuorodą:\n{link}\n\nJei dar neturite paskyros, pirmiausia užsiregistruokite su šiuo el. pašto adresu, tada vėl atidarykite nuorodą. Nuoroda galioja {days} d."
+    },
+    "document": {
+      "greeting": "Laba diena,",
+      "attached": "Pridedame {document} iš {seller}.",
+      "reply": "Jei turite klausimų, atsakykite į šį laišką.",
+      "footer": "Išsiųsta {seller} vardu per ALVOXIS Flow."
     }
   },
   "auth": {
@@ -383,6 +385,21 @@
       "addressLine2": "Iki 200 simbolių.",
       "postalCode": "Iki 16 simbolių.",
       "city": "Iki 100 simbolių."
+    },
+    "pdfAccent": {
+      "legend": "Dokumentų spalva",
+      "hint": "Sąskaitų ir kitų PDF dokumentų akcento spalva: antraštė, plonos linijos, apmokėjimo terminas ir bendra suma. Fonas lieka baltas, o tekstas tamsus, todėl dokumentai gerai spausdinami bet kuriuo spausdintuvu.",
+      "default": "Numatytoji",
+      "previewLabel": "Sąskaitos pavyzdys spalva „{colour}“",
+      "previewCaption": "Pavyzdys: kur spalva matoma PDF dokumente. Sumos ir turinys nesikeičia.",
+      "options": {
+        "navy": "Tamsiai mėlyna",
+        "graphite": "Grafito",
+        "blue": "Mėlyna",
+        "teal": "Žydrai žalia",
+        "green": "Žalia",
+        "burgundy": "Bordo"
+      }
     }
   },
   "documents": {
@@ -403,7 +420,7 @@
       "draft": "Juodraštis",
       "issued": "Išrašytas"
     },
-    "issuedNotice": "Dokumentas išrašytas Nr. {number}. Išrašytų dokumentų keisti negalima.",
+    "issuedNotice": "Dokumentas išrašytas Nr. <num>{number}</num>. Išrašytų dokumentų keisti negalima.",
     "readOnlyDraft": "Galite peržiūrėti šį juodraštį. Jūsų vaidmuo neleidžia jo keisti.",
     "sellerHint": "Pardavėjo duomenys imami iš įmonės profilio.",
     "sections": {
@@ -495,7 +512,19 @@
         },
         "total": {
           "mustBeNegative": "Kreditinės sąskaitos suma turi būti neigiama."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "Kredituojamas kiekis viršija sąskaitos faktūros eilutės likutį (įskaitant išrašytas kreditines sąskaitas).",
+          "invalid": "Kredituojamas kiekis turi būti didesnis už nulį."
+        },
+        "amount": {
+          "exceedsRemaining": "Kredituojama suma viršija sąskaitos faktūros eilutės likutį (įskaitant išrašytas kreditines sąskaitas)."
+        },
+        "nothingRemaining": "Ši sąskaita faktūra jau visiškai kredituota.",
+        "sourceLine": {
+          "unknown": "Kredituojamos eilutės nėra pradinėje sąskaitoje faktūroje."
+        },
+        "dateBeforeOriginal": "Kreditinės sąskaitos data negali būti ankstesnė už sąskaitos faktūros datą."
       },
       "deliveryNote": {
         "line": {
@@ -568,6 +597,145 @@
       },
       "total": {
         "mustBePositive": "Suma turi būti didesnė už nulį."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Kai kurie importo punktai dar nepatikrinti."
+        },
+        "duplicates": {
+          "unacknowledged": "Prieš kurdami juodraštį patvirtinkite galimą dublikatą."
+        },
+        "line": {
+          "incomplete": "Eilutei reikia kiekio ir vieneto kainos.",
+          "flagsUnresolved": "Eilutėje yra nepatikrintų punktų."
+        }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Įveskite pavadinimą."
+        },
+        "role": {
+          "required": "Pasirinkite bent vieną rolę: klientas ar tiekėjas."
+        },
+        "email": {
+          "invalid": "Įveskite teisingą el. pašto adresą."
+        },
+        "countryCode": {
+          "invalid": "Naudokite dviejų raidžių šalies kodą, pvz., LV."
+        },
+        "vatNumber": {
+          "invalid": "Įveskite PVM kodą su šalies priešdėliu, pvz., LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "Mokėjimo terminas turi būti nuo 0 iki 365 dienų."
+        }
+      },
+      "product": {
+        "name": {
+          "required": "Įveskite pavadinimą."
+        },
+        "unit": {
+          "required": "Įveskite matavimo vienetą, pvz., vnt."
+        },
+        "currency": {
+          "invalid": "Pasirinkite EUR arba PLN."
+        },
+        "price": {
+          "invalid": "Įveskite kainą, pvz., 12.50 (iki 4 skaitmenų po kablelio)."
+        },
+        "taxCategory": {
+          "unknown": "Pasirinkite vieną iš įmonės mokesčių kategorijų.",
+          "archived": "Ši mokesčių kategorija archyvuota; pasirinkite aktyvią."
+        },
+        "trackStock": {
+          "inUse": "Ši prekė turi sandėlio judėjimų, todėl likučių apskaita lieka įjungta."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Įveskite kiekį, pvz., 2 arba 1.5 (iki 4 skaitmenų po kablelio).",
+          "insufficient": "Šiame sandėlyje nepakanka likučio."
+        },
+        "unitCost": {
+          "invalid": "Įveskite vieneto savikainą, pvz., 12.50 (tik pajamavimui)."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą.",
+          "future": "Data negali būti ateityje."
+        },
+        "transfer": {
+          "target": "Pasirinkite sandėlį, į kurį perkeliama.",
+          "sameWarehouse": "Pasirinkite du skirtingus sandėlius."
+        },
+        "product": {
+          "unknown": "Pasirinkite vieną iš įmonės prekių.",
+          "notTracked": "Šiai prekei likučiai neapskaitomi."
+        },
+        "warehouse": {
+          "unknown": "Pasirinkite vieną iš įmonės sandėlių.",
+          "archived": "Šis sandėlis archyvuotas."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Naudokite lotyniškas raides ir skaitmenis (iki 20), pvz., MAIN."
+        },
+        "name": {
+          "required": "Įveskite pavadinimą."
+        }
+      },
+      "production": {
+        "product": {
+          "unknown": "Pasirinkite vieną iš įmonės prekių.",
+          "notTracked": "Gaminiui turi būti apskaitomi likučiai.",
+          "archived": "Ši prekė archyvuota."
+        },
+        "component": {
+          "self": "Gaminys negali būti savo paties komponentas.",
+          "unknown": "Pasirinkite vieną iš įmonės prekių.",
+          "notTracked": "Komponentams turi būti apskaitomi likučiai.",
+          "duplicate": "Kiekvieną komponentą tik vieną kartą."
+        },
+        "quantity": {
+          "invalid": "Įveskite kiekį, didesnį nei 0 (iki 4 skaitmenų po kablelio).",
+          "tooSmall": "Kiekis per mažas šiai specifikacijai."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą."
+        },
+        "bom": {
+          "missing": "Ši prekė dar neturi specifikacijos."
+        }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Įveskite procentą nuo 0 iki 99.999."
+        },
+        "amount": {
+          "invalid": "Įveskite sumą, pvz., 1500 arba 1500.50."
+        },
+        "firstName": {
+          "required": "Įveskite vardą."
+        },
+        "lastName": {
+          "required": "Įveskite pavardę."
+        },
+        "email": {
+          "invalid": "Įveskite teisingą el. pašto adresą."
+        },
+        "country": {
+          "invalid": "Pasirinkite Latviją, Lietuvą, Estiją arba Lenkiją."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą.",
+          "endBeforeStart": "Pabaigos data negali būti ankstesnė už pradžios datą."
+        },
+        "period": {
+          "invalid": "Pasirinkite mėnesį."
+        },
+        "run": {
+          "noEmployees": "Šį mėnesį niekas nedirbo."
+        }
       }
     },
     "taxCategory": "Mokesčių kategorija",
@@ -600,6 +768,34 @@
     "deleteConfirmBodyEditor": "Juodraštis bus ištrintas negrįžtamai ir jo nebus galima atkurti. Visi šiame redaktoriuje neišsaugoti pakeitimai bus prarasti. Išrašytų dokumentų ištrinti negalima.",
     "colBuyer": "Pirkėjas",
     "creditNoteBank": "Kreditinė sąskaita išlaiko pradinės sąskaitos banko rekvizitus.",
+    "creditNote": {
+      "create": "Sukurti kreditinę sąskaitą",
+      "title": "Kreditinė sąskaita sąskaitai faktūrai {number}",
+      "description": "Bus sukurtas kreditinės sąskaitos juodraštis, kurį prieš išrašant galima patikrinti redaktoriuje. Pati sąskaita faktūra nekeičiama.",
+      "mode": "Ką kredituoti",
+      "full": {
+        "label": "Visą likutį",
+        "hint": "Kredituojamos visos dar nekredituotos sąskaitos faktūros eilutės."
+      },
+      "partial": {
+        "label": "Pasirinktas eilutes",
+        "hint": "Kredituojami tik žemiau įvesti kiekiai."
+      },
+      "linesTitle": "Kredituojami kiekiai",
+      "linesHint": "Palikite eilutę tuščią, jei jos nekredituojate. Jau išrašytos kreditinės sąskaitos įvertinamos kuriant juodraštį.",
+      "invoiced": "Sąskaitoje: {quantity}",
+      "quantityFor": "Kredituojamas kiekis, eilutė {n}: {description}",
+      "submit": "Sukurti juodraštį",
+      "refused": "Kreditinės sąskaitos juodraštis nesukurtas.",
+      "notCreditable": "Kredituoti galima tik išrašytą sąskaitą faktūrą.",
+      "errors": {
+        "dateRequired": "Įveskite kreditinės sąskaitos datą.",
+        "dateBeforeInvoice": "Kreditinės sąskaitos data negali būti ankstesnė už sąskaitos faktūros datą.",
+        "noLines": "Įveskite kiekį bent vienai eilutei.",
+        "quantityInvalid": "Įveskite už nulį didesnį skaičių, ne daugiau kaip 4 skaitmenys po kablelio.",
+        "quantityTooHigh": "Tai daugiau nei sąskaitoje faktūroje nurodytas kiekis."
+      }
+    },
     "pdf": {
       "open": "Atidaryti PDF",
       "download": "Atsisiųsti PDF",
@@ -607,6 +803,192 @@
       "downloadDraft": "Atsisiųsti juodraščio PDF",
       "draftHint": "Juodraščio PDF pažymėtas „neišrašytas“ ir neturi numerio.",
       "unsaved": "PDF rodo paskutinę išsaugotą versiją. Išsaugokite juodraštį, kad pakeitimai patektų į PDF."
+    },
+    "entry": {
+      "title": "Dokumentai",
+      "choose": "Pasirinkite įmonę, kad atidarytumėte jos dokumentus.",
+      "none": "Dokumentai priklauso įmonei. Pirmiausia sukurkite įmonę.",
+      "createCompany": "Sukurti įmonę"
+    },
+    "filters": {
+      "search": "Paieška",
+      "searchPlaceholder": "Numeris arba pirkėjas",
+      "type": "Tipas",
+      "anyType": "Visi tipai",
+      "status": "Būsena",
+      "anyStatus": "Visos būsenos",
+      "from": "Išrašyta nuo",
+      "to": "Išrašyta iki",
+      "sort": "Rikiuoti pagal",
+      "sorts": {
+        "date_desc": "Naujausi pirmiau",
+        "date_asc": "Seniausi pirmiau",
+        "number_asc": "Numeris (A–Z)",
+        "number_desc": "Numeris (Z–A)",
+        "amount_desc": "Suma (didžiausia pirmiau)",
+        "amount_asc": "Suma (mažiausia pirmiau)"
+      },
+      "apply": "Taikyti",
+      "reset": "Išvalyti filtrus",
+      "noMatches": "Pagal paiešką ar filtrus dokumentų nerasta.",
+      "amountSortHint": "Sumos rikiuojamos kiekvienos valiutos viduje; juodraščiai dar neturi sumos ir rodomi pabaigoje.",
+      "showing": "{start}–{end} iš {total}",
+      "previous": "Ankstesnis puslapis",
+      "next": "Kitas puslapis",
+      "pagination": "Dokumentų sąrašo puslapiai"
+    },
+    "related": {
+      "creditNotesTitle": "Šios sąskaitos kreditinės sąskaitos",
+      "empty": "Šiai sąskaitai kreditinių sąskaitų dar nėra.",
+      "loadError": "Nepavyko įkelti šios sąskaitos kreditinių sąskaitų. Įkelkite puslapį iš naujo ir bandykite dar kartą."
+    },
+    "relation": {
+      "credits": "Kreditinė sąskaita sąskaitai faktūrai <link>{number}</link>, išrašytai {date}",
+      "converted_from": "Išrašyta pagal išankstinę sąskaitą <link>{number}</link>, išrašytą {date}",
+      "delivers": "Važtaraštis sąskaitai faktūrai <link>{number}</link>, išrašytai {date}",
+      "replaces": "Pakeičia sąskaitą faktūrą <link>{number}</link>, išrašytą {date}"
+    },
+    "import": {
+      "open": "Importuoti PDF",
+      "title": "Sąskaitos importas iš PDF",
+      "description": "Įkelkite savo įmonės sąskaitą PDF formatu ir patikrinkite išgautus duomenis prieš sukuriant juodraštį.",
+      "fileLabel": "PDF failas",
+      "fileHint": "PDF su teksto sluoksniu, iki {size} MB ir 20 puslapių. Nuskenuotų vaizdų kol kas nuskaityti negalima.",
+      "privacy": "Failas mūsų serveryje skaitomas tik duomenims išgauti, nesaugomas ir neperduodamas kitoms paslaugoms.",
+      "read": "Nuskaityti PDF",
+      "reading": "Skaitoma…",
+      "noFile": "Pirmiausia pasirinkite PDF failą.",
+      "tooLarge": "Failas didesnis nei {size} MB.",
+      "notPdf": "Šis failas nėra PDF.",
+      "unreadable": "PDF nepavyko nuskaityti. Nuskenuoti dokumentai be teksto sluoksnio kol kas nepalaikomi.",
+      "fileRead": "{name}: nuskaityta puslapių – {pages}",
+      "startOver": "Pasirinkti kitą failą",
+      "findingsTitle": "Ką reikia patikrinti",
+      "findingsHint": "Patikrinkite kiekvieną punktą žemiau, kitaip juodraštis nebus sukurtas.",
+      "checked": "Patikrinau",
+      "duplicatesTitle": "Panašus dokumentas šioje įmonėje jau gali būti:",
+      "duplicateStrength": {
+        "certain": "beveik tikrai tas pats",
+        "likely": "tikriausiai tas pats",
+        "possible": "galbūt tas pats"
+      },
+      "duplicateConfirm": "Patikrinau esamą dokumentą ir vis tiek noriu sukurti naują juodraštį.",
+      "documentTitle": "Dokumentas",
+      "numberHint": "Nuskaitytas iš failo informacijai; juodraštis gaus savo numerį, kai bus išrašytas.",
+      "partiesTitle": "Pardavėjas ir pirkėjas",
+      "sellerFixed": "Pardavėjas: jūsų įmonė ({name}) iš įmonės profilio.",
+      "sellerRead": "Faile rastas pardavėjas: {name}",
+      "buyerName": "Pirkėjo pavadinimas",
+      "buyerRegistrationNumber": "Pirkėjo įmonės kodas",
+      "buyerVatNumber": "Pirkėjo PVM kodas",
+      "taxTitle": "Mokestis",
+      "taxHint": "Mokesčių režimas niekada neimamas iš failo: pasirinkite kategoriją eilutėms aiškiai. Redaktoriuje ją galima pakeisti kiekvienai eilutei.",
+      "taxCategory": "Mokesčio kategorija visoms eilutėms",
+      "noCategories": "Prieš importuodami pridėkite mokesčio kategoriją.",
+      "linesTitle": "Eilutės",
+      "printedTotal": "Eilutės suma faile: {amount}",
+      "noLines": "Faile eilučių nerasta.",
+      "totalsTitle": "Faile nurodytos sumos",
+      "totalsHint": "Tik palyginimui: juodraščio sumos skaičiuojamos iš jo eilučių.",
+      "statementsTitle": "Tekstas, galintis turėti mokestinę ar teisinę reikšmę",
+      "statementsHint": "Parodytas jūsų dėmesiui, neinterpretuojamas.",
+      "problems": {
+        "currency": "Pasirinkite valiutą.",
+        "issueDate": "Įveskite išrašymo datą.",
+        "buyerName": "Įveskite pirkėjo pavadinimą.",
+        "taxCategory": "Pasirinkite mokesčio kategoriją.",
+        "lines": "Kiekvienai eilutei reikia aprašymo, nenulinio kiekio ir vieneto kainos.",
+        "findings": "Patikrinkite visus punktus.",
+        "duplicates": "Patvirtinkite, kad norite sukurti naują juodraštį nepaisant galimo dublikato."
+      },
+      "flags": {
+        "generic": "Patikrinkite šią reikšmę.",
+        "amount": {
+          "ambiguous": "Sumą galima perskaityti skirtingai (pvz., 1,234). Patikrinkite skaičius."
+        },
+        "bankAccount": {
+          "ibanInvalid": "Faile esančio IBAN kontrolinė suma neteisinga."
+        },
+        "buyer": {
+          "notFound": "Pirkėjas faile nerastas."
+        },
+        "currency": {
+          "multiple": "Faile yra daugiau nei viena valiuta.",
+          "notFound": "Faile valiuta nerasta."
+        },
+        "date": {
+          "formatAmbiguous": "Datą galima perskaityti skirtingai (pvz., 02/03/2026). Patikrinkite datas."
+        },
+        "documentType": {
+          "unknown": "Dokumento tipas neatpažintas."
+        },
+        "dueDate": {
+          "beforeIssueDate": "Apmokėjimo terminas yra ankstesnis už išrašymo datą."
+        },
+        "duplicate": {
+          "possible": "Panašus dokumentas šioje įmonėje jau gali būti."
+        },
+        "file": {
+          "noTextLayer": "Faile nėra teksto sluoksnio (panašu į skenuotą), jo nuskaityti negalima."
+        },
+        "identifier": {
+          "labelMismatch": "Įmonės ar PVM kodas neatitinka savo pavadinimo.",
+          "unlabelled": "Numeris, galintis būti įmonės ar PVM kodu, nurodytas be pavadinimo."
+        },
+        "issueDate": {
+          "notFound": "Išrašymo data nerasta.",
+          "unlabelled": "Išrašymo data paimta iš datos be pavadinimo."
+        },
+        "line": {
+          "arithmeticMismatch": "Kiekis × kaina nesutampa su eilutės suma faile."
+        },
+        "lines": {
+          "arithmeticMismatch": "Kai kurios eilutės nesutampa (kiekis × kaina ≠ eilutės suma).",
+          "notFound": "Eilučių nerasta."
+        },
+        "number": {
+          "notFound": "Dokumento numeris nerastas."
+        },
+        "seller": {
+          "notFound": "Pardavėjas faile nerastas."
+        },
+        "statements": {
+          "found": "Faile yra teksto, galinčio turėti mokestinę ar teisinę reikšmę (parodyta žemiau)."
+        },
+        "tax": {
+          "notShown": "Faile nenurodyta mokesčio suma.",
+          "treatmentRequiresConfirmation": "Mokesčių režimas neimamas iš failo: pasirinkite mokesčio kategoriją.",
+          "zeroRateUnexplained": "Nurodytas 0 % mokesčio tarifas be paaiškinimo."
+        },
+        "total": {
+          "notFound": "Bendra suma nerasta."
+        },
+        "totals": {
+          "linesMismatch": "Eilučių suma nesutampa su faile nurodyta tarpine suma.",
+          "sumMismatch": "Tarpinė suma ir mokestis nesutampa su faile nurodyta bendra suma."
+        }
+      }
+    },
+    "email": {
+      "open": "Siųsti el. paštu",
+      "title": "Siųsti {number} el. paštu",
+      "description": "PDF bus pridėtas. Atsakymai ateis į jūsų el. paštą.",
+      "to": "Gavėjo el. paštas",
+      "message": "Žinutė (neprivaloma)",
+      "send": "Siųsti",
+      "close": "Uždaryti",
+      "sent": "Išsiųsta adresu {to}.",
+      "notConfigured": "Dokumentų siuntimas el. paštu negalimas: svetainėje nesukonfigūruotas el. paštas.",
+      "state": {
+        "document": {
+          "notIssued": "Siųsti galima tik išrašytus dokumentus."
+        },
+        "email": {
+          "notConfigured": "Svetainėje nesukonfigūruotas el. paštas.",
+          "rateLimited": "Per paskutinę valandą išsiųsta per daug dokumentų. Bandykite vėliau.",
+          "failed": "El. laiško išsiųsti nepavyko. Bandykite vėliau."
+        }
+      }
     }
   },
   "taxCategories": {
@@ -734,6 +1116,520 @@
       "manage": "Tvarkyti banko sąskaitas",
       "archived": "Archyvuota sąskaita {iban}",
       "unlinked": "Išsaugoti rekvizitai {iban} (nesusieti su sąskaita)"
+    }
+  },
+  "ui": {
+    "toast": {
+      "region": "Pranešimai",
+      "close": "Uždaryti pranešimą"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Pasirinkite įmonę.",
+      "none": "Pirmiausia sukurkite įmonę.",
+      "createCompany": "Sukurti įmonę"
+    },
+    "outcome": {
+      "invalid": "Patikrinkite pažymėtus laukus.",
+      "conflict": "Šis įrašas buvo pakeistas kitur. Įkelkite iš naujo, kad matytumėte naujausią versiją.",
+      "signedOut": "Jūsų sesija baigėsi. Prisijunkite dar kartą.",
+      "twoFactor": "Šiam veiksmui jūsų rolei reikalingas dviejų veiksnių autentifikavimas.",
+      "forbidden": "Neturite teisės atlikti šio veiksmo arba įmonė nebeaktyvi.",
+      "notFound": "Šio įrašo nebėra.",
+      "error": "Kažkas nepavyko. Bandykite dar kartą."
+    },
+    "reload": "Įkelti iš naujo"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "Asmenys ir įmonės, kuriems parduodate. Pasirinkite juos dokumentuose, kad užpildytumėte pirkėją.",
+      "supplier": "Įmonės, iš kurių perkate."
+    },
+    "readOnly": "Galite peržiūrėti šį sąrašą. Norint jį keisti, reikia rolės su valdymo teise.",
+    "search": "Paieška",
+    "searchPlaceholder": "Pavadinimas, įmonės ar PVM kodas, el. paštas",
+    "showArchived": "Rodyti archyvuotus",
+    "add": {
+      "customer": "Pridėti klientą",
+      "supplier": "Pridėti tiekėją"
+    },
+    "empty": {
+      "customer": "Klientų dar nėra.",
+      "supplier": "Tiekėjų dar nėra."
+    },
+    "noMatches": "Nieko nerasta.",
+    "create": "Pridėti",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "documents": "Dokumentai",
+    "archiveConfirmTitle": "Archyvuoti šį įrašą?",
+    "archiveConfirmBody": "Jis nebebus siūlomas kuriant dokumentus. Esami dokumentai nesikeis. Įrašą galėsite atkurti vėliau.",
+    "paymentTerm": "Mokėjimo terminas: {days} d.",
+    "role": {
+      "customer": "Klientas",
+      "supplier": "Tiekėjas"
+    },
+    "status": {
+      "archived": "Archyvuotas"
+    },
+    "fields": {
+      "name": "Pavadinimas",
+      "registrationNumber": "Įmonės kodas",
+      "vatNumber": "PVM mokėtojo kodas",
+      "email": "El. paštas",
+      "phone": "Telefonas",
+      "contactName": "Kontaktinis asmuo",
+      "addressLine1": "Adresas",
+      "addressLine2": "Adresas (2 eilutė)",
+      "postalCode": "Pašto kodas",
+      "city": "Miestas",
+      "countryCode": "Šalies kodas (LV, LT, EE, PL…)",
+      "paymentTermDays": "Mokėjimo terminas, dienos",
+      "notes": "Pastabos",
+      "roles": "Rolė"
+    },
+    "done": {
+      "created": "Įrašas pridėtas.",
+      "saved": "Pakeitimai išsaugoti.",
+      "archived": "Įrašas archyvuotas.",
+      "restored": "Įrašas atkurtas."
+    },
+    "outcome": {
+      "registrationTaken": "Aktyvus įrašas su šiuo įmonės kodu jau yra."
+    },
+    "picker": {
+      "label": "Užpildyti iš klientų",
+      "placeholder": "Pasirinkite klientą…",
+      "hint": "Nukopijuoja kliento duomenis į pirkėjo laukus; juos vis tiek galima redaguoti."
+    }
+  },
+  "products": {
+    "description": "Prekės ir paslaugos, kurias parduodate ar perkate. Pridėkite jas į dokumentus eilute vienu žingsniu.",
+    "readOnly": "Galite peržiūrėti katalogą. Norint jį keisti, reikia rolės su prekių valdymo teise.",
+    "search": "Paieška",
+    "searchPlaceholder": "Pavadinimas, kodas ar brūkšninis kodas",
+    "showArchived": "Rodyti archyvuotas",
+    "add": "Pridėti prekę",
+    "empty": "Prekių dar nėra.",
+    "noMatches": "Nieko nerasta.",
+    "create": "Pridėti",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "archiveConfirmTitle": "Archyvuoti šią prekę?",
+    "archiveConfirmBody": "Ji nebebus siūloma dokumentuose. Esami dokumentai nesikeis. Prekę galėsite atkurti vėliau.",
+    "tracked": "Likučių apskaita",
+    "noCategory": "Be numatytosios",
+    "archivedCategory": "Dabartinė kategorija (nebesiūloma)",
+    "kind": {
+      "goods": "Prekė",
+      "service": "Paslauga"
+    },
+    "status": {
+      "archived": "Archyvuota"
+    },
+    "fields": {
+      "name": "Pavadinimas",
+      "kind": "Tipas",
+      "sku": "Prekės kodas",
+      "unit": "Matavimo vienetas",
+      "barcode": "Brūkšninis kodas",
+      "currency": "Valiuta",
+      "salePrice": "Pardavimo kaina (be PVM)",
+      "purchasePrice": "Pirkimo kaina (be PVM)",
+      "taxCategoryId": "Numatytoji mokesčių kategorija",
+      "trackStock": "Apskaityti likučius sandėlyje",
+      "description": "Aprašymas"
+    },
+    "done": {
+      "created": "Prekė pridėta.",
+      "saved": "Pakeitimai išsaugoti.",
+      "archived": "Prekė archyvuota.",
+      "restored": "Prekė atkurta."
+    },
+    "outcome": {
+      "skuTaken": "Aktyvi prekė su šiuo kodu jau yra."
+    },
+    "picker": {
+      "label": "Pridėti iš katalogo",
+      "placeholder": "Pasirinkite prekę…"
+    }
+  },
+  "inventory": {
+    "description": "Likučiai sandėliuose: pajamavimas, išdavimas, perkėlimas ir inventorizacija. Kiekvienas pakeitimas išsaugomas judėjimų istorijoje.",
+    "readOnly": "Galite peržiūrėti likučius. Norint juos keisti, reikia rolės su sandėlio valdymo teise.",
+    "noWarehouses": "Sandėlių dar nėra. Pridėkite pirmąjį žemiau — jis taps numatytuoju.",
+    "noTrackedProducts": "Dar nė viena prekė neapskaito likučių. Įjunkite „Apskaityti likučius sandėlyje“ prekėms skiltyje Prekės.",
+    "archived": "archyvuota",
+    "stock": {
+      "title": "Likučiai",
+      "empty": "Likučių dar nėra.",
+      "value": "Vertė pirkimo kainomis"
+    },
+    "movements": {
+      "title": "Paskutiniai judėjimai"
+    },
+    "kind": {
+      "receipt": "Pajamavimas",
+      "issue": "Išdavimas",
+      "adjustment": "Inventorizacijos korekcija",
+      "transfer_out": "Perkėlimas (išsiųsta)",
+      "transfer_in": "Perkėlimas (gauta)",
+      "production_consume": "Sunaudota gamyboje",
+      "production_output": "Pagaminta"
+    },
+    "operation": {
+      "title": "Užregistruoti likučio pokytį",
+      "kind": "Operacija",
+      "product": "Prekė",
+      "chooseProduct": "Pasirinkite prekę…",
+      "warehouse": "Sandėlis",
+      "from": "Iš sandėlio",
+      "to": "Į sandėlį",
+      "chooseWarehouse": "Pasirinkite sandėlį…",
+      "quantity": "Kiekis",
+      "counted": "Suskaičiuotas kiekis",
+      "unitCost": "Vieneto savikaina (be PVM, neprivaloma)",
+      "date": "Data",
+      "reference": "Pagrindas (neprivaloma)",
+      "countHint": "Skirtumas nuo dabartinio likučio užregistruojamas kaip inventorizacijos korekcija.",
+      "kinds": {
+        "receipt": "Pajamavimas",
+        "issue": "Išdavimas / nurašymas",
+        "transfer": "Perkėlimas",
+        "count": "Inventorizacija"
+      },
+      "submit": {
+        "receipt": "Užregistruoti pajamavimą",
+        "issue": "Užregistruoti išdavimą",
+        "transfer": "Užregistruoti perkėlimą",
+        "count": "Užregistruoti inventorizaciją"
+      }
+    },
+    "warehouses": {
+      "title": "Sandėliai",
+      "add": "Pridėti sandėlį",
+      "code": "Kodas",
+      "codeHint": "Lotyniškos raidės ir skaitmenys, pvz., MAIN.",
+      "name": "Pavadinimas",
+      "default": "Numatytasis",
+      "makeDefault": "Padaryti numatytuoju",
+      "archive": "Archyvuoti",
+      "restore": "Atkurti"
+    },
+    "done": {
+      "receipt": "Pajamavimas užregistruotas.",
+      "issue": "Išdavimas užregistruotas.",
+      "transfer": "Perkėlimas užregistruotas.",
+      "count": "Inventorizacija užregistruota.",
+      "countUnchanged": "Suskaičiuotas kiekis sutampa su likučiu; niekas nepasikeitė.",
+      "warehouseCreated": "Sandėlis pridėtas.",
+      "warehouseSaved": "Numatytasis sandėlis pakeistas.",
+      "warehouseArchived": "Sandėlis archyvuotas.",
+      "warehouseRestored": "Sandėlis atkurtas."
+    },
+    "outcome": {
+      "codeTaken": "Sandėlis su šiuo kodu jau yra.",
+      "notEmpty": "Šiame sandėlyje dar yra likučių. Pirmiausia perkelkite arba išduokite juos."
+    }
+  },
+  "production": {
+    "description": "Specifikacijos ir gamybos užsakymai. Užbaigus užsakymą, komponentai nurašomi iš sandėlio, o gatavas gaminys pajamuojamas.",
+    "readOnly": "Galite peržiūrėti gamybą. Planuoti ir užbaigti užsakymus gali rolė su gamybos valdymo teise.",
+    "planNeeds": "Norint suplanuoti užsakymą, reikia sandėlio ir prekės su specifikacija (žemiau).",
+    "status": {
+      "planned": "Suplanuotas",
+      "completed": "Užbaigtas",
+      "cancelled": "Atšauktas"
+    },
+    "orders": {
+      "title": "Užsakymai",
+      "empty": "Gamybos užsakymų dar nėra.",
+      "meta": "Sandėlis {warehouse} · suplanuota {planned}",
+      "completedOn": "užbaigta {date}",
+      "available": "turima {quantity}",
+      "completedOnLabel": "Užbaigimo data",
+      "complete": "Užbaigti",
+      "cancel": "Atšaukti užsakymą"
+    },
+    "plan": {
+      "title": "Suplanuoti užsakymą",
+      "product": "Gaminys",
+      "chooseProduct": "Pasirinkite prekę…",
+      "warehouse": "Sandėlis",
+      "quantity": "Kiekis",
+      "plannedOn": "Planuojama data",
+      "submit": "Suplanuoti"
+    },
+    "bom": {
+      "title": "Specifikacijos",
+      "hint": "Iš ko sudarytas vienas gaminio vienetas. Pakeitimai taikomi tik naujiems užsakymams.",
+      "empty": "Specifikacijų dar nėra.",
+      "edit": "Redaguoti",
+      "product": "Gaminys",
+      "component": "Komponentas {n}",
+      "chooseComponent": "Pasirinkite komponentą…",
+      "quantity": "Kiekis vienetui",
+      "remove": "Pašalinti",
+      "addComponent": "Pridėti komponentą",
+      "save": "Išsaugoti specifikaciją"
+    },
+    "done": {
+      "planned": "Užsakymas {number} suplanuotas.",
+      "completed": "Užsakymas {number} užbaigtas; likučiai atnaujinti.",
+      "cancelled": "Užsakymas {number} atšauktas.",
+      "bomSaved": "Specifikacija išsaugota."
+    },
+    "outcome": {
+      "notPlanned": "Šis užsakymas jau užbaigtas arba atšauktas."
+    }
+  },
+  "payroll": {
+    "description": "Darbuotojai ir mėnesio darbo užmokestis Latvijai, Lietuvai, Estijai ir Lenkijai.",
+    "disclaimer": "Skaičiavimo pagalbininkas, ne mokesčių deklaracija. Tarifai yra įmonės nustatymai su pradinėmis reikšmėmis, kurias turi patikrinti jūsų buhalteris; specialūs režimai, progresiniai tarifai ir lubos nemodeliuojami.",
+    "readOnly": "Galite peržiūrėti darbo užmokestį. Norint jį keisti, reikia rolės su darbo užmokesčio valdymo teise.",
+    "archived": "archyvuotas",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "status": {
+      "draft": "Juodraštis",
+      "approved": "Patvirtintas"
+    },
+    "country": {
+      "LV": "Latvija (EUR)",
+      "LT": "Lietuva (EUR)",
+      "EE": "Estija (EUR)",
+      "PL": "Lenkija (PLN)"
+    },
+    "cols": {
+      "gross": "Bruto",
+      "employeeSocial": "Darbuotojo soc. įmokos",
+      "health": "Sveikatos draudimas",
+      "incomeTax": "Pajamų mokestis",
+      "net": "Išmokėti",
+      "employerSocial": "Darbdavio soc. įmokos",
+      "employerCost": "Darbdavio sąnaudos"
+    },
+    "runs": {
+      "title": "Atlyginimų mėnesiai",
+      "period": "Mėnuo",
+      "start": "Pradėti mėnesio skaičiavimą",
+      "empty": "Atlyginimų mėnesių dar nėra.",
+      "lines": "{count, plural, one {# darbuotojas} few {# darbuotojai} other {# darbuotojų}}",
+      "show": "Rodyti išsamiai",
+      "hide": "Slėpti",
+      "grossThisMonth": "Bruto šį mėnesį",
+      "applyGross": "Taikyti",
+      "csv": "Atsisiųsti CSV",
+      "recalculate": "Perskaičiuoti",
+      "approve": "Patvirtinti",
+      "delete": "Ištrinti juodraštį",
+      "approveTitle": "Patvirtinti šį mėnesį?",
+      "approveBody": "Patvirtintas mėnuo yra galutinis: jo sumų nebegalima keisti. Pirmiausia patikrinkite darbuotojus ir sumas."
+    },
+    "employees": {
+      "title": "Darbuotojai",
+      "add": "Pridėti darbuotoją",
+      "empty": "Darbuotojų dar nėra.",
+      "month": "mėn."
+    },
+    "fields": {
+      "firstName": "Vardas",
+      "lastName": "Pavardė",
+      "position": "Pareigos",
+      "email": "El. paštas",
+      "taxCountry": "Apmokestinimo šalis",
+      "employmentStart": "Dirba nuo",
+      "employmentEnd": "Dirba iki",
+      "monthlyGross": "Mėnesio bruto atlyginimas",
+      "monthlyAllowance": "Neapmokestinama suma per mėnesį",
+      "allowanceHint": "pvz., NPD; 0, jei nėra.",
+      "monthlyTaxCredit": "Mokesčio lengvata per mėnesį",
+      "taxCreditHint": "Atimama iš pajamų mokesčio (pvz., Lenkijoje); 0, jei nėra."
+    },
+    "rates": {
+      "title": "Tarifai pagal šalį",
+      "hint": "Procentai kiekvienam naujam ar perskaičiuotam mėnesiui. Išsaugoti tarifai pakeičia pradines reikšmes.",
+      "default": "Pradinės reikšmės — patikrinkite",
+      "employeeSocialRate": "Darbuotojo soc. įmokos",
+      "employerSocialRate": "Darbdavio soc. įmokos",
+      "incomeTaxRate": "Pajamų mokestis",
+      "employeeHealthRate": "Sveikatos draudimas",
+      "save": "Išsaugoti tarifus"
+    },
+    "done": {
+      "started": "Skaičiavimas už {period} pradėtas.",
+      "grossSet": "Bruto suma pritaikyta.",
+      "recalculated": "Mėnuo perskaičiuotas.",
+      "approved": "Mėnuo {period} patvirtintas.",
+      "deleted": "Juodraštis {period} ištrintas.",
+      "employeeAdded": "Darbuotojas pridėtas.",
+      "employeeSaved": "Pakeitimai išsaugoti.",
+      "employeeArchived": "Darbuotojas archyvuotas.",
+      "employeeRestored": "Darbuotojas atkurtas.",
+      "ratesSaved": "Tarifai šaliai {country} išsaugoti."
+    },
+    "outcome": {
+      "periodTaken": "Šiam mėnesiui skaičiavimas jau yra.",
+      "approved": "Šis mėnuo jau patvirtintas ir negali keistis."
+    }
+  },
+  "analytics": {
+    "description": "Pardavimai iš išrašytų sąskaitų ir kreditinių sąskaitų be PVM, pagal valiutą; taip pat likučiai, darbo užmokestis ir gamyba, jei jūsų rolė juos mato.",
+    "year": "Metai",
+    "net": "Neto",
+    "none": "Šiems metams dar nieko nėra.",
+    "noSales": "{year} m. nėra išrašytų sąskaitų.",
+    "sales": {
+      "title": "Neto pardavimai, {currency}",
+      "hint": "Užveskite ant mėnesio arba palieskite jį, kad pamatytumėte išsamiau.",
+      "counts": "sąskaitų: {invoices}, kreditinių: {creditNotes}",
+      "aria": "Mėnesio neto pardavimai {currency}, iš viso {total}",
+      "table": "Rodyti lentele",
+      "month": "Mėnuo",
+      "invoices": "Sąskaitos",
+      "creditNotes": "Kreditinės sąskaitos"
+    },
+    "customers": {
+      "title": "Didžiausi klientai",
+      "name": "Klientas",
+      "documents": "Dokumentai"
+    },
+    "items": {
+      "title": "Didžiausios eilutės",
+      "description": "Aprašymas",
+      "quantity": "Kiekis"
+    },
+    "other": {
+      "title": "Kiti rodikliai",
+      "stock": "Likučių vertė pirkimo kainomis",
+      "payroll": "Darbdavio sąnaudos už patvirtintą darbo užmokestį, {year}",
+      "production": "Gamybos užsakymai, {year}",
+      "productionValue": "užbaigta: {completed} · suplanuota: {planned}"
+    },
+    "month": {
+      "1": "Sausis",
+      "2": "Vasaris",
+      "3": "Kovas",
+      "4": "Balandis",
+      "5": "Gegužė",
+      "6": "Birželis",
+      "7": "Liepa",
+      "8": "Rugpjūtis",
+      "9": "Rugsėjis",
+      "10": "Spalis",
+      "11": "Lapkritis",
+      "12": "Gruodis"
+    },
+    "monthShort": {
+      "1": "sau",
+      "2": "vas",
+      "3": "kov",
+      "4": "bal",
+      "5": "geg",
+      "6": "bir",
+      "7": "lie",
+      "8": "rgp",
+      "9": "rgs",
+      "10": "spa",
+      "11": "lap",
+      "12": "grd"
+    }
+  },
+  "settings": {
+    "description": "Įmonės nustatymai ir jūsų paskyra.",
+    "company": "Įmonė",
+    "account": "Jūsų paskyra",
+    "links": {
+      "profile": {
+        "title": "Įmonės profilis",
+        "text": "Pavadinimas, įmonės ir PVM kodas, adresas."
+      },
+      "taxCategories": {
+        "title": "Mokesčių kategorijos",
+        "text": "PVM tarifai ir režimai dokumentų eilutėms."
+      },
+      "bankAccounts": {
+        "title": "Banko sąskaitos",
+        "text": "Sąskaitos, spausdinamos dokumentuose."
+      },
+      "warehouses": {
+        "title": "Sandėliai",
+        "text": "Vietos, kur laikomos prekės."
+      },
+      "payrollRates": {
+        "title": "Darbo užmokesčio tarifai",
+        "text": "Socialinės įmokos ir mokesčiai pagal šalį."
+      },
+      "security": {
+        "title": "Saugumas ir sesijos",
+        "text": "Slaptažodis, įrenginiai, kuriuose prisijungta."
+      },
+      "twoFactor": {
+        "title": "Dviejų veiksnių autentifikavimas",
+        "text": "Autentifikavimo programa ir atsarginiai kodai."
+      }
+    },
+    "members": {
+      "title": "Nariai",
+      "description": "Asmenys, turintys prieigą prie šios įmonės, ir jų rolės.",
+      "you": "jūs",
+      "role": "Rolė",
+      "suspend": "Sustabdyti",
+      "reactivate": "Atkurti prieigą",
+      "saved": "Narys atnaujintas.",
+      "lastOwner": "Įmonėje turi likti bent vienas aktyvus savininkas.",
+      "status": {
+        "invited": "Pakviestas",
+        "suspended": "Sustabdytas"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Kvietimai",
+    "description": "Kvieskite žmones el. paštu. Nuoroda galioja 7 dienas ir tik pakviestam adresui.",
+    "email": "El. pašto adresas",
+    "role": "Vaidmuo",
+    "invite": "Pakviesti",
+    "copy": "Kopijuoti nuorodą",
+    "copied": "Nukopijuota",
+    "revoke": "Atšaukti",
+    "revoked": "Kvietimas atšauktas.",
+    "open": "Atviri kvietimai",
+    "none": "Atvirų kvietimų nėra.",
+    "expired": "Pasibaigęs",
+    "expires": "Galioja iki {date}",
+    "memberExists": "Šis asmuo jau yra įmonės narys.",
+    "error": "Kvietimo sukurti nepavyko.",
+    "delivery": {
+      "sent": "Kvietimas išsiųstas. Taip pat galite perduoti šią nuorodą:",
+      "not_configured": "El. paštas nesukonfigūruotas, niekas neišsiųsta. Perduokite nuorodą patys:",
+      "failed": "El. laiško išsiųsti nepavyko. Perduokite nuorodą patys:"
+    },
+    "accept": "Priimti kvietimą",
+    "home": "Į pradžios puslapį",
+    "intro": "Esate kviečiami prisijungti prie {company} su vaidmeniu „{role}“.",
+    "otherEmail": "Šis kvietimas skirtas kitam el. pašto adresui. Esate prisijungę kaip {email}; atsijunkite ir prisijunkite su pakviestu adresu.",
+    "closed": {
+      "expired": "Kvietimo galiojimas baigėsi. Paprašykite naujo.",
+      "used": "Kvietimas jau panaudotas arba atšauktas.",
+      "not_found": "Kvietimo nuoroda negalioja."
+    },
+    "state": {
+      "invitation": {
+        "closed": "Kvietimas nebegalioja.",
+        "otherEmail": "Šis kvietimas skirtas kitam el. pašto adresui.",
+        "alreadyMember": "Jūs jau esate šios įmonės narys."
+      }
     }
   }
 }

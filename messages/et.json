@@ -20,45 +20,30 @@
     "closeMenu": "Sulge menüü"
   },
   "topbar": {
-    "noCompany": "Ettevõtet pole valitud",
+    "noCompany": "Ettevõtet veel pole",
     "language": "Keel",
     "account": "Konto",
-    "notSignedIn": "Pole sisse logitud"
+    "notSignedIn": "Pole sisse logitud",
+    "currentCompany": "Praegune ettevõte"
+  },
+  "environment": {
+    "label": "Testkeskkond",
+    "testBanner": "See ei ole tootmiskeskkond. Kasutage ainult väljamõeldud andmeid: mitte päris arveid, kliente ega pangaandmeid."
   },
   "dashboard": {
     "title": "Ülevaade",
     "subtitle": "Teie ettevõtte dokumentide ja tegevuste kokkuvõte.",
-    "demoBanner": "Eelvaade näidisandmetega. Midagi siin pole veel päris ettevõttega seotud.",
-    "demoBadge": "Näidisandmed",
-    "kpi": {
-      "revenue": "Selle kuu arved",
-      "revenueHint": "Kinnitatud arved, iga dokumendi enda valuutas",
-      "outstanding": "Tasumata",
-      "outstandingHint": "{count, plural, one {# tasumata arve} other {# tasumata arvet}}",
-      "overdue": "Tähtaeg ületatud",
-      "overdueHint": "{count, plural, one {# arve tähtaeg on ületatud} other {# arve tähtaeg on ületatud}}",
-      "documents": "Selle kuu dokumendid",
-      "documentsHint": "Arved, ettemaksuarved, kreeditarved ja saatelehed"
-    },
-    "currencyNote": "Iga dokument säilitab oma valuuta. Eri valuutades summasid kunagi kokku ei liideta.",
-    "recent": {
-      "title": "Viimased dokumendid",
-      "description": "Kõige uuemad igat tüüpi dokumendid",
-      "number": "Number",
-      "type": "Tüüp",
-      "customer": "Klient",
-      "date": "Kuupäev",
-      "status": "Olek",
-      "amount": "Summa",
-      "creditsInvoice": "Korrigeerib {number}",
-      "noAmount": "Ei kohaldu"
-    },
-    "nextSteps": {
-      "title": "Alustamine",
-      "createCompany": "Looge ettevõtte profiil",
-      "inviteTeam": "Kutsuge meeskond ja määrake rollid",
-      "addCustomers": "Lisage kliendid ja tooted",
-      "firstInvoice": "Koostage esimene arve"
+    "documents": {
+      "title": "Dokumendid",
+      "drafts": "Mustandid",
+      "issued": "Väljastatud",
+      "invoicedNet": "Arveldatud, miinus kreeditarved",
+      "empty": "Dokumente veel pole.",
+      "unavailable": "Dokumendid ei ole teie rollile kättesaadavad või enne kaheastmelise autentimise seadistamist.",
+      "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta.",
+      "loadError": "Dokumentide näitajaid ei õnnestunud praegu laadida. Dokumente see ei mõjuta; proovige hiljem uuesti.",
+      "createFirst": "Loo esimene dokument",
+      "paymentsNotTracked": "Makseid veel ei arvestata, seega ei näe siin, mis on tasutud, tasumata või tähtaja ületanud."
     }
   },
   "documentType": {
@@ -88,6 +73,13 @@
     "description": "Otsitavat lehte ei ole olemas või see on teisaldatud.",
     "backHome": "Tagasi ülevaatesse"
   },
+  "errorPage": {
+    "title": "Midagi läks valesti",
+    "description": "Lehte ei õnnestunud kuvada. Palun proovige uuesti. Kui viga kordub, teatage veakood.",
+    "digest": "Veakood: {digest}",
+    "retry": "Proovi uuesti",
+    "home": "Tagasi ülevaatesse"
+  },
   "offline": {
     "title": "Võrguühendus puudub",
     "description": "Kontrollige internetiühendust. Teie andmeid sellesse seadmesse ei salvestata."
@@ -102,6 +94,7 @@
     "number": "Nr.",
     "issueDate": "Väljastamise kuupäev",
     "dueDate": "Maksetähtaeg",
+    "amountDue": "Tasumisele kuulub",
     "supplyDate": "Tarnekuupäev",
     "validUntil": "Kehtib kuni",
     "buyerReference": "Tellimuse number",
@@ -143,7 +136,6 @@
     "bank": "Pank",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Palume tasuda hiljemalt {date}",
     "notes": "Märkused",
     "relation": {
       "credits": "Kreeditarve arvele {number}, {date}",
@@ -198,6 +190,16 @@
     "signInLocked": {
       "subject": "Mitu ebaõnnestunud sisselogimiskatset",
       "body": "Pärast mitut ebaõnnestunud katset {time} (UTC) on teie ALVOXIS Flow konto parooliga sisselogimine 15 minutiks peatatud. Seadmetest, kust olete varem sisse loginud, saab endiselt sisse logida. Kui see polnud teie, lähtestage parool:\n{link}"
+    },
+    "invitation": {
+      "subject": "Kutse ettevõttesse {company}",
+      "body": "{inviter} kutsub teid liituma ettevõttega {company} ALVOXIS Flow's. Vastuvõtmiseks avage link:\n{link}\n\nKui teil pole veel kontot, registreeruge esmalt selle e-posti aadressiga ja avage link uuesti. Link kehtib {days} päeva."
+    },
+    "document": {
+      "greeting": "Tere!",
+      "attached": "Manuses on {document} ettevõttelt {seller}.",
+      "reply": "Küsimuste korral vastake sellele kirjale.",
+      "footer": "Saadetud ettevõtte {seller} nimel ALVOXIS Flow kaudu."
     }
   },
   "auth": {
@@ -383,6 +385,21 @@
       "addressLine2": "Kuni 200 tähemärki.",
       "postalCode": "Kuni 16 tähemärki.",
       "city": "Kuni 100 tähemärki."
+    },
+    "pdfAccent": {
+      "legend": "Dokumentide värv",
+      "hint": "Arvete ja teiste PDF-dokumentide aktsentvärv: pealkiri, peened jooned, maksetähtaeg ja kogusumma. Taust jääb valgeks ja tekst tumedaks, nii et dokumendid prinditakse hästi igal printeril.",
+      "default": "Vaikimisi",
+      "previewLabel": "Arve näidis värviga „{colour}“",
+      "previewCaption": "Näidis: kus värv PDF-is ilmub. Summad ja sisu ei muutu.",
+      "options": {
+        "navy": "Tumesinine",
+        "graphite": "Grafiithall",
+        "blue": "Sinine",
+        "teal": "Sinakasroheline",
+        "green": "Roheline",
+        "burgundy": "Burgundia"
+      }
     }
   },
   "documents": {
@@ -403,7 +420,7 @@
       "draft": "Mustand",
       "issued": "Väljastatud"
     },
-    "issuedNotice": "Dokument on väljastatud numbriga {number}. Väljastatud dokumente ei saa muuta.",
+    "issuedNotice": "Dokument on väljastatud numbriga <num>{number}</num>. Väljastatud dokumente ei saa muuta.",
     "readOnlyDraft": "Saate seda mustandit vaadata. Teie roll ei luba seda muuta.",
     "sellerHint": "Müüja andmed võetakse ettevõtte profiilist.",
     "sections": {
@@ -495,7 +512,19 @@
         },
         "total": {
           "mustBeNegative": "Kreeditarve summa peab olema negatiivne."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "Krediteeritav kogus ületab arve rea jääki (koos väljastatud kreeditarvetega).",
+          "invalid": "Krediteeritav kogus peab olema nullist suurem."
+        },
+        "amount": {
+          "exceedsRemaining": "Krediteeritav summa ületab arve rea jääki (koos väljastatud kreeditarvetega)."
+        },
+        "nothingRemaining": "See arve on juba täielikult krediteeritud.",
+        "sourceLine": {
+          "unknown": "Krediteeritud rida ei ole algsel arvel."
+        },
+        "dateBeforeOriginal": "Kreeditarve kuupäev ei saa olla varasem kui arve kuupäev."
       },
       "deliveryNote": {
         "line": {
@@ -568,6 +597,145 @@
       },
       "total": {
         "mustBePositive": "Summa peab olema suurem kui null."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Mõned impordi punktid on veel kontrollimata."
+        },
+        "duplicates": {
+          "unacknowledged": "Kinnitage enne mustandi loomist võimalik duplikaat."
+        },
+        "line": {
+          "incomplete": "Real peab olema kogus ja ühikuhind.",
+          "flagsUnresolved": "Real on kontrollimata punkte."
+        }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Sisestage nimi."
+        },
+        "role": {
+          "required": "Valige vähemalt üks roll: klient või tarnija."
+        },
+        "email": {
+          "invalid": "Sisestage kehtiv e-posti aadress."
+        },
+        "countryCode": {
+          "invalid": "Kasutage kahetähelist riigikoodi, nt LV."
+        },
+        "vatNumber": {
+          "invalid": "Sisestage KMKR number koos riigi eesliitega, nt LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "Maksetähtaeg peab olema 0 kuni 365 päeva."
+        }
+      },
+      "product": {
+        "name": {
+          "required": "Sisestage nimi."
+        },
+        "unit": {
+          "required": "Sisestage ühik, nt tk."
+        },
+        "currency": {
+          "invalid": "Valige EUR või PLN."
+        },
+        "price": {
+          "invalid": "Sisestage hind kujul 12.50 (kuni 4 komakohta)."
+        },
+        "taxCategory": {
+          "unknown": "Valige üks ettevõtte maksukategooriatest.",
+          "archived": "See maksukategooria on arhiveeritud; valige aktiivne."
+        },
+        "trackStock": {
+          "inUse": "Sellel tootel on laoliikumisi, seega laoarvestus jääb sisse."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Sisestage kogus kujul 2 või 1.5 (kuni 4 komakohta).",
+          "insufficient": "Selles laos pole piisavalt jääki."
+        },
+        "unitCost": {
+          "invalid": "Sisestage ühiku maksumus kujul 12.50 (ainult vastuvõtul)."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev.",
+          "future": "Kuupäev ei saa olla tulevikus."
+        },
+        "transfer": {
+          "target": "Valige ladu, kuhu paigutada.",
+          "sameWarehouse": "Valige kaks erinevat ladu."
+        },
+        "product": {
+          "unknown": "Valige üks ettevõtte toodetest.",
+          "notTracked": "Selle toote laojääki ei arvestata."
+        },
+        "warehouse": {
+          "unknown": "Valige üks ettevõtte ladudest.",
+          "archived": "See ladu on arhiveeritud."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Kasutage ladina tähti ja numbreid (kuni 20), nt MAIN."
+        },
+        "name": {
+          "required": "Sisestage nimi."
+        }
+      },
+      "production": {
+        "product": {
+          "unknown": "Valige üks ettevõtte toodetest.",
+          "notTracked": "Toote laojääki peab arvestama.",
+          "archived": "See toode on arhiveeritud."
+        },
+        "component": {
+          "self": "Toode ei saa olla iseenda komponent.",
+          "unknown": "Valige üks ettevõtte toodetest.",
+          "notTracked": "Komponentide laojääki peab arvestama.",
+          "duplicate": "Iga komponent ainult üks kord."
+        },
+        "quantity": {
+          "invalid": "Sisestage kogus suurem kui 0 (kuni 4 komakohta).",
+          "tooSmall": "Kogus on selle koosseisu jaoks liiga väike."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "bom": {
+          "missing": "Sellel tootel pole veel koosseisu."
+        }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Sisestage protsent vahemikus 0 kuni 99.999."
+        },
+        "amount": {
+          "invalid": "Sisestage summa kujul 1500 või 1500.50."
+        },
+        "firstName": {
+          "required": "Sisestage eesnimi."
+        },
+        "lastName": {
+          "required": "Sisestage perekonnanimi."
+        },
+        "email": {
+          "invalid": "Sisestage kehtiv e-posti aadress."
+        },
+        "country": {
+          "invalid": "Valige Läti, Leedu, Eesti või Poola."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev.",
+          "endBeforeStart": "Lõppkuupäev ei saa olla enne alguskuupäeva."
+        },
+        "period": {
+          "invalid": "Valige kuu."
+        },
+        "run": {
+          "noEmployees": "Sel kuul ei töötanud kedagi."
+        }
       }
     },
     "taxCategory": "Maksukategooria",
@@ -600,6 +768,34 @@
     "deleteConfirmBodyEditor": "Mustand kustutatakse jäädavalt ja seda ei saa taastada. Kõik selles redaktoris salvestamata muudatused lähevad kaotsi. Väljastatud dokumente kustutada ei saa.",
     "colBuyer": "Ostja",
     "creditNoteBank": "Kreeditarve säilitab algse arve pangarekvisiidid.",
+    "creditNote": {
+      "create": "Loo kreeditarve",
+      "title": "Kreeditarve arvele {number}",
+      "description": "Luuakse kreeditarve mustand, mida saab enne väljastamist redaktoris kontrollida. Arvet ennast ei muudeta.",
+      "mode": "Mida krediteerida",
+      "full": {
+        "label": "Kogu jääk",
+        "hint": "Krediteeritakse kõik arve read, mida pole veel krediteeritud."
+      },
+      "partial": {
+        "label": "Valitud read",
+        "hint": "Krediteeritakse ainult allpool sisestatud kogused."
+      },
+      "linesTitle": "Krediteeritavad kogused",
+      "linesHint": "Jätke rida tühjaks, et see vahele jätta. Juba väljastatud kreeditarveid arvestatakse mustandi loomisel.",
+      "invoiced": "Arvel: {quantity}",
+      "quantityFor": "Krediteeritav kogus, rida {n}: {description}",
+      "submit": "Loo mustand",
+      "refused": "Kreeditarve mustandit ei loodud.",
+      "notCreditable": "Krediteerida saab ainult väljastatud arvet.",
+      "errors": {
+        "dateRequired": "Sisestage kreeditarve kuupäev.",
+        "dateBeforeInvoice": "Kreeditarve kuupäev ei saa olla varasem kui arve kuupäev.",
+        "noLines": "Sisestage kogus vähemalt ühele reale.",
+        "quantityInvalid": "Sisestage nullist suurem arv, kuni 4 kohta pärast koma.",
+        "quantityTooHigh": "See on rohkem kui arvel olev kogus."
+      }
+    },
     "pdf": {
       "open": "Ava PDF",
       "download": "Laadi PDF alla",
@@ -607,6 +803,192 @@
       "downloadDraft": "Laadi mustandi PDF alla",
       "draftHint": "Mustandi PDF on märgitud „pole väljastatud“ ja sellel pole numbrit.",
       "unsaved": "PDF näitab viimast salvestatud versiooni. Salvestage mustand, et muudatused jõuaksid PDF-i."
+    },
+    "entry": {
+      "title": "Dokumendid",
+      "choose": "Valige ettevõte, et avada selle dokumendid.",
+      "none": "Dokumendid kuuluvad ettevõttele. Looge kõigepealt ettevõte.",
+      "createCompany": "Loo ettevõte"
+    },
+    "filters": {
+      "search": "Otsing",
+      "searchPlaceholder": "Number või ostja",
+      "type": "Liik",
+      "anyType": "Kõik liigid",
+      "status": "Olek",
+      "anyStatus": "Kõik olekud",
+      "from": "Väljastatud alates",
+      "to": "Väljastatud kuni",
+      "sort": "Sorteeri",
+      "sorts": {
+        "date_desc": "Uuemad eespool",
+        "date_asc": "Vanemad eespool",
+        "number_asc": "Number (kasvav)",
+        "number_desc": "Number (kahanev)",
+        "amount_desc": "Summa (suurim eespool)",
+        "amount_asc": "Summa (väikseim eespool)"
+      },
+      "apply": "Rakenda",
+      "reset": "Lähtesta filtrid",
+      "noMatches": "Otsingule või filtritele ei vasta ükski dokument.",
+      "amountSortHint": "Summad sorteeritakse iga valuuta piires; mustanditel pole veel kogusummat ja need on lõpus.",
+      "showing": "{start}–{end} / {total}",
+      "previous": "Eelmine leht",
+      "next": "Järgmine leht",
+      "pagination": "Dokumentide loendi lehed"
+    },
+    "related": {
+      "creditNotesTitle": "Selle arve kreeditarved",
+      "empty": "Sellel arvel pole veel kreeditarveid.",
+      "loadError": "Selle arve kreeditarveid ei õnnestunud laadida. Laadige leht uuesti, et uuesti proovida."
+    },
+    "relation": {
+      "credits": "Kreeditarve arvele <link>{number}</link> kuupäevaga {date}",
+      "converted_from": "Väljastatud ettemaksuarve <link>{number}</link> alusel kuupäevaga {date}",
+      "delivers": "Saateleht arvele <link>{number}</link> kuupäevaga {date}",
+      "replaces": "Asendab arvet <link>{number}</link> kuupäevaga {date}"
+    },
+    "import": {
+      "open": "Impordi PDF",
+      "title": "Arve import PDF-ist",
+      "description": "Laadige üles oma ettevõtte arve PDF-ina ja kontrollige loetud andmeid enne mustandi loomist.",
+      "fileLabel": "PDF-fail",
+      "fileHint": "Tekstikihiga PDF, kuni {size} MB ja 20 lehekülge. Skannitud pilte veel lugeda ei saa.",
+      "privacy": "Faili loetakse meie serveris ainult andmete eraldamiseks, seda ei salvestata ega saadeta teistele teenustele.",
+      "read": "Loe PDF",
+      "reading": "Loen…",
+      "noFile": "Valige kõigepealt PDF-fail.",
+      "tooLarge": "Fail on suurem kui {size} MB.",
+      "notPdf": "See fail ei ole PDF.",
+      "unreadable": "PDF-i ei õnnestunud lugeda. Tekstikihita skannitud dokumente veel ei toetata.",
+      "fileRead": "{name}: loetud lehekülgi – {pages}",
+      "startOver": "Vali teine fail",
+      "findingsTitle": "Mida kontrollida",
+      "findingsHint": "Kontrollige iga allolevat punkti, muidu mustandit ei looda.",
+      "checked": "Olen seda kontrollinud",
+      "duplicatesTitle": "Sarnane dokument võib selles ettevõttes juba olemas olla:",
+      "duplicateStrength": {
+        "certain": "peaaegu kindlasti sama",
+        "likely": "tõenäoliselt sama",
+        "possible": "võib-olla sama"
+      },
+      "duplicateConfirm": "Olen olemasolevat dokumenti kontrollinud ja soovin siiski luua uue mustandi.",
+      "documentTitle": "Dokument",
+      "numberHint": "Failist loetud teadmiseks; mustand saab väljastamisel oma numbri.",
+      "partiesTitle": "Müüja ja ostja",
+      "sellerFixed": "Müüja: teie ettevõte ({name}) ettevõtte profiilist.",
+      "sellerRead": "Failist leitud müüja: {name}",
+      "buyerName": "Ostja nimi",
+      "buyerRegistrationNumber": "Ostja registrikood",
+      "buyerVatNumber": "Ostja KMKR number",
+      "taxTitle": "Maks",
+      "taxHint": "Maksukohtlemist ei võeta kunagi failist: valige ridadele kategooria selgesõnaliselt. Redaktoris saab seda iga rea jaoks muuta.",
+      "taxCategory": "Maksukategooria kõigile ridadele",
+      "noCategories": "Lisage enne importi maksukategooria.",
+      "linesTitle": "Read",
+      "printedTotal": "Rea summa failis: {amount}",
+      "noLines": "Failist ridu ei leitud.",
+      "totalsTitle": "Failis märgitud summad",
+      "totalsHint": "Ainult võrdluseks: mustandi summad arvutatakse selle ridade põhjal.",
+      "statementsTitle": "Tekst, millel võib olla maksu- või õiguslik tähendus",
+      "statementsHint": "Näidatud teie tähelepanuks, seda ei tõlgendata.",
+      "problems": {
+        "currency": "Valige valuuta.",
+        "issueDate": "Sisestage väljastamise kuupäev.",
+        "buyerName": "Sisestage ostja nimi.",
+        "taxCategory": "Valige maksukategooria.",
+        "lines": "Igal real peab olema kirjeldus, nullist erinev kogus ja ühikuhind.",
+        "findings": "Kontrollige kõiki punkte.",
+        "duplicates": "Kinnitage, et soovite võimalikule duplikaadile vaatamata luua uue mustandi."
+      },
+      "flags": {
+        "generic": "Kontrollige seda väärtust.",
+        "amount": {
+          "ambiguous": "Summat saab lugeda mitmel viisil (nt 1,234). Kontrollige numbreid."
+        },
+        "bankAccount": {
+          "ibanInvalid": "Failis oleva IBAN-i kontrollsumma on vale."
+        },
+        "buyer": {
+          "notFound": "Ostjat failist ei leitud."
+        },
+        "currency": {
+          "multiple": "Failis on rohkem kui üks valuuta.",
+          "notFound": "Failist valuutat ei leitud."
+        },
+        "date": {
+          "formatAmbiguous": "Kuupäeva saab lugeda mitmel viisil (nt 02/03/2026). Kontrollige kuupäevi."
+        },
+        "documentType": {
+          "unknown": "Dokumendi liiki ei tuvastatud."
+        },
+        "dueDate": {
+          "beforeIssueDate": "Maksetähtaeg on enne väljastamise kuupäeva."
+        },
+        "duplicate": {
+          "possible": "Sarnane dokument võib selles ettevõttes juba olemas olla."
+        },
+        "file": {
+          "noTextLayer": "Failil puudub tekstikiht (näib olevat skann), seda ei saa lugeda."
+        },
+        "identifier": {
+          "labelMismatch": "Registrikood või KMKR number ei vasta oma nimetusele.",
+          "unlabelled": "Number, mis võib olla registrikood või KMKR number, on ilma nimetuseta."
+        },
+        "issueDate": {
+          "notFound": "Väljastamise kuupäeva ei leitud.",
+          "unlabelled": "Väljastamise kuupäev võeti nimetuseta kuupäevast."
+        },
+        "line": {
+          "arithmeticMismatch": "Kogus × hind ei vasta failis märgitud rea summale."
+        },
+        "lines": {
+          "arithmeticMismatch": "Mõned read ei klapi (kogus × hind ≠ rea summa).",
+          "notFound": "Ridu ei leitud."
+        },
+        "number": {
+          "notFound": "Dokumendi numbrit ei leitud."
+        },
+        "seller": {
+          "notFound": "Müüjat failist ei leitud."
+        },
+        "statements": {
+          "found": "Failis on teksti, millel võib olla maksu- või õiguslik tähendus (näidatud allpool)."
+        },
+        "tax": {
+          "notShown": "Failis ei ole maksusummat.",
+          "treatmentRequiresConfirmation": "Maksukohtlemist ei võeta failist: valige maksukategooria.",
+          "zeroRateUnexplained": "Näidatud on 0 % maksumäär ilma selgituseta."
+        },
+        "total": {
+          "notFound": "Kogusummat ei leitud."
+        },
+        "totals": {
+          "linesMismatch": "Ridade summa ei vasta failis märgitud vahesummale.",
+          "sumMismatch": "Vahesumma ja maks ei anna kokku failis märgitud kogusummat."
+        }
+      }
+    },
+    "email": {
+      "open": "Saada e-postiga",
+      "title": "Saada {number} e-postiga",
+      "description": "PDF lisatakse manusena. Vastused tulevad teie e-postile.",
+      "to": "Saaja e-post",
+      "message": "Sõnum (valikuline)",
+      "send": "Saada",
+      "close": "Sulge",
+      "sent": "Saadetud aadressile {to}.",
+      "notConfigured": "Dokumentide saatmine e-postiga pole saadaval: saidil pole e-posti seadistatud.",
+      "state": {
+        "document": {
+          "notIssued": "Saata saab ainult väljastatud dokumente."
+        },
+        "email": {
+          "notConfigured": "Saidil pole e-posti seadistatud.",
+          "rateLimited": "Viimase tunni jooksul saadeti liiga palju dokumente. Proovige hiljem.",
+          "failed": "E-kirja ei õnnestunud saata. Proovige hiljem."
+        }
+      }
     }
   },
   "taxCategories": {
@@ -734,6 +1116,520 @@
       "manage": "Halda pangakontosid",
       "archived": "Arhiveeritud konto {iban}",
       "unlinked": "Salvestatud rekvisiidid {iban} (kontoga sidumata)"
+    }
+  },
+  "ui": {
+    "toast": {
+      "region": "Teavitused",
+      "close": "Sulge teavitus"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Valige ettevõte.",
+      "none": "Looge esmalt ettevõte.",
+      "createCompany": "Loo ettevõte"
+    },
+    "outcome": {
+      "invalid": "Palun kontrollige esiletõstetud välju.",
+      "conflict": "Seda kirjet muudeti mujal. Laadige uuesti, et näha viimast versiooni.",
+      "signedOut": "Teie seanss on lõppenud. Palun logige uuesti sisse.",
+      "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
+      "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
+      "notFound": "Seda kirjet enam ei ole.",
+      "error": "Midagi läks valesti. Palun proovige uuesti."
+    },
+    "reload": "Laadi uuesti"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "Isikud ja ettevõtted, kellele müüte. Valige need dokumentides ostja andmete täitmiseks.",
+      "supplier": "Ettevõtted, kellelt ostate."
+    },
+    "readOnly": "Saate seda loendit vaadata. Muutmiseks on vaja haldusõigusega rolli.",
+    "search": "Otsi",
+    "searchPlaceholder": "Nimi, registri- või KMKR number, e-post",
+    "showArchived": "Näita arhiveerituid",
+    "add": {
+      "customer": "Lisa klient",
+      "supplier": "Lisa tarnija"
+    },
+    "empty": {
+      "customer": "Kliente veel pole.",
+      "supplier": "Tarnijaid veel pole."
+    },
+    "noMatches": "Otsingule vastet ei leitud.",
+    "create": "Lisa",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "documents": "Dokumendid",
+    "archiveConfirmTitle": "Kas arhiveerida see kirje?",
+    "archiveConfirmBody": "Seda ei pakuta enam dokumentide loomisel. Olemasolevad dokumendid ei muutu. Kirje saab hiljem taastada.",
+    "paymentTerm": "Maksetähtaeg: {days} päeva",
+    "role": {
+      "customer": "Klient",
+      "supplier": "Tarnija"
+    },
+    "status": {
+      "archived": "Arhiveeritud"
+    },
+    "fields": {
+      "name": "Nimi",
+      "registrationNumber": "Registrikood",
+      "vatNumber": "KMKR number",
+      "email": "E-post",
+      "phone": "Telefon",
+      "contactName": "Kontaktisik",
+      "addressLine1": "Aadress",
+      "addressLine2": "Aadress (2. rida)",
+      "postalCode": "Postiindeks",
+      "city": "Linn",
+      "countryCode": "Riigikood (LV, LT, EE, PL…)",
+      "paymentTermDays": "Maksetähtaeg, päeva",
+      "notes": "Märkused",
+      "roles": "Roll"
+    },
+    "done": {
+      "created": "Kirje lisatud.",
+      "saved": "Muudatused salvestatud.",
+      "archived": "Kirje arhiveeritud.",
+      "restored": "Kirje taastatud."
+    },
+    "outcome": {
+      "registrationTaken": "Selle registrikoodiga aktiivne kirje on juba olemas."
+    },
+    "picker": {
+      "label": "Täida klientide hulgast",
+      "placeholder": "Valige klient…",
+      "hint": "Kopeerib kliendi andmed ostja väljadele; neid saab endiselt muuta."
+    }
+  },
+  "products": {
+    "description": "Kaubad ja teenused, mida müüte või ostate. Lisage need dokumentidele reana ühe sammuga.",
+    "readOnly": "Saate kataloogi vaadata. Muutmiseks on vaja toodete haldusõigusega rolli.",
+    "search": "Otsi",
+    "searchPlaceholder": "Nimi, tootekood või ribakood",
+    "showArchived": "Näita arhiveerituid",
+    "add": "Lisa toode",
+    "empty": "Tooteid veel pole.",
+    "noMatches": "Otsingule vastet ei leitud.",
+    "create": "Lisa",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "archiveConfirmTitle": "Kas arhiveerida see toode?",
+    "archiveConfirmBody": "Seda ei pakuta enam dokumentides. Olemasolevad dokumendid ei muutu. Toote saab hiljem taastada.",
+    "tracked": "Laoarvestus",
+    "noCategory": "Vaikimisi puudub",
+    "archivedCategory": "Praegune kategooria (enam ei pakuta)",
+    "kind": {
+      "goods": "Kaup",
+      "service": "Teenus"
+    },
+    "status": {
+      "archived": "Arhiveeritud"
+    },
+    "fields": {
+      "name": "Nimi",
+      "kind": "Tüüp",
+      "sku": "Tootekood",
+      "unit": "Ühik",
+      "barcode": "Ribakood",
+      "currency": "Valuuta",
+      "salePrice": "Müügihind (km-ta)",
+      "purchasePrice": "Ostuhind (km-ta)",
+      "taxCategoryId": "Vaikimisi maksukategooria",
+      "trackStock": "Arvesta laojääki",
+      "description": "Kirjeldus"
+    },
+    "done": {
+      "created": "Toode lisatud.",
+      "saved": "Muudatused salvestatud.",
+      "archived": "Toode arhiveeritud.",
+      "restored": "Toode taastatud."
+    },
+    "outcome": {
+      "skuTaken": "Selle tootekoodiga aktiivne toode on juba olemas."
+    },
+    "picker": {
+      "label": "Lisa kataloogist",
+      "placeholder": "Valige toode…"
+    }
+  },
+  "inventory": {
+    "description": "Laojäägid ladude kaupa: vastuvõtt, väljastus, ümberpaigutus ja inventuur. Iga muudatus säilib liikumiste ajaloos.",
+    "readOnly": "Saate laojääke vaadata. Muutmiseks on vaja laohalduse õigusega rolli.",
+    "noWarehouses": "Ladusid veel pole. Lisage esimene allpool — sellest saab vaikimisi ladu.",
+    "noTrackedProducts": "Ükski toode ei arvesta veel laojääki. Lülitage toodetes kaupadele sisse „Arvesta laojääki“.",
+    "archived": "arhiveeritud",
+    "stock": {
+      "title": "Laojääk",
+      "empty": "Laojääke veel pole.",
+      "value": "Väärtus ostuhindades"
+    },
+    "movements": {
+      "title": "Viimased liikumised"
+    },
+    "kind": {
+      "receipt": "Vastuvõtt",
+      "issue": "Väljastus",
+      "adjustment": "Inventuuri korrektsioon",
+      "transfer_out": "Ümberpaigutus (välja)",
+      "transfer_in": "Ümberpaigutus (sisse)",
+      "production_consume": "Kasutatud tootmises",
+      "production_output": "Toodetud"
+    },
+    "operation": {
+      "title": "Registreeri laojäägi muudatus",
+      "kind": "Toiming",
+      "product": "Toode",
+      "chooseProduct": "Valige toode…",
+      "warehouse": "Ladu",
+      "from": "Laost",
+      "to": "Lattu",
+      "chooseWarehouse": "Valige ladu…",
+      "quantity": "Kogus",
+      "counted": "Loendatud kogus",
+      "unitCost": "Ühiku maksumus (km-ta, valikuline)",
+      "date": "Kuupäev",
+      "reference": "Alus (valikuline)",
+      "countHint": "Erinevus praeguse jäägiga registreeritakse inventuuri korrektsioonina.",
+      "kinds": {
+        "receipt": "Vastuvõtt",
+        "issue": "Väljastus / mahakandmine",
+        "transfer": "Ümberpaigutus",
+        "count": "Inventuur"
+      },
+      "submit": {
+        "receipt": "Registreeri vastuvõtt",
+        "issue": "Registreeri väljastus",
+        "transfer": "Registreeri ümberpaigutus",
+        "count": "Registreeri inventuur"
+      }
+    },
+    "warehouses": {
+      "title": "Laod",
+      "add": "Lisa ladu",
+      "code": "Kood",
+      "codeHint": "Ladina tähed ja numbrid, nt MAIN.",
+      "name": "Nimi",
+      "default": "Vaikimisi",
+      "makeDefault": "Määra vaikimisi",
+      "archive": "Arhiveeri",
+      "restore": "Taasta"
+    },
+    "done": {
+      "receipt": "Vastuvõtt registreeritud.",
+      "issue": "Väljastus registreeritud.",
+      "transfer": "Ümberpaigutus registreeritud.",
+      "count": "Inventuur registreeritud.",
+      "countUnchanged": "Loendatud kogus vastab jäägile; midagi ei muutunud.",
+      "warehouseCreated": "Ladu lisatud.",
+      "warehouseSaved": "Vaikimisi ladu muudetud.",
+      "warehouseArchived": "Ladu arhiveeritud.",
+      "warehouseRestored": "Ladu taastatud."
+    },
+    "outcome": {
+      "codeTaken": "Selle koodiga ladu on juba olemas.",
+      "notEmpty": "Selles laos on veel jääke. Paigutage või väljastage need esmalt."
+    }
+  },
+  "production": {
+    "description": "Koosseisud ja tootmistellimused. Tellimuse lõpetamisel kantakse komponendid laost maha ja valmistoode võetakse arvele.",
+    "readOnly": "Saate tootmist vaadata. Tellimuste planeerimiseks ja lõpetamiseks on vaja tootmise haldusõigusega rolli.",
+    "planNeeds": "Tellimuse planeerimiseks on vaja ladu ja koosseisuga toodet (allpool).",
+    "status": {
+      "planned": "Planeeritud",
+      "completed": "Lõpetatud",
+      "cancelled": "Tühistatud"
+    },
+    "orders": {
+      "title": "Tellimused",
+      "empty": "Tootmistellimusi veel pole.",
+      "meta": "Ladu {warehouse} · planeeritud {planned}",
+      "completedOn": "lõpetatud {date}",
+      "available": "saadaval {quantity}",
+      "completedOnLabel": "Lõpetamise kuupäev",
+      "complete": "Lõpeta",
+      "cancel": "Tühista tellimus"
+    },
+    "plan": {
+      "title": "Planeeri tellimus",
+      "product": "Toode",
+      "chooseProduct": "Valige toode…",
+      "warehouse": "Ladu",
+      "quantity": "Kogus",
+      "plannedOn": "Planeeritud kuupäev",
+      "submit": "Planeeri"
+    },
+    "bom": {
+      "title": "Koosseisud",
+      "hint": "Millest koosneb üks toote ühik. Muudatused kehtivad ainult uutele tellimustele.",
+      "empty": "Koosseise veel pole.",
+      "edit": "Muuda",
+      "product": "Toode",
+      "component": "Komponent {n}",
+      "chooseComponent": "Valige komponent…",
+      "quantity": "Kogus ühiku kohta",
+      "remove": "Eemalda",
+      "addComponent": "Lisa komponent",
+      "save": "Salvesta koosseis"
+    },
+    "done": {
+      "planned": "Tellimus {number} planeeritud.",
+      "completed": "Tellimus {number} lõpetatud; laojäägid uuendatud.",
+      "cancelled": "Tellimus {number} tühistatud.",
+      "bomSaved": "Koosseis salvestatud."
+    },
+    "outcome": {
+      "notPlanned": "See tellimus on juba lõpetatud või tühistatud."
+    }
+  },
+  "payroll": {
+    "description": "Töötajad ja kuupalk Läti, Leedu, Eesti ja Poola jaoks.",
+    "disclaimer": "Arvutusabi, mitte maksudeklaratsioon. Määrad on ettevõtte seaded algväärtustega, mida peab kontrollima teie raamatupidaja; erirežiime, astmelisi määrasid ja ülempiire ei modelleerita.",
+    "readOnly": "Saate palka vaadata. Muutmiseks on vaja palga haldusõigusega rolli.",
+    "archived": "arhiveeritud",
+    "edit": "Muuda",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "archive": "Arhiveeri",
+    "restore": "Taasta",
+    "status": {
+      "draft": "Mustand",
+      "approved": "Kinnitatud"
+    },
+    "country": {
+      "LV": "Läti (EUR)",
+      "LT": "Leedu (EUR)",
+      "EE": "Eesti (EUR)",
+      "PL": "Poola (PLN)"
+    },
+    "cols": {
+      "gross": "Bruto",
+      "employeeSocial": "Töötaja maksed",
+      "health": "Ravikindlustus",
+      "incomeTax": "Tulumaks",
+      "net": "Väljamaksmisele",
+      "employerSocial": "Tööandja maksed",
+      "employerCost": "Tööandja kulu"
+    },
+    "runs": {
+      "title": "Palgakuud",
+      "period": "Kuu",
+      "start": "Alusta kuu arvestust",
+      "empty": "Palgakuid veel pole.",
+      "lines": "{count, plural, one {# töötaja} other {# töötajat}}",
+      "show": "Näita üksikasju",
+      "hide": "Peida üksikasjad",
+      "grossThisMonth": "Bruto sel kuul",
+      "applyGross": "Rakenda",
+      "csv": "Laadi alla CSV",
+      "recalculate": "Arvuta uuesti",
+      "approve": "Kinnita",
+      "delete": "Kustuta mustand",
+      "approveTitle": "Kas kinnitada see palgakuu?",
+      "approveBody": "Kinnitatud kuu on lõplik: selle summasid ei saa enam muuta. Kontrollige esmalt töötajaid ja summasid."
+    },
+    "employees": {
+      "title": "Töötajad",
+      "add": "Lisa töötaja",
+      "empty": "Töötajaid veel pole.",
+      "month": "kuu"
+    },
+    "fields": {
+      "firstName": "Eesnimi",
+      "lastName": "Perekonnanimi",
+      "position": "Ametikoht",
+      "email": "E-post",
+      "taxCountry": "Maksustamise riik",
+      "employmentStart": "Töötab alates",
+      "employmentEnd": "Töötab kuni",
+      "monthlyGross": "Kuu brutopalk",
+      "monthlyAllowance": "Maksuvaba summa kuus",
+      "allowanceHint": "nt maksuvaba tulu; 0, kui puudub.",
+      "monthlyTaxCredit": "Maksusoodustus kuus",
+      "taxCreditHint": "Lahutatakse tulumaksust (nt Poolas); 0, kui puudub."
+    },
+    "rates": {
+      "title": "Määrad riikide kaupa",
+      "hint": "Protsendid igale uuele või ümberarvutatud kuule. Salvestatud määrad asendavad algväärtused.",
+      "default": "Algväärtused — kontrollige",
+      "employeeSocialRate": "Töötaja maksed",
+      "employerSocialRate": "Tööandja maksed",
+      "incomeTaxRate": "Tulumaks",
+      "employeeHealthRate": "Ravikindlustus",
+      "save": "Salvesta määrad"
+    },
+    "done": {
+      "started": "Palgaarvestus {period} alustatud.",
+      "grossSet": "Brutosumma rakendatud.",
+      "recalculated": "Kuu arvutati uuesti.",
+      "approved": "Palgakuu {period} kinnitatud.",
+      "deleted": "Mustand {period} kustutatud.",
+      "employeeAdded": "Töötaja lisatud.",
+      "employeeSaved": "Muudatused salvestatud.",
+      "employeeArchived": "Töötaja arhiveeritud.",
+      "employeeRestored": "Töötaja taastatud.",
+      "ratesSaved": "Riigi {country} määrad salvestatud."
+    },
+    "outcome": {
+      "periodTaken": "Sellel kuul on palgaarvestus juba olemas.",
+      "approved": "See kuu on juba kinnitatud ega saa muutuda."
+    }
+  },
+  "analytics": {
+    "description": "Müük väljastatud arvetelt ja kreeditarvetelt km-ta, valuutade kaupa; lisaks laojäägid, palk ja tootmine, kui teie roll neid näeb.",
+    "year": "Aasta",
+    "net": "Neto",
+    "none": "Selle aasta kohta veel midagi pole.",
+    "noSales": "{year}. aastal pole väljastatud arveid.",
+    "sales": {
+      "title": "Netomüük, {currency}",
+      "hint": "Üksikasjade nägemiseks osutage kuule või puudutage seda.",
+      "counts": "arveid: {invoices}, kreeditarveid: {creditNotes}",
+      "aria": "Kuu netomüük valuutas {currency}, kokku {total}",
+      "table": "Näita tabelina",
+      "month": "Kuu",
+      "invoices": "Arved",
+      "creditNotes": "Kreeditarved"
+    },
+    "customers": {
+      "title": "Suurimad kliendid",
+      "name": "Klient",
+      "documents": "Dokumendid"
+    },
+    "items": {
+      "title": "Suurimad read",
+      "description": "Kirjeldus",
+      "quantity": "Kogus"
+    },
+    "other": {
+      "title": "Muud näitajad",
+      "stock": "Laojäägi väärtus ostuhindades",
+      "payroll": "Kinnitatud palga tööandja kulu, {year}",
+      "production": "Tootmistellimused, {year}",
+      "productionValue": "lõpetatud: {completed} · planeeritud: {planned}"
+    },
+    "month": {
+      "1": "Jaanuar",
+      "2": "Veebruar",
+      "3": "Märts",
+      "4": "Aprill",
+      "5": "Mai",
+      "6": "Juuni",
+      "7": "Juuli",
+      "8": "August",
+      "9": "September",
+      "10": "Oktoober",
+      "11": "November",
+      "12": "Detsember"
+    },
+    "monthShort": {
+      "1": "jaan",
+      "2": "veebr",
+      "3": "märts",
+      "4": "apr",
+      "5": "mai",
+      "6": "juuni",
+      "7": "juuli",
+      "8": "aug",
+      "9": "sept",
+      "10": "okt",
+      "11": "nov",
+      "12": "dets"
+    }
+  },
+  "settings": {
+    "description": "Ettevõtte seaded ja teie konto.",
+    "company": "Ettevõte",
+    "account": "Teie konto",
+    "links": {
+      "profile": {
+        "title": "Ettevõtte profiil",
+        "text": "Nimi, registri- ja KMKR number, aadress."
+      },
+      "taxCategories": {
+        "title": "Maksukategooriad",
+        "text": "Käibemaksumäärad ja -režiimid dokumendiridadele."
+      },
+      "bankAccounts": {
+        "title": "Pangakontod",
+        "text": "Dokumentidele trükitavad kontod."
+      },
+      "warehouses": {
+        "title": "Laod",
+        "text": "Kohad, kus kaupa hoitakse."
+      },
+      "payrollRates": {
+        "title": "Palgamäärad",
+        "text": "Sotsiaalmaksed ja maksud riikide kaupa."
+      },
+      "security": {
+        "title": "Turvalisus ja seansid",
+        "text": "Parool, seadmed, kuhu olete sisse logitud."
+      },
+      "twoFactor": {
+        "title": "Kaheastmeline autentimine",
+        "text": "Autentimisrakendus ja varukoodid."
+      }
+    },
+    "members": {
+      "title": "Liikmed",
+      "description": "Inimesed, kellel on juurdepääs sellele ettevõttele, ja nende rollid.",
+      "you": "teie",
+      "role": "Roll",
+      "suspend": "Peata",
+      "reactivate": "Taasta juurdepääs",
+      "saved": "Liige uuendatud.",
+      "lastOwner": "Ettevõttel peab olema vähemalt üks aktiivne omanik.",
+      "status": {
+        "invited": "Kutsutud",
+        "suspended": "Peatatud"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Kutsed",
+    "description": "Kutsuge inimesi e-posti teel. Link kehtib 7 päeva ja ainult kutsutud aadressile.",
+    "email": "E-posti aadress",
+    "role": "Roll",
+    "invite": "Kutsu",
+    "copy": "Kopeeri link",
+    "copied": "Kopeeritud",
+    "revoke": "Tühista",
+    "revoked": "Kutse tühistati.",
+    "open": "Avatud kutsed",
+    "none": "Avatud kutseid pole.",
+    "expired": "Aegunud",
+    "expires": "Kehtib kuni {date}",
+    "memberExists": "See inimene on juba ettevõtte liige.",
+    "error": "Kutset ei õnnestunud luua.",
+    "delivery": {
+      "sent": "Kutse saadeti. Võite jagada ka seda linki:",
+      "not_configured": "E-post pole seadistatud, midagi ei saadetud. Jagage linki ise:",
+      "failed": "E-kirja ei õnnestunud saata. Jagage linki ise:"
+    },
+    "accept": "Võta kutse vastu",
+    "home": "Avalehele",
+    "intro": "Teid kutsutakse liituma ettevõttega {company} rollis „{role}“.",
+    "otherEmail": "See kutse on teisele e-posti aadressile. Olete sisse logitud kui {email}; logige välja ja logige sisse kutsutud aadressiga.",
+    "closed": {
+      "expired": "Kutse on aegunud. Paluge uut.",
+      "used": "Kutse on juba kasutatud või tühistatud.",
+      "not_found": "Kutse link ei kehti."
+    },
+    "state": {
+      "invitation": {
+        "closed": "Kutse ei kehti enam.",
+        "otherEmail": "See kutse on teisele e-posti aadressile.",
+        "alreadyMember": "Olete juba selle ettevõtte liige."
+      }
     }
   }
 }

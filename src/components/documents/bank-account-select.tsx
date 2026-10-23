@@ -58,7 +58,7 @@ export function BankAccountSelect({
       </select>
       <p className="text-xs text-muted">
         {accounts.length === 0 ? t("picker.empty") : t("picker.hint")}{" "}
-        <Link href={`/companies/${companyId}/bank-accounts`} className="text-accent underline">
+        <Link href={`/companies/${companyId}/bank-accounts`} className="text-violet-300 underline">
           {t("picker.manage")}
         </Link>
       </p>

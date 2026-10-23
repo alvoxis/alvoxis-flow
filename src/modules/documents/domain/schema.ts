@@ -33,6 +33,9 @@ const party = z.object({
   contactName: optText(200),
 });
 
+/** A party (seller, buyer, delivery address) as untrusted input. */
+export const partyInputSchema = party;
+
 /** A new company tax category (`code`, `kind` and `ratePercent` cannot change later). */
 export const taxCategoryCreateSchema = z.strictObject({
   code: text(30).min(1),

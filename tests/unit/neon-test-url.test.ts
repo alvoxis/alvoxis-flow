@@ -109,9 +109,30 @@ describe("refusals (before any connection)", () => {
   });
 });
 
+describe("endpoint rules (src/config/neon-test-endpoints.json)", () => {
+  it("allow accepts only the listed endpoints; deny refuses them", () => {
+    expect(checkNeonTestUrl(url("sslmode=require"), HOST, undefined, { allow: ["ep-x"] })).toEqual({
+      ok: false,
+      error:
+        "NEON_TEST_DB_HOST is not a test endpoint listed in src/config/neon-test-endpoints.json",
+    });
+    expect(
+      checkNeonTestUrl(url("sslmode=require"), HOST, undefined, {
+        allow: ["ep-quiet-sun-a1b2c3d4"],
+      }).ok,
+    ).toBe(true);
+    const denied = checkNeonTestUrl(url("sslmode=require"), HOST, undefined, {
+      deny: ["ep-quiet-sun-a1b2c3d4"],
+    });
+    expect(denied.ok).toBe(false);
+  });
+});
+
 describe("command line, as the workflow runs it (plain Node, no dependencies)", () => {
   const script = path.resolve(process.cwd(), "scripts/ci/neon-test-url.ts");
-  const run = (mode: string, raw: string, expected = HOST) => {
+  // The CLI applies the committed list: the test names reach only a listed test endpoint.
+  const LISTED = "ep-rapid-grass-bap8luwv.c-8.eu-central-1.aws.neon.tech";
+  const run = (mode: string, raw: string, expected = LISTED) => {
     try {
       const stdout = execFileSync(process.execPath, ["--no-warnings", script, mode], {
         // Only what the script reads (no inherited secrets), as in the workflow step.
@@ -131,10 +152,22 @@ describe("command line, as the workflow runs it (plain Node, no dependencies)", 
   };
 
   it("check prints nothing on success; print writes only the normalized URL", () => {
-    expect(run("check", url("sslmode=require"))).toEqual({ code: 0, stdout: "", stderr: "" });
-    const printed = run("print", url("sslmode=require&channel_binding=require"));
+    expect(run("check", url("sslmode=require", LISTED))).toEqual({
+      code: 0,
+      stdout: "",
+      stderr: "",
+    });
+    const raw = url("sslmode=require&channel_binding=require", LISTED);
+    const printed = run("print", raw);
     expect(printed.code).toBe(0);
-    expect(printed.stdout).toBe(ok(url("sslmode=require&channel_binding=require")));
+    expect(printed.stdout).toBe(ok(raw, LISTED));
+  });
+
+  it("refuses an unlisted endpoint even when the secret and the host variable agree", () => {
+    const r = run("check", url("sslmode=require"), HOST);
+    expect(r.code).toBe(1);
+    expect(r.stderr).toMatch(/not a test endpoint listed/);
+    expect(r.stderr).not.toContain(PASSWORD);
   });
 
   it("refusals exit 1 with a GitHub error annotation that never contains the secret", () => {
@@ -151,6 +184,82 @@ describe("command line, as the workflow runs it (plain Node, no dependencies)", 
         expect(r.stderr).not.toContain(PASSWORD);
         expect(r.stderr).not.toContain("neondb_owner");
       }
+    }
+  });
+});
+
+describe("production variable names (neon-production-migrations.yml)", () => {
+  const PROD = { url: "NEON_PRODUCTION_DATABASE_URL", host: "NEON_PRODUCTION_DB_HOST" };
+  const script = path.resolve(process.cwd(), "scripts/ci/neon-test-url.ts");
+  const run = (args: string[], env: Record<string, string>) => {
+    try {
+      const stdout = execFileSync(process.execPath, ["--no-warnings", script, ...args], {
+        env: { PATH: process.env.PATH, ...env } as unknown as NodeJS.ProcessEnv,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      });
+      return { code: 0, stdout, stderr: "" };
+    } catch (err) {
+      const e = err as { status: number; stdout: string; stderr: string };
+      return { code: e.status, stdout: e.stdout, stderr: e.stderr };
+    }
+  };
+
+  it("uses the given names in its messages and applies the same rules", () => {
+    const r = checkNeonTestUrl(undefined, HOST, PROD);
+    expect(r).toEqual({ ok: false, error: "Secret NEON_PRODUCTION_DATABASE_URL is not set" });
+    const wrongHost = checkNeonTestUrl(
+      url("sslmode=require", "ep-other-x9.c-8.eu-central-1.aws.neon.tech"),
+      HOST,
+      PROD,
+    );
+    expect(wrongHost).toEqual({
+      ok: false,
+      error: "The NEON_PRODUCTION_DATABASE_URL host is not NEON_PRODUCTION_DB_HOST",
+    });
+    expect(checkNeonTestUrl(url("sslmode=require"), HOST, PROD)).toEqual({
+      ok: true,
+      url: ok(url("sslmode=require")),
+    });
+  });
+
+  it("the CLI reads only the named variables and ignores the test ones", () => {
+    const prodArgs = [PROD.url, PROD.host];
+    const good = run(["print", ...prodArgs], {
+      NEON_PRODUCTION_DATABASE_URL: url("sslmode=require"),
+      NEON_PRODUCTION_DB_HOST: HOST,
+    });
+    expect(good).toEqual({ code: 0, stdout: ok(url("sslmode=require")), stderr: "" });
+    // Test variables present but production ones missing: refused, never mixed up.
+    const mixed = run(["check", ...prodArgs], {
+      NEON_TEST_DATABASE_URL: url("sslmode=require"),
+      NEON_TEST_DB_HOST: HOST,
+    });
+    expect(mixed.code).toBe(1);
+    expect(mixed.stderr).toContain("Secret NEON_PRODUCTION_DATABASE_URL is not set");
+    expect(mixed.stderr).not.toContain(PASSWORD);
+  });
+
+  it("the production names refuse a listed test endpoint", () => {
+    const testHost = "ep-young-queen-ba1c9tj8.c-8.eu-central-1.aws.neon.tech";
+    const r = run(["check", PROD.url, PROD.host], {
+      NEON_PRODUCTION_DATABASE_URL: url("sslmode=require", testHost),
+      NEON_PRODUCTION_DB_HOST: testHost,
+    });
+    expect(r.code).toBe(1);
+    expect(r.stderr).toContain("NEON_PRODUCTION_DB_HOST is a test endpoint");
+    expect(r.stderr).not.toContain(PASSWORD);
+  });
+
+  it("refuses variable names outside NEON_* (no arbitrary environment reads)", () => {
+    for (const args of [
+      ["check", "PATH", PROD.host],
+      ["check", PROD.url, "HOME"],
+      ["check", PROD.url],
+    ]) {
+      const r = run(args, { PATH: process.env.PATH ?? "" });
+      expect(r.code).toBe(2);
+      expect(r.stdout).toBe("");
     }
   });
 });

@@ -31,6 +31,59 @@ Larger features live in `src/modules/<name>/` with a fixed internal layout:
 `requireCompanyAccess` and write audit entries), and feature-specific folders (e.g. `pdf/`,
 `import/`). The first module is `documents` — see [documents/DOCUMENT-SYSTEM.md](documents/DOCUMENT-SYSTEM.md).
 
+Company record modules follow one pattern: a service in `src/modules/<name>/server/` (permission
+check, validation with every finding at once, optimistic `version`, archive instead of delete, an
+audit entry with field names only), route handlers under `/api/companies/[companyId]/…`, a page
+under `/companies/[companyId]/…` plus a navigation entry that picks the company. Shared pieces:
+`src/server/records/errors.ts` (mapped once in `apiError`) and `src/features/records/api.ts` (the
+client side). Modules:
+
+- `counterparties` — customers and suppliers (one record may be both; `customers.*` and
+  `suppliers.*` permissions apply per role). Unique registration number among active records.
+  Choosing a customer in the document editor copies its details into the draft's buyer (and sets
+  an invoice's due date from the payment term); documents keep their own copy.
+- `products` — goods and services (`products.view` / `products.manage`): SKU unique among active
+  products, net prices with up to 4 decimals in EUR or PLN, an optional default tax category (an
+  active category of the same company, enforced by a composite foreign key), stock tracking for
+  goods. "Add from catalog" in the document editor adds a line with the name, unit and — on priced
+  documents in the same currency — the sale price and tax category.
+- `inventory` — warehouses and the stock ledger (`inventory.view` / `inventory.manage`). A balance
+  is the sum of a product's movements in a warehouse; `stock_movements` is append-only (trigger,
+  like `audit_logs`). Receipts, issues, transfers (two movements with one `groupId`) and counts (the
+  difference is written as an adjustment). Every change that can lower a balance locks the
+  affected products (`FOR UPDATE`, in id order) and is refused below zero; the arithmetic runs in
+  PostgreSQL `numeric`. A warehouse holding stock cannot be archived; a product with movements
+  keeps stock tracking on. `applyStockChanges` is the one entry point for other modules
+  (production).
+- `production` — bills of materials and production orders (`production.view` /
+  `production.manage`). An order (`PRD-YYYY-NNNN`, numbered under a per-company advisory lock)
+  copies its component totals from the bill when it is planned. Completing it consumes the
+  components and adds the product through `applyStockChanges` in one transaction (refused while
+  stock is short; the movements share the order id); completed and cancelled orders are final.
+  Production roles move stock this way without `inventory.manage`.
+- `payroll` — employees, rates per country and monthly runs (`payroll.view` / `payroll.manage`).
+  A calculation aid, not a tax declaration: rates (employee social, employer social, income tax,
+  health insurance) are company settings whose built-in starting values must be checked by the
+  accountant; special regimes, progressive brackets and caps are not modelled. The pure
+  calculation (`modules/payroll/domain/calculate.ts`) works in integer cents and rounds half up.
+  A run copies names, countries, currencies and rates into its lines; a gross amount can be
+  changed for one month (kept on recalculation); an approved run is final. CSV export with BOM,
+  formula-injection-safe cells. Audit entries never carry names or amounts.
+- `analytics` — read-only figures of a calendar year (`analytics.view` + `documents.view`):
+  net sales of issued invoices and credit notes per month and currency (never converted), top
+  customers by buyer, top lines by description, and — only with their own permission — stock
+  value, payroll employer cost of approved months and production order counts.
+- Settings (`/companies/[id]/settings`) — links to the settings pages the role may open and the
+  members list (`members.view`); with `members.manage` roles can be changed and members
+  suspended. Nobody changes their own membership, only owners manage owners, and the last active
+  owner stays (company memberships are locked while this is checked).
+- Invitations (`company_invitations`, migration `0020`) — `members.manage` invites an email address
+  with a role; the owner role only by owners. The link (`/[locale]/invitations/[token]`, valid 7 days)
+  is emailed and shown once to the inviter, so it can be shared when email is not configured; only
+  the token's SHA-256 hash is stored. A signed-in user whose verified email equals the invited
+  address accepts it and becomes an active member; inviting an address again replaces the open
+  invitation. Audit entries never carry the invited address.
+
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
 
@@ -91,6 +144,29 @@ flagged `requires_two_factor`.
 
 Web app manifest + icons; a service worker (production only) that caches only offline fallback pages and
 icons. Business data and HTML pages are deliberately not cached on devices.
+
+## UI components
+
+- Shared primitives live in `src/components/ui` and use the app's own colour tokens from
+  `src/app/globals.css` (`bg`, `surface`, `surface-2`, `border`, `text`, `muted`, `accent`, …). The app
+  is dark-only.
+- Interactive overlays use **Base UI** (`@base-ui/react`) in the shadcn/ui "base" pattern: the code is in
+  the repository (`alert-dialog.tsx`, `toast.tsx`), restyled with our tokens. Base UI handles focus
+  trapping and return, Esc, scroll lock and hiding the rest of the page from assistive technology.
+- `components.json` records the shadcn setup (`base-nova`). **Do not accept the CSS that `shadcn init` or
+  `shadcn add` writes into `globals.css` unreviewed**: its tokens reuse our names (`border`, `accent`,
+  `muted`) with other meanings and would restyle every screen. Add component code, then map it to our
+  tokens.
+- `cn()` (`src/lib/utils.ts`) is clsx + tailwind-merge, for components whose `className` overrides
+  defaults.
+- Base UI layout requirements: the app is wrapped in `.root` (`isolation: isolate`) and `body` is
+  `position: relative` (backdrops cover the area under the iOS 26 Safari toolbars).
+- `prefers-reduced-motion: reduce` turns transitions and animations off globally.
+- Toasts are for confirmations that need no action; errors and messages with links stay in inline
+  alerts next to their form. `<Toaster />` is **not** mounted globally: add it to the layout or page of
+  the routes that show toasts, so its code loads only there (no screen uses toasts yet).
+- Dialog behaviour is covered by e2e tests with axe (`@axe-core/playwright`); an optional, non-blocking
+  workflow (`webkit.yml`) runs the dialog and navigation tests on WebKit with an iPhone profile.
 
 ## Key dependency decisions
 

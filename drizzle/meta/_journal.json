@@ -92,6 +92,62 @@
       "when": 1792178668000,
       "tag": "0012_company_bank_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792339984450,
+      "tag": "0013_company_pdf_accent",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792713351182,
+      "tag": "0014_counterparties",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1792713548557,
+      "tag": "0015_products",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792713574567,
+      "tag": "0016_inventory",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792713575548,
+      "tag": "0017_stock_ledger_append_only",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792713587152,
+      "tag": "0018_production",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792713589398,
+      "tag": "0019_payroll",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792739675030,
+      "tag": "0020_member_invitations",
+      "breakpoints": true
     }
   ]
 }

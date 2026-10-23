@@ -20,45 +20,30 @@
     "closeMenu": "Aizvērt izvēlni"
   },
   "topbar": {
-    "noCompany": "Uzņēmums nav izvēlēts",
+    "noCompany": "Uzņēmuma vēl nav",
     "language": "Valoda",
     "account": "Konts",
-    "notSignedIn": "Nav pieteicies"
+    "notSignedIn": "Nav pieteicies",
+    "currentCompany": "Pašreizējais uzņēmums"
+  },
+  "environment": {
+    "label": "Testa vide",
+    "testBanner": "Šī nav produkcijas vide. Izmantojiet tikai izdomātus datus: nekādus īstus rēķinus, klientus vai bankas rekvizītus."
   },
   "dashboard": {
     "title": "Pārskats",
     "subtitle": "Jūsu uzņēmuma dokumentu un darbību kopsavilkums.",
-    "demoBanner": "Priekšskatījums ar parauga datiem. Nekas šeit vēl nav saistīts ar reālu uzņēmumu.",
-    "demoBadge": "Parauga dati",
-    "kpi": {
-      "revenue": "Izrakstīts šomēnes",
-      "revenueHint": "Apstiprinātie rēķini, katrs savā dokumenta valūtā",
-      "outstanding": "Neapmaksāts",
-      "outstandingHint": "{count, plural, zero {# neapmaksātu rēķinu} one {# neapmaksāts rēķins} other {# neapmaksāti rēķini}}",
-      "overdue": "Kavēts",
-      "overdueHint": "{count, plural, zero {# rēķinu ar nokavētu termiņu} one {# rēķins ar nokavētu termiņu} other {# rēķini ar nokavētu termiņu}}",
-      "documents": "Dokumenti šomēnes",
-      "documentsHint": "Rēķini, avansa rēķini, kredītrēķini un pavadzīmes"
-    },
-    "currencyNote": "Katrs dokuments saglabā savu valūtu. Summas dažādās valūtās nekad netiek saskaitītas kopā.",
-    "recent": {
-      "title": "Jaunākie dokumenti",
-      "description": "Pēdējie visu veidu dokumenti",
-      "number": "Numurs",
-      "type": "Veids",
-      "customer": "Klients",
-      "date": "Datums",
-      "status": "Statuss",
-      "amount": "Summa",
-      "creditsInvoice": "Koriģē {number}",
-      "noAmount": "Nav piemērojams"
-    },
-    "nextSteps": {
-      "title": "Darba sākšana",
-      "createCompany": "Izveidojiet uzņēmuma profilu",
-      "inviteTeam": "Uzaiciniet komandu un piešķiriet lomas",
-      "addCustomers": "Pievienojiet klientus un produktus",
-      "firstInvoice": "Izrakstiet pirmo rēķinu"
+    "documents": {
+      "title": "Dokumenti",
+      "drafts": "Melnraksti",
+      "issued": "Izrakstīti",
+      "invoicedNet": "Izrakstīts rēķinos, atskaitot kredītrēķinus",
+      "empty": "Dokumentu vēl nav.",
+      "unavailable": "Dokumenti nav pieejami jūsu lomai vai līdz divfaktoru autentifikācijas iestatīšanai.",
+      "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām.",
+      "loadError": "Dokumentu rādītājus šobrīd neizdevās ielādēt. Pašus dokumentus tas neietekmē; mēģiniet vēlāk vēlreiz.",
+      "createFirst": "Izveidot pirmo dokumentu",
+      "paymentsNotTracked": "Maksājumi vēl netiek uzskaitīti, tāpēc šeit nav redzams, kas ir apmaksāts, neapmaksāts vai kavēts."
     }
   },
   "documentType": {
@@ -88,6 +73,13 @@
     "description": "Meklētā lapa neeksistē vai ir pārvietota.",
     "backHome": "Atpakaļ uz pārskatu"
   },
+  "errorPage": {
+    "title": "Radās kļūda",
+    "description": "Lapu neizdevās parādīt. Lūdzu, mēģiniet vēlreiz. Ja kļūda atkārtojas, norādiet kļūdas kodu.",
+    "digest": "Kļūdas kods: {digest}",
+    "retry": "Mēģināt vēlreiz",
+    "home": "Atpakaļ uz pārskatu"
+  },
   "offline": {
     "title": "Nav interneta savienojuma",
     "description": "Pārbaudiet interneta savienojumu. Jūsu dati šajā ierīcē netiek glabāti."
@@ -102,6 +94,7 @@
     "number": "Nr.",
     "issueDate": "Izrakstīšanas datums",
     "dueDate": "Apmaksas termiņš",
+    "amountDue": "Apmaksājamā summa",
     "supplyDate": "Piegādes datums",
     "validUntil": "Derīgs līdz",
     "buyerReference": "Pasūtījuma numurs",
@@ -143,7 +136,6 @@
     "bank": "Banka",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Lūdzam apmaksāt līdz {date}",
     "notes": "Piezīmes",
     "relation": {
       "credits": "Kredītrēķins rēķinam {number}, {date}",
@@ -198,6 +190,16 @@
     "signInLocked": {
       "subject": "Vairāki neveiksmīgi pieteikšanās mēģinājumi",
       "body": "Pēc vairākiem neveiksmīgiem mēģinājumiem {time} (UTC) pieteikšanās ar paroli jūsu ALVOXIS Flow kontā ir apturēta uz 15 minūtēm. No ierīcēm, no kurām jau esat pieteicies, pieteikties joprojām var. Ja tas nebijāt jūs, atiestatiet paroli:\n{link}"
+    },
+    "invitation": {
+      "subject": "Ielūgums uz {company}",
+      "body": "{inviter} ielūdz jūs pievienoties {company} ALVOXIS Flow. Lai pieņemtu, atveriet saiti:\n{link}\n\nJa jums vēl nav konta, vispirms reģistrējieties ar šo e-pasta adresi, tad atveriet saiti vēlreiz. Saite ir derīga {days} dienas."
+    },
+    "document": {
+      "greeting": "Labdien!",
+      "attached": "Pielikumā {document} no {seller}.",
+      "reply": "Ja jums ir jautājumi, atbildiet uz šo e-pastu.",
+      "footer": "Nosūtīts {seller} vārdā ar ALVOXIS Flow."
     }
   },
   "auth": {
@@ -383,6 +385,21 @@
       "addressLine2": "Līdz 200 rakstzīmēm.",
       "postalCode": "Līdz 16 rakstzīmēm.",
       "city": "Līdz 100 rakstzīmēm."
+    },
+    "pdfAccent": {
+      "legend": "Dokumentu krāsa",
+      "hint": "Rēķinu un citu PDF dokumentu akcenta krāsa: virsraksts, plānās līnijas, apmaksas termiņš un kopsumma. Fons paliek balts un teksts tumšs, tāpēc dokumentus labi var izdrukāt ar jebkuru printeri.",
+      "default": "Noklusējums",
+      "previewLabel": "Rēķina paraugs krāsā “{colour}”",
+      "previewCaption": "Paraugs: kur krāsa parādās PDF dokumentā. Summas un saturs nemainās.",
+      "options": {
+        "navy": "Tumši zila",
+        "graphite": "Grafīta",
+        "blue": "Zila",
+        "teal": "Tirkīza",
+        "green": "Zaļa",
+        "burgundy": "Bordo"
+      }
     }
   },
   "documents": {
@@ -403,7 +420,7 @@
       "draft": "Melnraksts",
       "issued": "Izrakstīts"
     },
-    "issuedNotice": "Dokuments izrakstīts ar Nr. {number}. Izrakstītus dokumentus nevar labot.",
+    "issuedNotice": "Dokuments izrakstīts ar Nr. <num>{number}</num>. Izrakstītus dokumentus nevar labot.",
     "readOnlyDraft": "Jūs varat skatīt šo melnrakstu. Jūsu loma neļauj to mainīt.",
     "sellerHint": "Pārdevēja dati tiek ņemti no uzņēmuma profila.",
     "sections": {
@@ -495,7 +512,19 @@
         },
         "total": {
           "mustBeNegative": "Kredītrēķina summai jābūt negatīvai."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "Kreditējamais daudzums pārsniedz rēķina rindas atlikumu (ieskaitot izrakstītos kredītrēķinus).",
+          "invalid": "Kreditējamajam daudzumam jābūt lielākam par nulli."
+        },
+        "amount": {
+          "exceedsRemaining": "Kreditējamā summa pārsniedz rēķina rindas atlikumu (ieskaitot izrakstītos kredītrēķinus)."
+        },
+        "nothingRemaining": "Šis rēķins jau ir pilnībā kreditēts.",
+        "sourceLine": {
+          "unknown": "Kreditētā rinda nav atrodama sākotnējā rēķinā."
+        },
+        "dateBeforeOriginal": "Kredītrēķina datums nevar būt agrāks par rēķina datumu."
       },
       "deliveryNote": {
         "line": {
@@ -568,6 +597,145 @@
       },
       "total": {
         "mustBePositive": "Summai jābūt lielākai par nulli."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Daži importa punkti vēl nav pārbaudīti."
+        },
+        "duplicates": {
+          "unacknowledged": "Pirms melnraksta izveides apstipriniet iespējamo dublikātu."
+        },
+        "line": {
+          "incomplete": "Rindai vajag daudzumu un vienības cenu.",
+          "flagsUnresolved": "Rindai ir nepārbaudīti punkti."
+        }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Ievadiet nosaukumu."
+        },
+        "role": {
+          "required": "Izvēlieties vismaz vienu lomu: klients vai piegādātājs."
+        },
+        "email": {
+          "invalid": "Ievadiet derīgu e-pasta adresi."
+        },
+        "countryCode": {
+          "invalid": "Izmantojiet divu burtu valsts kodu, piemēram, LV."
+        },
+        "vatNumber": {
+          "invalid": "Ievadiet PVN numuru ar valsts prefiksu, piemēram, LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "Apmaksas termiņam jābūt no 0 līdz 365 dienām."
+        }
+      },
+      "product": {
+        "name": {
+          "required": "Ievadiet nosaukumu."
+        },
+        "unit": {
+          "required": "Ievadiet mērvienību, piemēram, gab."
+        },
+        "currency": {
+          "invalid": "Izvēlieties EUR vai PLN."
+        },
+        "price": {
+          "invalid": "Ievadiet cenu, piemēram, 12.50 (līdz 4 decimālzīmēm)."
+        },
+        "taxCategory": {
+          "unknown": "Izvēlieties vienu no uzņēmuma nodokļu kategorijām.",
+          "archived": "Šī nodokļu kategorija ir arhivēta; izvēlieties aktīvu."
+        },
+        "trackStock": {
+          "inUse": "Šai precei ir noliktavas kustības, tāpēc atlikumu uzskaite paliek ieslēgta."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Ievadiet daudzumu, piemēram, 2 vai 1.5 (līdz 4 decimālzīmēm).",
+          "insufficient": "Šajā noliktavā nepietiek atlikuma."
+        },
+        "unitCost": {
+          "invalid": "Ievadiet vienības izmaksas, piemēram, 12.50 (tikai pieņemšanai)."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu.",
+          "future": "Datums nevar būt nākotnē."
+        },
+        "transfer": {
+          "target": "Izvēlieties mērķa noliktavu.",
+          "sameWarehouse": "Izvēlieties divas dažādas noliktavas."
+        },
+        "product": {
+          "unknown": "Izvēlieties vienu no uzņēmuma precēm.",
+          "notTracked": "Šai precei atlikumi netiek uzskaitīti."
+        },
+        "warehouse": {
+          "unknown": "Izvēlieties vienu no uzņēmuma noliktavām.",
+          "archived": "Šī noliktava ir arhivēta."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Izmantojiet latīņu burtus un ciparus (līdz 20), piemēram, MAIN."
+        },
+        "name": {
+          "required": "Ievadiet nosaukumu."
+        }
+      },
+      "production": {
+        "product": {
+          "unknown": "Izvēlieties vienu no uzņēmuma precēm.",
+          "notTracked": "Izstrādājumam jāuzskaita atlikumi.",
+          "archived": "Šī prece ir arhivēta."
+        },
+        "component": {
+          "self": "Izstrādājums nevar būt pats sava komponente.",
+          "unknown": "Izvēlieties vienu no uzņēmuma precēm.",
+          "notTracked": "Komponentēm jāuzskaita atlikumi.",
+          "duplicate": "Katru komponenti tikai vienu reizi."
+        },
+        "quantity": {
+          "invalid": "Ievadiet daudzumu, kas lielāks par 0 (līdz 4 decimālzīmēm).",
+          "tooSmall": "Daudzums ir pārāk mazs šai specifikācijai."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "bom": {
+          "missing": "Šai precei vēl nav specifikācijas."
+        }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Ievadiet procentus no 0 līdz 99.999."
+        },
+        "amount": {
+          "invalid": "Ievadiet summu, piemēram, 1500 vai 1500.50."
+        },
+        "firstName": {
+          "required": "Ievadiet vārdu."
+        },
+        "lastName": {
+          "required": "Ievadiet uzvārdu."
+        },
+        "email": {
+          "invalid": "Ievadiet derīgu e-pasta adresi."
+        },
+        "country": {
+          "invalid": "Izvēlieties Latviju, Lietuvu, Igauniju vai Poliju."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu.",
+          "endBeforeStart": "Beigu datums nevar būt pirms sākuma datuma."
+        },
+        "period": {
+          "invalid": "Izvēlieties mēnesi."
+        },
+        "run": {
+          "noEmployees": "Šajā mēnesī neviens nav nodarbināts."
+        }
       }
     },
     "taxCategory": "Nodokļu kategorija",
@@ -600,6 +768,34 @@
     "deleteConfirmBodyEditor": "Melnraksts tiks dzēsts neatgriezeniski, un to nevarēs atjaunot. Visas šajā redaktorā nesaglabātās izmaiņas tiks zaudētas. Izrakstītus dokumentus dzēst nevar.",
     "colBuyer": "Pircējs",
     "creditNoteBank": "Kredītrēķins saglabā sākotnējā rēķina bankas rekvizītus.",
+    "creditNote": {
+      "create": "Izveidot kredītrēķinu",
+      "title": "Kredītrēķins rēķinam {number}",
+      "description": "Tiks izveidots kredītrēķina melnraksts, ko pirms izrakstīšanas var pārbaudīt redaktorā. Pats rēķins netiek mainīts.",
+      "mode": "Ko kreditēt",
+      "full": {
+        "label": "Visu atlikumu",
+        "hint": "Kreditē visas rēķina rindas, kas vēl nav kreditētas."
+      },
+      "partial": {
+        "label": "Izvēlētās rindas",
+        "hint": "Kreditē tikai zemāk ievadītos daudzumus."
+      },
+      "linesTitle": "Kreditējamie daudzumi",
+      "linesHint": "Atstājiet rindu tukšu, lai to izlaistu. Jau izrakstītie kredītrēķini tiek ņemti vērā, veidojot melnrakstu.",
+      "invoiced": "Rēķinā: {quantity}",
+      "quantityFor": "Kreditējamais daudzums, rinda {n}: {description}",
+      "submit": "Izveidot melnrakstu",
+      "refused": "Kredītrēķina melnraksts netika izveidots.",
+      "notCreditable": "Kreditēt var tikai izrakstītu rēķinu.",
+      "errors": {
+        "dateRequired": "Ievadiet kredītrēķina datumu.",
+        "dateBeforeInvoice": "Kredītrēķina datums nevar būt agrāks par rēķina datumu.",
+        "noLines": "Ievadiet daudzumu vismaz vienai rindai.",
+        "quantityInvalid": "Ievadiet skaitli, kas lielāks par nulli, ar ne vairāk kā 4 cipariem aiz komata.",
+        "quantityTooHigh": "Tas ir vairāk nekā rēķinā norādītais daudzums."
+      }
+    },
     "pdf": {
       "open": "Atvērt PDF",
       "download": "Lejupielādēt PDF",
@@ -607,6 +803,192 @@
       "downloadDraft": "Lejupielādēt melnraksta PDF",
       "draftHint": "Melnraksta PDF ir atzīmēts kā „nav izrakstīts“ un tam nav numura.",
       "unsaved": "PDF rāda pēdējo saglabāto versiju. Saglabājiet melnrakstu, lai izmaiņas būtu PDF."
+    },
+    "entry": {
+      "title": "Dokumenti",
+      "choose": "Izvēlieties uzņēmumu, lai atvērtu tā dokumentus.",
+      "none": "Dokumenti pieder uzņēmumam. Vispirms izveidojiet uzņēmumu.",
+      "createCompany": "Izveidot uzņēmumu"
+    },
+    "filters": {
+      "search": "Meklēt",
+      "searchPlaceholder": "Numurs vai pircējs",
+      "type": "Veids",
+      "anyType": "Visi veidi",
+      "status": "Statuss",
+      "anyStatus": "Visi statusi",
+      "from": "Izrakstīts no",
+      "to": "Izrakstīts līdz",
+      "sort": "Kārtot pēc",
+      "sorts": {
+        "date_desc": "Jaunākie vispirms",
+        "date_asc": "Vecākie vispirms",
+        "number_asc": "Numurs (A–Z)",
+        "number_desc": "Numurs (Z–A)",
+        "amount_desc": "Summa (lielākā vispirms)",
+        "amount_asc": "Summa (mazākā vispirms)"
+      },
+      "apply": "Lietot",
+      "reset": "Notīrīt filtrus",
+      "noMatches": "Meklēšanai vai filtriem neatbilst neviens dokuments.",
+      "amountSortHint": "Summas tiek kārtotas katras valūtas ietvaros; melnrakstiem vēl nav kopsummas, tie ir beigās.",
+      "showing": "{start}–{end} no {total}",
+      "previous": "Iepriekšējā lapa",
+      "next": "Nākamā lapa",
+      "pagination": "Dokumentu saraksta lapas"
+    },
+    "related": {
+      "creditNotesTitle": "Šī rēķina kredītrēķini",
+      "empty": "Šim rēķinam vēl nav kredītrēķinu.",
+      "loadError": "Šī rēķina kredītrēķinus neizdevās ielādēt. Pārlādējiet lapu, lai mēģinātu vēlreiz."
+    },
+    "relation": {
+      "credits": "Kredītrēķins rēķinam <link>{number}</link> no {date}",
+      "converted_from": "Izrakstīts, pamatojoties uz avansa rēķinu <link>{number}</link> no {date}",
+      "delivers": "Pavadzīme rēķinam <link>{number}</link> no {date}",
+      "replaces": "Aizstāj rēķinu <link>{number}</link> no {date}"
+    },
+    "import": {
+      "open": "Importēt PDF",
+      "title": "Rēķina imports no PDF",
+      "description": "Nolasiet jūsu uzņēmuma rēķinu PDF formātā un pārbaudiet iegūtos datus, pirms tiek izveidots melnraksts.",
+      "fileLabel": "PDF fails",
+      "fileHint": "PDF ar teksta slāni, līdz {size} MB un 20 lapām. Skenētus attēlus pagaidām nevar nolasīt.",
+      "privacy": "Fails tiek nolasīts mūsu serverī tikai datu iegūšanai, netiek saglabāts un netiek nosūtīts citiem pakalpojumiem.",
+      "read": "Nolasīt PDF",
+      "reading": "Nolasa…",
+      "noFile": "Vispirms izvēlieties PDF failu.",
+      "tooLarge": "Fails ir lielāks par {size} MB.",
+      "notPdf": "Šis fails nav PDF.",
+      "unreadable": "PDF neizdevās nolasīt. Skenēti dokumenti bez teksta slāņa pagaidām netiek atbalstīti.",
+      "fileRead": "{name}: nolasītas lapas — {pages}",
+      "startOver": "Izvēlēties citu failu",
+      "findingsTitle": "Kas jāpārbauda",
+      "findingsHint": "Pārbaudiet katru punktu zemāk, citādi melnraksts netiks izveidots.",
+      "checked": "Esmu to pārbaudījis",
+      "duplicatesTitle": "Līdzīgs dokuments šajā uzņēmumā jau var būt:",
+      "duplicateStrength": {
+        "certain": "gandrīz noteikti tas pats",
+        "likely": "visticamāk tas pats",
+        "possible": "iespējams, tas pats"
+      },
+      "duplicateConfirm": "Esmu pārbaudījis esošo dokumentu un tomēr vēlos izveidot jaunu melnrakstu.",
+      "documentTitle": "Dokuments",
+      "numberHint": "Nolasīts no faila uzziņai; melnraksts saņems savu numuru, kad tiks izrakstīts.",
+      "partiesTitle": "Pārdevējs un pircējs",
+      "sellerFixed": "Pārdevējs: jūsu uzņēmums ({name}) no uzņēmuma profila.",
+      "sellerRead": "Failā atrastais pārdevējs: {name}",
+      "buyerName": "Pircēja nosaukums",
+      "buyerRegistrationNumber": "Pircēja reģistrācijas numurs",
+      "buyerVatNumber": "Pircēja PVN numurs",
+      "taxTitle": "Nodoklis",
+      "taxHint": "Nodokļa režīms nekad netiek ņemts no faila: izvēlieties kategoriju rindām tieši. Redaktorā to var mainīt katrai rindai.",
+      "taxCategory": "Nodokļa kategorija visām rindām",
+      "noCategories": "Pirms importa pievienojiet nodokļa kategoriju.",
+      "linesTitle": "Rindas",
+      "printedTotal": "Rindas summa failā: {amount}",
+      "noLines": "Failā rindas netika atrastas.",
+      "totalsTitle": "Failā norādītās kopsummas",
+      "totalsHint": "Tikai salīdzināšanai: melnraksta kopsummas aprēķina no tā rindām.",
+      "statementsTitle": "Teksts, kam var būt nodokļu vai juridiska nozīme",
+      "statementsHint": "Parādīts jūsu uzmanībai, netiek interpretēts.",
+      "problems": {
+        "currency": "Izvēlieties valūtu.",
+        "issueDate": "Ievadiet izrakstīšanas datumu.",
+        "buyerName": "Ievadiet pircēja nosaukumu.",
+        "taxCategory": "Izvēlieties nodokļa kategoriju.",
+        "lines": "Katrai rindai vajag aprakstu, daudzumu, kas nav nulle, un vienības cenu.",
+        "findings": "Pārbaudiet visus punktus.",
+        "duplicates": "Apstipriniet, ka vēlaties izveidot jaunu melnrakstu, neskatoties uz iespējamo dublikātu."
+      },
+      "flags": {
+        "generic": "Pārbaudiet šo vērtību.",
+        "amount": {
+          "ambiguous": "Summu var nolasīt dažādi (piem., 1,234). Pārbaudiet skaitļus."
+        },
+        "bankAccount": {
+          "ibanInvalid": "Failā esošajam IBAN ir nepareiza kontrolsumma."
+        },
+        "buyer": {
+          "notFound": "Pircējs failā netika atrasts."
+        },
+        "currency": {
+          "multiple": "Failā ir vairāk nekā viena valūta.",
+          "notFound": "Failā netika atrasta valūta."
+        },
+        "date": {
+          "formatAmbiguous": "Datumu var nolasīt dažādi (piem., 02/03/2026). Pārbaudiet datumus."
+        },
+        "documentType": {
+          "unknown": "Dokumenta veids netika atpazīts."
+        },
+        "dueDate": {
+          "beforeIssueDate": "Apmaksas termiņš ir pirms izrakstīšanas datuma."
+        },
+        "duplicate": {
+          "possible": "Līdzīgs dokuments šajā uzņēmumā jau var būt."
+        },
+        "file": {
+          "noTextLayer": "Failam nav teksta slāņa (izskatās pēc skenējuma), to nevar nolasīt."
+        },
+        "identifier": {
+          "labelMismatch": "Reģistrācijas vai PVN numurs neatbilst savam nosaukumam.",
+          "unlabelled": "Numurs, kas varētu būt reģistrācijas vai PVN numurs, norādīts bez nosaukuma."
+        },
+        "issueDate": {
+          "notFound": "Izrakstīšanas datums netika atrasts.",
+          "unlabelled": "Izrakstīšanas datums ņemts no datuma bez nosaukuma."
+        },
+        "line": {
+          "arithmeticMismatch": "Daudzums × cena nesakrīt ar rindas summu failā."
+        },
+        "lines": {
+          "arithmeticMismatch": "Dažas rindas nesakrīt (daudzums × cena ≠ rindas summa).",
+          "notFound": "Rindas netika atrastas."
+        },
+        "number": {
+          "notFound": "Dokumenta numurs netika atrasts."
+        },
+        "seller": {
+          "notFound": "Pārdevējs failā netika atrasts."
+        },
+        "statements": {
+          "found": "Failā ir teksts, kam var būt nodokļu vai juridiska nozīme (parādīts zemāk)."
+        },
+        "tax": {
+          "notShown": "Failā nav norādīta nodokļa summa.",
+          "treatmentRequiresConfirmation": "Nodokļa režīms netiek ņemts no faila: izvēlieties nodokļa kategoriju.",
+          "zeroRateUnexplained": "Norādīta 0 % nodokļa likme bez paskaidrojuma."
+        },
+        "total": {
+          "notFound": "Kopsumma netika atrasta."
+        },
+        "totals": {
+          "linesMismatch": "Rindu summa nesakrīt ar failā norādīto starpsummu.",
+          "sumMismatch": "Starpsumma un nodoklis nesakrīt ar failā norādīto kopsummu."
+        }
+      }
+    },
+    "email": {
+      "open": "Sūtīt pa e-pastu",
+      "title": "Sūtīt {number} pa e-pastu",
+      "description": "PDF tiks pievienots. Atbildes nonāks jūsu e-pastā.",
+      "to": "Saņēmēja e-pasts",
+      "message": "Ziņa (nav obligāta)",
+      "send": "Sūtīt",
+      "close": "Aizvērt",
+      "sent": "Nosūtīts uz {to}.",
+      "notConfigured": "Dokumentu sūtīšana pa e-pastu nav pieejama: vietnei nav konfigurēts e-pasts.",
+      "state": {
+        "document": {
+          "notIssued": "Sūtīt var tikai izrakstītus dokumentus."
+        },
+        "email": {
+          "notConfigured": "Vietnei nav konfigurēts e-pasts.",
+          "rateLimited": "Pēdējās stundas laikā nosūtīts pārāk daudz dokumentu. Mēģiniet vēlāk.",
+          "failed": "E-pastu neizdevās nosūtīt. Mēģiniet vēlāk."
+        }
+      }
     }
   },
   "taxCategories": {
@@ -734,6 +1116,520 @@
       "manage": "Pārvaldīt bankas kontus",
       "archived": "Arhivēts konts {iban}",
       "unlinked": "Saglabātie rekvizīti {iban} (nav saistīti ar kontu)"
+    }
+  },
+  "ui": {
+    "toast": {
+      "region": "Paziņojumi",
+      "close": "Aizvērt paziņojumu"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Izvēlieties uzņēmumu.",
+      "none": "Vispirms izveidojiet uzņēmumu.",
+      "createCompany": "Izveidot uzņēmumu"
+    },
+    "outcome": {
+      "invalid": "Lūdzu, pārbaudiet iezīmētos laukus.",
+      "conflict": "Šis ieraksts tika mainīts citur. Pārlādējiet, lai redzētu jaunāko versiju.",
+      "signedOut": "Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.",
+      "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
+      "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
+      "notFound": "Šis ieraksts vairs nepastāv.",
+      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz."
+    },
+    "reload": "Pārlādēt"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "Personas un uzņēmumi, kuriem pārdodat. Izvēlieties tos dokumentos, lai aizpildītu pircēju.",
+      "supplier": "Uzņēmumi, no kuriem pērkat."
+    },
+    "readOnly": "Jūs varat skatīt šo sarakstu. Lai to mainītu, nepieciešama loma ar pārvaldības atļauju.",
+    "search": "Meklēt",
+    "searchPlaceholder": "Nosaukums, reģistrācijas vai PVN numurs, e-pasts",
+    "showArchived": "Rādīt arhivētos",
+    "add": {
+      "customer": "Pievienot klientu",
+      "supplier": "Pievienot piegādātāju"
+    },
+    "empty": {
+      "customer": "Klientu vēl nav.",
+      "supplier": "Piegādātāju vēl nav."
+    },
+    "noMatches": "Nekas netika atrasts.",
+    "create": "Pievienot",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "documents": "Dokumenti",
+    "archiveConfirmTitle": "Arhivēt šo ierakstu?",
+    "archiveConfirmBody": "To vairs nepiedāvās, veidojot dokumentus. Esošie dokumenti nemainās. Ierakstu var atjaunot vēlāk.",
+    "paymentTerm": "Apmaksas termiņš: {days} dienas",
+    "role": {
+      "customer": "Klients",
+      "supplier": "Piegādātājs"
+    },
+    "status": {
+      "archived": "Arhivēts"
+    },
+    "fields": {
+      "name": "Nosaukums",
+      "registrationNumber": "Reģistrācijas numurs",
+      "vatNumber": "PVN numurs",
+      "email": "E-pasts",
+      "phone": "Tālrunis",
+      "contactName": "Kontaktpersona",
+      "addressLine1": "Adrese",
+      "addressLine2": "Adrese (2. rinda)",
+      "postalCode": "Pasta indekss",
+      "city": "Pilsēta",
+      "countryCode": "Valsts kods (LV, LT, EE, PL…)",
+      "paymentTermDays": "Apmaksas termiņš, dienas",
+      "notes": "Piezīmes",
+      "roles": "Loma"
+    },
+    "done": {
+      "created": "Ieraksts pievienots.",
+      "saved": "Izmaiņas saglabātas.",
+      "archived": "Ieraksts arhivēts.",
+      "restored": "Ieraksts atjaunots."
+    },
+    "outcome": {
+      "registrationTaken": "Aktīvs ieraksts ar šo reģistrācijas numuru jau pastāv."
+    },
+    "picker": {
+      "label": "Aizpildīt no klientiem",
+      "placeholder": "Izvēlieties klientu…",
+      "hint": "Iekopē klienta datus pircēja laukos; tos joprojām var labot."
+    }
+  },
+  "products": {
+    "description": "Preces un pakalpojumi, ko pārdodat vai pērkat. Pievienojiet tos dokumentiem kā rindas vienā solī.",
+    "readOnly": "Jūs varat skatīt katalogu. Lai to mainītu, nepieciešama loma ar preču pārvaldības atļauju.",
+    "search": "Meklēt",
+    "searchPlaceholder": "Nosaukums, kods vai svītrkods",
+    "showArchived": "Rādīt arhivētos",
+    "add": "Pievienot preci",
+    "empty": "Preču vēl nav.",
+    "noMatches": "Nekas netika atrasts.",
+    "create": "Pievienot",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "archiveConfirmTitle": "Arhivēt šo preci?",
+    "archiveConfirmBody": "To vairs nepiedāvās dokumentos. Esošie dokumenti nemainās. Preci var atjaunot vēlāk.",
+    "tracked": "Atlikumu uzskaite",
+    "noCategory": "Bez noklusējuma",
+    "archivedCategory": "Pašreizējā kategorija (vairs netiek piedāvāta)",
+    "kind": {
+      "goods": "Prece",
+      "service": "Pakalpojums"
+    },
+    "status": {
+      "archived": "Arhivēta"
+    },
+    "fields": {
+      "name": "Nosaukums",
+      "kind": "Veids",
+      "sku": "Kods",
+      "unit": "Mērvienība",
+      "barcode": "Svītrkods",
+      "currency": "Valūta",
+      "salePrice": "Pārdošanas cena (bez PVN)",
+      "purchasePrice": "Iepirkuma cena (bez PVN)",
+      "taxCategoryId": "Noklusējuma nodokļu kategorija",
+      "trackStock": "Uzskaitīt atlikumus noliktavā",
+      "description": "Apraksts"
+    },
+    "done": {
+      "created": "Prece pievienota.",
+      "saved": "Izmaiņas saglabātas.",
+      "archived": "Prece arhivēta.",
+      "restored": "Prece atjaunota."
+    },
+    "outcome": {
+      "skuTaken": "Aktīva prece ar šo kodu jau pastāv."
+    },
+    "picker": {
+      "label": "Pievienot no kataloga",
+      "placeholder": "Izvēlieties preci…"
+    }
+  },
+  "inventory": {
+    "description": "Atlikumi pa noliktavām: pieņemšana, izsniegšana, pārvietošana un inventarizācija. Katra izmaiņa tiek saglabāta kustību vēsturē.",
+    "readOnly": "Jūs varat skatīt atlikumus. Lai tos mainītu, nepieciešama loma ar noliktavas pārvaldības atļauju.",
+    "noWarehouses": "Noliktavu vēl nav. Pievienojiet pirmo zemāk — tā kļūs par noklusējuma noliktavu.",
+    "noTrackedProducts": "Neviena prece vēl neuzskaita atlikumus. Ieslēdziet “Uzskaitīt atlikumus noliktavā” precēm sadaļā Preces.",
+    "archived": "arhivēta",
+    "stock": {
+      "title": "Atlikumi",
+      "empty": "Atlikumu vēl nav.",
+      "value": "Vērtība iepirkuma cenās"
+    },
+    "movements": {
+      "title": "Pēdējās kustības"
+    },
+    "kind": {
+      "receipt": "Pieņemšana",
+      "issue": "Izsniegšana",
+      "adjustment": "Inventarizācijas korekcija",
+      "transfer_out": "Pārvietošana (izsūtīts)",
+      "transfer_in": "Pārvietošana (saņemts)",
+      "production_consume": "Izlietots ražošanā",
+      "production_output": "Saražots"
+    },
+    "operation": {
+      "title": "Reģistrēt atlikuma izmaiņu",
+      "kind": "Operācija",
+      "product": "Prece",
+      "chooseProduct": "Izvēlieties preci…",
+      "warehouse": "Noliktava",
+      "from": "No noliktavas",
+      "to": "Uz noliktavu",
+      "chooseWarehouse": "Izvēlieties noliktavu…",
+      "quantity": "Daudzums",
+      "counted": "Saskaitītais daudzums",
+      "unitCost": "Vienības izmaksas (bez PVN, nav obligāti)",
+      "date": "Datums",
+      "reference": "Pamatojums (nav obligāti)",
+      "countHint": "Starpība pret pašreizējo atlikumu tiek reģistrēta kā inventarizācijas korekcija.",
+      "kinds": {
+        "receipt": "Pieņemšana",
+        "issue": "Izsniegšana / norakstīšana",
+        "transfer": "Pārvietošana",
+        "count": "Inventarizācija"
+      },
+      "submit": {
+        "receipt": "Reģistrēt pieņemšanu",
+        "issue": "Reģistrēt izsniegšanu",
+        "transfer": "Reģistrēt pārvietošanu",
+        "count": "Reģistrēt inventarizāciju"
+      }
+    },
+    "warehouses": {
+      "title": "Noliktavas",
+      "add": "Pievienot noliktavu",
+      "code": "Kods",
+      "codeHint": "Latīņu burti un cipari, piemēram, MAIN.",
+      "name": "Nosaukums",
+      "default": "Noklusējuma",
+      "makeDefault": "Padarīt par noklusējuma",
+      "archive": "Arhivēt",
+      "restore": "Atjaunot"
+    },
+    "done": {
+      "receipt": "Pieņemšana reģistrēta.",
+      "issue": "Izsniegšana reģistrēta.",
+      "transfer": "Pārvietošana reģistrēta.",
+      "count": "Inventarizācija reģistrēta.",
+      "countUnchanged": "Saskaitītais sakrīt ar atlikumu; nekas nemainījās.",
+      "warehouseCreated": "Noliktava pievienota.",
+      "warehouseSaved": "Noklusējuma noliktava nomainīta.",
+      "warehouseArchived": "Noliktava arhivēta.",
+      "warehouseRestored": "Noliktava atjaunota."
+    },
+    "outcome": {
+      "codeTaken": "Noliktava ar šo kodu jau pastāv.",
+      "notEmpty": "Šajā noliktavā vēl ir atlikumi. Vispirms pārvietojiet vai izsniedziet tos."
+    }
+  },
+  "production": {
+    "description": "Specifikācijas un ražošanas pasūtījumi. Pabeidzot pasūtījumu, komponentes tiek norakstītas no noliktavas un gatavais izstrādājums pieņemts.",
+    "readOnly": "Jūs varat skatīt ražošanu. Pasūtījumu plānošanai un pabeigšanai nepieciešama loma ar ražošanas pārvaldības atļauju.",
+    "planNeeds": "Lai plānotu pasūtījumu, nepieciešama noliktava un prece ar specifikāciju (zemāk).",
+    "status": {
+      "planned": "Plānots",
+      "completed": "Pabeigts",
+      "cancelled": "Atcelts"
+    },
+    "orders": {
+      "title": "Pasūtījumi",
+      "empty": "Ražošanas pasūtījumu vēl nav.",
+      "meta": "Noliktava {warehouse} · plānots {planned}",
+      "completedOn": "pabeigts {date}",
+      "available": "pieejams {quantity}",
+      "completedOnLabel": "Pabeigšanas datums",
+      "complete": "Pabeigt",
+      "cancel": "Atcelt pasūtījumu"
+    },
+    "plan": {
+      "title": "Plānot pasūtījumu",
+      "product": "Izstrādājums",
+      "chooseProduct": "Izvēlieties preci…",
+      "warehouse": "Noliktava",
+      "quantity": "Daudzums",
+      "plannedOn": "Plānotais datums",
+      "submit": "Plānot"
+    },
+    "bom": {
+      "title": "Specifikācijas",
+      "hint": "No kā sastāv viena izstrādājuma vienība. Izmaiņas attiecas tikai uz jauniem pasūtījumiem.",
+      "empty": "Specifikāciju vēl nav.",
+      "edit": "Labot",
+      "product": "Izstrādājums",
+      "component": "Komponente {n}",
+      "chooseComponent": "Izvēlieties komponenti…",
+      "quantity": "Daudzums uz vienību",
+      "remove": "Noņemt",
+      "addComponent": "Pievienot komponenti",
+      "save": "Saglabāt specifikāciju"
+    },
+    "done": {
+      "planned": "Pasūtījums {number} plānots.",
+      "completed": "Pasūtījums {number} pabeigts; atlikumi atjaunināti.",
+      "cancelled": "Pasūtījums {number} atcelts.",
+      "bomSaved": "Specifikācija saglabāta."
+    },
+    "outcome": {
+      "notPlanned": "Šis pasūtījums jau ir pabeigts vai atcelts."
+    }
+  },
+  "payroll": {
+    "description": "Darbinieki un mēneša algas Latvijai, Lietuvai, Igaunijai un Polijai.",
+    "disclaimer": "Aprēķina palīgs, nevis nodokļu deklarācija. Likmes ir uzņēmuma iestatījumi ar sākuma vērtībām, kas jāpārbauda jūsu grāmatvedim; īpašie režīmi, progresīvās likmes un griesti netiek modelēti.",
+    "readOnly": "Jūs varat skatīt algas. Lai tās mainītu, nepieciešama loma ar algu pārvaldības atļauju.",
+    "archived": "arhivēts",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "status": {
+      "draft": "Melnraksts",
+      "approved": "Apstiprināts"
+    },
+    "country": {
+      "LV": "Latvija (EUR)",
+      "LT": "Lietuva (EUR)",
+      "EE": "Igaunija (EUR)",
+      "PL": "Polija (PLN)"
+    },
+    "cols": {
+      "gross": "Bruto",
+      "employeeSocial": "Darbinieka soc. iemaksas",
+      "health": "Veselības apdrošināšana",
+      "incomeTax": "Iedzīvotāju ienākuma nodoklis",
+      "net": "Izmaksājamā summa",
+      "employerSocial": "Darba devēja soc. iemaksas",
+      "employerCost": "Darba devēja izmaksas"
+    },
+    "runs": {
+      "title": "Algu mēneši",
+      "period": "Mēnesis",
+      "start": "Sākt mēneša aprēķinu",
+      "empty": "Algu mēnešu vēl nav.",
+      "lines": "{count, plural, zero {# darbinieku} one {# darbinieks} other {# darbinieki}}",
+      "show": "Rādīt detaļas",
+      "hide": "Slēpt detaļas",
+      "grossThisMonth": "Bruto šajā mēnesī",
+      "applyGross": "Piemērot",
+      "csv": "Lejupielādēt CSV",
+      "recalculate": "Pārrēķināt",
+      "approve": "Apstiprināt",
+      "delete": "Dzēst melnrakstu",
+      "approveTitle": "Apstiprināt šo algu mēnesi?",
+      "approveBody": "Apstiprināts mēnesis ir galīgs: tā summas vairs nevar mainīt. Vispirms pārbaudiet darbiniekus un summas."
+    },
+    "employees": {
+      "title": "Darbinieki",
+      "add": "Pievienot darbinieku",
+      "empty": "Darbinieku vēl nav.",
+      "month": "mēn."
+    },
+    "fields": {
+      "firstName": "Vārds",
+      "lastName": "Uzvārds",
+      "position": "Amats",
+      "email": "E-pasts",
+      "taxCountry": "Nodokļu valsts",
+      "employmentStart": "Strādā no",
+      "employmentEnd": "Strādā līdz",
+      "monthlyGross": "Mēneša bruto alga",
+      "monthlyAllowance": "Neapliekamā summa mēnesī",
+      "allowanceHint": "piemēram, neapliekamais minimums; 0, ja nav.",
+      "monthlyTaxCredit": "Nodokļa atlaide mēnesī",
+      "taxCreditHint": "Atskaita no ienākuma nodokļa (piemēram, Polijā); 0, ja nav."
+    },
+    "rates": {
+      "title": "Likmes pa valstīm",
+      "hint": "Procenti katram jaunam vai pārrēķinātam mēnesim. Saglabātās likmes aizstāj sākuma vērtības.",
+      "default": "Sākuma vērtības — pārbaudiet",
+      "employeeSocialRate": "Darbinieka soc. iemaksas",
+      "employerSocialRate": "Darba devēja soc. iemaksas",
+      "incomeTaxRate": "Ienākuma nodoklis",
+      "employeeHealthRate": "Veselības apdrošināšana",
+      "save": "Saglabāt likmes"
+    },
+    "done": {
+      "started": "Algu aprēķins par {period} sākts.",
+      "grossSet": "Bruto summa piemērota.",
+      "recalculated": "Mēnesis pārrēķināts.",
+      "approved": "Algu mēnesis {period} apstiprināts.",
+      "deleted": "Melnraksts {period} dzēsts.",
+      "employeeAdded": "Darbinieks pievienots.",
+      "employeeSaved": "Izmaiņas saglabātas.",
+      "employeeArchived": "Darbinieks arhivēts.",
+      "employeeRestored": "Darbinieks atjaunots.",
+      "ratesSaved": "Likmes valstij {country} saglabātas."
+    },
+    "outcome": {
+      "periodTaken": "Šim mēnesim aprēķins jau ir.",
+      "approved": "Šis mēnesis jau ir apstiprināts un nevar mainīties."
+    }
+  },
+  "analytics": {
+    "description": "Pārdošana no izrakstītajiem rēķiniem un kredītrēķiniem bez PVN, pa valūtām; kā arī atlikumi, algas un ražošana, ja jūsu loma tos redz.",
+    "year": "Gads",
+    "net": "Neto",
+    "none": "Šim gadam vēl nekā nav.",
+    "noSales": "{year}. gadā nav izrakstītu rēķinu.",
+    "sales": {
+      "title": "Neto pārdošana, {currency}",
+      "hint": "Norādiet uz mēnesi vai pieskarieties tam, lai redzētu detaļas.",
+      "counts": "rēķini: {invoices}, kredītrēķini: {creditNotes}",
+      "aria": "Mēneša neto pārdošana {currency}, kopā {total}",
+      "table": "Rādīt tabulā",
+      "month": "Mēnesis",
+      "invoices": "Rēķini",
+      "creditNotes": "Kredītrēķini"
+    },
+    "customers": {
+      "title": "Lielākie klienti",
+      "name": "Klients",
+      "documents": "Dokumenti"
+    },
+    "items": {
+      "title": "Lielākās pozīcijas",
+      "description": "Apraksts",
+      "quantity": "Daudzums"
+    },
+    "other": {
+      "title": "Citi rādītāji",
+      "stock": "Atlikumu vērtība iepirkuma cenās",
+      "payroll": "Darba devēja izmaksas par apstiprinātajām algām, {year}",
+      "production": "Ražošanas pasūtījumi, {year}",
+      "productionValue": "pabeigti: {completed} · plānoti: {planned}"
+    },
+    "month": {
+      "1": "Janvāris",
+      "2": "Februāris",
+      "3": "Marts",
+      "4": "Aprīlis",
+      "5": "Maijs",
+      "6": "Jūnijs",
+      "7": "Jūlijs",
+      "8": "Augusts",
+      "9": "Septembris",
+      "10": "Oktobris",
+      "11": "Novembris",
+      "12": "Decembris"
+    },
+    "monthShort": {
+      "1": "jan",
+      "2": "feb",
+      "3": "mar",
+      "4": "apr",
+      "5": "mai",
+      "6": "jūn",
+      "7": "jūl",
+      "8": "aug",
+      "9": "sep",
+      "10": "okt",
+      "11": "nov",
+      "12": "dec"
+    }
+  },
+  "settings": {
+    "description": "Uzņēmuma iestatījumi un jūsu konts.",
+    "company": "Uzņēmums",
+    "account": "Jūsu konts",
+    "links": {
+      "profile": {
+        "title": "Uzņēmuma profils",
+        "text": "Nosaukums, reģistrācijas un PVN numurs, adrese."
+      },
+      "taxCategories": {
+        "title": "Nodokļu kategorijas",
+        "text": "PVN likmes un režīmi dokumentu rindām."
+      },
+      "bankAccounts": {
+        "title": "Bankas konti",
+        "text": "Konti, kas tiek drukāti dokumentos."
+      },
+      "warehouses": {
+        "title": "Noliktavas",
+        "text": "Vietas, kur glabājas preces."
+      },
+      "payrollRates": {
+        "title": "Algu likmes",
+        "text": "Sociālās iemaksas un nodokļi pa valstīm."
+      },
+      "security": {
+        "title": "Drošība un sesijas",
+        "text": "Parole, ierīces, kurās esat pieteicies."
+      },
+      "twoFactor": {
+        "title": "Divfaktoru autentifikācija",
+        "text": "Autentifikācijas lietotne un rezerves kodi."
+      }
+    },
+    "members": {
+      "title": "Dalībnieki",
+      "description": "Personas ar piekļuvi šim uzņēmumam un viņu lomas.",
+      "you": "jūs",
+      "role": "Loma",
+      "suspend": "Apturēt",
+      "reactivate": "Atjaunot piekļuvi",
+      "saved": "Dalībnieks atjaunināts.",
+      "lastOwner": "Uzņēmumam jābūt vismaz vienam aktīvam īpašniekam.",
+      "status": {
+        "invited": "Uzaicināts",
+        "suspended": "Apturēts"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Ielūgumi",
+    "description": "Ielūdziet cilvēkus pa e-pastu. Saite ir derīga 7 dienas un tikai ielūgtajai adresei.",
+    "email": "E-pasta adrese",
+    "role": "Loma",
+    "invite": "Ielūgt",
+    "copy": "Kopēt saiti",
+    "copied": "Nokopēts",
+    "revoke": "Atsaukt",
+    "revoked": "Ielūgums atsaukts.",
+    "open": "Atvērtie ielūgumi",
+    "none": "Nav atvērtu ielūgumu.",
+    "expired": "Beidzies",
+    "expires": "Derīgs līdz {date}",
+    "memberExists": "Šī persona jau ir uzņēmuma dalībnieks.",
+    "error": "Ielūgumu neizdevās izveidot.",
+    "delivery": {
+      "sent": "Ielūgums nosūtīts. Varat arī nodot šo saiti:",
+      "not_configured": "E-pasts nav konfigurēts, nekas netika nosūtīts. Nododiet saiti personai paši:",
+      "failed": "E-pastu neizdevās nosūtīt. Nododiet saiti personai paši:"
+    },
+    "accept": "Pieņemt ielūgumu",
+    "home": "Uz sākumlapu",
+    "intro": "Jūs esat ielūgts pievienoties {company} ar lomu „{role}”.",
+    "otherEmail": "Šis ielūgums ir citai e-pasta adresei. Jūs esat pieteicies kā {email}; izrakstieties un piesakieties ar ielūgto adresi.",
+    "closed": {
+      "expired": "Ielūguma termiņš ir beidzies. Palūdziet jaunu.",
+      "used": "Ielūgums jau izmantots vai atsaukts.",
+      "not_found": "Ielūguma saite nav derīga."
+    },
+    "state": {
+      "invitation": {
+        "closed": "Ielūgums vairs nav derīgs.",
+        "otherEmail": "Šis ielūgums ir citai e-pasta adresei.",
+        "alreadyMember": "Jūs jau esat šī uzņēmuma dalībnieks."
+      }
     }
   }
 }

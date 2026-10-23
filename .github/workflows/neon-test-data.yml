@@ -1,0 +1,86 @@
+name: Neon test database — synthetic test data
+
+# Manual only: writes the FICTITIOUS test companies and documents (src/server/test-data) for one
+# existing test user into the Neon TEST database (docs/TEST-ENVIRONMENT.md §12). Never deploys,
+# never migrates, never deletes. Never used for production: it reads only the neon-test
+# environment, and both scripts/ci/neon-test-url.ts and the seed's own target guard refuse any
+# host other than NEON_TEST_DB_HOST.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "seed-neon-test-data" to write synthetic test data to the Neon test database'
+        required: true
+        type: string
+      owner_email:
+        description: "Existing test user (…@example.test) who becomes owner of the test companies"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# One run at a time; a second run waits.
+concurrency:
+  group: neon-test-data
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    name: Write synthetic test data to the Neon test database
+    # Trusted code only: the workflow must be started from main of this repository.
+    if: github.ref == 'refs/heads/main' && github.repository == 'alvoxis/alvoxis-flow'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: neon-test
+    steps:
+      # No secret in these steps. Only trusted code from main is checked out (see `if` above).
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+
+      # Before any connection: the confirmation, a synthetic owner address, then
+      # scripts/ci/neon-test-url.ts (exact direct endpoint host from NEON_TEST_DB_HOST).
+      - name: Check the confirmation, the owner and the connection settings
+        shell: bash
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          OWNER_EMAIL: ${{ inputs.owner_email }}
+          NEON_TEST_DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+          NEON_TEST_DB_HOST: ${{ vars.NEON_TEST_DB_HOST }}
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRM" != "seed-neon-test-data" ]; then
+            echo "::error::Confirmation text does not match; nothing was done."
+            exit 1
+          fi
+          if ! [[ "$OWNER_EMAIL" =~ ^[A-Za-z0-9._+-]+@example\.test$ ]]; then
+            echo "::error::owner_email must be a test address ending in @example.test; nothing was done."
+            exit 1
+          fi
+          node --no-warnings scripts/ci/neon-test-url.ts check
+          # Not a secret: the endpoint id, listed in src/config/neon-test-endpoints.json.
+          echo "Target: Neon test endpoint ${NEON_TEST_DB_HOST%%.*}"
+
+      # The secret is not in the environment of the install step.
+      - run: pnpm install --frozen-lockfile
+
+      # The normalized URL only lives in a shell variable of this step: masked, never written to a
+      # file or GITHUB_ENV, never printed. The seed checks the host again before connecting.
+      - name: Write synthetic test data (pnpm db:test-data)
+        shell: bash
+        env:
+          OWNER_EMAIL: ${{ inputs.owner_email }}
+          NEON_TEST_DATABASE_URL: ${{ secrets.NEON_TEST_DATABASE_URL }}
+          NEON_TEST_DB_HOST: ${{ vars.NEON_TEST_DB_HOST }}
+        run: |
+          set -euo pipefail
+          url="$(node --no-warnings scripts/ci/neon-test-url.ts print)"
+          echo "::add-mask::$url"
+          DATABASE_URL="$url" TEST_DATA_DB_HOST="$NEON_TEST_DB_HOST" \
+            TEST_DATA_CONFIRM=synthetic-test-data TEST_DATA_OWNER_EMAIL="$OWNER_EMAIL" \
+            pnpm db:test-data

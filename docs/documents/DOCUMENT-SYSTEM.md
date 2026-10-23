@@ -106,8 +106,34 @@ Untrusted input is shape-checked with Zod (`draftInputSchema`) before business v
 - Shows: tax summary per category, tax notes, converted totals with rate provenance, relation to
   the original document, payment details (invoices/proformas), signature fields (delivery notes),
   draft watermark, document fingerprint and page numbers.
+- **Layout:** white A4 page with dark text and light-grey rules.
+  - The seller's identity is top left; the document title and number are top right, above a thin
+    accent rule.
+  - Invoices with a due date get a framed block with the due date and the amount due.
+  - The line table has an accent rule under its head.
+  - The grand total has a double accent rule.
+  - Blocks for missing optional data (due date, order reference, bank details, notes, party
+    identifiers) are left out.
+  - Long single words wrap with a hyphen in the description and tax columns. Numbers, amounts
+    and IBANs are never split.
+- **Company colour:** `companies.pdf_accent` (migration `0013`) stores one value from a fixed
+  palette in `src/lib/pdf-accent.ts`: `navy` (dark blue, default), `graphite`, `blue`, `teal`,
+  `green` or `burgundy`.
+  - The database check constraint and the profile validation accept nothing else: no free colours,
+    CSS or HTML. A missing or unknown value renders as the default.
+  - Every accent has at least 4.5:1 contrast on white and on its tint.
+  - The colour is presentation only. It is applied when the PDF is rendered, for drafts and issued
+    documents alike, like the template itself. Content, totals, number and content hash still come
+    from the frozen snapshot.
+  - Owners and administrators (`company.manage`) choose it in the company profile, with a preview.
 - Noto Sans (SIL OFL 1.1, `assets/fonts/`) covers Baltic and Polish diacritics and Cyrillic.
-- `pnpm docs:samples [dir] [lang]` renders the fictitious samples for visual review.
+- `pnpm docs:samples [dir] [lang] [accent]` renders the fictitious samples for visual review,
+  including a long multi-page invoice (`invoice-long`).
+- `tests/unit/documents-pdf-layout.test.ts` checks the rendered PDFs:
+  - A4 size and no empty pages;
+  - no text outside the margins, and no text runs that overlap or touch, in all five languages;
+  - the accent colours actually used;
+  - the totals exactly as calculated.
 
 ## PDF import (review first)
 
@@ -124,6 +150,47 @@ Untrusted input is shape-checked with Zod (`draftInputSchema`) before business v
    dates, and chosen the tax category explicitly.
 
 Scanned PDFs without a text layer are reported as unreadable (OCR is not implemented).
+
+### Import in the UI and HTTP API
+
+`/{locale}/companies/{companyId}/documents/import` is reached through "Import PDF" on the list.
+It is only for `documents.create`; other roles get a 404, and the API refuses them.
+
+- `POST …/documents/import/preview` (multipart: exactly one `file`) returns `{ review }`.
+- `POST …/documents/import` (multipart: `file` + `decisions` JSON, checked by the strict
+  `importDecisionsSchema`) returns `201 { document }`, the new draft.
+
+**How files are handled:**
+
+- The file is read **in memory** and never stored.
+- It is not sent to any other service: there is no external OCR or AI.
+- Uploads are limited to 4 MB, below the 4.5 MB request limit of serverless hosting.
+  - An oversized body is refused from its `Content-Length` before it is read (`413`).
+  - Missing or multiple files give `400`.
+  - A file that is not a PDF gives `409 import.file.notPdf`.
+- The service's own limits (10 MB, 20 pages) still apply.
+- Anonymous requests are refused before the body is read.
+
+**Review screen:**
+
+- **Findings:** shows every finding with a translated text; each warning or error needs an
+  explicit "I have checked this".
+- **Duplicates:** shows them with links; a certain or likely duplicate needs a separate
+  confirmation.
+- **Editable fields:**
+  - type, language, currency, dates;
+  - buyer name, registration number, VAT number;
+  - order reference, payment terms, bank account;
+  - every line: description, quantity, unit, unit price, with the printed line total for
+    comparison.
+- **Seller:** always the company itself, from its profile (`createDraft` enforces this). The seller
+  read from the file is shown for comparison only.
+- **Tax category:** chosen explicitly; it is never taken from the file.
+- **Totals and statements:** the printed totals and possible tax or legal statements are shown,
+  never interpreted.
+
+**Creating the draft:** the server reads the file again (`createDraftFromImport`), and refuses with
+`422 import.*` while anything is unresolved. The draft then opens in the editor.
 
 ## Tax categories (company catalog)
 
@@ -170,6 +237,7 @@ inside the service; no business logic in the routes):
 | `DELETE …/documents/{documentId}` (drafts only)            | `documents.create`  | —                            |
 | `POST …/documents/{documentId}/issue`                      | `documents.approve` | `{ expectedVersion }`        |
 | `GET …/documents/{documentId}/pdf` (`?download=1` to save) | `documents.view`    | —                            |
+| `POST …/documents/{documentId}/credit-note` (201)          | `documents.create`  | see below                    |
 
 | Method and path (`/api/companies/{companyId}/tax-categories…`) | Permission              | Body                                            |
 | -------------------------------------------------------------- | ----------------------- | ----------------------------------------------- |
@@ -197,6 +265,24 @@ or catalog changes never appear); the file is named after the number. Drafts ren
 saved content with the "not issued" watermark and no number (`draft-<type>-<id>.pdf`). Errors are
 the usual JSON answers (401/403/404/400).
 
+`POST …/documents/{documentId}/credit-note` creates a credit-note **draft** for an issued invoice
+through `createCreditNoteDraft`. Body: `{ issueDate, language?, lines }`, where `lines` is
+`"full"` (everything that remains) or `[{ sourceLineId, quantity }]` (positive quantities of
+invoice lines; unknown fields, e.g. a unit price, are refused with 422). The draft copies the
+invoice's buyer, currency, exchange-rate snapshot, bank details and each line's tax category;
+the seller comes from the current company profile. It has no number: it is issued with
+`POST …/issue` (`documents.approve`), which allocates the next number of the company's
+credit-note series and re-checks the remaining amounts against credit notes issued in the
+meantime, in the same transaction (a refused issue uses no number). The invoice row, snapshot and
+hash are never changed. Answers: a draft source is `409 invalid_state` `source.notIssued`; an
+issued document that is not an invoice is `409` `source.invalid`; crediting more than remains is
+`422` `creditNote.quantity.exceedsRemaining` / `creditNote.amount.exceedsRemaining`, at creation
+and at issue; other rule findings are `422` too (`creditNote.nothingRemaining`,
+`creditNote.quantity.invalid`, `creditNote.sourceLine.unknown`, `creditNote.dateBeforeOriginal`
+— earlier than the invoice's issue date); another company's invoice is `404`. Note: `"full"` on a
+source without anything positive left to credit (e.g. an issued credit note) answers
+`creditNote.nothingRemaining` before the kind check.
+
 `GET …/documents` returns `{ documents: [{ id, type, status, number, issueDate, currency,
 grossTotal, buyerName }] }`, ordered by issue date. `buyerName` is the buyer's name stored on the
 document row (`buyer->>'name'`); issued rows are immutable, so it is the name in the frozen
@@ -209,7 +295,8 @@ permission — identical whether or not the company exists) or `two_factor_enrol
 `404 not_found` (no such document in this company), `409 version_conflict` (stale
 `expectedVersion`), `409 invalid_state` with a `code` (e.g. `document.alreadyIssued`,
 `document.notDraft`), `422 validation_failed` with `issues` (`{ code, severity, path }`; shape
-errors use `input.*` codes, blocking business rules use the `validateDocument` codes). Issuing is
+errors use `input.*` codes, blocking business rules use the `validateDocument` codes, credit-note
+rules the `creditNote.*` codes with an empty `path`). Issuing is
 one transaction, so a refused or failed issue never uses a number, and a repeated issue is a 409
 that keeps the original number.
 
@@ -228,12 +315,58 @@ numbers are always the server's; the editor shows `issues` translated by code
 messages (a version conflict offers a reload). Non-members, archived companies and missing
 `documents.view` get 404; roles that need 2FA without it see the 2FA notice.
 
+### Search, filters and related documents
+
+The list is searched, filtered, sorted and paged **in the database** (`searchDocuments`, one
+query with a window count; 25 rows per page). The browser never receives the whole list.
+
+- **Search** (`q`): the document number or the buyer's name, case-insensitive. Extra spaces are
+  ignored, and `%`/`_` match literally.
+- **Filters:** `type`, `status`, and an issue-date range `from`–`to` (inclusive; a reversed range
+  is swapped).
+- **Sorting** (`sort`): by date (newest first by default), by number, or by amount. Amounts are
+  sorted within each currency, never across currencies. Documents without a number or total
+  (drafts) come last.
+- **URL state:** the values live in the URL, are parsed tolerantly and rebuilt canonically
+  (`src/features/documents/list-query.ts`). Invalid values are dropped, and a non-canonical URL
+  redirects to the clean one.
+- **Filter form:** a plain GET form, so it works without JavaScript. "Reset filters" returns to the
+  full list. An empty result with filters says that nothing matches.
+- **Back link:** opening a document keeps the list view in `?back=`. Only list parameters are
+  read from it, so it can never point elsewhere.
+
+**Related documents:**
+
+- An **issued invoice** lists its credit notes (`listRelatedDocuments`, relation `credits`,
+  `documents.view`, company-scoped; the database also refuses relations across companies):
+  - issued notes first, then drafts;
+  - each with number (or "not issued yet"), status, date and total, linking to the note;
+  - drafts are visibly different;
+  - a table from `md`, cards on phones;
+  - if the list cannot be loaded, the invoice is still shown with a notice.
+- Every document with a relation (credit note, invoice from a proforma, delivery note, replacement)
+  shows it with a link to the source document, taken from the document's own relation.
+
 ### PDF
 
 The document page offers "Open PDF" (new tab) and "Download PDF" for issued documents, and a
 watermarked preview for drafts in the editor (with a note when there are unsaved changes, since
 the PDF shows the last saved version). The links use the PDF endpoint above; anyone who can see the
 document page may get its PDF.
+
+### Sending by email
+
+Issued documents can be sent from their page ("Send by email", `documents.create`) through
+`POST /api/companies/[id]/documents/[documentId]/email` with `{ to, message? }`. The PDF (the same
+file as the PDF endpoint) is attached. The text is in the document's language, and replies go to the
+member who sent it. Rules:
+
+- Drafts are refused (409 `document.notIssued`), and so is sending while email is not configured
+  (`email.notConfigured`; the page then shows a note instead of the button).
+- A company may send at most 100 documents per hour (`email.rateLimited`).
+- Each sending is audited with the delivery result only: no address or content.
+- The file mail transport used in development and tests records attachments by name, type and size
+  only.
 
 ### Creating and deleting drafts
 
@@ -247,6 +380,31 @@ editor then opens for lines and explicit tax categories. Drafts can be deleted f
 from their list row, each after a confirmation; afterwards the list shows a confirmation message.
 Issued documents never show the action, and the API refuses it anyway (409; another company's
 document is a 404). Both actions are hidden without `documents.create` and enforced by the API.
+
+### Credit notes in the UI
+
+An issued invoice shows "Create credit note" to users with `documents.create` (not on drafts,
+proformas, delivery notes or credit notes). It opens a modal dialog (Base UI AlertDialog, focus on
+Cancel) with:
+
+- **What to credit**: everything that remains (`lines: "full"`, the default) or selected lines with
+  a quantity per invoice line (a decimal comma is accepted). The dialog shows invoiced quantities
+  only. What remains after issued credit notes is checked by the server.
+- **Date** (default: today in the browser, never before the invoice date) and **document
+  language** (default: the invoice's).
+
+The form catches obvious mistakes before sending: missing date, date before the invoice, no line,
+a quantity that is not positive, has more than 4 decimals or exceeds the invoiced quantity. It
+then calls `POST …/credit-note`. The server's findings appear in the dialog, translated by code
+(`documents.issues.creditNote.*`: `quantity.exceedsRemaining`, `amount.exceedsRemaining`,
+`nothingRemaining`, `quantity.invalid`, `sourceLine.unknown`, `dateBeforeOriginal`); the same
+texts appear in the editor when issuing is refused.
+
+While the request runs, the dialog cannot be closed and its actions are disabled, so a double
+click creates one draft. On success the draft opens in the editor (fixed lines, the invoice's tax
+categories and bank details) and is issued through the editor's usual confirmation, which is also
+a modal AlertDialog. A link from the invoice page to its credit notes is not shown yet; the PDF
+of a credit note names its invoice.
 
 ### Bank accounts
 

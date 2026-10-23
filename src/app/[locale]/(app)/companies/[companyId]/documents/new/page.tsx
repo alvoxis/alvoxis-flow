@@ -27,7 +27,7 @@ export default async function NewDocumentPage({ params }: Params) {
   const back = (
     <Link
       href={`/companies/${companyId}/documents`}
-      className="text-sm text-accent hover:underline"
+      className="text-sm text-violet-300 hover:underline"
     >
       {t("back")}
     </Link>

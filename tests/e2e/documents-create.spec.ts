@@ -161,15 +161,17 @@ test("delete drafts from the editor and from the list, with cancel and confirmat
   // An unsaved edit: the confirmation must say that deleting is permanent and drops it.
   await page.getByTestId("document-editor").locator('textarea[name="notes"]').fill("Unsaved note");
   const del = page.getByTestId("delete-draft");
+  // The confirmation is a modal dialog rendered at the end of <body>, not inside the row.
+  const confirm = page.getByTestId("delete-confirm");
   await del.getByRole("button", { name: "Delete draft" }).click();
-  await expect(del.getByTestId("delete-confirm-body")).toContainText("deleted permanently");
-  await expect(del.getByTestId("delete-confirm-body")).toContainText(
+  await expect(confirm.getByTestId("delete-confirm-body")).toContainText("deleted permanently");
+  await expect(confirm.getByTestId("delete-confirm-body")).toContainText(
     "All unsaved changes in this editor will be lost",
   );
-  await del.getByTestId("delete-confirm").getByRole("button", { name: "Cancel" }).click();
-  await expect(del.getByTestId("delete-confirm")).toHaveCount(0);
+  await confirm.getByRole("button", { name: "Cancel" }).click();
+  await expect(confirm).toHaveCount(0);
   await del.getByRole("button", { name: "Delete draft" }).click();
-  await del.getByRole("button", { name: "Delete permanently" }).click();
+  await confirm.getByRole("button", { name: "Delete permanently" }).click();
   await expect(page).toHaveURL(new RegExp(`${documentsUrl}\\?deleted=1$`));
   await expect(page.getByRole("status").filter({ hasText: "Draft deleted." })).toBeVisible();
   await expect(row(page, fromEditor)).toHaveCount(0);
@@ -177,14 +179,14 @@ test("delete drafts from the editor and from the list, with cancel and confirmat
   const listDel = row(page, fromList).getByTestId("delete-draft");
   await listDel.getByRole("button", { name: "Delete draft" }).click();
   // The list has no editor state, so it does not mention unsaved changes.
-  await expect(listDel.getByTestId("delete-confirm-body")).toContainText("deleted permanently");
-  await expect(listDel.getByTestId("delete-confirm-body")).not.toContainText("unsaved");
-  await listDel.getByRole("button", { name: "Cancel" }).click();
+  await expect(confirm.getByTestId("delete-confirm-body")).toContainText("deleted permanently");
+  await expect(confirm.getByTestId("delete-confirm-body")).not.toContainText("unsaved");
+  await confirm.getByRole("button", { name: "Cancel" }).click();
   await expect(row(page, fromList)).toHaveCount(1);
   await page.setViewportSize({ width: 390, height: 844 });
   await noHorizontalScroll(page);
   await listDel.getByRole("button", { name: "Delete draft" }).click();
-  await listDel.getByRole("button", { name: "Delete permanently" }).click();
+  await confirm.getByRole("button", { name: "Delete permanently" }).click();
   await expect(page.getByRole("status").filter({ hasText: "Draft deleted." })).toBeVisible();
   await expect(row(page, fromList)).toHaveCount(0);
   await expect(page.getByTestId("documents-empty")).toBeVisible();
@@ -221,7 +223,10 @@ test("a draft issued meanwhile cannot be deleted: 409 with a reload", async ({ p
   ).toBe(200);
   const listDel = row(page, id).getByTestId("delete-draft");
   await listDel.getByRole("button", { name: "Delete draft" }).click();
-  await listDel.getByRole("button", { name: "Delete permanently" }).click();
+  await page
+    .getByTestId("delete-confirm")
+    .getByRole("button", { name: "Delete permanently" })
+    .click();
   await expect(alertOf(page)).toContainText("already been issued");
   await alertOf(page).getByRole("button", { name: "Reload" }).click();
   await expect(row(page, id).getByTestId("document-status")).toHaveText("Issued");

@@ -3,6 +3,7 @@ import { type ReactNode } from "react";
 import { SignOutButton } from "@/components/auth/two-factor-forms";
 import { Link } from "@/i18n/navigation";
 import { Brand } from "./brand";
+import { type CompanyChoice, CompanyContext } from "./company-context";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
 import { NavList } from "./nav-list";
@@ -10,9 +11,12 @@ import { NavList } from "./nav-list";
 export async function AppShell({
   children,
   user,
+  companies,
 }: {
   children: ReactNode;
   user: { email: string; displayName: string | null };
+  /** The user's companies, for the company shown in the top bar. */
+  companies: readonly CompanyChoice[];
 }) {
   const t = await getTranslations();
 
@@ -31,14 +35,12 @@ export async function AppShell({
         <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg/85 px-4 py-3 backdrop-blur sm:px-6">
           <MobileNav />
           {/* The mobile drawer shows the brand; on phones the bar keeps only essentials. */}
-          <div className="hidden sm:block lg:hidden">
+          {/* Never shrinks: the company name gives way (ellipsis) instead of covering the brand. */}
+          <div className="hidden shrink-0 sm:block lg:hidden" data-testid="topbar-brand">
             <Brand />
           </div>
-          <div className="hidden min-w-0 items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-muted sm:flex">
-            <span className="size-2 rounded-full bg-muted/50" aria-hidden="true" />
-            <span className="truncate">{t("topbar.noCompany")}</span>
-          </div>
-          <div className="ml-auto flex items-center gap-3">
+          <CompanyContext companies={companies} />
+          <div className="ml-auto flex shrink-0 items-center gap-3" data-testid="topbar-actions">
             <LocaleSwitcher />
             <div className="flex items-center gap-2 text-sm text-muted" title={t("topbar.account")}>
               <Link
@@ -52,7 +54,7 @@ export async function AppShell({
                 >
                   {(user.displayName ?? user.email).slice(0, 1)}
                 </span>
-                <span className="hidden max-w-48 truncate md:inline">{user.email}</span>
+                <span className="hidden max-w-48 truncate xl:inline">{user.email}</span>
                 <span className="sr-only">{t("account.security")}</span>
               </Link>
               <SignOutButton label={t("account.signOut")} className="px-2" />

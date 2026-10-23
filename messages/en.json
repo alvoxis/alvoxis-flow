@@ -20,45 +20,30 @@
     "closeMenu": "Close menu"
   },
   "topbar": {
-    "noCompany": "No company selected",
+    "noCompany": "No company yet",
     "language": "Language",
     "account": "Account",
-    "notSignedIn": "Not signed in"
+    "notSignedIn": "Not signed in",
+    "currentCompany": "Current company"
+  },
+  "environment": {
+    "label": "Test environment",
+    "testBanner": "Not production. Use synthetic data only: no real invoices, customers or bank details."
   },
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Overview of your company's documents and operations.",
-    "demoBanner": "Preview with sample data. Nothing shown here is connected to a real company yet.",
-    "demoBadge": "Sample data",
-    "kpi": {
-      "revenue": "Invoiced this month",
-      "revenueHint": "Approved invoices, shown per document currency",
-      "outstanding": "Outstanding",
-      "outstandingHint": "{count, plural, one {# unpaid invoice} other {# unpaid invoices}}",
-      "overdue": "Overdue",
-      "overdueHint": "{count, plural, one {# invoice past due date} other {# invoices past due date}}",
-      "documents": "Documents this month",
-      "documentsHint": "Invoices, proformas, credit notes and delivery notes"
-    },
-    "currencyNote": "Each document keeps its own currency. Totals in different currencies are never added together.",
-    "recent": {
-      "title": "Recent documents",
-      "description": "Latest documents across all types",
-      "number": "Number",
-      "type": "Type",
-      "customer": "Customer",
-      "date": "Date",
-      "status": "Status",
-      "amount": "Amount",
-      "creditsInvoice": "Credits {number}",
-      "noAmount": "Not applicable"
-    },
-    "nextSteps": {
-      "title": "Getting started",
-      "createCompany": "Create your company profile",
-      "inviteTeam": "Invite your team and assign roles",
-      "addCustomers": "Add customers and products",
-      "firstInvoice": "Issue your first invoice"
+    "documents": {
+      "title": "Documents",
+      "drafts": "Drafts",
+      "issued": "Issued",
+      "invoicedNet": "Invoiced, net of credit notes",
+      "empty": "No documents yet.",
+      "unavailable": "Documents are not available with your role, or until two-factor authentication is set up.",
+      "currencyNote": "Totals are shown per document currency and are never added across currencies.",
+      "loadError": "The document figures could not be loaded right now. Your documents are not affected; try again later.",
+      "createFirst": "Create the first document",
+      "paymentsNotTracked": "Payments are not tracked yet, so nothing here shows what is paid, outstanding or overdue."
     }
   },
   "documentType": {
@@ -88,6 +73,13 @@
     "description": "The page you are looking for does not exist or has been moved.",
     "backHome": "Back to dashboard"
   },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "The page could not be shown. Please try again. If it keeps happening, tell us the error code.",
+    "digest": "Error code: {digest}",
+    "retry": "Try again",
+    "home": "Back to the dashboard"
+  },
   "offline": {
     "title": "You are offline",
     "description": "Check your internet connection. Your data is not stored on this device."
@@ -102,6 +94,7 @@
     "number": "No.",
     "issueDate": "Issue date",
     "dueDate": "Due date",
+    "amountDue": "Amount due",
     "supplyDate": "Date of supply",
     "validUntil": "Valid until",
     "buyerReference": "Order reference",
@@ -143,7 +136,6 @@
     "bank": "Bank",
     "iban": "IBAN",
     "bic": "BIC/SWIFT",
-    "payBy": "Please pay by {date}",
     "notes": "Notes",
     "relation": {
       "credits": "Credit note for invoice {number} dated {date}",
@@ -198,6 +190,16 @@
     "signInLocked": {
       "subject": "Several failed sign-in attempts",
       "body": "Password sign-in to your ALVOXIS Flow account was paused for 15 minutes after several failed attempts on {time} (UTC). Devices you have signed in from before can still sign in. If this was not you, reset your password:\n{link}"
+    },
+    "invitation": {
+      "subject": "Invitation to {company}",
+      "body": "{inviter} invites you to join {company} in ALVOXIS Flow. Open this link to accept:\n{link}\n\nIf you do not have an account yet, sign up with this email address first, then open the link again. The link expires in {days} days."
+    },
+    "document": {
+      "greeting": "Hello,",
+      "attached": "Please find attached {document} from {seller}.",
+      "reply": "You can reply to this email with any questions.",
+      "footer": "Sent on behalf of {seller} by ALVOXIS Flow."
     }
   },
   "auth": {
@@ -383,6 +385,21 @@
       "addressLine2": "Up to 200 characters.",
       "postalCode": "Up to 16 characters.",
       "city": "Up to 100 characters."
+    },
+    "pdfAccent": {
+      "legend": "Document colour",
+      "hint": "Accent colour of your invoices and other document PDFs: title, thin lines, due date and total. The page stays white and the text dark, so documents print well on any printer.",
+      "default": "Default",
+      "previewLabel": "Invoice preview in {colour}",
+      "previewCaption": "Preview: where the colour appears on the PDF. Amounts and content are not affected.",
+      "options": {
+        "navy": "Dark blue",
+        "graphite": "Graphite",
+        "blue": "Blue",
+        "teal": "Teal",
+        "green": "Green",
+        "burgundy": "Burgundy"
+      }
     }
   },
   "documents": {
@@ -403,7 +420,7 @@
       "draft": "Draft",
       "issued": "Issued"
     },
-    "issuedNotice": "This document is issued as No. {number}. Issued documents cannot be edited.",
+    "issuedNotice": "This document is issued as No. <num>{number}</num>. Issued documents cannot be edited.",
     "readOnlyDraft": "You can view this draft. Your role cannot change it.",
     "sellerHint": "The seller details come from the company profile.",
     "sections": {
@@ -495,7 +512,19 @@
         },
         "total": {
           "mustBeNegative": "The credit note total must be negative."
-        }
+        },
+        "quantity": {
+          "exceedsRemaining": "The quantity to credit is more than what remains on an invoice line (issued credit notes included).",
+          "invalid": "The quantity to credit must be greater than zero."
+        },
+        "amount": {
+          "exceedsRemaining": "The amount to credit is more than what remains on an invoice line (issued credit notes included)."
+        },
+        "nothingRemaining": "This invoice has already been credited in full.",
+        "sourceLine": {
+          "unknown": "A credited line is not on the original invoice."
+        },
+        "dateBeforeOriginal": "The credit note date cannot be earlier than the invoice date."
       },
       "deliveryNote": {
         "line": {
@@ -568,6 +597,145 @@
       },
       "total": {
         "mustBePositive": "The total must be greater than zero."
+      },
+      "import": {
+        "flags": {
+          "unresolved": "Some findings of the import have not been checked yet."
+        },
+        "duplicates": {
+          "unacknowledged": "Confirm the possible duplicate before creating a draft."
+        },
+        "line": {
+          "incomplete": "A line needs a quantity and a unit price.",
+          "flagsUnresolved": "A line has findings that have not been checked."
+        }
+      },
+      "counterparty": {
+        "name": {
+          "required": "Enter a name."
+        },
+        "role": {
+          "required": "Choose at least one role: customer or supplier."
+        },
+        "email": {
+          "invalid": "Enter a valid email address."
+        },
+        "countryCode": {
+          "invalid": "Use a two-letter country code, e.g. LV."
+        },
+        "vatNumber": {
+          "invalid": "Enter the VAT number with its country prefix, e.g. LV40000000005."
+        },
+        "paymentTermDays": {
+          "range": "The payment term must be between 0 and 365 days."
+        }
+      },
+      "product": {
+        "name": {
+          "required": "Enter a name."
+        },
+        "unit": {
+          "required": "Enter a unit, e.g. pcs."
+        },
+        "currency": {
+          "invalid": "Choose EUR or PLN."
+        },
+        "price": {
+          "invalid": "Enter a price like 12.50 (up to 4 decimals)."
+        },
+        "taxCategory": {
+          "unknown": "Choose one of the company's tax categories.",
+          "archived": "This tax category is archived; choose an active one."
+        },
+        "trackStock": {
+          "inUse": "This product has stock movements, so it keeps tracking stock."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Enter a quantity like 2 or 1.5 (up to 4 decimals).",
+          "insufficient": "Not enough stock in this warehouse."
+        },
+        "unitCost": {
+          "invalid": "Enter a unit cost like 12.50 (receipts only)."
+        },
+        "date": {
+          "invalid": "Enter a valid date.",
+          "future": "The date cannot be in the future."
+        },
+        "transfer": {
+          "target": "Choose the warehouse to transfer to.",
+          "sameWarehouse": "Choose two different warehouses."
+        },
+        "product": {
+          "unknown": "Choose one of the company's products.",
+          "notTracked": "This product does not track stock."
+        },
+        "warehouse": {
+          "unknown": "Choose one of the company's warehouses.",
+          "archived": "This warehouse is archived."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Use letters and digits (up to 20), e.g. MAIN."
+        },
+        "name": {
+          "required": "Enter a name."
+        }
+      },
+      "production": {
+        "product": {
+          "unknown": "Choose one of the company's products.",
+          "notTracked": "The product must track stock.",
+          "archived": "This product is archived."
+        },
+        "component": {
+          "self": "A product cannot be its own component.",
+          "unknown": "Choose one of the company's products.",
+          "notTracked": "Components must track stock.",
+          "duplicate": "Each component only once."
+        },
+        "quantity": {
+          "invalid": "Enter a quantity greater than 0 (up to 4 decimals).",
+          "tooSmall": "The quantity is too small for the bill of materials."
+        },
+        "date": {
+          "invalid": "Enter a valid date."
+        },
+        "bom": {
+          "missing": "This product has no bill of materials yet."
+        }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Enter a percentage from 0 to 99.999."
+        },
+        "amount": {
+          "invalid": "Enter an amount like 1500 or 1500.50."
+        },
+        "firstName": {
+          "required": "Enter the first name."
+        },
+        "lastName": {
+          "required": "Enter the last name."
+        },
+        "email": {
+          "invalid": "Enter a valid email address."
+        },
+        "country": {
+          "invalid": "Choose Latvia, Lithuania, Estonia or Poland."
+        },
+        "date": {
+          "invalid": "Enter a valid date.",
+          "endBeforeStart": "The end date cannot be before the start date."
+        },
+        "period": {
+          "invalid": "Choose a month."
+        },
+        "run": {
+          "noEmployees": "Nobody is employed in this month."
+        }
       }
     },
     "taxCategory": "Tax category",
@@ -600,6 +768,34 @@
     "deleteConfirmBodyEditor": "The draft is deleted permanently and cannot be restored. All unsaved changes in this editor will be lost. Issued documents cannot be deleted.",
     "colBuyer": "Buyer",
     "creditNoteBank": "Credit notes keep the bank details of the original invoice.",
+    "creditNote": {
+      "create": "Create credit note",
+      "title": "Credit note for invoice {number}",
+      "description": "Creates a credit note draft that you can check in the editor before issuing it. The invoice itself is never changed.",
+      "mode": "What to credit",
+      "full": {
+        "label": "Everything that remains",
+        "hint": "Credits every invoice line that has not been credited yet."
+      },
+      "partial": {
+        "label": "Selected lines",
+        "hint": "Credits only the quantities you enter below."
+      },
+      "linesTitle": "Quantities to credit",
+      "linesHint": "Leave a line empty to skip it. Quantities already credited by issued credit notes are checked when the draft is created.",
+      "invoiced": "Invoiced: {quantity}",
+      "quantityFor": "Quantity to credit, line {n}: {description}",
+      "submit": "Create draft",
+      "refused": "The credit note draft was not created.",
+      "notCreditable": "Only an issued invoice can be credited.",
+      "errors": {
+        "dateRequired": "Enter the credit note date.",
+        "dateBeforeInvoice": "The credit note date cannot be earlier than the invoice date.",
+        "noLines": "Enter a quantity for at least one line.",
+        "quantityInvalid": "Enter a number greater than zero with at most 4 decimal places.",
+        "quantityTooHigh": "This is more than the invoiced quantity."
+      }
+    },
     "pdf": {
       "open": "Open PDF",
       "download": "Download PDF",
@@ -607,6 +803,192 @@
       "downloadDraft": "Download draft PDF",
       "draftHint": "The draft PDF is marked “not issued” and has no number.",
       "unsaved": "The PDF shows the last saved version. Save the draft to include your changes."
+    },
+    "entry": {
+      "title": "Documents",
+      "choose": "Choose a company to open its documents.",
+      "none": "Documents belong to a company. Create your company first.",
+      "createCompany": "Create a company"
+    },
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Number or buyer",
+      "type": "Type",
+      "anyType": "All types",
+      "status": "Status",
+      "anyStatus": "All statuses",
+      "from": "Issued from",
+      "to": "Issued to",
+      "sort": "Sort by",
+      "sorts": {
+        "date_desc": "Newest first",
+        "date_asc": "Oldest first",
+        "number_asc": "Number (A–Z)",
+        "number_desc": "Number (Z–A)",
+        "amount_desc": "Amount (highest first)",
+        "amount_asc": "Amount (lowest first)"
+      },
+      "apply": "Apply",
+      "reset": "Reset filters",
+      "noMatches": "No documents match your search or filters.",
+      "amountSortHint": "Amounts are sorted within each currency; drafts have no total yet and come last.",
+      "showing": "{start}–{end} of {total}",
+      "previous": "Previous page",
+      "next": "Next page",
+      "pagination": "Pages of the document list"
+    },
+    "related": {
+      "creditNotesTitle": "Credit notes for this invoice",
+      "empty": "No credit notes for this invoice yet.",
+      "loadError": "The credit notes of this invoice could not be loaded. Reload the page to try again."
+    },
+    "relation": {
+      "credits": "Credit note for invoice <link>{number}</link> dated {date}",
+      "converted_from": "Issued on the basis of proforma invoice <link>{number}</link> dated {date}",
+      "delivers": "Delivery note for invoice <link>{number}</link> dated {date}",
+      "replaces": "Replaces invoice <link>{number}</link> dated {date}"
+    },
+    "import": {
+      "open": "Import PDF",
+      "title": "Import a PDF invoice",
+      "description": "Read an invoice PDF of your company and check the extracted data before a draft is created.",
+      "fileLabel": "PDF file",
+      "fileHint": "A text-based PDF up to {size} MB and 20 pages. Scanned images cannot be read yet.",
+      "privacy": "The file is read on our server only to extract the data, is not stored and is not sent to any other service.",
+      "read": "Read PDF",
+      "reading": "Reading…",
+      "noFile": "Choose a PDF file first.",
+      "tooLarge": "The file is larger than {size} MB.",
+      "notPdf": "This file is not a PDF.",
+      "unreadable": "The PDF could not be read. Scanned documents without a text layer are not supported yet.",
+      "fileRead": "{name}: {pages, plural, one {# page} other {# pages}} read",
+      "startOver": "Choose another file",
+      "findingsTitle": "Findings to check",
+      "findingsHint": "Check each finding below before a draft can be created.",
+      "checked": "I have checked this",
+      "duplicatesTitle": "A similar document may already exist in this company:",
+      "duplicateStrength": {
+        "certain": "almost certainly the same",
+        "likely": "likely the same",
+        "possible": "possibly the same"
+      },
+      "duplicateConfirm": "I have checked the existing document and still want to create a new draft.",
+      "documentTitle": "Document",
+      "numberHint": "Read from the file for reference; the draft gets its own number when it is issued.",
+      "partiesTitle": "Seller and buyer",
+      "sellerFixed": "Seller: your company ({name}), from the company profile.",
+      "sellerRead": "Seller found in the file: {name}",
+      "buyerName": "Buyer name",
+      "buyerRegistrationNumber": "Buyer registration number",
+      "buyerVatNumber": "Buyer VAT number",
+      "taxTitle": "Tax",
+      "taxHint": "Tax treatment is never taken from the file: choose the category for the lines explicitly. You can change it per line in the editor.",
+      "taxCategory": "Tax category for all lines",
+      "noCategories": "Add a tax category before importing.",
+      "linesTitle": "Lines",
+      "printedTotal": "Printed line total: {amount}",
+      "noLines": "No lines were found in the file.",
+      "totalsTitle": "Totals printed in the file",
+      "totalsHint": "For comparison only: the draft's totals are calculated from its lines.",
+      "statementsTitle": "Text that may have tax or legal meaning",
+      "statementsHint": "Shown for your attention; it is not interpreted.",
+      "problems": {
+        "currency": "Choose a currency.",
+        "issueDate": "Enter the issue date.",
+        "buyerName": "Enter the buyer's name.",
+        "taxCategory": "Choose a tax category.",
+        "lines": "Every line needs a description, a quantity other than zero and a unit price.",
+        "findings": "Check every finding.",
+        "duplicates": "Confirm that you want to create a new draft despite the possible duplicate."
+      },
+      "flags": {
+        "generic": "Check this value.",
+        "amount": {
+          "ambiguous": "An amount can be read in more than one way (e.g. 1,234). Check the numbers."
+        },
+        "bankAccount": {
+          "ibanInvalid": "An IBAN in the file has an invalid checksum."
+        },
+        "buyer": {
+          "notFound": "The buyer was not found in the file."
+        },
+        "currency": {
+          "multiple": "More than one currency appears in the file.",
+          "notFound": "No currency was found in the file."
+        },
+        "date": {
+          "formatAmbiguous": "A date can be read in more than one way (e.g. 02/03/2026). Check the dates."
+        },
+        "documentType": {
+          "unknown": "The document type was not recognised."
+        },
+        "dueDate": {
+          "beforeIssueDate": "The due date is before the issue date."
+        },
+        "duplicate": {
+          "possible": "A similar document may already exist in this company."
+        },
+        "file": {
+          "noTextLayer": "The file has no text layer (it looks like a scan) and cannot be read."
+        },
+        "identifier": {
+          "labelMismatch": "A registration or VAT number does not match its label.",
+          "unlabelled": "A number that may be a registration or VAT number has no label."
+        },
+        "issueDate": {
+          "notFound": "No issue date was found.",
+          "unlabelled": "The issue date was taken from a date without a label."
+        },
+        "line": {
+          "arithmeticMismatch": "Quantity × unit price does not match the printed line total."
+        },
+        "lines": {
+          "arithmeticMismatch": "Some lines do not add up (quantity × unit price ≠ line total).",
+          "notFound": "No lines were found."
+        },
+        "number": {
+          "notFound": "No document number was found."
+        },
+        "seller": {
+          "notFound": "The seller was not found in the file."
+        },
+        "statements": {
+          "found": "The file contains text that may have tax or legal meaning (shown below)."
+        },
+        "tax": {
+          "notShown": "No tax amount is shown in the file.",
+          "treatmentRequiresConfirmation": "Tax treatment is never taken from the file: choose a tax category.",
+          "zeroRateUnexplained": "A 0 % tax rate is shown without an explanation."
+        },
+        "total": {
+          "notFound": "No total was found."
+        },
+        "totals": {
+          "linesMismatch": "The lines do not add up to the printed subtotal.",
+          "sumMismatch": "Subtotal and tax do not add up to the printed total."
+        }
+      }
+    },
+    "email": {
+      "open": "Send by email",
+      "title": "Send {number} by email",
+      "description": "The PDF is attached. Replies go to your email address.",
+      "to": "Recipient's email",
+      "message": "Message (optional)",
+      "send": "Send",
+      "close": "Close",
+      "sent": "Sent to {to}.",
+      "notConfigured": "Sending documents by email is not available: email is not configured for this site.",
+      "state": {
+        "document": {
+          "notIssued": "Only issued documents can be sent."
+        },
+        "email": {
+          "notConfigured": "Email is not configured for this site.",
+          "rateLimited": "Too many documents were sent in the last hour. Try again later.",
+          "failed": "The email could not be sent. Try again later."
+        }
+      }
     }
   },
   "taxCategories": {
@@ -734,6 +1116,520 @@
       "manage": "Manage bank accounts",
       "archived": "Archived account {iban}",
       "unlinked": "Saved details {iban} (not linked to an account)"
+    }
+  },
+  "ui": {
+    "toast": {
+      "region": "Notifications",
+      "close": "Close notification"
+    }
+  },
+  "records": {
+    "entry": {
+      "choose": "Choose a company.",
+      "none": "Create a company first.",
+      "createCompany": "Create a company"
+    },
+    "outcome": {
+      "invalid": "Please check the highlighted fields.",
+      "conflict": "This record was changed elsewhere. Reload to see the latest version.",
+      "signedOut": "Your session has ended. Please sign in again.",
+      "twoFactor": "Your role requires two-factor authentication for this action.",
+      "forbidden": "You do not have permission for this action, or the company is no longer active.",
+      "notFound": "This record no longer exists.",
+      "error": "Something went wrong. Please try again."
+    },
+    "reload": "Reload"
+  },
+  "counterparties": {
+    "description": {
+      "customer": "The people and companies you sell to. Choose them in documents to fill in the buyer.",
+      "supplier": "The companies you buy from."
+    },
+    "readOnly": "You can view this list. Changing it needs a role with permission to manage it.",
+    "search": "Search",
+    "searchPlaceholder": "Name, registration or VAT number, email",
+    "showArchived": "Show archived",
+    "add": {
+      "customer": "Add customer",
+      "supplier": "Add supplier"
+    },
+    "empty": {
+      "customer": "No customers yet.",
+      "supplier": "No suppliers yet."
+    },
+    "noMatches": "Nothing matches the search.",
+    "create": "Add",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "restore": "Restore",
+    "documents": "Documents",
+    "archiveConfirmTitle": "Archive this record?",
+    "archiveConfirmBody": "It will no longer be offered when creating documents. Existing documents do not change. You can restore it later.",
+    "paymentTerm": "Payment term: {days} days",
+    "role": {
+      "customer": "Customer",
+      "supplier": "Supplier"
+    },
+    "status": {
+      "archived": "Archived"
+    },
+    "fields": {
+      "name": "Name",
+      "registrationNumber": "Registration number",
+      "vatNumber": "VAT number",
+      "email": "Email",
+      "phone": "Phone",
+      "contactName": "Contact person",
+      "addressLine1": "Address",
+      "addressLine2": "Address (line 2)",
+      "postalCode": "Postal code",
+      "city": "City",
+      "countryCode": "Country code (LV, LT, EE, PL…)",
+      "paymentTermDays": "Payment term, days",
+      "notes": "Notes",
+      "roles": "Role"
+    },
+    "done": {
+      "created": "Record added.",
+      "saved": "Changes saved.",
+      "archived": "Record archived.",
+      "restored": "Record restored."
+    },
+    "outcome": {
+      "registrationTaken": "An active record with this registration number already exists."
+    },
+    "picker": {
+      "label": "Fill in from customers",
+      "placeholder": "Choose a customer…",
+      "hint": "Copies the customer's details into the buyer fields; you can still edit them."
+    }
+  },
+  "products": {
+    "description": "Goods and services you sell or buy. Add them to documents as lines in one step.",
+    "readOnly": "You can view the catalog. Changing it needs a role with permission to manage products.",
+    "search": "Search",
+    "searchPlaceholder": "Name, SKU or barcode",
+    "showArchived": "Show archived",
+    "add": "Add product",
+    "empty": "No products yet.",
+    "noMatches": "Nothing matches the search.",
+    "create": "Add",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "restore": "Restore",
+    "archiveConfirmTitle": "Archive this product?",
+    "archiveConfirmBody": "It will no longer be offered in documents. Existing documents do not change. You can restore it later.",
+    "tracked": "Stock tracked",
+    "noCategory": "No default",
+    "archivedCategory": "Current category (no longer offered)",
+    "kind": {
+      "goods": "Goods",
+      "service": "Service"
+    },
+    "status": {
+      "archived": "Archived"
+    },
+    "fields": {
+      "name": "Name",
+      "kind": "Type",
+      "sku": "SKU / code",
+      "unit": "Unit",
+      "barcode": "Barcode",
+      "currency": "Currency",
+      "salePrice": "Sale price (net)",
+      "purchasePrice": "Purchase price (net)",
+      "taxCategoryId": "Default tax category",
+      "trackStock": "Track stock in the warehouse",
+      "description": "Description"
+    },
+    "done": {
+      "created": "Product added.",
+      "saved": "Changes saved.",
+      "archived": "Product archived.",
+      "restored": "Product restored."
+    },
+    "outcome": {
+      "skuTaken": "An active product with this SKU already exists."
+    },
+    "picker": {
+      "label": "Add from catalog",
+      "placeholder": "Choose a product…"
+    }
+  },
+  "inventory": {
+    "description": "Stock per warehouse: receipts, issues, transfers and stock counts. Every change is kept in the movement history.",
+    "readOnly": "You can view stock. Changing it needs a role with permission to manage inventory.",
+    "noWarehouses": "No warehouses yet. Add the first one below; it becomes the default.",
+    "noTrackedProducts": "No products track stock yet. Turn on “Track stock” for goods in Products.",
+    "archived": "archived",
+    "stock": {
+      "title": "Stock",
+      "empty": "No stock yet.",
+      "value": "Value at purchase price"
+    },
+    "movements": {
+      "title": "Latest movements"
+    },
+    "kind": {
+      "receipt": "Receipt",
+      "issue": "Issue",
+      "adjustment": "Count correction",
+      "transfer_out": "Transfer out",
+      "transfer_in": "Transfer in",
+      "production_consume": "Used in production",
+      "production_output": "Produced"
+    },
+    "operation": {
+      "title": "Record a stock change",
+      "kind": "Operation",
+      "product": "Product",
+      "chooseProduct": "Choose a product…",
+      "warehouse": "Warehouse",
+      "from": "From warehouse",
+      "to": "To warehouse",
+      "chooseWarehouse": "Choose a warehouse…",
+      "quantity": "Quantity",
+      "counted": "Counted quantity",
+      "unitCost": "Unit cost (net, optional)",
+      "date": "Date",
+      "reference": "Reference (optional)",
+      "countHint": "The difference to the current balance is recorded as a count correction.",
+      "kinds": {
+        "receipt": "Receipt",
+        "issue": "Issue / write-off",
+        "transfer": "Transfer",
+        "count": "Stock count"
+      },
+      "submit": {
+        "receipt": "Record receipt",
+        "issue": "Record issue",
+        "transfer": "Record transfer",
+        "count": "Record count"
+      }
+    },
+    "warehouses": {
+      "title": "Warehouses",
+      "add": "Add warehouse",
+      "code": "Code",
+      "codeHint": "Letters and digits, e.g. MAIN.",
+      "name": "Name",
+      "default": "Default",
+      "makeDefault": "Make default",
+      "archive": "Archive",
+      "restore": "Restore"
+    },
+    "done": {
+      "receipt": "Receipt recorded.",
+      "issue": "Issue recorded.",
+      "transfer": "Transfer recorded.",
+      "count": "Count recorded.",
+      "countUnchanged": "The count matches the balance; nothing changed.",
+      "warehouseCreated": "Warehouse added.",
+      "warehouseSaved": "Default warehouse changed.",
+      "warehouseArchived": "Warehouse archived.",
+      "warehouseRestored": "Warehouse restored."
+    },
+    "outcome": {
+      "codeTaken": "A warehouse with this code already exists.",
+      "notEmpty": "This warehouse still holds stock. Move or issue it first."
+    }
+  },
+  "production": {
+    "description": "Bills of materials and production orders. Completing an order uses the components from stock and adds the finished product.",
+    "readOnly": "You can view production. Planning and completing orders needs a role with permission to manage production.",
+    "planNeeds": "To plan an order you need a warehouse and a product with a bill of materials (below).",
+    "status": {
+      "planned": "Planned",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "orders": {
+      "title": "Orders",
+      "empty": "No production orders yet.",
+      "meta": "Warehouse {warehouse} · planned for {planned}",
+      "completedOn": "completed {date}",
+      "available": "available {quantity}",
+      "completedOnLabel": "Completion date",
+      "complete": "Complete",
+      "cancel": "Cancel order"
+    },
+    "plan": {
+      "title": "Plan an order",
+      "product": "Product",
+      "chooseProduct": "Choose a product…",
+      "warehouse": "Warehouse",
+      "quantity": "Quantity",
+      "plannedOn": "Planned date",
+      "submit": "Plan order"
+    },
+    "bom": {
+      "title": "Bills of materials",
+      "hint": "What one unit of a product is made of. Changes apply to new orders only.",
+      "empty": "No bills of materials yet.",
+      "edit": "Edit",
+      "product": "Product",
+      "component": "Component {n}",
+      "chooseComponent": "Choose a component…",
+      "quantity": "Quantity per unit",
+      "remove": "Remove",
+      "addComponent": "Add component",
+      "save": "Save bill of materials"
+    },
+    "done": {
+      "planned": "Order {number} planned.",
+      "completed": "Order {number} completed; stock updated.",
+      "cancelled": "Order {number} cancelled.",
+      "bomSaved": "Bill of materials saved."
+    },
+    "outcome": {
+      "notPlanned": "This order is already completed or cancelled."
+    }
+  },
+  "payroll": {
+    "description": "Employees and monthly payroll for Latvia, Lithuania, Estonia and Poland.",
+    "disclaimer": "A calculation aid, not a tax declaration. The rates are company settings with starting values that must be checked by your accountant; special regimes, progressive brackets and caps are not modelled.",
+    "readOnly": "You can view payroll. Changing it needs a role with permission to manage payroll.",
+    "archived": "archived",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "restore": "Restore",
+    "status": {
+      "draft": "Draft",
+      "approved": "Approved"
+    },
+    "country": {
+      "LV": "Latvia (EUR)",
+      "LT": "Lithuania (EUR)",
+      "EE": "Estonia (EUR)",
+      "PL": "Poland (PLN)"
+    },
+    "cols": {
+      "gross": "Gross",
+      "employeeSocial": "Employee social",
+      "health": "Health insurance",
+      "incomeTax": "Income tax",
+      "net": "Net pay",
+      "employerSocial": "Employer social",
+      "employerCost": "Employer cost"
+    },
+    "runs": {
+      "title": "Payroll months",
+      "period": "Month",
+      "start": "Start payroll month",
+      "empty": "No payroll months yet.",
+      "lines": "{count, plural, one {# employee} other {# employees}}",
+      "show": "Show details",
+      "hide": "Hide details",
+      "grossThisMonth": "Gross this month",
+      "applyGross": "Apply",
+      "csv": "Download CSV",
+      "recalculate": "Recalculate",
+      "approve": "Approve",
+      "delete": "Delete draft",
+      "approveTitle": "Approve this payroll month?",
+      "approveBody": "An approved month is final: its figures can no longer change. Check the employees and amounts first."
+    },
+    "employees": {
+      "title": "Employees",
+      "add": "Add employee",
+      "empty": "No employees yet.",
+      "month": "month"
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "position": "Position",
+      "email": "Email",
+      "taxCountry": "Country of taxation",
+      "employmentStart": "Employed from",
+      "employmentEnd": "Employed until",
+      "monthlyGross": "Monthly gross salary",
+      "monthlyAllowance": "Monthly non-taxable amount",
+      "allowanceHint": "e.g. the basic allowance; 0 if none.",
+      "monthlyTaxCredit": "Monthly tax credit",
+      "taxCreditHint": "Subtracted from the income tax (e.g. Poland); 0 if none."
+    },
+    "rates": {
+      "title": "Rates per country",
+      "hint": "Percentages applied to every new or recalculated month. Saved rates replace the starting values.",
+      "default": "Starting values — check",
+      "employeeSocialRate": "Employee social",
+      "employerSocialRate": "Employer social",
+      "incomeTaxRate": "Income tax",
+      "employeeHealthRate": "Health insurance",
+      "save": "Save rates"
+    },
+    "done": {
+      "started": "Payroll month {period} started.",
+      "grossSet": "Gross amount applied.",
+      "recalculated": "Month recalculated.",
+      "approved": "Payroll month {period} approved.",
+      "deleted": "Draft {period} deleted.",
+      "employeeAdded": "Employee added.",
+      "employeeSaved": "Changes saved.",
+      "employeeArchived": "Employee archived.",
+      "employeeRestored": "Employee restored.",
+      "ratesSaved": "Rates for {country} saved."
+    },
+    "outcome": {
+      "periodTaken": "This month already has a payroll.",
+      "approved": "This month is already approved and cannot change."
+    }
+  },
+  "analytics": {
+    "description": "Sales from issued invoices and credit notes, net of tax, per currency; plus stock, payroll and production figures your role may see.",
+    "year": "Year",
+    "net": "Net",
+    "none": "Nothing for this year yet.",
+    "noSales": "No issued invoices in {year}.",
+    "sales": {
+      "title": "Net sales, {currency}",
+      "hint": "Point at or tap a month for details.",
+      "counts": "{invoices, plural, one {# invoice} other {# invoices}}, {creditNotes, plural, one {# credit note} other {# credit notes}}",
+      "aria": "Monthly net sales in {currency}, total {total}",
+      "table": "Show as a table",
+      "month": "Month",
+      "invoices": "Invoices",
+      "creditNotes": "Credit notes"
+    },
+    "customers": {
+      "title": "Top customers",
+      "name": "Customer",
+      "documents": "Documents"
+    },
+    "items": {
+      "title": "Top lines",
+      "description": "Description",
+      "quantity": "Quantity"
+    },
+    "other": {
+      "title": "Other figures",
+      "stock": "Stock value at purchase price",
+      "payroll": "Employer cost of approved payroll, {year}",
+      "production": "Production orders, {year}",
+      "productionValue": "{completed} completed · {planned} planned"
+    },
+    "month": {
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
+    },
+    "monthShort": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "May",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Oct",
+      "11": "Nov",
+      "12": "Dec"
+    }
+  },
+  "settings": {
+    "description": "Company settings and your own account.",
+    "company": "Company",
+    "account": "Your account",
+    "links": {
+      "profile": {
+        "title": "Company profile",
+        "text": "Name, registration and VAT number, address."
+      },
+      "taxCategories": {
+        "title": "Tax categories",
+        "text": "VAT rates and treatments offered on document lines."
+      },
+      "bankAccounts": {
+        "title": "Bank accounts",
+        "text": "Accounts printed on documents."
+      },
+      "warehouses": {
+        "title": "Warehouses",
+        "text": "Places where stock is kept."
+      },
+      "payrollRates": {
+        "title": "Payroll rates",
+        "text": "Social contribution and tax rates per country."
+      },
+      "security": {
+        "title": "Security and sessions",
+        "text": "Password, signed-in devices."
+      },
+      "twoFactor": {
+        "title": "Two-factor authentication",
+        "text": "Authenticator app and backup codes."
+      }
+    },
+    "members": {
+      "title": "Members",
+      "description": "People with access to this company and their roles.",
+      "you": "you",
+      "role": "Role",
+      "suspend": "Suspend",
+      "reactivate": "Reactivate",
+      "saved": "Member updated.",
+      "lastOwner": "The company needs at least one active owner.",
+      "status": {
+        "invited": "Invited",
+        "suspended": "Suspended"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Invitations",
+    "description": "Invite people by email. The link is valid for 7 days and works only for the invited address.",
+    "email": "Email address",
+    "role": "Role",
+    "invite": "Invite",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "revoke": "Revoke",
+    "revoked": "The invitation was revoked.",
+    "open": "Open invitations",
+    "none": "No open invitations.",
+    "expired": "Expired",
+    "expires": "Valid until {date}",
+    "memberExists": "This person is already a member of the company.",
+    "error": "The invitation could not be created.",
+    "delivery": {
+      "sent": "Invitation sent. You can also share this link:",
+      "not_configured": "Email is not configured, so nothing was sent. Share this link with the person yourself:",
+      "failed": "The email could not be sent. Share this link with the person yourself:"
+    },
+    "accept": "Accept invitation",
+    "home": "Go to the start page",
+    "intro": "You are invited to join {company} as {role}.",
+    "otherEmail": "This invitation is for a different email address. You are signed in as {email}; sign out and sign in with the invited address.",
+    "closed": {
+      "expired": "This invitation has expired. Ask for a new one.",
+      "used": "This invitation has already been used or was revoked.",
+      "not_found": "This invitation link is not valid."
+    },
+    "state": {
+      "invitation": {
+        "closed": "This invitation is no longer valid.",
+        "otherEmail": "This invitation is for a different email address.",
+        "alreadyMember": "You are already a member of this company."
+      }
     }
   }
 }

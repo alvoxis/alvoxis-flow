@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { type PdfAccent } from "@/lib/pdf-accent";
 import {
   boolean,
   check,
@@ -70,10 +71,18 @@ export const companies = pgTable(
     postalCode: text("postal_code"),
     city: text("city"),
     defaultLocale: localeCode("default_locale").notNull().default("en"),
+    /** Accent colour of the company's document PDFs, from the fixed palette in lib/pdf-accent. */
+    pdfAccent: text("pdf_accent").$type<PdfAccent>().notNull().default("navy"),
     archivedAt: timestamp("archived_at", { withTimezone: true }),
     ...timestamps,
   },
-  (t) => [check("companies_name_not_blank_ck", sql`length(trim(${t.name})) > 0`)],
+  (t) => [
+    check("companies_name_not_blank_ck", sql`length(trim(${t.name})) > 0`),
+    check(
+      "companies_pdf_accent_ck",
+      sql`${t.pdfAccent} in ('navy', 'graphite', 'blue', 'teal', 'green', 'burgundy')`,
+    ),
+  ],
 );
 
 /** Global catalog of permission keys (mirrors src/server/auth/permissions.ts). */
@@ -147,6 +156,44 @@ export const memberships = pgTable(
       columns: [t.roleId, t.companyId],
       foreignColumns: [roles.id, roles.companyId],
     }).onDelete("restrict"),
+  ],
+);
+
+/**
+ * An invitation to join a company with a role. Only the SHA-256 hash of the link token is stored;
+ * the token itself appears once, in the email or the inviter's copy of the link. An invitation is
+ * accepted by a signed-in user whose verified email equals `email`, and it expires after 7 days.
+ * At most one open (neither accepted nor revoked) invitation per company and email.
+ */
+export const companyInvitations = pgTable(
+  "company_invitations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    /** Stored lower-cased. */
+    email: text("email").notNull(),
+    roleId: uuid("role_id").notNull(),
+    tokenHash: text("token_hash").notNull(),
+    invitedBy: uuid("invited_by").references(() => users.id, { onDelete: "set null" }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    acceptedBy: uuid("accepted_by").references(() => users.id, { onDelete: "set null" }),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("company_invitations_token_uq").on(t.tokenHash),
+    uniqueIndex("company_invitations_open_uq")
+      .on(t.companyId, t.email)
+      .where(sql`${t.acceptedAt} is null and ${t.revokedAt} is null`),
+    check("company_invitations_email_lowercase_ck", sql`${t.email} = lower(${t.email})`),
+    foreignKey({
+      name: "company_invitations_role_same_company_fk",
+      columns: [t.roleId, t.companyId],
+      foreignColumns: [roles.id, roles.companyId],
+    }).onDelete("cascade"),
   ],
 );
 
