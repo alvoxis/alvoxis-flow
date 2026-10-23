@@ -327,6 +327,9 @@
       "invalidPassword": "The password is not correct.",
       "emailNotConfigured": "Email delivery is not configured on this server, so confirmation and password-reset emails cannot be sent. Please contact the administrator.",
       "generic": "Something went wrong. Please try again."
+    },
+    "intro": {
+      "skip": "Skip"
     }
   },
   "account": {
