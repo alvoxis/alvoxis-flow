@@ -619,6 +619,24 @@
         "paymentTermDays": {
           "range": "The payment term must be between 0 and 365 days."
         }
+      },
+      "product": {
+        "name": {
+          "required": "Enter a name."
+        },
+        "unit": {
+          "required": "Enter a unit, e.g. pcs."
+        },
+        "currency": {
+          "invalid": "Choose EUR or PLN."
+        },
+        "price": {
+          "invalid": "Enter a price like 12.50 (up to 4 decimals)."
+        },
+        "taxCategory": {
+          "unknown": "Choose one of the company's tax categories.",
+          "archived": "This tax category is archived; choose an active one."
+        }
       }
     },
     "taxCategory": "Tax category",
@@ -1067,6 +1085,60 @@
       "label": "Fill in from customers",
       "placeholder": "Choose a customer…",
       "hint": "Copies the customer's details into the buyer fields; you can still edit them."
+    }
+  },
+  "products": {
+    "description": "Goods and services you sell or buy. Add them to documents as lines in one step.",
+    "readOnly": "You can view the catalog. Changing it needs a role with permission to manage products.",
+    "search": "Search",
+    "searchPlaceholder": "Name, SKU or barcode",
+    "showArchived": "Show archived",
+    "add": "Add product",
+    "empty": "No products yet.",
+    "noMatches": "Nothing matches the search.",
+    "create": "Add",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "restore": "Restore",
+    "archiveConfirmTitle": "Archive this product?",
+    "archiveConfirmBody": "It will no longer be offered in documents. Existing documents do not change. You can restore it later.",
+    "tracked": "Stock tracked",
+    "noCategory": "No default",
+    "archivedCategory": "Current category (no longer offered)",
+    "kind": {
+      "goods": "Goods",
+      "service": "Service"
+    },
+    "status": {
+      "archived": "Archived"
+    },
+    "fields": {
+      "name": "Name",
+      "kind": "Type",
+      "sku": "SKU / code",
+      "unit": "Unit",
+      "barcode": "Barcode",
+      "currency": "Currency",
+      "salePrice": "Sale price (net)",
+      "purchasePrice": "Purchase price (net)",
+      "taxCategoryId": "Default tax category",
+      "trackStock": "Track stock in the warehouse",
+      "description": "Description"
+    },
+    "done": {
+      "created": "Product added.",
+      "saved": "Changes saved.",
+      "archived": "Product archived.",
+      "restored": "Product restored."
+    },
+    "outcome": {
+      "skuTaken": "An active product with this SKU already exists."
+    },
+    "picker": {
+      "label": "Add from catalog",
+      "placeholder": "Choose a product…"
     }
   }
 }

@@ -37,6 +37,7 @@ import {
   restoreLegacy,
   toDraftInput,
 } from "@/features/documents/editor-model";
+import { lineFromProduct, type ProductItem } from "@/features/products/model";
 import { Link, useRouter } from "@/i18n/navigation";
 import {
   type DocumentDraft,
@@ -58,6 +59,8 @@ export interface DocumentEditorProps {
   bankAccounts: BankAccountItem[];
   /** Active customers offered to fill in the buyer (empty without customers.view). */
   customers?: CounterpartyItem[];
+  /** Active catalog products offered as new lines (empty without products.view). */
+  products?: ProductItem[];
 }
 
 /** Picker value for saved details that are not linked to an account (entered before accounts). */
@@ -93,6 +96,7 @@ export function DocumentEditor({
   canManageTaxCategories,
   bankAccounts,
   customers = [],
+  products = [],
 }: DocumentEditorProps) {
   const t = useTranslations("documents");
   const tPdf = useTranslations("documentPdf");
@@ -100,6 +104,7 @@ export function DocumentEditor({
   const tCat = useTranslations("taxCategories");
   const tBank = useTranslations("bankAccounts");
   const tParty = useTranslations("counterparties");
+  const tProducts = useTranslations("products");
   const router = useRouter();
   const cancelIssueRef = useRef<HTMLButtonElement>(null);
   // Blocks a second "Issue now" click that lands before React re-renders the disabled button.
@@ -557,14 +562,46 @@ export function DocumentEditor({
           ))}
         </ol>
         {canAddLines ? (
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={pending}
-            onClick={() => update({ lines: [...draft.lines, newLine(crypto.randomUUID())] })}
-          >
-            {t("addLine")}
-          </Button>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={pending}
+              onClick={() => update({ lines: [...draft.lines, newLine(crypto.randomUUID())] })}
+            >
+              {t("addLine")}
+            </Button>
+            {products.length ? (
+              <div className="min-w-0 flex-1 space-y-1.5" data-testid="product-picker">
+                <label htmlFor="product-picker" className="block text-sm font-medium text-text">
+                  {tProducts("picker.label")}
+                </label>
+                <select
+                  id="product-picker"
+                  value=""
+                  disabled={pending}
+                  onChange={(e) => {
+                    const p = products.find((x) => x.id === e.target.value);
+                    if (!p) return;
+                    const line = lineFromProduct(crypto.randomUUID(), p, {
+                      currency: draft.currency,
+                      priced,
+                      categories: taxCategories,
+                    });
+                    update({ lines: [...draft.lines, line] });
+                  }}
+                  className="w-full rounded-lg border border-border bg-surface-2 px-3 py-2.5 text-sm text-text focus:border-accent focus:outline-none"
+                >
+                  <option value="">{tProducts("picker.placeholder")}</option>
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.sku ? `${p.name} (${p.sku})` : p.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
+          </div>
         ) : null}
       </fieldset>
 

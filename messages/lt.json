@@ -619,6 +619,24 @@
         "paymentTermDays": {
           "range": "Mokėjimo terminas turi būti nuo 0 iki 365 dienų."
         }
+      },
+      "product": {
+        "name": {
+          "required": "Įveskite pavadinimą."
+        },
+        "unit": {
+          "required": "Įveskite matavimo vienetą, pvz., vnt."
+        },
+        "currency": {
+          "invalid": "Pasirinkite EUR arba PLN."
+        },
+        "price": {
+          "invalid": "Įveskite kainą, pvz., 12.50 (iki 4 skaitmenų po kablelio)."
+        },
+        "taxCategory": {
+          "unknown": "Pasirinkite vieną iš įmonės mokesčių kategorijų.",
+          "archived": "Ši mokesčių kategorija archyvuota; pasirinkite aktyvią."
+        }
       }
     },
     "taxCategory": "Mokesčių kategorija",
@@ -1067,6 +1085,60 @@
       "label": "Užpildyti iš klientų",
       "placeholder": "Pasirinkite klientą…",
       "hint": "Nukopijuoja kliento duomenis į pirkėjo laukus; juos vis tiek galima redaguoti."
+    }
+  },
+  "products": {
+    "description": "Prekės ir paslaugos, kurias parduodate ar perkate. Pridėkite jas į dokumentus eilute vienu žingsniu.",
+    "readOnly": "Galite peržiūrėti katalogą. Norint jį keisti, reikia rolės su prekių valdymo teise.",
+    "search": "Paieška",
+    "searchPlaceholder": "Pavadinimas, kodas ar brūkšninis kodas",
+    "showArchived": "Rodyti archyvuotas",
+    "add": "Pridėti prekę",
+    "empty": "Prekių dar nėra.",
+    "noMatches": "Nieko nerasta.",
+    "create": "Pridėti",
+    "edit": "Redaguoti",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "archive": "Archyvuoti",
+    "restore": "Atkurti",
+    "archiveConfirmTitle": "Archyvuoti šią prekę?",
+    "archiveConfirmBody": "Ji nebebus siūloma dokumentuose. Esami dokumentai nesikeis. Prekę galėsite atkurti vėliau.",
+    "tracked": "Likučių apskaita",
+    "noCategory": "Be numatytosios",
+    "archivedCategory": "Dabartinė kategorija (nebesiūloma)",
+    "kind": {
+      "goods": "Prekė",
+      "service": "Paslauga"
+    },
+    "status": {
+      "archived": "Archyvuota"
+    },
+    "fields": {
+      "name": "Pavadinimas",
+      "kind": "Tipas",
+      "sku": "Prekės kodas",
+      "unit": "Matavimo vienetas",
+      "barcode": "Brūkšninis kodas",
+      "currency": "Valiuta",
+      "salePrice": "Pardavimo kaina (be PVM)",
+      "purchasePrice": "Pirkimo kaina (be PVM)",
+      "taxCategoryId": "Numatytoji mokesčių kategorija",
+      "trackStock": "Apskaityti likučius sandėlyje",
+      "description": "Aprašymas"
+    },
+    "done": {
+      "created": "Prekė pridėta.",
+      "saved": "Pakeitimai išsaugoti.",
+      "archived": "Prekė archyvuota.",
+      "restored": "Prekė atkurta."
+    },
+    "outcome": {
+      "skuTaken": "Aktyvi prekė su šiuo kodu jau yra."
+    },
+    "picker": {
+      "label": "Pridėti iš katalogo",
+      "placeholder": "Pasirinkite prekę…"
     }
   }
 }
