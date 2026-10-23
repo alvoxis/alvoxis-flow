@@ -190,6 +190,10 @@
     "signInLocked": {
       "subject": "Vairāki neveiksmīgi pieteikšanās mēģinājumi",
       "body": "Pēc vairākiem neveiksmīgiem mēģinājumiem {time} (UTC) pieteikšanās ar paroli jūsu ALVOXIS Flow kontā ir apturēta uz 15 minūtēm. No ierīcēm, no kurām jau esat pieteicies, pieteikties joprojām var. Ja tas nebijāt jūs, atiestatiet paroli:\n{link}"
+    },
+    "invitation": {
+      "subject": "Ielūgums uz {company}",
+      "body": "{inviter} ielūdz jūs pievienoties {company} ALVOXIS Flow. Lai pieņemtu, atveriet saiti:\n{link}\n\nJa jums vēl nav konta, vispirms reģistrējieties ar šo e-pasta adresi, tad atveriet saiti vēlreiz. Saite ir derīga {days} dienas."
     }
   },
   "auth": {
@@ -1560,6 +1564,44 @@
       "status": {
         "invited": "Uzaicināts",
         "suspended": "Apturēts"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Ielūgumi",
+    "description": "Ielūdziet cilvēkus pa e-pastu. Saite ir derīga 7 dienas un tikai ielūgtajai adresei.",
+    "email": "E-pasta adrese",
+    "role": "Loma",
+    "invite": "Ielūgt",
+    "copy": "Kopēt saiti",
+    "copied": "Nokopēts",
+    "revoke": "Atsaukt",
+    "revoked": "Ielūgums atsaukts.",
+    "open": "Atvērtie ielūgumi",
+    "none": "Nav atvērtu ielūgumu.",
+    "expired": "Beidzies",
+    "expires": "Derīgs līdz {date}",
+    "memberExists": "Šī persona jau ir uzņēmuma dalībnieks.",
+    "error": "Ielūgumu neizdevās izveidot.",
+    "delivery": {
+      "sent": "Ielūgums nosūtīts. Varat arī nodot šo saiti:",
+      "not_configured": "E-pasts nav konfigurēts, nekas netika nosūtīts. Nododiet saiti personai paši:",
+      "failed": "E-pastu neizdevās nosūtīt. Nododiet saiti personai paši:"
+    },
+    "accept": "Pieņemt ielūgumu",
+    "home": "Uz sākumlapu",
+    "intro": "Jūs esat ielūgts pievienoties {company} ar lomu „{role}”.",
+    "otherEmail": "Šis ielūgums ir citai e-pasta adresei. Jūs esat pieteicies kā {email}; izrakstieties un piesakieties ar ielūgto adresi.",
+    "closed": {
+      "expired": "Ielūguma termiņš ir beidzies. Palūdziet jaunu.",
+      "used": "Ielūgums jau izmantots vai atsaukts.",
+      "not_found": "Ielūguma saite nav derīga."
+    },
+    "state": {
+      "invitation": {
+        "closed": "Ielūgums vairs nav derīgs.",
+        "otherEmail": "Šis ielūgums ir citai e-pasta adresei.",
+        "alreadyMember": "Jūs jau esat šī uzņēmuma dalībnieks."
       }
     }
   }

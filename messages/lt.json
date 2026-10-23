@@ -190,6 +190,10 @@
     "signInLocked": {
       "subject": "Keli nesėkmingi prisijungimo bandymai",
       "body": "Po kelių nesėkmingų bandymų {time} (UTC) prisijungimas slaptažodžiu prie jūsų ALVOXIS Flow paskyros sustabdytas 15 minučių. Iš įrenginių, kuriais jau jungėtės, prisijungti vis dar galima. Jei tai buvote ne jūs, atkurkite slaptažodį:\n{link}"
+    },
+    "invitation": {
+      "subject": "Kvietimas į {company}",
+      "body": "{inviter} kviečia jus prisijungti prie {company} ALVOXIS Flow. Norėdami priimti, atidarykite nuorodą:\n{link}\n\nJei dar neturite paskyros, pirmiausia užsiregistruokite su šiuo el. pašto adresu, tada vėl atidarykite nuorodą. Nuoroda galioja {days} d."
     }
   },
   "auth": {
@@ -1560,6 +1564,44 @@
       "status": {
         "invited": "Pakviestas",
         "suspended": "Sustabdytas"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Kvietimai",
+    "description": "Kvieskite žmones el. paštu. Nuoroda galioja 7 dienas ir tik pakviestam adresui.",
+    "email": "El. pašto adresas",
+    "role": "Vaidmuo",
+    "invite": "Pakviesti",
+    "copy": "Kopijuoti nuorodą",
+    "copied": "Nukopijuota",
+    "revoke": "Atšaukti",
+    "revoked": "Kvietimas atšauktas.",
+    "open": "Atviri kvietimai",
+    "none": "Atvirų kvietimų nėra.",
+    "expired": "Pasibaigęs",
+    "expires": "Galioja iki {date}",
+    "memberExists": "Šis asmuo jau yra įmonės narys.",
+    "error": "Kvietimo sukurti nepavyko.",
+    "delivery": {
+      "sent": "Kvietimas išsiųstas. Taip pat galite perduoti šią nuorodą:",
+      "not_configured": "El. paštas nesukonfigūruotas, niekas neišsiųsta. Perduokite nuorodą patys:",
+      "failed": "El. laiško išsiųsti nepavyko. Perduokite nuorodą patys:"
+    },
+    "accept": "Priimti kvietimą",
+    "home": "Į pradžios puslapį",
+    "intro": "Esate kviečiami prisijungti prie {company} su vaidmeniu „{role}“.",
+    "otherEmail": "Šis kvietimas skirtas kitam el. pašto adresui. Esate prisijungę kaip {email}; atsijunkite ir prisijunkite su pakviestu adresu.",
+    "closed": {
+      "expired": "Kvietimo galiojimas baigėsi. Paprašykite naujo.",
+      "used": "Kvietimas jau panaudotas arba atšauktas.",
+      "not_found": "Kvietimo nuoroda negalioja."
+    },
+    "state": {
+      "invitation": {
+        "closed": "Kvietimas nebegalioja.",
+        "otherEmail": "Šis kvietimas skirtas kitam el. pašto adresui.",
+        "alreadyMember": "Jūs jau esate šios įmonės narys."
       }
     }
   }

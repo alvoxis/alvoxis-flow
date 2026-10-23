@@ -76,8 +76,13 @@ client side). Modules:
 - Settings (`/companies/[id]/settings`) — links to the settings pages the role may open and the
   members list (`members.view`); with `members.manage` roles can be changed and members
   suspended. Nobody changes their own membership, only owners manage owners, and the last active
-  owner stays (company memberships are locked while this is checked). Inviting new members is not
-  part of this change.
+  owner stays (company memberships are locked while this is checked).
+- Invitations (`company_invitations`, migration `0020`) — `members.manage` invites an email address
+  with a role; the owner role only by owners. The link (`/[locale]/invitations/[token]`, valid 7 days)
+  is emailed and shown once to the inviter, so it can be shared when email is not configured; only
+  the token's SHA-256 hash is stored. A signed-in user whose verified email equals the invited
+  address accepts it and becomes an active member; inviting an address again replaces the open
+  invitation. Audit entries never carry the invited address.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
