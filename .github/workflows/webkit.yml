@@ -55,7 +55,16 @@ jobs:
         run: |
           pnpm db:migrate
           pnpm db:seed
-      - run: pnpm exec playwright install --with-deps webkit
+      # The browser download sometimes stalls on the runner; fail fast and retry once instead of
+      # spending the whole job limit on a stuck install.
+      - name: Install WebKit
+        timeout-minutes: 12
+        run: |
+          for attempt in 1 2; do
+            timeout 300 pnpm exec playwright install --with-deps webkit && exit 0
+            echo "playwright install attempt $attempt failed or stalled"
+          done
+          exit 1
       - run: >-
           pnpm exec playwright test --project=iphone-webkit
           tests/e2e/dialogs.spec.ts tests/e2e/navigation.spec.ts tests/e2e/app.spec.ts
