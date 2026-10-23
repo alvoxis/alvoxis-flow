@@ -6,6 +6,7 @@ import {
   foreignKey,
   index,
   integer,
+  jsonb,
   numeric,
   pgEnum,
   pgTable,
@@ -349,5 +350,155 @@ export const productionOrderComponents = pgTable(
       foreignColumns: [products.id, products.companyId],
     }).onDelete("restrict"),
     check("production_order_components_quantity_ck", sql`${t.quantity} > 0`),
+  ],
+);
+
+/**
+ * Payroll rates of a company per country (percentages, up to 3 decimals). Absent rows mean the
+ * built-in starting values, which must be checked by the accountant.
+ */
+export const payrollRates = pgTable(
+  "payroll_rates",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    country: text("country").notNull(),
+    employeeSocialRate: numeric("employee_social_rate", { precision: 5, scale: 3 }).notNull(),
+    employerSocialRate: numeric("employer_social_rate", { precision: 5, scale: 3 }).notNull(),
+    incomeTaxRate: numeric("income_tax_rate", { precision: 5, scale: 3 }).notNull(),
+    employeeHealthRate: numeric("employee_health_rate", { precision: 5, scale: 3 }).notNull(),
+    version: integer("version").notNull().default(1),
+    ...timestamps,
+  },
+  (t) => [
+    unique("payroll_rates_company_country_uq").on(t.companyId, t.country),
+    check("payroll_rates_country_ck", sql`${t.country} in ('LV', 'LT', 'EE', 'PL')`),
+    check(
+      "payroll_rates_range_ck",
+      sql`${t.employeeSocialRate} between 0 and 99.999 and ${t.employerSocialRate} between 0 and 99.999
+        and ${t.incomeTaxRate} between 0 and 99.999 and ${t.employeeHealthRate} between 0 and 99.999`,
+    ),
+  ],
+);
+
+/** People on the payroll. Salary data is visible with payroll.view only. Archived, never deleted. */
+export const employees = pgTable(
+  "employees",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    firstName: text("first_name").notNull(),
+    lastName: text("last_name").notNull(),
+    position: text("position"),
+    email: text("email"),
+    /** Country whose payroll rates apply (LV, LT, EE, PL); decides the currency. */
+    taxCountry: text("tax_country").notNull(),
+    employmentStart: date("employment_start", { mode: "string" }).notNull(),
+    employmentEnd: date("employment_end", { mode: "string" }),
+    monthlyGross: numeric("monthly_gross", { precision: 12, scale: 2 }).notNull(),
+    monthlyAllowance: numeric("monthly_allowance", { precision: 12, scale: 2 })
+      .notNull()
+      .default("0"),
+    monthlyTaxCredit: numeric("monthly_tax_credit", { precision: 12, scale: 2 })
+      .notNull()
+      .default("0"),
+    version: integer("version").notNull().default(1),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("employees_id_company_uq").on(t.id, t.companyId),
+    index("employees_company_name_idx").on(t.companyId, t.lastName, t.firstName),
+    check("employees_country_ck", sql`${t.taxCountry} in ('LV', 'LT', 'EE', 'PL')`),
+    check(
+      "employees_name_ck",
+      sql`length(trim(${t.firstName})) > 0 and length(trim(${t.lastName})) > 0`,
+    ),
+    check(
+      "employees_amounts_ck",
+      sql`${t.monthlyGross} >= 0 and ${t.monthlyAllowance} >= 0 and ${t.monthlyTaxCredit} >= 0`,
+    ),
+    check(
+      "employees_dates_ck",
+      sql`${t.employmentEnd} is null or ${t.employmentEnd} >= ${t.employmentStart}`,
+    ),
+    check("employees_version_ck", sql`${t.version} > 0`),
+  ],
+);
+
+export const payrollRunStatus = pgEnum("payroll_run_status", ["draft", "approved"]);
+
+/** One payroll month of a company. Approved runs are final (lines can no longer change). */
+export const payrollRuns = pgTable(
+  "payroll_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "restrict" }),
+    /** YYYY-MM */
+    period: text("period").notNull(),
+    status: payrollRunStatus("status").notNull().default("draft"),
+    approvedAt: timestamp("approved_at", { withTimezone: true }),
+    version: integer("version").notNull().default(1),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("payroll_runs_id_company_uq").on(t.id, t.companyId),
+    unique("payroll_runs_company_period_uq").on(t.companyId, t.period),
+    check("payroll_runs_period_ck", sql`${t.period} ~ '^[0-9]{4}-(0[1-9]|1[0-2])$'`),
+    check(
+      "payroll_runs_approved_ck",
+      sql`(${t.status} = 'approved') = (${t.approvedAt} is not null)`,
+    ),
+    check("payroll_runs_version_ck", sql`${t.version} > 0`),
+  ],
+);
+
+/**
+ * One employee's figures in a run. The name, country, currency and rates are copied, so a run
+ * stays as calculated when the employee or the rates change later.
+ */
+export const payrollLines = pgTable(
+  "payroll_lines",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id").notNull(),
+    runId: uuid("run_id").notNull(),
+    employeeId: uuid("employee_id").notNull(),
+    employeeName: text("employee_name").notNull(),
+    taxCountry: text("tax_country").notNull(),
+    currency: text("currency").notNull(),
+    gross: numeric("gross", { precision: 12, scale: 2 }).notNull(),
+    allowance: numeric("allowance", { precision: 12, scale: 2 }).notNull(),
+    taxCredit: numeric("tax_credit", { precision: 12, scale: 2 }).notNull(),
+    employeeSocial: numeric("employee_social", { precision: 12, scale: 2 }).notNull(),
+    health: numeric("health", { precision: 12, scale: 2 }).notNull(),
+    taxable: numeric("taxable", { precision: 12, scale: 2 }).notNull(),
+    incomeTax: numeric("income_tax", { precision: 12, scale: 2 }).notNull(),
+    net: numeric("net", { precision: 12, scale: 2 }).notNull(),
+    employerSocial: numeric("employer_social", { precision: 12, scale: 2 }).notNull(),
+    employerCost: numeric("employer_cost", { precision: 12, scale: 2 }).notNull(),
+    rates: jsonb("rates").notNull(),
+  },
+  (t) => [
+    unique("payroll_lines_run_employee_uq").on(t.runId, t.employeeId),
+    foreignKey({
+      name: "payroll_lines_run_fk",
+      columns: [t.runId, t.companyId],
+      foreignColumns: [payrollRuns.id, payrollRuns.companyId],
+    }).onDelete("cascade"),
+    foreignKey({
+      name: "payroll_lines_employee_fk",
+      columns: [t.employeeId, t.companyId],
+      foreignColumns: [employees.id, employees.companyId],
+    }).onDelete("restrict"),
   ],
 );

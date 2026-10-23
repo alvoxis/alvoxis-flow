@@ -696,6 +696,36 @@
         "bom": {
           "missing": "Šai precei vēl nav specifikācijas."
         }
+      },
+      "payroll": {
+        "rate": {
+          "invalid": "Ievadiet procentus no 0 līdz 99.999."
+        },
+        "amount": {
+          "invalid": "Ievadiet summu, piemēram, 1500 vai 1500.50."
+        },
+        "firstName": {
+          "required": "Ievadiet vārdu."
+        },
+        "lastName": {
+          "required": "Ievadiet uzvārdu."
+        },
+        "email": {
+          "invalid": "Ievadiet derīgu e-pasta adresi."
+        },
+        "country": {
+          "invalid": "Izvēlieties Latviju, Lietuvu, Igauniju vai Poliju."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu.",
+          "endBeforeStart": "Beigu datums nevar būt pirms sākuma datuma."
+        },
+        "period": {
+          "invalid": "Izvēlieties mēnesi."
+        },
+        "run": {
+          "noEmployees": "Šajā mēnesī neviens nav nodarbināts."
+        }
       }
     },
     "taxCategory": "Nodokļu kategorija",
@@ -1327,6 +1357,99 @@
     },
     "outcome": {
       "notPlanned": "Šis pasūtījums jau ir pabeigts vai atcelts."
+    }
+  },
+  "payroll": {
+    "description": "Darbinieki un mēneša algas Latvijai, Lietuvai, Igaunijai un Polijai.",
+    "disclaimer": "Aprēķina palīgs, nevis nodokļu deklarācija. Likmes ir uzņēmuma iestatījumi ar sākuma vērtībām, kas jāpārbauda jūsu grāmatvedim; īpašie režīmi, progresīvās likmes un griesti netiek modelēti.",
+    "readOnly": "Jūs varat skatīt algas. Lai tās mainītu, nepieciešama loma ar algu pārvaldības atļauju.",
+    "archived": "arhivēts",
+    "edit": "Labot",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "archive": "Arhivēt",
+    "restore": "Atjaunot",
+    "status": {
+      "draft": "Melnraksts",
+      "approved": "Apstiprināts"
+    },
+    "country": {
+      "LV": "Latvija (EUR)",
+      "LT": "Lietuva (EUR)",
+      "EE": "Igaunija (EUR)",
+      "PL": "Polija (PLN)"
+    },
+    "cols": {
+      "gross": "Bruto",
+      "employeeSocial": "Darbinieka soc. iemaksas",
+      "health": "Veselības apdrošināšana",
+      "incomeTax": "Iedzīvotāju ienākuma nodoklis",
+      "net": "Izmaksājamā summa",
+      "employerSocial": "Darba devēja soc. iemaksas",
+      "employerCost": "Darba devēja izmaksas"
+    },
+    "runs": {
+      "title": "Algu mēneši",
+      "period": "Mēnesis",
+      "start": "Sākt mēneša aprēķinu",
+      "empty": "Algu mēnešu vēl nav.",
+      "lines": "{count, plural, zero {# darbinieku} one {# darbinieks} other {# darbinieki}}",
+      "show": "Rādīt detaļas",
+      "hide": "Slēpt detaļas",
+      "grossThisMonth": "Bruto šajā mēnesī",
+      "applyGross": "Piemērot",
+      "csv": "Lejupielādēt CSV",
+      "recalculate": "Pārrēķināt",
+      "approve": "Apstiprināt",
+      "delete": "Dzēst melnrakstu",
+      "approveTitle": "Apstiprināt šo algu mēnesi?",
+      "approveBody": "Apstiprināts mēnesis ir galīgs: tā summas vairs nevar mainīt. Vispirms pārbaudiet darbiniekus un summas."
+    },
+    "employees": {
+      "title": "Darbinieki",
+      "add": "Pievienot darbinieku",
+      "empty": "Darbinieku vēl nav.",
+      "month": "mēn."
+    },
+    "fields": {
+      "firstName": "Vārds",
+      "lastName": "Uzvārds",
+      "position": "Amats",
+      "email": "E-pasts",
+      "taxCountry": "Nodokļu valsts",
+      "employmentStart": "Strādā no",
+      "employmentEnd": "Strādā līdz",
+      "monthlyGross": "Mēneša bruto alga",
+      "monthlyAllowance": "Neapliekamā summa mēnesī",
+      "allowanceHint": "piemēram, neapliekamais minimums; 0, ja nav.",
+      "monthlyTaxCredit": "Nodokļa atlaide mēnesī",
+      "taxCreditHint": "Atskaita no ienākuma nodokļa (piemēram, Polijā); 0, ja nav."
+    },
+    "rates": {
+      "title": "Likmes pa valstīm",
+      "hint": "Procenti katram jaunam vai pārrēķinātam mēnesim. Saglabātās likmes aizstāj sākuma vērtības.",
+      "default": "Sākuma vērtības — pārbaudiet",
+      "employeeSocialRate": "Darbinieka soc. iemaksas",
+      "employerSocialRate": "Darba devēja soc. iemaksas",
+      "incomeTaxRate": "Ienākuma nodoklis",
+      "employeeHealthRate": "Veselības apdrošināšana",
+      "save": "Saglabāt likmes"
+    },
+    "done": {
+      "started": "Algu aprēķins par {period} sākts.",
+      "grossSet": "Bruto summa piemērota.",
+      "recalculated": "Mēnesis pārrēķināts.",
+      "approved": "Algu mēnesis {period} apstiprināts.",
+      "deleted": "Melnraksts {period} dzēsts.",
+      "employeeAdded": "Darbinieks pievienots.",
+      "employeeSaved": "Izmaiņas saglabātas.",
+      "employeeArchived": "Darbinieks arhivēts.",
+      "employeeRestored": "Darbinieks atjaunots.",
+      "ratesSaved": "Likmes valstij {country} saglabātas."
+    },
+    "outcome": {
+      "periodTaken": "Šim mēnesim aprēķins jau ir.",
+      "approved": "Šis mēnesis jau ir apstiprināts un nevar mainīties."
     }
   }
 }

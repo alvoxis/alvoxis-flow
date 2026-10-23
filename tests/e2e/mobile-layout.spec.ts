@@ -116,6 +116,22 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     headers,
   });
   expect(receipt.status()).toBe(201);
+  const employee = await page.request.post(`/api/companies/${companyId}/payroll/employees`, {
+    data: {
+      firstName: "Aleksandra-Kristīne",
+      lastName: "Ļoti-Gara-Uzvārda-Daļa Testa",
+      taxCountry: "PL",
+      employmentStart: "2026-01-01",
+      monthlyGross: "1234567.89",
+    },
+    headers,
+  });
+  expect(employee.status()).toBe(201);
+  const run = await page.request.post(`/api/companies/${companyId}/payroll/runs`, {
+    data: { period: "2026-02" },
+    headers,
+  });
+  expect(run.status()).toBe(201);
 
   const company = `/companies/${companyId}`;
   const paths = [
@@ -135,6 +151,7 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     `${company}/products`,
     `${company}/inventory`,
     `${company}/production`,
+    `${company}/payroll`,
     "/account/security",
     "/account/two-factor",
   ];
