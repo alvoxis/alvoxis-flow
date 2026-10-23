@@ -62,7 +62,7 @@ jobs:
       - run: >-
           pnpm exec playwright test --project=iphone-webkit
           tests/e2e/dialogs.spec.ts tests/e2e/navigation.spec.ts tests/e2e/app.spec.ts
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report-webkit
