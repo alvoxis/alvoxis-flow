@@ -194,6 +194,12 @@
     "invitation": {
       "subject": "Invitation to {company}",
       "body": "{inviter} invites you to join {company} in ALVOXIS Flow. Open this link to accept:\n{link}\n\nIf you do not have an account yet, sign up with this email address first, then open the link again. The link expires in {days} days."
+    },
+    "document": {
+      "greeting": "Hello,",
+      "attached": "Please find attached {document} from {seller}.",
+      "reply": "You can reply to this email with any questions.",
+      "footer": "Sent on behalf of {seller} by ALVOXIS Flow."
     }
   },
   "auth": {
@@ -960,6 +966,27 @@
         "totals": {
           "linesMismatch": "The lines do not add up to the printed subtotal.",
           "sumMismatch": "Subtotal and tax do not add up to the printed total."
+        }
+      }
+    },
+    "email": {
+      "open": "Send by email",
+      "title": "Send {number} by email",
+      "description": "The PDF is attached. Replies go to your email address.",
+      "to": "Recipient's email",
+      "message": "Message (optional)",
+      "send": "Send",
+      "close": "Close",
+      "sent": "Sent to {to}.",
+      "notConfigured": "Sending documents by email is not available: email is not configured for this site.",
+      "state": {
+        "document": {
+          "notIssued": "Only issued documents can be sent."
+        },
+        "email": {
+          "notConfigured": "Email is not configured for this site.",
+          "rateLimited": "Too many documents were sent in the last hour. Try again later.",
+          "failed": "The email could not be sent. Try again later."
         }
       }
     }

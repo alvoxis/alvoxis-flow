@@ -354,6 +354,20 @@ watermarked preview for drafts in the editor (with a note when there are unsaved
 the PDF shows the last saved version). The links use the PDF endpoint above; anyone who can see the
 document page may get its PDF.
 
+### Sending by email
+
+Issued documents can be sent from their page ("Send by email", `documents.create`) through
+`POST /api/companies/[id]/documents/[documentId]/email` with `{ to, message? }`. The PDF (the same
+file as the PDF endpoint) is attached. The text is in the document's language, and replies go to the
+member who sent it. Rules:
+
+- Drafts are refused (409 `document.notIssued`), and so is sending while email is not configured
+  (`email.notConfigured`; the page then shows a note instead of the button).
+- A company may send at most 100 documents per hour (`email.rateLimited`).
+- Each sending is audited with the delivery result only: no address or content.
+- The file mail transport used in development and tests records attachments by name, type and size
+  only.
+
 ### Creating and deleting drafts
 
 Users with `documents.create` get a "New document" action on the list

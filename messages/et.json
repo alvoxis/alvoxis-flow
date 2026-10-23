@@ -194,6 +194,12 @@
     "invitation": {
       "subject": "Kutse ettevõttesse {company}",
       "body": "{inviter} kutsub teid liituma ettevõttega {company} ALVOXIS Flow's. Vastuvõtmiseks avage link:\n{link}\n\nKui teil pole veel kontot, registreeruge esmalt selle e-posti aadressiga ja avage link uuesti. Link kehtib {days} päeva."
+    },
+    "document": {
+      "greeting": "Tere!",
+      "attached": "Manuses on {document} ettevõttelt {seller}.",
+      "reply": "Küsimuste korral vastake sellele kirjale.",
+      "footer": "Saadetud ettevõtte {seller} nimel ALVOXIS Flow kaudu."
     }
   },
   "auth": {
@@ -960,6 +966,27 @@
         "totals": {
           "linesMismatch": "Ridade summa ei vasta failis märgitud vahesummale.",
           "sumMismatch": "Vahesumma ja maks ei anna kokku failis märgitud kogusummat."
+        }
+      }
+    },
+    "email": {
+      "open": "Saada e-postiga",
+      "title": "Saada {number} e-postiga",
+      "description": "PDF lisatakse manusena. Vastused tulevad teie e-postile.",
+      "to": "Saaja e-post",
+      "message": "Sõnum (valikuline)",
+      "send": "Saada",
+      "close": "Sulge",
+      "sent": "Saadetud aadressile {to}.",
+      "notConfigured": "Dokumentide saatmine e-postiga pole saadaval: saidil pole e-posti seadistatud.",
+      "state": {
+        "document": {
+          "notIssued": "Saata saab ainult väljastatud dokumente."
+        },
+        "email": {
+          "notConfigured": "Saidil pole e-posti seadistatud.",
+          "rateLimited": "Viimase tunni jooksul saadeti liiga palju dokumente. Proovige hiljem.",
+          "failed": "E-kirja ei õnnestunud saata. Proovige hiljem."
         }
       }
     }
