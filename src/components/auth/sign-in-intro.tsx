@@ -4,15 +4,14 @@ import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
 const WORD = "ALVOXIS";
-/** Stacked copies behind the front face give the word real depth while it turns. */
-const DEPTH_LAYERS = 6;
 /** When the card has fully appeared (globals.css: 3.9 s delay + 0.8 s). */
 const INTRO_MS = 4700;
 
 /**
  * Sign-in intro: an interactive particle field behind the page and the ALVOXIS word in 3D. The
- * word flies in slowly from far away, turning, and lands above the card; then the card fades in. A click, tap or key press
- * skips straight to the form. With reduced motion the final state shows at once. Purely
+ * word flies in slowly from far away, turning, and lands above the card; then the card fades in.
+ * The particles stand still until the word has landed, so nothing competes with its flight. A
+ * click, tap or key press skips straight to the form. With reduced motion the final state shows at once. Purely
  * decorative: the form is in the page from the start, so nothing waits for the animation.
  */
 export function SignInIntro({ children }: { children: ReactNode }) {
@@ -61,25 +60,14 @@ export function SignInIntro({ children }: { children: ReactNode }) {
       className={`sign-in-intro relative flex w-full flex-col items-center ${skipped ? "intro-skipped" : ""}`}
       data-testid="sign-in-intro"
     >
-      <ParticleField />
+      <ParticleField still={!skipped && !finished} />
       <div
         className="intro-logo-wrap pointer-events-none relative z-10 mb-6 flex justify-center select-none"
         aria-hidden="true"
       >
         <div ref={tiltRef} className="intro-tilt">
           <div className="intro-glow" />
-          <div className="intro-logo">
-            {Array.from({ length: DEPTH_LAYERS }, (_, i) => (
-              <span
-                key={i}
-                className="intro-layer"
-                style={{ transform: `translateZ(${-(i + 1) * 2.4}px)`, opacity: 1 - i * 0.1 }}
-              >
-                {WORD}
-              </span>
-            ))}
-            <span className="intro-face">{WORD}</span>
-          </div>
+          <div className="intro-logo">{WORD}</div>
           <p className="intro-tagline">Flow</p>
         </div>
       </div>
@@ -98,22 +86,23 @@ export function SignInIntro({ children }: { children: ReactNode }) {
 }
 
 /**
- * Drifting points joined by faint lines when close; they lean towards the pointer. Capped point
- * count and pixel ratio keep phones smooth; drawing stops while the tab is hidden, and with reduced
- * motion a single still frame is drawn.
+ * Drifting points joined by faint lines when close; they lean towards the pointer. While `still`
+ * (and with reduced motion) only one frame is drawn. A capped point count and a canvas at CSS pixel
+ * size keep phones light; drawing stops while the tab is hidden, and the field is rebuilt only when
+ * the width changes (a phone's address bar showing or hiding only changes the height).
  */
 const LINK = 120;
 const LINE_BANDS = 4;
 
-function ParticleField() {
+function ParticleField({ still }: { still: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const runRef = useRef<(run: boolean) => void>(() => {});
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let width = 0;
     let height = 0;
     let frame = 0;
@@ -122,12 +111,14 @@ function ParticleField() {
     let points: P[] = [];
 
     const resize = () => {
+      if (width === window.innerWidth) return;
       width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round(Math.min(70, (width * height) / 20000));
+      height = Math.max(window.innerHeight, window.screen.height);
+      canvas.width = width;
+      canvas.height = height;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      const count = Math.round(Math.min(60, (width * height) / 22000));
       points = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -182,9 +173,15 @@ function ParticleField() {
       ctx.fill(dots);
     };
 
+    let running = false;
     const loop = () => {
       draw();
       frame = requestAnimationFrame(loop);
+    };
+    runRef.current = (run) => {
+      running = run && !reduced;
+      cancelAnimationFrame(frame);
+      if (running && !document.hidden) frame = requestAnimationFrame(loop);
     };
     const onMove = (e: PointerEvent) => {
       pointer.x = e.clientX;
@@ -192,27 +189,33 @@ function ParticleField() {
     };
     const onVisibility = () => {
       cancelAnimationFrame(frame);
-      if (!document.hidden && !reduced) frame = requestAnimationFrame(loop);
+      if (!document.hidden && running) frame = requestAnimationFrame(loop);
     };
 
     resize();
-    if (reduced) draw();
-    else frame = requestAnimationFrame(loop);
-    window.addEventListener("resize", resize);
+    draw();
+    const onResize = () => {
+      resize();
+      if (!running) draw();
+    };
+    window.addEventListener("resize", onResize);
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("visibilitychange", onVisibility);
+      runRef.current = () => {};
     };
   }, []);
+
+  useEffect(() => runRef.current(!still), [still]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-0 h-full w-full"
+      className="pointer-events-none fixed top-0 left-0 z-0"
       aria-hidden="true"
     />
   );
