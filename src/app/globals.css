@@ -76,23 +76,32 @@ body {
 }
 
 /* Sign-in intro (components/auth/sign-in-intro.tsx): the ALVOXIS word flies in from far away,
-   turning slowly, and lands above the card; then the card fades in. Smoothness: only transform and
-   opacity animate, on elements promoted to their own GPU layers; the distance comes from
-   translateZ in perspective (not scale), so the text is rasterised once and never re-painted; the
-   glow is a static gradient whose opacity fades, never a filter on moving text. Pointer tilt is set
-   on .intro-tilt by the component, at most once per frame. */
+   turning slowly, and lands above the card; then the card fades in. Built for smoothness on phones:
+   the moving word is ONE flat element on its own GPU layer (no preserve-3d, no stacked copies, no
+   background-clip or filter), its depth is a static text-shadow painted once, and only its
+   transform and opacity animate, so the compositor moves a ready bitmap and the page's scripts
+   cannot make it stutter. The glow is a static gradient that only fades in. */
 .intro-logo-wrap {
   perspective: 1000px;
 }
 .intro-tilt {
-  transform-style: preserve-3d;
   transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
-  will-change: transform;
 }
 .intro-logo {
   position: relative;
-  display: grid;
-  transform-style: preserve-3d;
+  font-size: clamp(2.5rem, 9vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+  color: #ede9fe;
+  text-shadow:
+    0 1px 0 #a78bfa,
+    0 2px 0 #8b5cf6,
+    0 3px 0 #7c3aed,
+    0 4px 0 #6d28d9,
+    0 5px 0 #5b21b6,
+    0 6px 0 #4c1d95;
   will-change: transform, opacity;
   animation: intro-fly 4.6s cubic-bezier(0.16, 0.84, 0.3, 1) both;
 }
@@ -102,24 +111,6 @@ body {
   background: radial-gradient(closest-side, rgba(139, 92, 246, 0.35), transparent);
   will-change: opacity;
   animation: intro-fade 1s ease-out 4s both;
-}
-.intro-logo > span {
-  grid-area: 1 / 1;
-  font-size: clamp(2.5rem, 9vw, 4.5rem);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-align: center;
-}
-.intro-face {
-  transform: translateZ(1px);
-  background: linear-gradient(120deg, #f5f3ff 10%, #c4b5fd 45%, #8b5cf6 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.intro-layer {
-  color: #4c1d95;
 }
 .intro-tagline {
   margin-top: 0.35rem;
