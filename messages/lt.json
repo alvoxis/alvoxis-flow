@@ -1577,6 +1577,10 @@
       "twoFactor": {
         "title": "Dviejų veiksnių autentifikavimas",
         "text": "Autentifikavimo programa ir atsarginiai kodai."
+      },
+      "billing": {
+        "title": "Prenumerata",
+        "text": "Planas, bandomasis laikotarpis, sąskaitos ir mokėjimo būdai"
       }
     },
     "members": {
@@ -1629,6 +1633,62 @@
         "closed": "Kvietimas nebegalioja.",
         "otherEmail": "Šis kvietimas skirtas kitam el. pašto adresui.",
         "alreadyMember": "Jūs jau esate šios įmonės narys."
+      }
+    }
+  },
+  "billing": {
+    "title": "Prenumerata",
+    "description": "Įmonės planas ir mokėjimai. Mokėjimus tvarko Stripe.",
+    "back": "Į nustatymus",
+    "notConfigured": "Prenumeratos šioje svetainėje dar neprieinamos.",
+    "checkout": {
+      "success": "Ačiū! Prenumerata kuriama; jos būsena čia pasirodys netrukus.",
+      "cancelled": "Apmokėjimas atšauktas. Niekas nenuskaičiuota."
+    },
+    "current": "Dabartinis planas",
+    "none": "Prenumeratos dar nėra.",
+    "manage": "Valdyti prenumeratą",
+    "history": "Sąskaitos ir mokėjimo būdai",
+    "choose": "Pasirinkite planą",
+    "trialInfo": "Pirmos {days} dienos nemokamos, kortelės nereikia. Vėliau prenumerata baigiasi, jei nepridėsite mokėjimo būdo.",
+    "perMonth": "/ mėn.",
+    "startTrial": "Išbandyti {days} d. nemokamai",
+    "subscribe": "Prenumeruoti",
+    "pricesNote": "Kainos už įmonę per mėnesį, EUR. Kortelės duomenys įvedami Stripe puslapyje ir nepatenka į ALVOXIS Flow. Atšaukti galima bet kada.",
+    "trialEnds": "Nemokamas laikotarpis iki {date}.",
+    "renewsOn": "Bus pratęsta {date}.",
+    "endsOn": "Baigsis {date}.",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "text": "Dokumentai, klientai ir prekės mažai įmonei."
+      },
+      "pro": {
+        "name": "Pro AI",
+        "text": "Viskas iš Basic ir DI asistentas, kai jis bus išleistas."
+      },
+      "business": {
+        "name": "Business",
+        "text": "Visi moduliai: sandėlis, gamyba, darbo užmokestis ir analitika."
+      }
+    },
+    "status": {
+      "trialing": "Nemokamas laikotarpis",
+      "active": "Aktyvi",
+      "past_due": "Vėluoja mokėjimas",
+      "unpaid": "Neapmokėta",
+      "incomplete": "Laukia mokėjimo",
+      "paused": "Sustabdyta",
+      "canceled": "Atšaukta",
+      "incomplete_expired": "Pasibaigusi"
+    },
+    "state": {
+      "billing": {
+        "failed": "Mokėjimų paslauga neatsakė. Bandykite dar kartą po akimirkos.",
+        "notConfigured": "Prenumeratos šioje svetainėje dar neprieinamos.",
+        "alreadySubscribed": "Įmonė jau turi prenumeratą; keiskite ją skiltyje „Valdyti prenumeratą“.",
+        "priceMissing": "Šis planas šiuo metu neprieinamas.",
+        "noCustomer": "Dar nėra prenumeratos, kurią būtų galima valdyti."
       }
     }
   }

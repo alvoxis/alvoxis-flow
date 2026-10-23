@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { StripeRequestError } from "@/modules/billing/server/stripe-gateway";
 import { DocumentRuleError } from "@/modules/documents/domain/derive";
 import { ImportDecisionError } from "@/modules/documents/import/to-draft";
 import {
@@ -42,6 +43,10 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof ForbiddenError) return json(403, "forbidden");
   if (err instanceof DocumentNotFoundError) return json(404, "not_found");
   if (err instanceof RecordNotFoundError) return json(404, "not_found");
+  if (err instanceof StripeRequestError) {
+    console.error(`[billing] ${err.message}`);
+    return json(502, "payment_provider_error");
+  }
   if (err instanceof RecordVersionConflictError) return json(409, "version_conflict");
   if (err instanceof RecordTakenError) return json(409, err.code);
   if (err instanceof RecordStateError) return json(409, "invalid_state", { code: err.code });

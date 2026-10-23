@@ -1577,6 +1577,10 @@
       "twoFactor": {
         "title": "Two-factor authentication",
         "text": "Authenticator app and backup codes."
+      },
+      "billing": {
+        "title": "Subscription",
+        "text": "Plan, trial, invoices and payment methods"
       }
     },
     "members": {
@@ -1629,6 +1633,62 @@
         "closed": "This invitation is no longer valid.",
         "otherEmail": "This invitation is for a different email address.",
         "alreadyMember": "You are already a member of this company."
+      }
+    }
+  },
+  "billing": {
+    "title": "Subscription",
+    "description": "Your company's plan and payments. Payment is handled by Stripe.",
+    "back": "Back to settings",
+    "notConfigured": "Subscriptions are not available on this site yet.",
+    "checkout": {
+      "success": "Thank you! Your subscription is being set up; its status appears here in a moment.",
+      "cancelled": "Checkout was cancelled. Nothing was charged."
+    },
+    "current": "Current plan",
+    "none": "No subscription yet.",
+    "manage": "Manage subscription",
+    "history": "Invoices and payment methods",
+    "choose": "Choose a plan",
+    "trialInfo": "The first {days} days are free and no card is needed. Afterwards the subscription ends unless you add a payment method.",
+    "perMonth": "/ month",
+    "startTrial": "Try {days} days free",
+    "subscribe": "Subscribe",
+    "pricesNote": "Prices per company per month in EUR. Card details are entered on Stripe's page and never reach ALVOXIS Flow. You can cancel at any time.",
+    "trialEnds": "Free trial until {date}.",
+    "renewsOn": "Renews on {date}.",
+    "endsOn": "Ends on {date}.",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "text": "Documents, customers and products for a small business."
+      },
+      "pro": {
+        "name": "Pro AI",
+        "text": "Everything in Basic, plus the AI assistant when it is released."
+      },
+      "business": {
+        "name": "Business",
+        "text": "All modules: inventory, production, payroll and analytics."
+      }
+    },
+    "status": {
+      "trialing": "Free trial",
+      "active": "Active",
+      "past_due": "Payment overdue",
+      "unpaid": "Unpaid",
+      "incomplete": "Awaiting payment",
+      "paused": "Paused",
+      "canceled": "Cancelled",
+      "incomplete_expired": "Expired"
+    },
+    "state": {
+      "billing": {
+        "failed": "The payment provider did not respond. Try again in a moment.",
+        "notConfigured": "Subscriptions are not available on this site yet.",
+        "alreadySubscribed": "The company already has a subscription; change it under “Manage subscription”.",
+        "priceMissing": "This plan is not available right now.",
+        "noCustomer": "There is no subscription to manage yet."
       }
     }
   }

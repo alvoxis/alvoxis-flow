@@ -83,6 +83,15 @@ client side). Modules:
   the token's SHA-256 hash is stored. A signed-in user whose verified email equals the invited
   address accepts it and becomes an active member; inviting an address again replaces the open
   invitation. Audit entries never carry the invited address.
+- Subscriptions (`company_billing`, migration `0021`; `src/modules/billing`) — owners
+  (`billing.manage`) choose Basic, Pro AI or Business on `/companies/[id]/billing`. Checkout and the
+  customer portal are Stripe-hosted pages, so card data never reaches the application. Prices are
+  found by lookup key (`alvoxis_flow_<plan>_monthly`), so changing an amount needs no deployment.
+  Each company gets one free trial of 2 days **without a card**. Without a payment method the trial
+  ends instead of becoming paid (`trial_settings.end_behavior.missing_payment_method=cancel`).
+  Stripe is the source of truth: the cached row is refreshed whenever the billing page loads.
+  There are no webhooks yet, and plans do not restrict features yet. Without `STRIPE_SECRET_KEY` the
+  page says subscriptions are not available; previews accept test keys only.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.
