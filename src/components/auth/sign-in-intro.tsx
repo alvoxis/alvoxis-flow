@@ -5,19 +5,19 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 
 const WORD = "ALVOXIS";
 /** Stacked copies behind the front face give the word real depth while it turns. */
-const DEPTH_LAYERS = 10;
-/** When the card has fully appeared (globals.css: 2.6 s delay + 0.6 s). */
-const INTRO_MS = 3300;
+const DEPTH_LAYERS = 6;
+/** When the card has fully appeared (globals.css: 3.9 s delay + 0.8 s). */
+const INTRO_MS = 4700;
 
 /**
  * Sign-in intro: an interactive particle field behind the page and the ALVOXIS word in 3D. The
- * word spins in, settles and moves up; then the sign-in card fades in. A click, tap or key press
+ * word flies in slowly from far away, turning, and lands above the card; then the card fades in. A click, tap or key press
  * skips straight to the form. With reduced motion the final state shows at once. Purely
  * decorative: the form is in the page from the start, so nothing waits for the animation.
  */
 export function SignInIntro({ children }: { children: ReactNode }) {
   const t = useTranslations("auth.intro");
-  const rootRef = useRef<HTMLDivElement>(null);
+  const tiltRef = useRef<HTMLDivElement>(null);
   const [skipped, setSkipped] = useState(false);
   // The skip button goes away once there is nothing left to skip.
   const [finished, setFinished] = useState(false);
@@ -26,16 +26,24 @@ export function SignInIntro({ children }: { children: ReactNode }) {
     return () => window.clearTimeout(timer);
   }, []);
 
-  // Any key or pointer press ends the intro; the pointer also tilts the word.
+  // Any key or pointer press ends the intro; the pointer also tilts the word. The tilt is written
+  // straight to the one element's transform, at most once per frame, so moving the pointer never
+  // restyles the rest of the page.
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
+    const el = tiltRef.current;
+    if (!el) return;
     const skip = () => setSkipped(true);
+    let pending = 0;
+    let x = 0;
+    let y = 0;
     const tilt = (e: PointerEvent) => {
-      const x = e.clientX / window.innerWidth - 0.5;
-      const y = e.clientY / window.innerHeight - 0.5;
-      root.style.setProperty("--tilt-x", `${(-y * 18).toFixed(2)}deg`);
-      root.style.setProperty("--tilt-y", `${(x * 24).toFixed(2)}deg`);
+      x = e.clientX / window.innerWidth - 0.5;
+      y = e.clientY / window.innerHeight - 0.5;
+      if (pending) return;
+      pending = requestAnimationFrame(() => {
+        pending = 0;
+        el.style.transform = `rotateX(${(-y * 16).toFixed(2)}deg) rotateY(${(x * 22).toFixed(2)}deg)`;
+      });
     };
     window.addEventListener("keydown", skip, { once: true });
     window.addEventListener("pointerdown", skip, { once: true });
@@ -44,12 +52,12 @@ export function SignInIntro({ children }: { children: ReactNode }) {
       window.removeEventListener("keydown", skip);
       window.removeEventListener("pointerdown", skip);
       window.removeEventListener("pointermove", tilt);
+      cancelAnimationFrame(pending);
     };
   }, []);
 
   return (
     <div
-      ref={rootRef}
       className={`sign-in-intro relative flex w-full flex-col items-center ${skipped ? "intro-skipped" : ""}`}
       data-testid="sign-in-intro"
     >
@@ -58,13 +66,14 @@ export function SignInIntro({ children }: { children: ReactNode }) {
         className="intro-logo-wrap pointer-events-none relative z-10 mb-6 flex justify-center select-none"
         aria-hidden="true"
       >
-        <div className="intro-tilt">
+        <div ref={tiltRef} className="intro-tilt">
+          <div className="intro-glow" />
           <div className="intro-logo">
             {Array.from({ length: DEPTH_LAYERS }, (_, i) => (
               <span
                 key={i}
                 className="intro-layer"
-                style={{ transform: `translateZ(${-(i + 1) * 1.6}px)`, opacity: 1 - i * 0.06 }}
+                style={{ transform: `translateZ(${-(i + 1) * 2.4}px)`, opacity: 1 - i * 0.1 }}
               >
                 {WORD}
               </span>
@@ -93,6 +102,9 @@ export function SignInIntro({ children }: { children: ReactNode }) {
  * count and pixel ratio keep phones smooth; drawing stops while the tab is hidden, and with reduced
  * motion a single still frame is drawn.
  */
+const LINK = 120;
+const LINE_BANDS = 4;
+
 function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -115,7 +127,7 @@ function ParticleField() {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.round(Math.min(90, (width * height) / 16000));
+      const count = Math.round(Math.min(70, (width * height) / 20000));
       points = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -141,25 +153,33 @@ function ParticleField() {
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
       }
+      // Lines go into a few paths by strength and dots into one, so a frame is a handful of draw
+      // calls instead of one per line.
+      const paths = Array.from({ length: LINE_BANDS }, () => new Path2D());
+      const dots = new Path2D();
       for (let i = 0; i < points.length; i++) {
         const a = points[i]!;
         for (let j = i + 1; j < points.length; j++) {
           const b = points[j]!;
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 120) {
-            ctx.strokeStyle = `rgba(139, 92, 246, ${(1 - d / 120) * 0.35})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < LINK * LINK) {
+            const band = Math.min(LINE_BANDS - 1, Math.floor((Math.sqrt(d2) / LINK) * LINE_BANDS));
+            paths[band]!.moveTo(a.x, a.y);
+            paths[band]!.lineTo(b.x, b.y);
           }
         }
-        ctx.fillStyle = "rgba(196, 181, 253, 0.8)";
-        ctx.beginPath();
-        ctx.arc(a.x, a.y, 1.6, 0, Math.PI * 2);
-        ctx.fill();
+        dots.moveTo(a.x + 1.6, a.y);
+        dots.arc(a.x, a.y, 1.6, 0, Math.PI * 2);
       }
+      ctx.lineWidth = 1;
+      paths.forEach((path, band) => {
+        ctx.strokeStyle = `rgba(139, 92, 246, ${((1 - (band + 0.5) / LINE_BANDS) * 0.35).toFixed(3)})`;
+        ctx.stroke(path);
+      });
+      ctx.fillStyle = "rgba(196, 181, 253, 0.8)";
+      ctx.fill(dots);
     };
 
     const loop = () => {
