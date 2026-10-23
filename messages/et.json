@@ -1577,6 +1577,10 @@
       "twoFactor": {
         "title": "Kaheastmeline autentimine",
         "text": "Autentimisrakendus ja varukoodid."
+      },
+      "billing": {
+        "title": "Tellimus",
+        "text": "Pakett, prooviperiood, arved ja makseviisid"
       }
     },
     "members": {
@@ -1629,6 +1633,62 @@
         "closed": "Kutse ei kehti enam.",
         "otherEmail": "See kutse on teisele e-posti aadressile.",
         "alreadyMember": "Olete juba selle ettevõtte liige."
+      }
+    }
+  },
+  "billing": {
+    "title": "Tellimus",
+    "description": "Ettevõtte pakett ja maksed. Makseid töötleb Stripe.",
+    "back": "Seadetesse",
+    "notConfigured": "Tellimused pole sellel saidil veel saadaval.",
+    "checkout": {
+      "success": "Aitäh! Tellimust seadistatakse; selle olek ilmub siia hetke pärast.",
+      "cancelled": "Makse tühistati. Midagi ei võetud."
+    },
+    "current": "Praegune pakett",
+    "none": "Tellimust veel pole.",
+    "manage": "Halda tellimust",
+    "history": "Arved ja makseviisid",
+    "choose": "Valige pakett",
+    "trialInfo": "Esimesed {days} päeva on tasuta ja kaarti pole vaja. Seejärel tellimus lõpeb, kui te makseviisi ei lisa.",
+    "perMonth": "/ kuus",
+    "startTrial": "Proovi {days} päeva tasuta",
+    "subscribe": "Telli",
+    "pricesNote": "Hinnad ettevõtte kohta kuus, EUR. Kaardiandmed sisestatakse Stripe'i lehel ega jõua ALVOXIS Flow'sse. Tühistada saab igal ajal.",
+    "trialEnds": "Tasuta periood kuni {date}.",
+    "renewsOn": "Pikeneb {date}.",
+    "endsOn": "Lõpeb {date}.",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "text": "Dokumendid, kliendid ja tooted väikeettevõttele."
+      },
+      "pro": {
+        "name": "Pro AI",
+        "text": "Kõik Basicust ja tehisintellekti assistent, kui see ilmub."
+      },
+      "business": {
+        "name": "Business",
+        "text": "Kõik moodulid: ladu, tootmine, palgad ja analüütika."
+      }
+    },
+    "status": {
+      "trialing": "Tasuta periood",
+      "active": "Aktiivne",
+      "past_due": "Makse hilineb",
+      "unpaid": "Maksmata",
+      "incomplete": "Ootab makset",
+      "paused": "Peatatud",
+      "canceled": "Tühistatud",
+      "incomplete_expired": "Aegunud"
+    },
+    "state": {
+      "billing": {
+        "failed": "Makseteenus ei vastanud. Proovige hetke pärast uuesti.",
+        "notConfigured": "Tellimused pole sellel saidil veel saadaval.",
+        "alreadySubscribed": "Ettevõttel on juba tellimus; muutke seda jaotises „Halda tellimust“.",
+        "priceMissing": "See pakett pole praegu saadaval.",
+        "noCustomer": "Hallatavat tellimust veel pole."
       }
     }
   }

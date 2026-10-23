@@ -157,5 +157,6 @@ export async function settingsAccess(db: DbOrTx, actor: Actor, companyId: string
     payrollRates: can("payroll.view"),
     members: can("members.view"),
     manageMembers: can("members.manage"),
+    billing: can("billing.manage"),
   };
 }

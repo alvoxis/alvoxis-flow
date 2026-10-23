@@ -46,6 +46,7 @@ export default async function CompanySettingsPage({ params }: Params) {
     access.bankAccounts && { href: `${base}/bank-accounts`, key: "bankAccounts" },
     access.warehouses && { href: `${base}/inventory`, key: "warehouses" },
     access.payrollRates && { href: `${base}/payroll`, key: "payrollRates" },
+    access.billing && { href: `${base}/billing`, key: "billing" },
   ].filter((l): l is { href: string; key: string } => Boolean(l));
   const account = [
     { href: "/account/security", key: "security" },
