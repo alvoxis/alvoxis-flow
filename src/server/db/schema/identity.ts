@@ -198,6 +198,38 @@ export const companyInvitations = pgTable(
 );
 
 /**
+ * The company's subscription as last read from Stripe (Stripe is the source of truth; this row is a
+ * cache refreshed on checkout return and whenever the billing page loads). No card data is stored.
+ */
+export const companyBilling = pgTable(
+  "company_billing",
+  {
+    companyId: uuid("company_id")
+      .primaryKey()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    stripeCustomerId: text("stripe_customer_id").notNull(),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    /** basic | pro | business; null without a subscription. */
+    plan: text("plan"),
+    /** Stripe subscription status (trialing, active, past_due, canceled, …); null without one. */
+    status: text("status"),
+    trialEndsAt: timestamp("trial_ends_at", { withTimezone: true }),
+    currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+    cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+    /** A trial was already given to this company (never a second one). */
+    trialUsed: boolean("trial_used").notNull().default(false),
+    ...timestamps,
+  },
+  (t) => [
+    uniqueIndex("company_billing_customer_uq").on(t.stripeCustomerId),
+    check(
+      "company_billing_plan_ck",
+      sql`${t.plan} is null or ${t.plan} in ('basic', 'pro', 'business')`,
+    ),
+  ],
+);
+
+/**
  * Append-only audit trail. UPDATE and DELETE are blocked by a database trigger
  * (see migration 0001). company_id is null for account-level events (e.g. sign-in).
  */

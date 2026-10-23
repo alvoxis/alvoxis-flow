@@ -89,6 +89,15 @@ const baseSchema = z.object({
   SMTP_PASSWORD: optionalNonEmpty,
 
   /**
+   * Stripe secret or restricted key for subscriptions (sk_/rk_, live or test). Unset: billing
+   * shows "not configured" and nothing is sent to Stripe. Preview deployments accept test keys only.
+   */
+  STRIPE_SECRET_KEY: optionalNonEmpty.refine(
+    (v) => v === undefined || /^(sk|rk)_(live|test)_[A-Za-z0-9]+$/.test(v),
+    "STRIPE_SECRET_KEY must be a Stripe secret (sk_) or restricted (rk_) key",
+  ),
+
+  /**
    * Header that carries the client IP when running behind a trusted reverse proxy. Used for
    * rate limiting and the session device list. Leave unset when not behind a proxy.
    */
@@ -301,6 +310,13 @@ function checkPreview(env: z.infer<typeof baseSchema>, appUrl: string, ctx: z.Re
           "On preview deployments APP_URL must be this preview's own URL (leave it unset to use the branch URL)",
       });
     }
+  }
+  if (env.STRIPE_SECRET_KEY && /^(sk|rk)_live_/.test(env.STRIPE_SECRET_KEY)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["STRIPE_SECRET_KEY"],
+      message: "On preview deployments STRIPE_SECRET_KEY must be a test-mode key",
+    });
   }
   if (
     env.EMAIL_TRANSPORT === "smtp" &&

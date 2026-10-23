@@ -65,6 +65,7 @@ fast with a list of problems (values are never echoed).
 | `TRUSTED_IP_HEADER`                         | real deployments                     | Client-IP header set by your reverse proxy (rate limiting, device list).              |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | optional                             | Enables Google sign-in (both or neither).                                             |
 | `EMAIL_TRANSPORT` (+ `EMAIL_*`, `SMTP_*`)   | no (default `disabled`)              | `file` writes mails to `tmp/mail` for local development; `smtp` for real delivery.    |
+| `STRIPE_SECRET_KEY`                         | for subscriptions                    | Stripe secret or restricted key; unset hides subscriptions. Previews: test keys only. |
 
 Setup steps for Google OAuth and SMTP: [docs/auth/AUTHENTICATION.md](docs/auth/AUTHENTICATION.md).
 All secrets are server-only variables and never use the `NEXT_PUBLIC_` prefix. With

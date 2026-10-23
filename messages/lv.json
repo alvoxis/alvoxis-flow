@@ -1577,6 +1577,10 @@
       "twoFactor": {
         "title": "Divfaktoru autentifikācija",
         "text": "Autentifikācijas lietotne un rezerves kodi."
+      },
+      "billing": {
+        "title": "Abonements",
+        "text": "Plāns, izmēģinājums, rēķini un maksājumu veidi"
       }
     },
     "members": {
@@ -1629,6 +1633,62 @@
         "closed": "Ielūgums vairs nav derīgs.",
         "otherEmail": "Šis ielūgums ir citai e-pasta adresei.",
         "alreadyMember": "Jūs jau esat šī uzņēmuma dalībnieks."
+      }
+    }
+  },
+  "billing": {
+    "title": "Abonements",
+    "description": "Uzņēmuma plāns un maksājumi. Maksājumus apstrādā Stripe.",
+    "back": "Uz iestatījumiem",
+    "notConfigured": "Abonementi šajā vietnē vēl nav pieejami.",
+    "checkout": {
+      "success": "Paldies! Abonements tiek iestatīts; tā statuss šeit parādīsies pēc brīža.",
+      "cancelled": "Apmaksa atcelta. Nekas netika iekasēts."
+    },
+    "current": "Pašreizējais plāns",
+    "none": "Abonementa vēl nav.",
+    "manage": "Pārvaldīt abonementu",
+    "history": "Rēķini un maksājumu veidi",
+    "choose": "Izvēlieties plānu",
+    "trialInfo": "Pirmās {days} dienas ir bez maksas, karte nav vajadzīga. Pēc tam abonements beidzas, ja nepievienojat maksājumu veidu.",
+    "perMonth": "/ mēnesī",
+    "startTrial": "Izmēģināt {days} dienas bez maksas",
+    "subscribe": "Abonēt",
+    "pricesNote": "Cenas par uzņēmumu mēnesī, EUR. Kartes dati tiek ievadīti Stripe lapā un nenonāk ALVOXIS Flow. Atcelt var jebkurā laikā.",
+    "trialEnds": "Bezmaksas periods līdz {date}.",
+    "renewsOn": "Atjaunosies {date}.",
+    "endsOn": "Beigsies {date}.",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "text": "Dokumenti, klienti un preces mazam uzņēmumam."
+      },
+      "pro": {
+        "name": "Pro AI",
+        "text": "Viss no Basic un AI asistents, kad tas būs pieejams."
+      },
+      "business": {
+        "name": "Business",
+        "text": "Visi moduļi: noliktava, ražošana, algas un analītika."
+      }
+    },
+    "status": {
+      "trialing": "Bezmaksas periods",
+      "active": "Aktīvs",
+      "past_due": "Maksājums nokavēts",
+      "unpaid": "Neapmaksāts",
+      "incomplete": "Gaida maksājumu",
+      "paused": "Apturēts",
+      "canceled": "Atcelts",
+      "incomplete_expired": "Beidzies"
+    },
+    "state": {
+      "billing": {
+        "failed": "Maksājumu pakalpojums neatbildēja. Mēģiniet vēlreiz pēc brīža.",
+        "notConfigured": "Abonementi šajā vietnē vēl nav pieejami.",
+        "alreadySubscribed": "Uzņēmumam jau ir abonements; mainiet to sadaļā “Pārvaldīt abonementu”.",
+        "priceMissing": "Šis plāns pašlaik nav pieejams.",
+        "noCustomer": "Vēl nav abonementa, ko pārvaldīt."
       }
     }
   }

@@ -251,6 +251,21 @@ describe("preview deployments (VERCEL_ENV=preview): the test environment", () =>
     ]);
   });
 
+  it("accepts only Stripe test keys on previews", () => {
+    expect(
+      parseServerEnv({ ...preview, STRIPE_SECRET_KEY: "sk_test_abc123" }).STRIPE_SECRET_KEY,
+    ).toBe("sk_test_abc123");
+    expect(issuesOf({ ...preview, STRIPE_SECRET_KEY: "sk_live_abc123" })).toEqual([
+      "STRIPE_SECRET_KEY",
+    ]);
+    expect(issuesOf({ ...preview, STRIPE_SECRET_KEY: "rk_live_abc123" })).toEqual([
+      "STRIPE_SECRET_KEY",
+    ]);
+    expect(issuesOf({ ...preview, STRIPE_SECRET_KEY: "pk_test_abc123" })).toEqual([
+      "STRIPE_SECRET_KEY",
+    ]);
+  });
+
   it("error messages name variables, never their values", () => {
     let message = "";
     try {

@@ -36,6 +36,10 @@ can also build the repository directly.
   CIDRs) when the proxy appends to it. The app must only be reachable through that proxy.
 - `EMAIL_TRANSPORT=smtp` with `EMAIL_FROM` and `SMTP_*`; optionally `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`.
   Details and the operator 2FA-reset procedure: [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md).
+- `STRIPE_SECRET_KEY` for subscriptions: a **restricted key** (`rk_live_…`) is enough. It needs
+  write access to Customers, Checkout Sessions and Customer portal, and read access to Prices and
+  Subscriptions. The prices with the lookup keys `alvoxis_flow_basic_monthly`, `…_pro_monthly` and
+  `…_business_monthly` and a customer-portal configuration must exist in the same Stripe mode.
 - Secrets are stored in the hosting platform's secret manager, never in the repository.
 
 ## Release procedure (target)
