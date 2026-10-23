@@ -1451,5 +1451,116 @@
       "periodTaken": "This month already has a payroll.",
       "approved": "This month is already approved and cannot change."
     }
+  },
+  "analytics": {
+    "description": "Sales from issued invoices and credit notes, net of tax, per currency; plus stock, payroll and production figures your role may see.",
+    "year": "Year",
+    "net": "Net",
+    "none": "Nothing for this year yet.",
+    "noSales": "No issued invoices in {year}.",
+    "sales": {
+      "title": "Net sales, {currency}",
+      "hint": "Point at or tap a month for details.",
+      "counts": "{invoices, plural, one {# invoice} other {# invoices}}, {creditNotes, plural, one {# credit note} other {# credit notes}}",
+      "aria": "Monthly net sales in {currency}, total {total}",
+      "table": "Show as a table",
+      "month": "Month",
+      "invoices": "Invoices",
+      "creditNotes": "Credit notes"
+    },
+    "customers": {
+      "title": "Top customers",
+      "name": "Customer",
+      "documents": "Documents"
+    },
+    "items": {
+      "title": "Top lines",
+      "description": "Description",
+      "quantity": "Quantity"
+    },
+    "other": {
+      "title": "Other figures",
+      "stock": "Stock value at purchase price",
+      "payroll": "Employer cost of approved payroll, {year}",
+      "production": "Production orders, {year}",
+      "productionValue": "{completed} completed · {planned} planned"
+    },
+    "month": {
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
+    },
+    "monthShort": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "May",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Oct",
+      "11": "Nov",
+      "12": "Dec"
+    }
+  },
+  "settings": {
+    "description": "Company settings and your own account.",
+    "company": "Company",
+    "account": "Your account",
+    "links": {
+      "profile": {
+        "title": "Company profile",
+        "text": "Name, registration and VAT number, address."
+      },
+      "taxCategories": {
+        "title": "Tax categories",
+        "text": "VAT rates and treatments offered on document lines."
+      },
+      "bankAccounts": {
+        "title": "Bank accounts",
+        "text": "Accounts printed on documents."
+      },
+      "warehouses": {
+        "title": "Warehouses",
+        "text": "Places where stock is kept."
+      },
+      "payrollRates": {
+        "title": "Payroll rates",
+        "text": "Social contribution and tax rates per country."
+      },
+      "security": {
+        "title": "Security and sessions",
+        "text": "Password, signed-in devices."
+      },
+      "twoFactor": {
+        "title": "Two-factor authentication",
+        "text": "Authenticator app and backup codes."
+      }
+    },
+    "members": {
+      "title": "Members",
+      "description": "People with access to this company and their roles.",
+      "you": "you",
+      "role": "Role",
+      "suspend": "Suspend",
+      "reactivate": "Reactivate",
+      "saved": "Member updated.",
+      "lastOwner": "The company needs at least one active owner.",
+      "status": {
+        "invited": "Invited",
+        "suspended": "Suspended"
+      }
+    }
   }
 }

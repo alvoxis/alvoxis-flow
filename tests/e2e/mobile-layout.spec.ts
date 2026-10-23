@@ -152,6 +152,8 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     `${company}/inventory`,
     `${company}/production`,
     `${company}/payroll`,
+    `${company}/analytics?year=2026`,
+    `${company}/settings`,
     "/account/security",
     "/account/two-factor",
   ];

@@ -59,6 +59,8 @@ describe("message catalogs", () => {
         "bankAccounts.fields.bic",
         "documentPdf.lineNo",
         "documentPdf.taxKind.standard",
+        // Month names that are spelled the same in some languages (e.g. Estonian).
+        ...Array.from({ length: 12 }, (_, i) => `analytics.month.${i + 1}`),
       ]);
       const copied = Object.keys(source).filter((k) => !allowed.has(k) && target[k] === source[k]);
       expect(copied).toEqual([]);
