@@ -2,6 +2,7 @@ import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { type Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { InvitationsManager } from "@/components/settings/invitations-manager";
 import { MembersManager } from "@/components/settings/members-manager";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Alert } from "@/components/ui/form";
@@ -26,6 +27,7 @@ export default async function CompanySettingsPage({ params }: Params) {
   const t = await getTranslations("settings");
   const tNav = await getTranslations("nav");
   const tCompany = await getTranslations("company");
+  const tInvitations = await getTranslations("invitations");
   if (data.status === "two_factor_required")
     return (
       <Card>
@@ -36,7 +38,7 @@ export default async function CompanySettingsPage({ params }: Params) {
         </Alert>
       </Card>
     );
-  const { access, members } = data;
+  const { access, members, invitations } = data;
   const base = `/companies/${companyId}`;
   const links = [
     access.profile && { href: `${base}/profile`, key: "profile" },
@@ -81,6 +83,18 @@ export default async function CompanySettingsPage({ params }: Params) {
           <MembersManager
             companyId={companyId}
             members={members.members}
+            roles={members.roles}
+            canManage={access.manageMembers}
+            actorIsOwner={access.roleKey === "owner"}
+          />
+        </Card>
+      ) : null}
+      {members && invitations ? (
+        <Card>
+          <CardHeader title={tInvitations("title")} description={tInvitations("description")} />
+          <InvitationsManager
+            companyId={companyId}
+            invitations={invitations}
             roles={members.roles}
             canManage={access.manageMembers}
             actorIsOwner={access.roleKey === "owner"}

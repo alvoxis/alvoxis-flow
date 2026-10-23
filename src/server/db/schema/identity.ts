@@ -160,6 +160,44 @@ export const memberships = pgTable(
 );
 
 /**
+ * An invitation to join a company with a role. Only the SHA-256 hash of the link token is stored;
+ * the token itself appears once, in the email or the inviter's copy of the link. An invitation is
+ * accepted by a signed-in user whose verified email equals `email`, and it expires after 7 days.
+ * At most one open (neither accepted nor revoked) invitation per company and email.
+ */
+export const companyInvitations = pgTable(
+  "company_invitations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    /** Stored lower-cased. */
+    email: text("email").notNull(),
+    roleId: uuid("role_id").notNull(),
+    tokenHash: text("token_hash").notNull(),
+    invitedBy: uuid("invited_by").references(() => users.id, { onDelete: "set null" }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    acceptedBy: uuid("accepted_by").references(() => users.id, { onDelete: "set null" }),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("company_invitations_token_uq").on(t.tokenHash),
+    uniqueIndex("company_invitations_open_uq")
+      .on(t.companyId, t.email)
+      .where(sql`${t.acceptedAt} is null and ${t.revokedAt} is null`),
+    check("company_invitations_email_lowercase_ck", sql`${t.email} = lower(${t.email})`),
+    foreignKey({
+      name: "company_invitations_role_same_company_fk",
+      columns: [t.roleId, t.companyId],
+      foreignColumns: [roles.id, roles.companyId],
+    }).onDelete("cascade"),
+  ],
+);
+
+/**
  * Append-only audit trail. UPDATE and DELETE are blocked by a database trigger
  * (see migration 0001). company_id is null for account-level events (e.g. sign-in).
  */

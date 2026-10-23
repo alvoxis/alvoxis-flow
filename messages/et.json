@@ -190,6 +190,10 @@
     "signInLocked": {
       "subject": "Mitu ebaõnnestunud sisselogimiskatset",
       "body": "Pärast mitut ebaõnnestunud katset {time} (UTC) on teie ALVOXIS Flow konto parooliga sisselogimine 15 minutiks peatatud. Seadmetest, kust olete varem sisse loginud, saab endiselt sisse logida. Kui see polnud teie, lähtestage parool:\n{link}"
+    },
+    "invitation": {
+      "subject": "Kutse ettevõttesse {company}",
+      "body": "{inviter} kutsub teid liituma ettevõttega {company} ALVOXIS Flow's. Vastuvõtmiseks avage link:\n{link}\n\nKui teil pole veel kontot, registreeruge esmalt selle e-posti aadressiga ja avage link uuesti. Link kehtib {days} päeva."
     }
   },
   "auth": {
@@ -1560,6 +1564,44 @@
       "status": {
         "invited": "Kutsutud",
         "suspended": "Peatatud"
+      }
+    }
+  },
+  "invitations": {
+    "title": "Kutsed",
+    "description": "Kutsuge inimesi e-posti teel. Link kehtib 7 päeva ja ainult kutsutud aadressile.",
+    "email": "E-posti aadress",
+    "role": "Roll",
+    "invite": "Kutsu",
+    "copy": "Kopeeri link",
+    "copied": "Kopeeritud",
+    "revoke": "Tühista",
+    "revoked": "Kutse tühistati.",
+    "open": "Avatud kutsed",
+    "none": "Avatud kutseid pole.",
+    "expired": "Aegunud",
+    "expires": "Kehtib kuni {date}",
+    "memberExists": "See inimene on juba ettevõtte liige.",
+    "error": "Kutset ei õnnestunud luua.",
+    "delivery": {
+      "sent": "Kutse saadeti. Võite jagada ka seda linki:",
+      "not_configured": "E-post pole seadistatud, midagi ei saadetud. Jagage linki ise:",
+      "failed": "E-kirja ei õnnestunud saata. Jagage linki ise:"
+    },
+    "accept": "Võta kutse vastu",
+    "home": "Avalehele",
+    "intro": "Teid kutsutakse liituma ettevõttega {company} rollis „{role}“.",
+    "otherEmail": "See kutse on teisele e-posti aadressile. Olete sisse logitud kui {email}; logige välja ja logige sisse kutsutud aadressiga.",
+    "closed": {
+      "expired": "Kutse on aegunud. Paluge uut.",
+      "used": "Kutse on juba kasutatud või tühistatud.",
+      "not_found": "Kutse link ei kehti."
+    },
+    "state": {
+      "invitation": {
+        "closed": "Kutse ei kehti enam.",
+        "otherEmail": "See kutse on teisele e-posti aadressile.",
+        "alreadyMember": "Olete juba selle ettevõtte liige."
       }
     }
   }

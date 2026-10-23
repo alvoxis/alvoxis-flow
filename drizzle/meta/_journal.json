@@ -141,6 +141,13 @@
       "when": 1792713589398,
       "tag": "0019_payroll",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792739675030,
+      "tag": "0020_member_invitations",
+      "breakpoints": true
     }
   ]
 }
