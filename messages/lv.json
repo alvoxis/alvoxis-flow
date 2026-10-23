@@ -327,6 +327,9 @@
       "invalidPassword": "Parole nav pareiza.",
       "emailNotConfigured": "Šajā serverī nav konfigurēta e-pasta sūtīšana, tāpēc apstiprinājuma un paroles atiestatīšanas e-pastus nevar nosūtīt. Lūdzu, sazinieties ar administratoru.",
       "generic": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz."
+    },
+    "intro": {
+      "skip": "Izlaist"
     }
   },
   "account": {

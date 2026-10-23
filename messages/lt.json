@@ -327,6 +327,9 @@
       "invalidPassword": "Slaptažodis neteisingas.",
       "emailNotConfigured": "Šiame serveryje nesukonfigūruotas el. laiškų siuntimas, todėl patvirtinimo ir slaptažodžio atkūrimo laiškų išsiųsti negalima. Susisiekite su administratoriumi.",
       "generic": "Kažkas nepavyko. Bandykite dar kartą."
+    },
+    "intro": {
+      "skip": "Praleisti"
     }
   },
   "account": {

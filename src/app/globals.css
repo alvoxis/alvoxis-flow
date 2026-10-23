@@ -75,6 +75,101 @@ body {
   text-shadow: 0 0 28px color-mix(in oklab, var(--color-accent) 45%, transparent);
 }
 
+/* Sign-in intro (components/auth/sign-in-intro.tsx): the ALVOXIS word spins in with depth, settles
+   and rises; then the card fades in. Pointer tilt comes from --tilt-x/--tilt-y on the root. Only
+   transforms and opacity animate, so the GPU does the work. */
+.sign-in-intro {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+}
+.intro-logo-wrap {
+  perspective: 900px;
+}
+.intro-tilt {
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out;
+}
+.intro-logo {
+  position: relative;
+  display: grid;
+  transform-style: preserve-3d;
+  animation: intro-spin 2.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.intro-logo > span {
+  grid-area: 1 / 1;
+  font-size: clamp(2.5rem, 9vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+}
+.intro-face {
+  background: linear-gradient(120deg, #f5f3ff 10%, #c4b5fd 45%, #8b5cf6 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 24px rgba(139, 92, 246, 0.45));
+}
+.intro-layer {
+  color: #4c1d95;
+}
+.intro-tagline {
+  margin-top: 0.35rem;
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  animation: intro-fade 0.6s ease-out 2.2s both;
+}
+.intro-card {
+  animation: intro-card 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 2.6s both;
+}
+.intro-skip {
+  animation: intro-fade 0.4s ease-out 0.6s both;
+}
+.intro-skipped .intro-logo,
+.intro-skipped .intro-tagline,
+.intro-skipped .intro-card {
+  animation: none;
+}
+
+@keyframes intro-spin {
+  0% {
+    opacity: 0;
+    transform: translateY(14vh) scale(1.5) rotateY(-720deg) rotateX(25deg);
+  }
+  12% {
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(14vh) scale(1.5) rotateY(0deg) rotateX(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateY(0deg) rotateX(0deg);
+  }
+}
+@keyframes intro-card {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Users who ask for less motion get no transitions or animations (dialogs and toasts then open
    and close instantly; Base UI waits for transitions only when there are any). */
 @media (prefers-reduced-motion: reduce) {
@@ -85,5 +180,18 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* The intro's delays would still hide the form under the rule above: show the final state. */
+@media (prefers-reduced-motion: reduce) {
+  .intro-logo,
+  .intro-tagline,
+  .intro-card,
+  .intro-skip {
+    animation: none !important;
+  }
+  .intro-tilt {
+    transform: none;
   }
 }
