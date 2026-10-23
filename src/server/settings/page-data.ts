@@ -4,6 +4,11 @@ import { type AuthenticatedUser, toActor } from "@/server/auth/session";
 import { getDb } from "@/server/db/client";
 import { ForbiddenError, TwoFactorRequiredError } from "@/server/errors";
 import {
+  type InvitationView,
+  listInvitations,
+  lookupInvitation,
+} from "@/server/tenancy/invitations-service";
+import {
   listMembers,
   type MemberView,
   type RoleOption,
@@ -15,6 +20,7 @@ export type SettingsPageData =
       status: "ok";
       access: Awaited<ReturnType<typeof settingsAccess>>;
       members: { members: MemberView[]; roles: RoleOption[] } | null;
+      invitations: InvitationView[] | null;
     }
   | { status: "two_factor_required" }
   | { status: "not_found" };
@@ -30,10 +36,16 @@ export async function settingsPageData(
   try {
     const access = await settingsAccess(db, actor, companyId);
     const members = access.members ? await listMembers(db, actor, companyId) : null;
-    return { status: "ok", access, members };
+    const invitations = access.members ? await listInvitations(db, actor, companyId) : null;
+    return { status: "ok", access, members, invitations };
   } catch (err) {
     if (err instanceof TwoFactorRequiredError) return { status: "two_factor_required" };
     if (err instanceof ForbiddenError) return { status: "not_found" };
     throw err;
   }
+}
+
+/** The invitation page: what a signed-in user may see about an invitation link. */
+export async function invitationPageData(user: AuthenticatedUser, token: string) {
+  return lookupInvitation(getDb(), user.userId, token);
 }
