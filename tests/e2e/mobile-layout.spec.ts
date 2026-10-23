@@ -70,6 +70,20 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     buyer: { name: "Ļoti Garš Pircēja Nosaukums Sabiedrība ar Ierobežotu Atbildību (TEST)" },
   });
 
+  const party = await page.request.post(`/api/companies/${companyId}/counterparties`, {
+    data: {
+      name: "Ļoti Garš Klienta un Piegādātāja Nosaukums Sabiedrība ar Ierobežotu Atbildību (TEST)",
+      isCustomer: true,
+      isSupplier: true,
+      email: "a-very-long-mailbox-name-for-layout-checks@example.test",
+      addressLine1: "Ļoti garas ielas nosaukums 123-45",
+      city: "Rīga",
+      countryCode: "LV",
+    },
+    headers,
+  });
+  expect(party.status()).toBe(201);
+
   const company = `/companies/${companyId}`;
   const paths = [
     "",
@@ -83,6 +97,8 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     `${company}/profile`,
     `${company}/tax-categories`,
     `${company}/bank-accounts`,
+    `${company}/customers`,
+    `${company}/suppliers`,
     "/account/security",
     "/account/two-factor",
   ];

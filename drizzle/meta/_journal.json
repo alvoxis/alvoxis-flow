@@ -99,6 +99,13 @@
       "when": 1792339984450,
       "tag": "0013_company_pdf_accent",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792713351182,
+      "tag": "0014_counterparties",
+      "breakpoints": true
     }
   ]
 }

@@ -126,6 +126,7 @@ export default async function DocumentPage({ params, searchParams }: Props) {
           canIssue={permissions.canIssue}
           taxCategories={data.taxCategories}
           bankAccounts={data.bankAccounts}
+          customers={data.customers}
           canManageTaxCategories={permissions.canManageTaxCategories}
         />
       )}
