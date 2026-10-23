@@ -23,6 +23,11 @@ jobs:
     name: Optional — iPhone WebKit e2e
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Playwright's own image has WebKit and its system libraries preinstalled, so the job no
+    # longer downloads ~120 MB of Ubuntu packages (that download stalled the job several times).
+    # The tag must match the @playwright/test version (checked by tests/unit/workflows.test.ts).
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
     services:
       postgres:
         image: postgres:16-alpine
@@ -30,17 +35,16 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: alvoxis_flow_e2e
-        ports: ["5432:5432"]
         options: >-
           --health-cmd "pg_isready -U postgres"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
     env:
-      # Disposable CI-only database; not a secret. The e2e server's auth secret is a
-      # fixture defined in playwright.config.ts.
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_e2e
-      E2E_DATABASE_URL: postgres://postgres:postgres@localhost:5432/alvoxis_flow_e2e
+      # Disposable CI-only database (the service container, reached by its name); not a secret.
+      # The e2e server's auth secret is a fixture defined in playwright.config.ts.
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/alvoxis_flow_e2e
+      E2E_DATABASE_URL: postgres://postgres:postgres@postgres:5432/alvoxis_flow_e2e
       E2E_WEBKIT: "1"
     steps:
       - uses: actions/checkout@v4
@@ -55,16 +59,6 @@ jobs:
         run: |
           pnpm db:migrate
           pnpm db:seed
-      # The browser download sometimes stalls on the runner; fail fast and retry once instead of
-      # spending the whole job limit on a stuck install.
-      - name: Install WebKit
-        timeout-minutes: 12
-        run: |
-          for attempt in 1 2; do
-            timeout 300 pnpm exec playwright install --with-deps webkit && exit 0
-            echo "playwright install attempt $attempt failed or stalled"
-          done
-          exit 1
       - run: >-
           pnpm exec playwright test --project=iphone-webkit
           tests/e2e/dialogs.spec.ts tests/e2e/navigation.spec.ts tests/e2e/app.spec.ts
