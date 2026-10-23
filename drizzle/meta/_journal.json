@@ -113,6 +113,20 @@
       "when": 1792713548557,
       "tag": "0015_products",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792713574567,
+      "tag": "0016_inventory",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792713575548,
+      "tag": "0017_stock_ledger_append_only",
+      "breakpoints": true
     }
   ]
 }

@@ -636,6 +636,42 @@
         "taxCategory": {
           "unknown": "Choose one of the company's tax categories.",
           "archived": "This tax category is archived; choose an active one."
+        },
+        "trackStock": {
+          "inUse": "This product has stock movements, so it keeps tracking stock."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Enter a quantity like 2 or 1.5 (up to 4 decimals).",
+          "insufficient": "Not enough stock in this warehouse."
+        },
+        "unitCost": {
+          "invalid": "Enter a unit cost like 12.50 (receipts only)."
+        },
+        "date": {
+          "invalid": "Enter a valid date.",
+          "future": "The date cannot be in the future."
+        },
+        "transfer": {
+          "target": "Choose the warehouse to transfer to.",
+          "sameWarehouse": "Choose two different warehouses."
+        },
+        "product": {
+          "unknown": "Choose one of the company's products.",
+          "notTracked": "This product does not track stock."
+        },
+        "warehouse": {
+          "unknown": "Choose one of the company's warehouses.",
+          "archived": "This warehouse is archived."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Use letters and digits (up to 20), e.g. MAIN."
+        },
+        "name": {
+          "required": "Enter a name."
         }
       }
     },
@@ -1139,6 +1175,84 @@
     "picker": {
       "label": "Add from catalog",
       "placeholder": "Choose a product…"
+    }
+  },
+  "inventory": {
+    "description": "Stock per warehouse: receipts, issues, transfers and stock counts. Every change is kept in the movement history.",
+    "readOnly": "You can view stock. Changing it needs a role with permission to manage inventory.",
+    "noWarehouses": "No warehouses yet. Add the first one below; it becomes the default.",
+    "noTrackedProducts": "No products track stock yet. Turn on “Track stock” for goods in Products.",
+    "archived": "archived",
+    "stock": {
+      "title": "Stock",
+      "empty": "No stock yet.",
+      "value": "Value at purchase price"
+    },
+    "movements": {
+      "title": "Latest movements"
+    },
+    "kind": {
+      "receipt": "Receipt",
+      "issue": "Issue",
+      "adjustment": "Count correction",
+      "transfer_out": "Transfer out",
+      "transfer_in": "Transfer in",
+      "production_consume": "Used in production",
+      "production_output": "Produced"
+    },
+    "operation": {
+      "title": "Record a stock change",
+      "kind": "Operation",
+      "product": "Product",
+      "chooseProduct": "Choose a product…",
+      "warehouse": "Warehouse",
+      "from": "From warehouse",
+      "to": "To warehouse",
+      "chooseWarehouse": "Choose a warehouse…",
+      "quantity": "Quantity",
+      "counted": "Counted quantity",
+      "unitCost": "Unit cost (net, optional)",
+      "date": "Date",
+      "reference": "Reference (optional)",
+      "countHint": "The difference to the current balance is recorded as a count correction.",
+      "kinds": {
+        "receipt": "Receipt",
+        "issue": "Issue / write-off",
+        "transfer": "Transfer",
+        "count": "Stock count"
+      },
+      "submit": {
+        "receipt": "Record receipt",
+        "issue": "Record issue",
+        "transfer": "Record transfer",
+        "count": "Record count"
+      }
+    },
+    "warehouses": {
+      "title": "Warehouses",
+      "add": "Add warehouse",
+      "code": "Code",
+      "codeHint": "Letters and digits, e.g. MAIN.",
+      "name": "Name",
+      "default": "Default",
+      "makeDefault": "Make default",
+      "archive": "Archive",
+      "restore": "Restore"
+    },
+    "done": {
+      "receipt": "Receipt recorded.",
+      "issue": "Issue recorded.",
+      "transfer": "Transfer recorded.",
+      "count": "Count recorded.",
+      "countUnchanged": "The count matches the balance; nothing changed.",
+      "warehouseCreated": "Warehouse added.",
+      "warehouseSaved": "Default warehouse changed.",
+      "warehouseArchived": "Warehouse archived.",
+      "warehouseRestored": "Warehouse restored."
+    },
+    "outcome": {
+      "codeTaken": "A warehouse with this code already exists.",
+      "notEmpty": "This warehouse still holds stock. Move or issue it first."
     }
   }
 }

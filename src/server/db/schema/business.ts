@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  date,
   foreignKey,
   index,
   integer,
@@ -136,5 +137,97 @@ export const products = pgTable(
     // Only goods have stock.
     check("products_track_stock_ck", sql`not ${t.trackStock} or ${t.kind} = 'goods'`),
     check("products_version_ck", sql`${t.version} > 0`),
+  ],
+);
+
+/** Places where a company keeps stock. One active default; archived only when empty. */
+export const warehouses = pgTable(
+  "warehouses",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    code: text("code").notNull(),
+    name: text("name").notNull(),
+    isDefault: boolean("is_default").notNull().default(false),
+    version: integer("version").notNull().default(1),
+    archivedAt: timestamp("archived_at", { withTimezone: true }),
+    ...timestamps,
+  },
+  (t) => [
+    unique("warehouses_id_company_uq").on(t.id, t.companyId),
+    unique("warehouses_company_code_uq").on(t.companyId, t.code),
+    uniqueIndex("warehouses_one_default_uq")
+      .on(t.companyId)
+      .where(sql`${t.isDefault} and ${t.archivedAt} is null`),
+    check("warehouses_code_ck", sql`${t.code} ~ '^[A-Z0-9][A-Z0-9_-]{0,19}$'`),
+    check("warehouses_name_ck", sql`length(trim(${t.name})) > 0`),
+    check("warehouses_version_ck", sql`${t.version} > 0`),
+  ],
+);
+
+export const stockMovementKind = pgEnum("stock_movement_kind", [
+  "receipt",
+  "issue",
+  "adjustment",
+  "transfer_out",
+  "transfer_in",
+  "production_consume",
+  "production_output",
+]);
+
+/**
+ * The stock ledger: every change of a product's quantity in a warehouse, signed (in > 0, out < 0).
+ * A balance is the sum of its movements. Append-only (a trigger blocks UPDATE and DELETE);
+ * mistakes are corrected with new movements. Both halves of a transfer, and all movements of a
+ * production order, share a `groupId`.
+ */
+export const stockMovements = pgTable(
+  "stock_movements",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+      .notNull()
+      .references(() => companies.id, { onDelete: "restrict" }),
+    productId: uuid("product_id").notNull(),
+    warehouseId: uuid("warehouse_id").notNull(),
+    kind: stockMovementKind("kind").notNull(),
+    quantity: numeric("quantity", { precision: 18, scale: 4 }).notNull(),
+    /** Net cost per unit in the product's currency (receipts; optional). */
+    unitCost: numeric("unit_cost", { precision: 18, scale: 4 }),
+    /** YYYY-MM-DD: when the goods moved. */
+    occurredOn: date("occurred_on", { mode: "string" }).notNull(),
+    reference: text("reference"),
+    note: text("note"),
+    groupId: uuid("group_id"),
+    createdByUserId: uuid("created_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    foreignKey({
+      name: "stock_movements_product_same_company_fk",
+      columns: [t.productId, t.companyId],
+      foreignColumns: [products.id, products.companyId],
+    }).onDelete("restrict"),
+    foreignKey({
+      name: "stock_movements_warehouse_same_company_fk",
+      columns: [t.warehouseId, t.companyId],
+      foreignColumns: [warehouses.id, warehouses.companyId],
+    }).onDelete("restrict"),
+    index("stock_movements_balance_idx").on(t.companyId, t.productId, t.warehouseId),
+    index("stock_movements_company_created_idx").on(t.companyId, t.createdAt),
+    index("stock_movements_group_idx").on(t.groupId),
+    check("stock_movements_quantity_ck", sql`${t.quantity} <> 0`),
+    // Inbound kinds add stock, outbound kinds remove it; adjustments go either way.
+    check(
+      "stock_movements_sign_ck",
+      sql`(${t.kind} in ('receipt', 'transfer_in', 'production_output') and ${t.quantity} > 0)
+        or (${t.kind} in ('issue', 'transfer_out', 'production_consume') and ${t.quantity} < 0)
+        or ${t.kind} = 'adjustment'`,
+    ),
+    check("stock_movements_unit_cost_ck", sql`${t.unitCost} is null or ${t.unitCost} >= 0`),
   ],
 );

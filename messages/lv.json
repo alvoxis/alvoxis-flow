@@ -636,6 +636,42 @@
         "taxCategory": {
           "unknown": "Izvēlieties vienu no uzņēmuma nodokļu kategorijām.",
           "archived": "Šī nodokļu kategorija ir arhivēta; izvēlieties aktīvu."
+        },
+        "trackStock": {
+          "inUse": "Šai precei ir noliktavas kustības, tāpēc atlikumu uzskaite paliek ieslēgta."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Ievadiet daudzumu, piemēram, 2 vai 1.5 (līdz 4 decimālzīmēm).",
+          "insufficient": "Šajā noliktavā nepietiek atlikuma."
+        },
+        "unitCost": {
+          "invalid": "Ievadiet vienības izmaksas, piemēram, 12.50 (tikai pieņemšanai)."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu.",
+          "future": "Datums nevar būt nākotnē."
+        },
+        "transfer": {
+          "target": "Izvēlieties mērķa noliktavu.",
+          "sameWarehouse": "Izvēlieties divas dažādas noliktavas."
+        },
+        "product": {
+          "unknown": "Izvēlieties vienu no uzņēmuma precēm.",
+          "notTracked": "Šai precei atlikumi netiek uzskaitīti."
+        },
+        "warehouse": {
+          "unknown": "Izvēlieties vienu no uzņēmuma noliktavām.",
+          "archived": "Šī noliktava ir arhivēta."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Izmantojiet latīņu burtus un ciparus (līdz 20), piemēram, MAIN."
+        },
+        "name": {
+          "required": "Ievadiet nosaukumu."
         }
       }
     },
@@ -1139,6 +1175,84 @@
     "picker": {
       "label": "Pievienot no kataloga",
       "placeholder": "Izvēlieties preci…"
+    }
+  },
+  "inventory": {
+    "description": "Atlikumi pa noliktavām: pieņemšana, izsniegšana, pārvietošana un inventarizācija. Katra izmaiņa tiek saglabāta kustību vēsturē.",
+    "readOnly": "Jūs varat skatīt atlikumus. Lai tos mainītu, nepieciešama loma ar noliktavas pārvaldības atļauju.",
+    "noWarehouses": "Noliktavu vēl nav. Pievienojiet pirmo zemāk — tā kļūs par noklusējuma noliktavu.",
+    "noTrackedProducts": "Neviena prece vēl neuzskaita atlikumus. Ieslēdziet “Uzskaitīt atlikumus noliktavā” precēm sadaļā Preces.",
+    "archived": "arhivēta",
+    "stock": {
+      "title": "Atlikumi",
+      "empty": "Atlikumu vēl nav.",
+      "value": "Vērtība iepirkuma cenās"
+    },
+    "movements": {
+      "title": "Pēdējās kustības"
+    },
+    "kind": {
+      "receipt": "Pieņemšana",
+      "issue": "Izsniegšana",
+      "adjustment": "Inventarizācijas korekcija",
+      "transfer_out": "Pārvietošana (izsūtīts)",
+      "transfer_in": "Pārvietošana (saņemts)",
+      "production_consume": "Izlietots ražošanā",
+      "production_output": "Saražots"
+    },
+    "operation": {
+      "title": "Reģistrēt atlikuma izmaiņu",
+      "kind": "Operācija",
+      "product": "Prece",
+      "chooseProduct": "Izvēlieties preci…",
+      "warehouse": "Noliktava",
+      "from": "No noliktavas",
+      "to": "Uz noliktavu",
+      "chooseWarehouse": "Izvēlieties noliktavu…",
+      "quantity": "Daudzums",
+      "counted": "Saskaitītais daudzums",
+      "unitCost": "Vienības izmaksas (bez PVN, nav obligāti)",
+      "date": "Datums",
+      "reference": "Pamatojums (nav obligāti)",
+      "countHint": "Starpība pret pašreizējo atlikumu tiek reģistrēta kā inventarizācijas korekcija.",
+      "kinds": {
+        "receipt": "Pieņemšana",
+        "issue": "Izsniegšana / norakstīšana",
+        "transfer": "Pārvietošana",
+        "count": "Inventarizācija"
+      },
+      "submit": {
+        "receipt": "Reģistrēt pieņemšanu",
+        "issue": "Reģistrēt izsniegšanu",
+        "transfer": "Reģistrēt pārvietošanu",
+        "count": "Reģistrēt inventarizāciju"
+      }
+    },
+    "warehouses": {
+      "title": "Noliktavas",
+      "add": "Pievienot noliktavu",
+      "code": "Kods",
+      "codeHint": "Latīņu burti un cipari, piemēram, MAIN.",
+      "name": "Nosaukums",
+      "default": "Noklusējuma",
+      "makeDefault": "Padarīt par noklusējuma",
+      "archive": "Arhivēt",
+      "restore": "Atjaunot"
+    },
+    "done": {
+      "receipt": "Pieņemšana reģistrēta.",
+      "issue": "Izsniegšana reģistrēta.",
+      "transfer": "Pārvietošana reģistrēta.",
+      "count": "Inventarizācija reģistrēta.",
+      "countUnchanged": "Saskaitītais sakrīt ar atlikumu; nekas nemainījās.",
+      "warehouseCreated": "Noliktava pievienota.",
+      "warehouseSaved": "Noklusējuma noliktava nomainīta.",
+      "warehouseArchived": "Noliktava arhivēta.",
+      "warehouseRestored": "Noliktava atjaunota."
+    },
+    "outcome": {
+      "codeTaken": "Noliktava ar šo kodu jau pastāv.",
+      "notEmpty": "Šajā noliktavā vēl ir atlikumi. Vispirms pārvietojiet vai izsniedziet tos."
     }
   }
 }

@@ -636,6 +636,42 @@
         "taxCategory": {
           "unknown": "Valige üks ettevõtte maksukategooriatest.",
           "archived": "See maksukategooria on arhiveeritud; valige aktiivne."
+        },
+        "trackStock": {
+          "inUse": "Sellel tootel on laoliikumisi, seega laoarvestus jääb sisse."
+        }
+      },
+      "stock": {
+        "quantity": {
+          "invalid": "Sisestage kogus kujul 2 või 1.5 (kuni 4 komakohta).",
+          "insufficient": "Selles laos pole piisavalt jääki."
+        },
+        "unitCost": {
+          "invalid": "Sisestage ühiku maksumus kujul 12.50 (ainult vastuvõtul)."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev.",
+          "future": "Kuupäev ei saa olla tulevikus."
+        },
+        "transfer": {
+          "target": "Valige ladu, kuhu paigutada.",
+          "sameWarehouse": "Valige kaks erinevat ladu."
+        },
+        "product": {
+          "unknown": "Valige üks ettevõtte toodetest.",
+          "notTracked": "Selle toote laojääki ei arvestata."
+        },
+        "warehouse": {
+          "unknown": "Valige üks ettevõtte ladudest.",
+          "archived": "See ladu on arhiveeritud."
+        }
+      },
+      "warehouse": {
+        "code": {
+          "invalid": "Kasutage ladina tähti ja numbreid (kuni 20), nt MAIN."
+        },
+        "name": {
+          "required": "Sisestage nimi."
         }
       }
     },
@@ -1139,6 +1175,84 @@
     "picker": {
       "label": "Lisa kataloogist",
       "placeholder": "Valige toode…"
+    }
+  },
+  "inventory": {
+    "description": "Laojäägid ladude kaupa: vastuvõtt, väljastus, ümberpaigutus ja inventuur. Iga muudatus säilib liikumiste ajaloos.",
+    "readOnly": "Saate laojääke vaadata. Muutmiseks on vaja laohalduse õigusega rolli.",
+    "noWarehouses": "Ladusid veel pole. Lisage esimene allpool — sellest saab vaikimisi ladu.",
+    "noTrackedProducts": "Ükski toode ei arvesta veel laojääki. Lülitage toodetes kaupadele sisse „Arvesta laojääki“.",
+    "archived": "arhiveeritud",
+    "stock": {
+      "title": "Laojääk",
+      "empty": "Laojääke veel pole.",
+      "value": "Väärtus ostuhindades"
+    },
+    "movements": {
+      "title": "Viimased liikumised"
+    },
+    "kind": {
+      "receipt": "Vastuvõtt",
+      "issue": "Väljastus",
+      "adjustment": "Inventuuri korrektsioon",
+      "transfer_out": "Ümberpaigutus (välja)",
+      "transfer_in": "Ümberpaigutus (sisse)",
+      "production_consume": "Kasutatud tootmises",
+      "production_output": "Toodetud"
+    },
+    "operation": {
+      "title": "Registreeri laojäägi muudatus",
+      "kind": "Toiming",
+      "product": "Toode",
+      "chooseProduct": "Valige toode…",
+      "warehouse": "Ladu",
+      "from": "Laost",
+      "to": "Lattu",
+      "chooseWarehouse": "Valige ladu…",
+      "quantity": "Kogus",
+      "counted": "Loendatud kogus",
+      "unitCost": "Ühiku maksumus (km-ta, valikuline)",
+      "date": "Kuupäev",
+      "reference": "Alus (valikuline)",
+      "countHint": "Erinevus praeguse jäägiga registreeritakse inventuuri korrektsioonina.",
+      "kinds": {
+        "receipt": "Vastuvõtt",
+        "issue": "Väljastus / mahakandmine",
+        "transfer": "Ümberpaigutus",
+        "count": "Inventuur"
+      },
+      "submit": {
+        "receipt": "Registreeri vastuvõtt",
+        "issue": "Registreeri väljastus",
+        "transfer": "Registreeri ümberpaigutus",
+        "count": "Registreeri inventuur"
+      }
+    },
+    "warehouses": {
+      "title": "Laod",
+      "add": "Lisa ladu",
+      "code": "Kood",
+      "codeHint": "Ladina tähed ja numbrid, nt MAIN.",
+      "name": "Nimi",
+      "default": "Vaikimisi",
+      "makeDefault": "Määra vaikimisi",
+      "archive": "Arhiveeri",
+      "restore": "Taasta"
+    },
+    "done": {
+      "receipt": "Vastuvõtt registreeritud.",
+      "issue": "Väljastus registreeritud.",
+      "transfer": "Ümberpaigutus registreeritud.",
+      "count": "Inventuur registreeritud.",
+      "countUnchanged": "Loendatud kogus vastab jäägile; midagi ei muutunud.",
+      "warehouseCreated": "Ladu lisatud.",
+      "warehouseSaved": "Vaikimisi ladu muudetud.",
+      "warehouseArchived": "Ladu arhiveeritud.",
+      "warehouseRestored": "Ladu taastatud."
+    },
+    "outcome": {
+      "codeTaken": "Selle koodiga ladu on juba olemas.",
+      "notEmpty": "Selles laos on veel jääke. Paigutage või väljastage need esmalt."
     }
   }
 }

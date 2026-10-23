@@ -96,6 +96,26 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     headers,
   });
   expect(product.status()).toBe(201);
+  const warehouse = await page.request.post(`/api/companies/${companyId}/warehouses`, {
+    data: {
+      code: "LONG-WAREHOUSE-CODE1",
+      name: "Ļoti garš noliktavas nosaukums Rīgas ostā (TEST)",
+    },
+    headers,
+  });
+  expect(warehouse.status()).toBe(201);
+  const receipt = await page.request.post(`/api/companies/${companyId}/stock/operations`, {
+    data: {
+      kind: "receipt",
+      productId: String((await product.json()).product.id),
+      warehouseId: String((await warehouse.json()).warehouse.id),
+      quantity: "12345678.1234",
+      occurredOn: "2026-03-02",
+      reference: "VERY-LONG-REFERENCE-NUMBER-2026-000123",
+    },
+    headers,
+  });
+  expect(receipt.status()).toBe(201);
 
   const company = `/companies/${companyId}`;
   const paths = [
@@ -113,6 +133,7 @@ test("main pages fit narrow phones without horizontal scrolling or broken number
     `${company}/customers`,
     `${company}/suppliers`,
     `${company}/products`,
+    `${company}/inventory`,
     "/account/security",
     "/account/two-factor",
   ];

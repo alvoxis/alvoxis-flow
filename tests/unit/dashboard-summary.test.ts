@@ -73,7 +73,7 @@ describe("main navigation", () => {
   });
 
   // Company modules: active on their entry page and on any company's pages of that module.
-  const COMPANY_MODULES = ["customers", "suppliers", "products"];
+  const COMPANY_MODULES = ["customers", "suppliers", "products", "inventory"];
 
   it.each(COMPANY_MODULES)("%s is enabled and active on its pages only", (key) => {
     const item = NAV_ITEMS.find((i) => i.key === key)!;
