@@ -3,11 +3,16 @@
 Business management SaaS for small and medium businesses in **Latvia, Lithuania, Estonia and Poland**:
 invoicing, customers & suppliers, products, inventory, production, payroll and analytics.
 
-> **Status: Stage 2 — authentication and sessions**, on top of the foundation (stage 1) and the
-> document foundation (stage 6a). Users can register, verify their email, sign in with a password or
-> Google, reset passwords, manage sessions/devices and enrol TOTP two-factor authentication (mandatory
-> for owners and admins). There is **no real business data, no payments and no external integrations
-> yet.** See [docs/ROADMAP.md](docs/ROADMAP.md) and [docs/auth/AUTHENTICATION.md](docs/auth/AUTHENTICATION.md).
+> **Status: closed beta preparation — not yet for real customers.** Working today: accounts with
+> email verification, Google sign-in, sessions and TOTP 2FA; companies, roles, member invitations;
+> documents (drafts, issue with numbering, credit notes, PDF, PDF import, sending by email);
+> customers and suppliers; products; inventory (append-only stock ledger); production (bills of
+> materials, production orders); payroll as a **calculation aid**; basic analytics.
+>
+> **Not ready for real use yet:** verified country tax rules and mandatory invoice content
+> (LV/LT/EE/PL), legal documents (privacy policy, terms, cookie notice, GDPR processes), payments and
+> subscriptions, monitoring and alerting, documented restore drills, PostgreSQL RLS. The full list
+> and order is in [docs/ROADMAP.md](docs/ROADMAP.md#before-real-customers).
 
 ## Stack
 
@@ -87,7 +92,8 @@ point `PLAYWRIGHT_CHROMIUM_EXECUTABLE` at an existing Chromium binary.
 
 ## Deployment
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Nothing is deployed automatically from this repository yet.
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Vercel deploys every branch as a preview; the
+`production` branch (updated only through a release PR from `main`) is the production deployment.
 
 ## Project layout
 
@@ -97,7 +103,8 @@ src/
   components/          UI (layout shell, dashboard, primitives)
   config/env.ts        server environment schema
   features/            feature logic usable by UI (dashboard document figures, client models)
-  modules/documents/   documents: domain model, server services, PDF rendering, PDF import
+  modules/             domain modules: documents (model, services, PDF, import), counterparties,
+                       products, inventory, production, payroll, analytics
   i18n/                locales, routing, request config
   lib/money/           decimal money, currencies, exchange-rate provenance
   server/              server-only code: db, auth/permissions, tenancy, audit
