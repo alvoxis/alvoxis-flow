@@ -194,6 +194,12 @@
     "invitation": {
       "subject": "Kvietimas į {company}",
       "body": "{inviter} kviečia jus prisijungti prie {company} ALVOXIS Flow. Norėdami priimti, atidarykite nuorodą:\n{link}\n\nJei dar neturite paskyros, pirmiausia užsiregistruokite su šiuo el. pašto adresu, tada vėl atidarykite nuorodą. Nuoroda galioja {days} d."
+    },
+    "document": {
+      "greeting": "Laba diena,",
+      "attached": "Pridedame {document} iš {seller}.",
+      "reply": "Jei turite klausimų, atsakykite į šį laišką.",
+      "footer": "Išsiųsta {seller} vardu per ALVOXIS Flow."
     }
   },
   "auth": {
@@ -960,6 +966,27 @@
         "totals": {
           "linesMismatch": "Eilučių suma nesutampa su faile nurodyta tarpine suma.",
           "sumMismatch": "Tarpinė suma ir mokestis nesutampa su faile nurodyta bendra suma."
+        }
+      }
+    },
+    "email": {
+      "open": "Siųsti el. paštu",
+      "title": "Siųsti {number} el. paštu",
+      "description": "PDF bus pridėtas. Atsakymai ateis į jūsų el. paštą.",
+      "to": "Gavėjo el. paštas",
+      "message": "Žinutė (neprivaloma)",
+      "send": "Siųsti",
+      "close": "Uždaryti",
+      "sent": "Išsiųsta adresu {to}.",
+      "notConfigured": "Dokumentų siuntimas el. paštu negalimas: svetainėje nesukonfigūruotas el. paštas.",
+      "state": {
+        "document": {
+          "notIssued": "Siųsti galima tik išrašytus dokumentus."
+        },
+        "email": {
+          "notConfigured": "Svetainėje nesukonfigūruotas el. paštas.",
+          "rateLimited": "Per paskutinę valandą išsiųsta per daug dokumentų. Bandykite vėliau.",
+          "failed": "El. laiško išsiųsti nepavyko. Bandykite vėliau."
         }
       }
     }
