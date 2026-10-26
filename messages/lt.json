@@ -1140,7 +1140,8 @@
       "twoFactor": "Šiam veiksmui jūsų rolei reikalingas dviejų veiksnių autentifikavimas.",
       "forbidden": "Neturite teisės atlikti šio veiksmo arba įmonė nebeaktyvi.",
       "notFound": "Šio įrašo nebėra.",
-      "error": "Kažkas nepavyko. Bandykite dar kartą."
+      "error": "Kažkas nepavyko. Bandykite dar kartą.",
+      "subscription": "Tam reikia aktyvios prenumeratos. Kol prenumerata neaktyvi, įmonė prieinama tik peržiūrai."
     },
     "reload": "Įkelti iš naujo"
   },
@@ -1641,58 +1642,97 @@
   },
   "billing": {
     "title": "Prenumerata",
-    "description": "Įmonės planas ir mokėjimai. Mokėjimus tvarko Stripe.",
+    "description": "Įmonės prenumerata ir mokėjimai. Mokėjimus tvarko Stripe.",
     "back": "Į nustatymus",
     "notConfigured": "Prenumeratos šioje svetainėje dar neprieinamos.",
     "checkout": {
-      "success": "Ačiū! Prenumerata kuriama; jos būsena čia pasirodys netrukus.",
+      "success": "Ačiū! Stripe tvirtina mokėjimą; būsena žemiau atsinaujins, kai tik Stripe apie tai praneš.",
       "cancelled": "Apmokėjimas atšauktas. Niekas nenuskaičiuota."
     },
-    "current": "Dabartinis planas",
-    "none": "Prenumeratos dar nėra.",
-    "manage": "Valdyti prenumeratą",
-    "history": "Sąskaitos ir mokėjimo būdai",
-    "choose": "Pasirinkite planą",
-    "trialInfo": "Pirmos {days} dienos nemokamos, kortelės nereikia. Vėliau prenumerata baigiasi, jei nepridėsite mokėjimo būdo.",
+    "current": "Dabartinė prenumerata",
+    "planName": "ALVOXIS Flow",
+    "planText": "Vienas planas su visais moduliais vienai įmonei.",
     "perMonth": "/ mėn.",
-    "startTrial": "Išbandyti {days} d. nemokamai",
-    "subscribe": "Prenumeruoti",
-    "pricesNote": "Kainos už įmonę per mėnesį, EUR. Kortelės duomenys įvedami Stripe puslapyje ir nepatenka į ALVOXIS Flow. Atšaukti galima bet kada.",
-    "trialEnds": "Nemokamas laikotarpis iki {date}.",
+    "subscribeTitle": "Užsiprenumeruoti",
+    "subscribe": "Užsiprenumeruoti už €{price} / mėn.",
+    "manage": "Mokėjimo būdas ir sąskaitos",
+    "history": "Mokėjimų istorija",
+    "historyEmpty": "Sąskaitų dar nėra.",
+    "historyUnavailable": "Mokėjimų istorijos šiuo metu nepavyko įkelti.",
+    "viewInvoice": "Peržiūrėti sąskaitą",
+    "pricesNote": "Kaina už įmonę per mėnesį, EUR; mokesčiai, jei taikomi, rodomi apmokant. Kortelės duomenys įvedami Stripe puslapyje ir nepatenka į ALVOXIS Flow. Atšaukti galima bet kada; prenumerata baigsis kartu su apmokėtu laikotarpiu.",
     "renewsOn": "Bus pratęsta {date}.",
-    "endsOn": "Baigsis {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Dokumentai, klientai ir prekės mažai įmonei."
+    "endsOn": "Pratęsimas atšauktas — prieiga baigsis {date}.",
+    "readOnly": "Įmonė prieinama tik peržiūrai: viską galima peržiūrėti ir eksportuoti, bet negalima kurti ar keisti įrašų ar naudoti DI asistento. Duomenys išsaugomi.",
+    "grantUntil": "Operatoriaus suteikta vidinė prieiga iki {date}.",
+    "renewal": {
+      "cancel": "Atšaukti pratęsimą",
+      "resume": "Atnaujinti pratęsimą",
+      "saved": "Išsaugota. Žemiau rodoma dabartinė būsena Stripe sistemoje.",
+      "confirmTitle": "Atšaukti pratęsimą?",
+      "confirmText": "Prenumerata liks aktyvi iki {date}, tada baigsis. Niekas neištrinama; įmonė taps prieinama tik peržiūrai, o užsiprenumeruoti vėl galima bet kada.",
+      "keep": "Palikti prenumeratą",
+      "confirm": "Atšaukti pratęsimą"
+    },
+    "phase": {
+      "active": {
+        "label": "Aktyvi",
+        "text": "Viskas prieinama."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Viskas iš Basic ir DI asistentas, kai jis bus išleistas."
+      "past_due": {
+        "label": "Mokėjimas vėluoja",
+        "text": "Paskutinis mokėjimas nepavyko. Stripe bandys dar kartą; atnaujinkite mokėjimo būdą, kad išlaikytumėte prieigą."
       },
-      "business": {
-        "name": "Business",
-        "text": "Visi moduliai: sandėlis, gamyba, darbo užmokestis ir analitika."
+      "awaiting_payment": {
+        "label": "Laukiama mokėjimo",
+        "text": "Pirmasis mokėjimas dar nepatvirtintas. Kol Stripe jo nepatvirtins, įmonė prieinama tik peržiūrai."
+      },
+      "payment_required": {
+        "label": "Reikia sumokėti",
+        "text": "Mokėjimai nepavyko, prenumerata sustabdyta. Atnaujinkite mokėjimo būdą, kad atkurtumėte prieigą."
+      },
+      "ended": {
+        "label": "Baigėsi",
+        "text": "Prenumerata baigėsi. Duomenys išsaugoti; užsiprenumeruokite vėl, kad tęstumėte darbą."
+      },
+      "none": {
+        "label": "Nėra prenumeratos",
+        "text": "Įmonė dar neturi prenumeratos."
       }
     },
-    "status": {
-      "trialing": "Nemokamas laikotarpis",
-      "active": "Aktyvi",
-      "past_due": "Vėluoja mokėjimas",
-      "unpaid": "Neapmokėta",
-      "incomplete": "Laukia mokėjimo",
-      "paused": "Sustabdyta",
-      "canceled": "Atšaukta",
-      "incomplete_expired": "Pasibaigusi"
+    "invoiceStatus": {
+      "paid": "Apmokėta",
+      "open": "Atvira",
+      "void": "Anuliuota",
+      "uncollectible": "Neatgautina"
+    },
+    "banner": {
+      "readOnly": "Tik peržiūra: įmonė neturi aktyvios prenumeratos. Peržiūra ir eksportas veikia.",
+      "pastDue": "Paskutinis prenumeratos mokėjimas nepavyko. Atnaujinkite mokėjimo būdą, kad išlaikytumėte prieigą.",
+      "open": "Prenumerata"
     },
     "state": {
       "billing": {
         "failed": "Mokėjimų paslauga neatsakė. Bandykite dar kartą po akimirkos.",
         "notConfigured": "Prenumeratos šioje svetainėje dar neprieinamos.",
-        "alreadySubscribed": "Įmonė jau turi prenumeratą; keiskite ją skiltyje „Valdyti prenumeratą“.",
-        "priceMissing": "Šis planas šiuo metu neprieinamas.",
-        "noCustomer": "Dar nėra prenumeratos, kurią būtų galima valdyti."
+        "alreadySubscribed": "Įmonė jau turi prenumeratą; valdykite ją per „Mokėjimo būdas ir sąskaitos“.",
+        "priceMissing": "Prenumeratos šiuo metu pasiūlyti negalima (kaina nenustatyta).",
+        "priceMismatch": "Prenumeratos šiuo metu pasiūlyti negalima (kaina nustatyta neteisingai). Niekas nenuskaičiuota.",
+        "noCustomer": "Dar nėra prenumeratos, kurią būtų galima valdyti.",
+        "noSubscription": "Nėra aktyvios prenumeratos, kurią būtų galima keisti."
       }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Verslo apžvalga ir ataskaitos",
+      "documents": "Sąskaitos, kreditinės sąskaitos ir PDF",
+      "finance": "Mokėjimai, gautinos sumos ir išlaidos",
+      "catalog": "Klientai, tiekėjai, prekės ir atsargos",
+      "costing": "Savikainos skaičiuoklė, gamyba ir darbo užmokesčio pagalbinė priemonė",
+      "ai": "DI verslo asistentas (protingi limitai)",
+      "team": "Komandos nariai su rolėmis",
+      "languages": "Anglų, rusų, latvių, lietuvių, estų"
     }
   }
 }

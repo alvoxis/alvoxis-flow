@@ -14,6 +14,7 @@ export type RecordOutcome<T> =
   | { kind: "signedOut" }
   | { kind: "twoFactor" }
   | { kind: "forbidden" }
+  | { kind: "subscription" }
   | { kind: "notFound" }
   | { kind: "error" };
 
@@ -33,6 +34,7 @@ export function interpretRecordResponse<T>(
   if (status === 409 && typeof b.error === "string") return { kind: "taken", code: b.error };
   if (status === 401 && b.error === "two_factor_challenge_required") return { kind: "twoFactor" };
   if (status === 401) return { kind: "signedOut" };
+  if (status === 402) return { kind: "subscription" };
   if (status === 403 && b.error === "two_factor_enrollment_required") return { kind: "twoFactor" };
   if (status === 403) return { kind: "forbidden" };
   if (status === 404) return { kind: "notFound" };

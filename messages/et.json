@@ -1140,7 +1140,8 @@
       "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
       "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
       "notFound": "Seda kirjet enam ei ole.",
-      "error": "Midagi läks valesti. Palun proovige uuesti."
+      "error": "Midagi läks valesti. Palun proovige uuesti.",
+      "subscription": "Selleks on vaja aktiivset tellimust. Kuni tellimus pole aktiivne, on ettevõte ainult vaatamiseks."
     },
     "reload": "Laadi uuesti"
   },
@@ -1641,58 +1642,97 @@
   },
   "billing": {
     "title": "Tellimus",
-    "description": "Ettevõtte pakett ja maksed. Makseid töötleb Stripe.",
+    "description": "Ettevõtte tellimus ja maksed. Makseid töötleb Stripe.",
     "back": "Seadetesse",
     "notConfigured": "Tellimused pole sellel saidil veel saadaval.",
     "checkout": {
-      "success": "Aitäh! Tellimust seadistatakse; selle olek ilmub siia hetke pärast.",
+      "success": "Aitäh! Stripe kinnitab makset; allolev olek uueneb kohe, kui Stripe sellest teatab.",
       "cancelled": "Makse tühistati. Midagi ei võetud."
     },
-    "current": "Praegune pakett",
-    "none": "Tellimust veel pole.",
-    "manage": "Halda tellimust",
-    "history": "Arved ja makseviisid",
-    "choose": "Valige pakett",
-    "trialInfo": "Esimesed {days} päeva on tasuta ja kaarti pole vaja. Seejärel tellimus lõpeb, kui te makseviisi ei lisa.",
+    "current": "Praegune tellimus",
+    "planName": "ALVOXIS Flow",
+    "planText": "Üks pakett kõigi moodulitega ühele ettevõttele.",
     "perMonth": "/ kuus",
-    "startTrial": "Proovi {days} päeva tasuta",
-    "subscribe": "Telli",
-    "pricesNote": "Hinnad ettevõtte kohta kuus, EUR. Kaardiandmed sisestatakse Stripe'i lehel ega jõua ALVOXIS Flow'sse. Tühistada saab igal ajal.",
-    "trialEnds": "Tasuta periood kuni {date}.",
+    "subscribeTitle": "Telli",
+    "subscribe": "Telli hinnaga €{price} / kuus",
+    "manage": "Makseviis ja arved",
+    "history": "Maksete ajalugu",
+    "historyEmpty": "Arveid veel pole.",
+    "historyUnavailable": "Maksete ajalugu ei õnnestunud praegu laadida.",
+    "viewInvoice": "Vaata arvet",
+    "pricesNote": "Hind ettevõtte kohta kuus, EUR; maksud, kui neid kohaldatakse, kuvatakse maksmisel. Kaardiandmed sisestatakse Stripe'i lehel ega jõua ALVOXIS Flow'sse. Tühistada saab igal ajal; tellimus lõpeb koos makstud perioodiga.",
     "renewsOn": "Pikeneb {date}.",
-    "endsOn": "Lõpeb {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Dokumendid, kliendid ja tooted väikeettevõttele."
+    "endsOn": "Pikendamine tühistatud — juurdepääs lõpeb {date}.",
+    "readOnly": "Ettevõte on ainult vaatamiseks: kõike saab vaadata ja eksportida, kuid kirjeid ei saa luua ega muuta ega tehisintellekti assistenti kasutada. Andmed säilivad.",
+    "grantUntil": "Operaatori antud sisemine juurdepääs kuni {date}.",
+    "renewal": {
+      "cancel": "Tühista pikendamine",
+      "resume": "Jätka pikendamist",
+      "saved": "Salvestatud. Allpool on Stripe'i praegune olek.",
+      "confirmTitle": "Tühistada pikendamine?",
+      "confirmText": "Tellimus jääb aktiivseks kuni {date} ja lõpeb siis. Midagi ei kustutata; ettevõte muutub ainult vaatamiseks ja uuesti tellida saab igal ajal.",
+      "keep": "Jäta tellimus alles",
+      "confirm": "Tühista pikendamine"
+    },
+    "phase": {
+      "active": {
+        "label": "Aktiivne",
+        "text": "Kõik on saadaval."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Kõik Basicust ja tehisintellekti assistent, kui see ilmub."
+      "past_due": {
+        "label": "Makse hilineb",
+        "text": "Viimane makse ebaõnnestus. Stripe proovib uuesti; juurdepääsu säilitamiseks uuendage makseviisi."
       },
-      "business": {
-        "name": "Business",
-        "text": "Kõik moodulid: ladu, tootmine, palgad ja analüütika."
+      "awaiting_payment": {
+        "label": "Ootab makset",
+        "text": "Esimest makset pole veel kinnitatud. Kuni Stripe selle kinnitab, on ettevõte ainult vaatamiseks."
+      },
+      "payment_required": {
+        "label": "Makse vajalik",
+        "text": "Maksed ebaõnnestusid ja tellimus on peatatud. Juurdepääsu taastamiseks uuendage makseviisi."
+      },
+      "ended": {
+        "label": "Lõppenud",
+        "text": "Tellimus on lõppenud. Andmed on säilinud; töö jätkamiseks tellige uuesti."
+      },
+      "none": {
+        "label": "Tellimus puudub",
+        "text": "Ettevõttel pole veel tellimust."
       }
     },
-    "status": {
-      "trialing": "Tasuta periood",
-      "active": "Aktiivne",
-      "past_due": "Makse hilineb",
-      "unpaid": "Maksmata",
-      "incomplete": "Ootab makset",
-      "paused": "Peatatud",
-      "canceled": "Tühistatud",
-      "incomplete_expired": "Aegunud"
+    "invoiceStatus": {
+      "paid": "Makstud",
+      "open": "Avatud",
+      "void": "Tühistatud",
+      "uncollectible": "Sissenõudmatu"
+    },
+    "banner": {
+      "readOnly": "Ainult vaatamiseks: ettevõttel pole aktiivset tellimust. Vaatamine ja eksport töötavad.",
+      "pastDue": "Viimane tellimusmakse ebaõnnestus. Juurdepääsu säilitamiseks uuendage makseviisi.",
+      "open": "Tellimus"
     },
     "state": {
       "billing": {
         "failed": "Makseteenus ei vastanud. Proovige hetke pärast uuesti.",
         "notConfigured": "Tellimused pole sellel saidil veel saadaval.",
-        "alreadySubscribed": "Ettevõttel on juba tellimus; muutke seda jaotises „Halda tellimust“.",
-        "priceMissing": "See pakett pole praegu saadaval.",
-        "noCustomer": "Hallatavat tellimust veel pole."
+        "alreadySubscribed": "Ettevõttel on juba tellimus; hallake seda jaotises „Makseviis ja arved“.",
+        "priceMissing": "Tellimust ei saa praegu pakkuda (hind pole seadistatud).",
+        "priceMismatch": "Tellimust ei saa praegu pakkuda (hind on valesti seadistatud). Midagi ei võetud.",
+        "noCustomer": "Hallatavat tellimust veel pole.",
+        "noSubscription": "Muudetavat aktiivset tellimust pole."
       }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Ärikokkuvõte ja aruanded",
+      "documents": "Arved, kreeditarved ja PDF-id",
+      "finance": "Maksed, nõuded ja kulud",
+      "catalog": "Kliendid, tarnijad, tooted ja laoseis",
+      "costing": "Omahinna kalkulaator, tootmine ja palgaarvestuse abivahend",
+      "ai": "Tehisintellektil põhinev äriassistent (mõistlikud piirangud)",
+      "team": "Meeskonnaliikmed rollidega",
+      "languages": "Inglise, vene, läti, leedu, eesti"
     }
   }
 }

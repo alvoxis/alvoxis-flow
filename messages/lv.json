@@ -1140,7 +1140,8 @@
       "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
       "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
       "notFound": "Šis ieraksts vairs nepastāv.",
-      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz."
+      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz.",
+      "subscription": "Šim nolūkam vajadzīgs aktīvs abonements. Kamēr abonements nav aktīvs, uzņēmums ir pieejams tikai lasīšanai."
     },
     "reload": "Pārlādēt"
   },
@@ -1641,58 +1642,97 @@
   },
   "billing": {
     "title": "Abonements",
-    "description": "Uzņēmuma plāns un maksājumi. Maksājumus apstrādā Stripe.",
+    "description": "Uzņēmuma abonements un maksājumi. Maksājumus apstrādā Stripe.",
     "back": "Uz iestatījumiem",
     "notConfigured": "Abonementi šajā vietnē vēl nav pieejami.",
     "checkout": {
-      "success": "Paldies! Abonements tiek iestatīts; tā statuss šeit parādīsies pēc brīža.",
+      "success": "Paldies! Stripe apstiprina maksājumu; statuss zemāk atjaunosies, tiklīdz Stripe par to paziņos.",
       "cancelled": "Apmaksa atcelta. Nekas netika iekasēts."
     },
-    "current": "Pašreizējais plāns",
-    "none": "Abonementa vēl nav.",
-    "manage": "Pārvaldīt abonementu",
-    "history": "Rēķini un maksājumu veidi",
-    "choose": "Izvēlieties plānu",
-    "trialInfo": "Pirmās {days} dienas ir bez maksas, karte nav vajadzīga. Pēc tam abonements beidzas, ja nepievienojat maksājumu veidu.",
+    "current": "Pašreizējais abonements",
+    "planName": "ALVOXIS Flow",
+    "planText": "Viens plāns ar visiem moduļiem vienam uzņēmumam.",
     "perMonth": "/ mēnesī",
-    "startTrial": "Izmēģināt {days} dienas bez maksas",
-    "subscribe": "Abonēt",
-    "pricesNote": "Cenas par uzņēmumu mēnesī, EUR. Kartes dati tiek ievadīti Stripe lapā un nenonāk ALVOXIS Flow. Atcelt var jebkurā laikā.",
-    "trialEnds": "Bezmaksas periods līdz {date}.",
+    "subscribeTitle": "Abonēt",
+    "subscribe": "Abonēt par €{price} / mēnesī",
+    "manage": "Maksājuma veids un rēķini",
+    "history": "Maksājumu vēsture",
+    "historyEmpty": "Rēķinu vēl nav.",
+    "historyUnavailable": "Maksājumu vēsturi pašlaik neizdevās ielādēt.",
+    "viewInvoice": "Skatīt rēķinu",
+    "pricesNote": "Cena par uzņēmumu mēnesī, EUR; nodokļi, ja tādi piemērojami, tiek parādīti apmaksas laikā. Kartes dati tiek ievadīti Stripe lapā un nenonāk ALVOXIS Flow. Atcelt var jebkurā laikā; abonements beigsies kopā ar apmaksāto periodu.",
     "renewsOn": "Atjaunosies {date}.",
-    "endsOn": "Beigsies {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Dokumenti, klienti un preces mazam uzņēmumam."
+    "endsOn": "Atjaunošana atcelta — piekļuve beigsies {date}.",
+    "readOnly": "Uzņēmums ir pieejams tikai lasīšanai: visu var skatīt un eksportēt, bet nevar izveidot vai mainīt ierakstus vai izmantot MI asistentu. Dati tiek saglabāti.",
+    "grantUntil": "Operatora piešķirta iekšēja piekļuve līdz {date}.",
+    "renewal": {
+      "cancel": "Atcelt atjaunošanu",
+      "resume": "Atsākt atjaunošanu",
+      "saved": "Saglabāts. Zemāk redzams pašreizējais statuss Stripe.",
+      "confirmTitle": "Atcelt atjaunošanu?",
+      "confirmText": "Abonements paliks aktīvs līdz {date} un tad beigsies. Nekas netiek dzēsts; uzņēmums kļūs pieejams tikai lasīšanai, un abonēt no jauna var jebkurā laikā.",
+      "keep": "Paturēt abonementu",
+      "confirm": "Atcelt atjaunošanu"
+    },
+    "phase": {
+      "active": {
+        "label": "Aktīvs",
+        "text": "Viss ir pieejams."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Viss no Basic un AI asistents, kad tas būs pieejams."
+      "past_due": {
+        "label": "Maksājums kavēts",
+        "text": "Pēdējais maksājums neizdevās. Stripe mēģinās vēlreiz; atjauniniet maksājuma veidu, lai saglabātu piekļuvi."
       },
-      "business": {
-        "name": "Business",
-        "text": "Visi moduļi: noliktava, ražošana, algas un analītika."
+      "awaiting_payment": {
+        "label": "Gaida maksājumu",
+        "text": "Pirmais maksājums vēl nav apstiprināts. Līdz Stripe apstiprinājumam uzņēmums ir pieejams tikai lasīšanai."
+      },
+      "payment_required": {
+        "label": "Nepieciešams maksājums",
+        "text": "Maksājumi neizdevās, un abonements ir apturēts. Atjauniniet maksājuma veidu, lai atjaunotu piekļuvi."
+      },
+      "ended": {
+        "label": "Beidzies",
+        "text": "Abonements ir beidzies. Dati ir saglabāti; abonējiet no jauna, lai turpinātu darbu."
+      },
+      "none": {
+        "label": "Nav abonementa",
+        "text": "Uzņēmumam vēl nav abonementa."
       }
     },
-    "status": {
-      "trialing": "Bezmaksas periods",
-      "active": "Aktīvs",
-      "past_due": "Maksājums nokavēts",
-      "unpaid": "Neapmaksāts",
-      "incomplete": "Gaida maksājumu",
-      "paused": "Apturēts",
-      "canceled": "Atcelts",
-      "incomplete_expired": "Beidzies"
+    "invoiceStatus": {
+      "paid": "Apmaksāts",
+      "open": "Atvērts",
+      "void": "Anulēts",
+      "uncollectible": "Neatgūstams"
+    },
+    "banner": {
+      "readOnly": "Tikai lasīšanai: uzņēmumam nav aktīva abonementa. Skatīšana un eksports darbojas.",
+      "pastDue": "Pēdējais abonementa maksājums neizdevās. Atjauniniet maksājuma veidu, lai saglabātu piekļuvi.",
+      "open": "Abonements"
     },
     "state": {
       "billing": {
         "failed": "Maksājumu pakalpojums neatbildēja. Mēģiniet vēlreiz pēc brīža.",
         "notConfigured": "Abonementi šajā vietnē vēl nav pieejami.",
-        "alreadySubscribed": "Uzņēmumam jau ir abonements; mainiet to sadaļā “Pārvaldīt abonementu”.",
-        "priceMissing": "Šis plāns pašlaik nav pieejams.",
-        "noCustomer": "Vēl nav abonementa, ko pārvaldīt."
+        "alreadySubscribed": "Uzņēmumam jau ir abonements; pārvaldiet to sadaļā “Maksājuma veids un rēķini”.",
+        "priceMissing": "Abonementu pašlaik nevar piedāvāt (cena nav iestatīta).",
+        "priceMismatch": "Abonementu pašlaik nevar piedāvāt (cena iestatīta nepareizi). Nekas netika iekasēts.",
+        "noCustomer": "Vēl nav abonementa, ko pārvaldīt.",
+        "noSubscription": "Nav aktīva abonementa, ko mainīt."
       }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Biznesa pārskats un atskaites",
+      "documents": "Rēķini, kredītrēķini un PDF",
+      "finance": "Maksājumi, debitori un izdevumi",
+      "catalog": "Klienti, piegādātāji, preces un krājumi",
+      "costing": "Pašizmaksas kalkulators, ražošana un algu palīgrīks",
+      "ai": "MI biznesa asistents (saprātīgi limiti)",
+      "team": "Komandas locekļi ar lomām",
+      "languages": "Angļu, krievu, latviešu, lietuviešu, igauņu"
     }
   }
 }

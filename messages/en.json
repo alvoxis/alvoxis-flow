@@ -1140,7 +1140,8 @@
       "twoFactor": "Your role requires two-factor authentication for this action.",
       "forbidden": "You do not have permission for this action, or the company is no longer active.",
       "notFound": "This record no longer exists.",
-      "error": "Something went wrong. Please try again."
+      "error": "Something went wrong. Please try again.",
+      "subscription": "This needs an active subscription. The company is read-only until the subscription is active again."
     },
     "reload": "Reload"
   },
@@ -1641,58 +1642,97 @@
   },
   "billing": {
     "title": "Subscription",
-    "description": "Your company's plan and payments. Payment is handled by Stripe.",
+    "description": "Your company's subscription and payments. Payment is handled by Stripe.",
     "back": "Back to settings",
     "notConfigured": "Subscriptions are not available on this site yet.",
     "checkout": {
-      "success": "Thank you! Your subscription is being set up; its status appears here in a moment.",
+      "success": "Thank you! Stripe is confirming the payment; the status below updates as soon as Stripe reports it.",
       "cancelled": "Checkout was cancelled. Nothing was charged."
     },
-    "current": "Current plan",
-    "none": "No subscription yet.",
-    "manage": "Manage subscription",
-    "history": "Invoices and payment methods",
-    "choose": "Choose a plan",
-    "trialInfo": "The first {days} days are free and no card is needed. Afterwards the subscription ends unless you add a payment method.",
+    "current": "Current subscription",
+    "planName": "ALVOXIS Flow",
+    "planText": "One plan with every module, for one company.",
     "perMonth": "/ month",
-    "startTrial": "Try {days} days free",
-    "subscribe": "Subscribe",
-    "pricesNote": "Prices per company per month in EUR. Card details are entered on Stripe's page and never reach ALVOXIS Flow. You can cancel at any time.",
-    "trialEnds": "Free trial until {date}.",
+    "subscribeTitle": "Subscribe",
+    "subscribe": "Subscribe for €{price} / month",
+    "manage": "Payment method and invoices",
+    "history": "Billing history",
+    "historyEmpty": "No invoices yet.",
+    "historyUnavailable": "The billing history could not be loaded right now.",
+    "viewInvoice": "View invoice",
+    "pricesNote": "Price per company per month in EUR; taxes, if any apply, are shown at checkout. Card details are entered on Stripe's page and never reach ALVOXIS Flow. Cancel at any time; the subscription then ends with the paid period.",
     "renewsOn": "Renews on {date}.",
-    "endsOn": "Ends on {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Documents, customers and products for a small business."
+    "endsOn": "Renewal cancelled — access ends on {date}.",
+    "readOnly": "The company is read-only: you can view and export everything, but not create or change records or use the AI assistant. Your data is kept.",
+    "grantUntil": "Internal access granted by the operator until {date}.",
+    "renewal": {
+      "cancel": "Cancel renewal",
+      "resume": "Resume renewal",
+      "saved": "Saved. Stripe's current status is shown below.",
+      "confirmTitle": "Cancel the renewal?",
+      "confirmText": "The subscription stays active until {date} and then ends. Nothing is deleted; the company becomes read-only and you can subscribe again at any time.",
+      "keep": "Keep subscription",
+      "confirm": "Cancel renewal"
+    },
+    "phase": {
+      "active": {
+        "label": "Active",
+        "text": "Everything is available."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Everything in Basic, plus the AI assistant when it is released."
+      "past_due": {
+        "label": "Payment overdue",
+        "text": "The last payment failed. Stripe retries it; update the payment method to keep access."
       },
-      "business": {
-        "name": "Business",
-        "text": "All modules: inventory, production, payroll and analytics."
+      "awaiting_payment": {
+        "label": "Awaiting payment",
+        "text": "The first payment is not confirmed yet. The company is read-only until Stripe confirms it."
+      },
+      "payment_required": {
+        "label": "Payment required",
+        "text": "Payments failed and the subscription is on hold. Update the payment method to restore access."
+      },
+      "ended": {
+        "label": "Ended",
+        "text": "The subscription has ended. Your data is kept; subscribe again to continue working."
+      },
+      "none": {
+        "label": "No subscription",
+        "text": "The company has no subscription yet."
       }
     },
-    "status": {
-      "trialing": "Free trial",
-      "active": "Active",
-      "past_due": "Payment overdue",
-      "unpaid": "Unpaid",
-      "incomplete": "Awaiting payment",
-      "paused": "Paused",
-      "canceled": "Cancelled",
-      "incomplete_expired": "Expired"
+    "invoiceStatus": {
+      "paid": "Paid",
+      "open": "Open",
+      "void": "Void",
+      "uncollectible": "Uncollectible"
+    },
+    "banner": {
+      "readOnly": "Read-only: this company has no active subscription. Viewing and exports still work.",
+      "pastDue": "The last subscription payment failed. Update the payment method to keep access.",
+      "open": "Subscription"
     },
     "state": {
       "billing": {
         "failed": "The payment provider did not respond. Try again in a moment.",
         "notConfigured": "Subscriptions are not available on this site yet.",
-        "alreadySubscribed": "The company already has a subscription; change it under “Manage subscription”.",
-        "priceMissing": "This plan is not available right now.",
-        "noCustomer": "There is no subscription to manage yet."
+        "alreadySubscribed": "The company already has a subscription; manage it with “Payment method and invoices”.",
+        "priceMissing": "The subscription cannot be offered right now (the price is not set up).",
+        "priceMismatch": "The subscription cannot be offered right now (the price is set up incorrectly). Nothing was charged.",
+        "noCustomer": "There is no subscription to manage yet.",
+        "noSubscription": "There is no active subscription to change."
       }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Business dashboard and reports",
+      "documents": "Invoices, credit notes and PDFs",
+      "finance": "Payments, receivables and expenses",
+      "catalog": "Customers, suppliers, products and stock",
+      "costing": "Cost calculator, production and payroll aid",
+      "ai": "AI business assistant (fair-use limits)",
+      "team": "Team members with roles",
+      "languages": "English, Russian, Latvian, Lithuanian, Estonian"
     }
   }
 }
