@@ -34,9 +34,32 @@ export const PERMISSIONS = [
   "integrations.manage",
   "ai.use",
   "ai.financial_actions",
+  "finance.view",
+  "finance.manage",
 ] as const;
 
 export type Permission = (typeof PERMISSIONS)[number];
+
+/**
+ * Permissions that create or change business data, or use the AI assistant. With an inactive
+ * subscription (where subscriptions are enforced) they are withheld, so the company is read-only;
+ * viewing, exports, members, settings and billing stay available. See modules/billing/access.ts.
+ */
+export const PAID_PERMISSIONS: ReadonlySet<Permission> = new Set<Permission>([
+  "customers.manage",
+  "suppliers.manage",
+  "products.manage",
+  "documents.create",
+  "documents.approve",
+  "tax_categories.manage",
+  "inventory.manage",
+  "production.manage",
+  "payroll.manage",
+  "integrations.manage",
+  "ai.use",
+  "ai.financial_actions",
+  "finance.manage",
+]);
 
 export const SYSTEM_ROLES = [
   "owner",
@@ -80,6 +103,8 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<SystemRoleKey, readonly Permission
     "payroll.manage",
     "analytics.view",
     "ai.use",
+    "finance.view",
+    "finance.manage",
   ],
   manager: [
     "company.view",
@@ -96,6 +121,7 @@ export const DEFAULT_ROLE_PERMISSIONS: Record<SystemRoleKey, readonly Permission
     "production.view",
     "analytics.view",
     "ai.use",
+    "finance.view",
   ],
   warehouse_employee: [
     "company.view",

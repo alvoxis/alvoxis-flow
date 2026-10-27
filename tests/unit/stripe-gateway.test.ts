@@ -5,7 +5,7 @@ import {
   StripeRequestError,
 } from "@/modules/billing/server/stripe-gateway";
 
-/** The Stripe REST client: form encoding, the trial without a card, errors without secrets. */
+/** The Stripe REST client: form encoding, paid checkout, price checks, errors without secrets. */
 const KEY = "sk_test_fake000";
 
 function fakeFetch(response: { status?: number; body: unknown }) {
@@ -37,7 +37,7 @@ describe("stripe gateway", () => {
     ]);
   });
 
-  it("starts a trial without asking for a card and ends it without a payment method", async () => {
+  it("starts a paid checkout without a trial and reads the price details", async () => {
     const f = fakeFetch({ body: { url: "https://checkout.stripe.test/s" } });
     const gw = createStripeGateway(KEY, f.impl);
     const s = await gw.createCheckoutSession({
@@ -47,7 +47,6 @@ describe("stripe gateway", () => {
       successUrl: "https://app.test/ok",
       cancelUrl: "https://app.test/no",
       locale: "lv",
-      trialDays: 2,
     });
     expect(s.url).toBe("https://checkout.stripe.test/s");
     const body = decodeURIComponent(String(f.calls[0]!.init.body));
@@ -56,26 +55,53 @@ describe("stripe gateway", () => {
       `Bearer ${KEY}`,
     );
     expect(body).toContain("mode=subscription");
-    expect(body).toContain("payment_method_collection=if_required");
-    expect(body).toContain("subscription_data[trial_period_days]=2");
-    expect(body).toContain(
-      "subscription_data[trial_settings][end_behavior][missing_payment_method]=cancel",
-    );
+    expect(body).toContain("line_items[0][price]=price_1");
     expect(body).toContain("subscription_data[metadata][company_id]=c-1");
+    expect(body).not.toContain("trial");
+    expect(body).not.toContain("payment_method_collection");
 
-    const g = fakeFetch({ body: { url: "u" } });
-    await createStripeGateway(KEY, g.impl).createCheckoutSession({
-      customerId: "cus_1",
-      priceId: "price_1",
-      companyId: "c-1",
-      successUrl: "s",
-      cancelUrl: "c",
-      locale: "en",
-      trialDays: null,
+    const p = fakeFetch({
+      body: {
+        data: [
+          { id: "price_9", unit_amount: 999, currency: "eur", recurring: { interval: "month" } },
+        ],
+      },
     });
-    const paid = decodeURIComponent(String(g.calls[0]!.init.body));
-    expect(paid).not.toContain("trial");
-    expect(paid).not.toContain("payment_method_collection");
+    expect(await createStripeGateway(KEY, p.impl).findPrice("alvoxis_flow_monthly")).toEqual({
+      id: "price_9",
+      unitAmount: 999,
+      currency: "eur",
+      interval: "month",
+    });
+    expect(decodeURIComponent(p.calls[0]!.url)).toContain("lookup_keys[0]=alvoxis_flow_monthly");
+  });
+
+  it("lists invoices and cancels or resumes the renewal", async () => {
+    const f = fakeFetch({
+      body: {
+        data: [
+          {
+            id: "in_1",
+            number: "A-0001",
+            status: "paid",
+            amount_due: 999,
+            amount_paid: 999,
+            currency: "eur",
+            created: 1_790_000_000,
+            hosted_invoice_url: "https://invoice.stripe.test/1",
+          },
+        ],
+      },
+    });
+    const [inv] = await createStripeGateway(KEY, f.impl).listInvoices("cus_1");
+    expect(inv).toMatchObject({ id: "in_1", number: "A-0001", amountPaid: 999, currency: "eur" });
+    expect(inv!.hostedInvoiceUrl).toBe("https://invoice.stripe.test/1");
+
+    const c = fakeFetch({ body: { id: "sub_1" } });
+    await createStripeGateway(KEY, c.impl).setCancelAtPeriodEnd("sub_1", true);
+    expect(c.calls[0]!.url).toBe("https://api.stripe.com/v1/subscriptions/sub_1");
+    expect(c.calls[0]!.init.method).toBe("POST");
+    expect(String(c.calls[0]!.init.body)).toBe("cancel_at_period_end=true");
   });
 
   it("reads subscriptions with the period from the item and creates idempotent customers", async () => {

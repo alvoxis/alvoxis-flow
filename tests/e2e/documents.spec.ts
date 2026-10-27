@@ -134,7 +134,12 @@ test("list → edit draft → validation on issue → confirm issue → numbered
   await expect(page.getByTestId("document-heading")).toContainText("INV-2026-0001");
   await expect(page.getByTestId("document-status")).toHaveText("Issued");
   await expect(page.getByTestId("document-editor")).toHaveCount(0);
-  await expect(page.locator("input, textarea")).toHaveCount(0);
+  // The document itself is read-only; the only form left is the one for recording payments.
+  const payments = page.getByTestId("payments-panel");
+  await expect(payments).toBeVisible();
+  await expect(page.locator("input, textarea")).toHaveCount(
+    await payments.locator("input, textarea").count(),
+  );
   await expect(page.getByTestId("document-view")).toContainText("Labots Pircējs SIA");
 
   await page.reload();

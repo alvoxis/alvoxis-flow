@@ -17,14 +17,18 @@
     "settings": "Iestatījumi",
     "soon": "Drīzumā",
     "openMenu": "Atvērt izvēlni",
-    "closeMenu": "Aizvērt izvēlni"
+    "closeMenu": "Aizvērt izvēlni",
+    "finance": "Finanses",
+    "costing": "Pašizmaksas kalkulators",
+    "assistant": "MI asistents"
   },
   "topbar": {
     "noCompany": "Uzņēmuma vēl nav",
     "language": "Valoda",
     "account": "Konts",
     "notSignedIn": "Nav pieteicies",
-    "currentCompany": "Pašreizējais uzņēmums"
+    "currentCompany": "Pašreizējais uzņēmums",
+    "theme": "Pārslēgt gaišo un tumšo tēmu"
   },
   "environment": {
     "label": "Testa vide",
@@ -43,7 +47,7 @@
       "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām.",
       "loadError": "Dokumentu rādītājus šobrīd neizdevās ielādēt. Pašus dokumentus tas neietekmē; mēģiniet vēlāk vēlreiz.",
       "createFirst": "Izveidot pirmo dokumentu",
-      "paymentsNotTracked": "Maksājumi vēl netiek uzskaitīti, tāpēc šeit nav redzams, kas ir apmaksāts, neapmaksāts vai kavēts."
+      "paymentsNotTracked": "Apmaksātās, atvērtās un kavētās summas ir katra uzņēmuma biznesa pārskatā."
     }
   },
   "documentType": {
@@ -1140,7 +1144,8 @@
       "twoFactor": "Jūsu lomai šai darbībai nepieciešama divfaktoru autentifikācija.",
       "forbidden": "Jums nav atļaujas šai darbībai, vai uzņēmums vairs nav aktīvs.",
       "notFound": "Šis ieraksts vairs nepastāv.",
-      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz."
+      "error": "Radās kļūda. Lūdzu, mēģiniet vēlreiz.",
+      "subscription": "Šim nolūkam vajadzīgs aktīvs abonements. Kamēr abonements nav aktīvs, uzņēmums ir pieejams tikai lasīšanai."
     },
     "reload": "Pārlādēt"
   },
@@ -1641,57 +1646,1151 @@
   },
   "billing": {
     "title": "Abonements",
-    "description": "Uzņēmuma plāns un maksājumi. Maksājumus apstrādā Stripe.",
+    "description": "Uzņēmuma abonements un maksājumi. Maksājumus apstrādā Stripe.",
     "back": "Uz iestatījumiem",
     "notConfigured": "Abonementi šajā vietnē vēl nav pieejami.",
     "checkout": {
-      "success": "Paldies! Abonements tiek iestatīts; tā statuss šeit parādīsies pēc brīža.",
+      "success": "Paldies! Stripe apstiprina maksājumu; statuss zemāk atjaunosies, tiklīdz Stripe par to paziņos.",
       "cancelled": "Apmaksa atcelta. Nekas netika iekasēts."
     },
-    "current": "Pašreizējais plāns",
-    "none": "Abonementa vēl nav.",
-    "manage": "Pārvaldīt abonementu",
-    "history": "Rēķini un maksājumu veidi",
-    "choose": "Izvēlieties plānu",
-    "trialInfo": "Pirmās {days} dienas ir bez maksas, karte nav vajadzīga. Pēc tam abonements beidzas, ja nepievienojat maksājumu veidu.",
+    "current": "Pašreizējais abonements",
+    "planName": "ALVOXIS Flow",
+    "planText": "Viens plāns ar visiem moduļiem vienam uzņēmumam.",
     "perMonth": "/ mēnesī",
-    "startTrial": "Izmēģināt {days} dienas bez maksas",
-    "subscribe": "Abonēt",
-    "pricesNote": "Cenas par uzņēmumu mēnesī, EUR. Kartes dati tiek ievadīti Stripe lapā un nenonāk ALVOXIS Flow. Atcelt var jebkurā laikā.",
-    "trialEnds": "Bezmaksas periods līdz {date}.",
+    "subscribeTitle": "Abonēt",
+    "subscribe": "Abonēt par €{price} / mēnesī",
+    "manage": "Maksājuma veids un rēķini",
+    "history": "Maksājumu vēsture",
+    "historyEmpty": "Rēķinu vēl nav.",
+    "historyUnavailable": "Maksājumu vēsturi pašlaik neizdevās ielādēt.",
+    "viewInvoice": "Skatīt rēķinu",
+    "pricesNote": "Cena par uzņēmumu mēnesī, EUR; nodokļi, ja tādi piemērojami, tiek parādīti apmaksas laikā. Kartes dati tiek ievadīti Stripe lapā un nenonāk ALVOXIS Flow. Atcelt var jebkurā laikā; abonements beigsies kopā ar apmaksāto periodu.",
     "renewsOn": "Atjaunosies {date}.",
-    "endsOn": "Beigsies {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Dokumenti, klienti un preces mazam uzņēmumam."
+    "endsOn": "Atjaunošana atcelta — piekļuve beigsies {date}.",
+    "readOnly": "Uzņēmums ir pieejams tikai lasīšanai: visu var skatīt un eksportēt, bet nevar izveidot vai mainīt ierakstus vai izmantot MI asistentu. Dati tiek saglabāti.",
+    "grantUntil": "Operatora piešķirta iekšēja piekļuve līdz {date}.",
+    "renewal": {
+      "cancel": "Atcelt atjaunošanu",
+      "resume": "Atsākt atjaunošanu",
+      "saved": "Saglabāts. Zemāk redzams pašreizējais statuss Stripe.",
+      "confirmTitle": "Atcelt atjaunošanu?",
+      "confirmText": "Abonements paliks aktīvs līdz {date} un tad beigsies. Nekas netiek dzēsts; uzņēmums kļūs pieejams tikai lasīšanai, un abonēt no jauna var jebkurā laikā.",
+      "keep": "Paturēt abonementu",
+      "confirm": "Atcelt atjaunošanu"
+    },
+    "phase": {
+      "active": {
+        "label": "Aktīvs",
+        "text": "Viss ir pieejams."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Viss no Basic un AI asistents, kad tas būs pieejams."
+      "past_due": {
+        "label": "Maksājums kavēts",
+        "text": "Pēdējais maksājums neizdevās. Stripe mēģinās vēlreiz; atjauniniet maksājuma veidu, lai saglabātu piekļuvi."
       },
-      "business": {
-        "name": "Business",
-        "text": "Visi moduļi: noliktava, ražošana, algas un analītika."
+      "awaiting_payment": {
+        "label": "Gaida maksājumu",
+        "text": "Pirmais maksājums vēl nav apstiprināts. Līdz Stripe apstiprinājumam uzņēmums ir pieejams tikai lasīšanai."
+      },
+      "payment_required": {
+        "label": "Nepieciešams maksājums",
+        "text": "Maksājumi neizdevās, un abonements ir apturēts. Atjauniniet maksājuma veidu, lai atjaunotu piekļuvi."
+      },
+      "ended": {
+        "label": "Beidzies",
+        "text": "Abonements ir beidzies. Dati ir saglabāti; abonējiet no jauna, lai turpinātu darbu."
+      },
+      "none": {
+        "label": "Nav abonementa",
+        "text": "Uzņēmumam vēl nav abonementa."
       }
     },
-    "status": {
-      "trialing": "Bezmaksas periods",
-      "active": "Aktīvs",
-      "past_due": "Maksājums nokavēts",
-      "unpaid": "Neapmaksāts",
-      "incomplete": "Gaida maksājumu",
-      "paused": "Apturēts",
-      "canceled": "Atcelts",
-      "incomplete_expired": "Beidzies"
+    "invoiceStatus": {
+      "paid": "Apmaksāts",
+      "open": "Atvērts",
+      "void": "Anulēts",
+      "uncollectible": "Neatgūstams"
+    },
+    "banner": {
+      "readOnly": "Tikai lasīšanai: uzņēmumam nav aktīva abonementa. Skatīšana un eksports darbojas.",
+      "pastDue": "Pēdējais abonementa maksājums neizdevās. Atjauniniet maksājuma veidu, lai saglabātu piekļuvi.",
+      "open": "Abonements"
     },
     "state": {
       "billing": {
         "failed": "Maksājumu pakalpojums neatbildēja. Mēģiniet vēlreiz pēc brīža.",
         "notConfigured": "Abonementi šajā vietnē vēl nav pieejami.",
-        "alreadySubscribed": "Uzņēmumam jau ir abonements; mainiet to sadaļā “Pārvaldīt abonementu”.",
-        "priceMissing": "Šis plāns pašlaik nav pieejams.",
-        "noCustomer": "Vēl nav abonementa, ko pārvaldīt."
+        "alreadySubscribed": "Uzņēmumam jau ir abonements; pārvaldiet to sadaļā “Maksājuma veids un rēķini”.",
+        "priceMissing": "Abonementu pašlaik nevar piedāvāt (cena nav iestatīta).",
+        "priceMismatch": "Abonementu pašlaik nevar piedāvāt (cena iestatīta nepareizi). Nekas netika iekasēts.",
+        "noCustomer": "Vēl nav abonementa, ko pārvaldīt.",
+        "noSubscription": "Nav aktīva abonementa, ko mainīt."
+      }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Biznesa pārskats un atskaites",
+      "documents": "Rēķini, kredītrēķini un PDF",
+      "finance": "Maksājumi, debitori un izdevumi",
+      "catalog": "Klienti, piegādātāji, preces un krājumi",
+      "costing": "Pašizmaksas kalkulators, ražošana un algu palīgrīks",
+      "ai": "MI biznesa asistents (saprātīgi limiti)",
+      "team": "Komandas locekļi ar lomām",
+      "languages": "Angļu, krievu, latviešu, lietuviešu, igauņu"
+    }
+  },
+  "payments": {
+    "title": "Maksājumi",
+    "status": {
+      "unpaid": "Neapmaksāts",
+      "partially_paid": "Daļēji apmaksāts",
+      "paid": "Apmaksāts",
+      "credited": "Kreditēts"
+    },
+    "overdueDays": "{days, plural, zero {kavēts # dienas} one {kavēts # dienu} other {kavēts # dienas}}",
+    "summary": {
+      "gross": "Rēķina summa",
+      "credited": "Kredītrēķini",
+      "paid": "Samaksāts",
+      "balance": "Atlikums"
+    },
+    "dueOn": "Apmaksas termiņš: {date}.",
+    "none": "Maksājumi vēl nav reģistrēti.",
+    "record": "Reģistrēt maksājumu",
+    "recorded": "Maksājums reģistrēts.",
+    "voided": "Maksājums anulēts. Tas paliek vēsturē un vairs netiek ieskaitīts.",
+    "void": "Anulēt",
+    "voidedBadge": "Anulēts",
+    "voidTitle": "Anulēt šo maksājumu?",
+    "voidText": "Maksājums {amount} apmērā paliks vēsturē, bet vairs netiks ieskaitīts rēķinā.",
+    "keep": "Paturēt",
+    "referenceTaken": "Maksājums ar šo atsauci šim rēķinam jau ir reģistrēts.",
+    "manualNote": "Maksājumi tiek ievadīti manuāli; no bankas nekas netiek nolasīts automātiski. Pats rēķins nekad nemainās.",
+    "method": {
+      "bank_transfer": "Bankas pārskaitījums",
+      "card": "Karte",
+      "cash": "Skaidra nauda",
+      "other": "Cits"
+    },
+    "fields": {
+      "amount": "Summa ({currency})",
+      "paidOn": "Samaksas datums",
+      "method": "Veids",
+      "reference": "Atsauce (piem., pārskaitījuma ID)",
+      "note": "Piezīme"
+    },
+    "issue": {
+      "invalid": "Pārbaudiet šo vērtību.",
+      "payment": {
+        "amount": {
+          "invalid": "Ievadiet summu, kas lielāka par nulli, ar ne vairāk kā 2 decimālzīmēm.",
+          "exceedsBalance": "Summa ir lielāka par atlikumu."
+        },
+        "paidOn": {
+          "invalid": "Ievadiet derīgu datumu.",
+          "future": "Datums nevar būt nākotnē."
+        }
+      }
+    },
+    "state": {
+      "failed": "Maksājumu neizdevās saglabāt. Pārlādējiet lapu un mēģiniet vēlreiz.",
+      "payments": {
+        "notIssuedInvoice": "Maksājumus var reģistrēt tikai izrakstītiem rēķiniem.",
+        "alreadyVoided": "Šis maksājums jau ir anulēts."
+      }
+    }
+  },
+  "finance": {
+    "title": "Finanses",
+    "description": "Uzņēmuma izdevumi, ievadīti manuāli. Saņemtie maksājumi tiek reģistrēti katrā rēķinā.",
+    "toReports": "Atskaites",
+    "readOnly": "Jūs varat skatīt un eksportēt izdevumus; jūsu loma neļauj tos mainīt.",
+    "search": "Meklēt",
+    "searchPlaceholder": "Apraksts, piegādātājs vai atsauce",
+    "all": "Visi",
+    "from": "No",
+    "to": "Līdz",
+    "apply": "Lietot",
+    "reset": "Atiestatīt",
+    "export": "Eksportēt CSV",
+    "add": "Pievienot izdevumu",
+    "edit": "Labot",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst šo izdevumu?",
+    "deleteText": "“{description}” tiks neatgriezeniski dzēsts. To nevar atsaukt.",
+    "cancel": "Atcelt",
+    "save": "Saglabāt",
+    "count": "{count, plural, zero {# izdevumi} one {# izdevums} other {# izdevumi}}",
+    "empty": "Izdevumu vēl nav. Pievienojiet pirmo, lai pārskatā redzētu izmaksas un peļņu.",
+    "noMatches": "Neviens izdevums neatbilst šiem filtriem.",
+    "costShort": "izmaksas {amount}",
+    "dueOn": "termiņš {date}",
+    "taxNotRecoverable": "Nodoklis nav atgūstams",
+    "recordNext": "Reģistrēt nākamo",
+    "pagination": "Lapas",
+    "previous": "Iepriekšējā",
+    "next": "Nākamā",
+    "pageOf": "Lapa {page} no {pages}",
+    "supplierNone": "Bez piegādātāja ieraksta",
+    "taxHint": "PVN vai līdzīgs nodoklis, kā piegādātāja rēķinā.",
+    "paidOnHint": "Tukšs: izdevuma datums.",
+    "status": {
+      "paid": "Apmaksāts",
+      "unpaid": "Neapmaksāts",
+      "overdue": "Kavēts"
+    },
+    "recurrence": {
+      "none": "Vienreizējs",
+      "monthly": "Katru mēnesi",
+      "quarterly": "Katru ceturksni",
+      "yearly": "Katru gadu"
+    },
+    "source": {
+      "manual": "Ievadīts manuāli",
+      "imported": "Importēts"
+    },
+    "sort": {
+      "label": "Kārtot",
+      "date_desc": "Jaunākie vispirms",
+      "date_asc": "Vecākie vispirms",
+      "amount_desc": "Lielākie vispirms",
+      "amount_asc": "Mazākie vispirms"
+    },
+    "category": {
+      "materials": "Materiāli",
+      "goods_for_resale": "Preces pārdošanai",
+      "rent": "Īre",
+      "utilities": "Komunālie pakalpojumi",
+      "salaries": "Algas",
+      "taxes_fees": "Nodokļi un nodevas",
+      "transport": "Transports",
+      "marketing": "Mārketings",
+      "software": "Programmatūra",
+      "professional_services": "Profesionālie pakalpojumi",
+      "equipment": "Iekārtas",
+      "travel": "Komandējumi",
+      "bank_fees": "Bankas komisijas",
+      "other": "Cits"
+    },
+    "method": {
+      "bank_transfer": "Bankas pārskaitījums",
+      "card": "Karte",
+      "cash": "Skaidra nauda",
+      "other": "Cits"
+    },
+    "fields": {
+      "category": "Kategorija",
+      "status": "Statuss",
+      "description": "Apraksts",
+      "date": "Datums",
+      "supplier": "Piegādātājs",
+      "supplierName": "Piegādātājs (teksts)",
+      "currency": "Valūta",
+      "net": "Summa bez nodokļa",
+      "tax": "Nodokļa summa",
+      "taxRecoverable": "Nodoklis ir atgūstams (atskaitāmais priekšnodoklis)",
+      "paidOn": "Samaksas datums",
+      "dueDate": "Apmaksas termiņš",
+      "method": "Maksājuma veids",
+      "reference": "Atsauce",
+      "recurrence": "Atkārtojas",
+      "notes": "Piezīmes"
+    },
+    "done": {
+      "created": "Izdevums pievienots.",
+      "updated": "Izdevums saglabāts.",
+      "deleted": "Izdevums dzēsts."
+    },
+    "issue": {
+      "invalid": "Pārbaudiet šo vērtību.",
+      "expense": {
+        "amount": {
+          "invalid": "Ievadiet summu no nulles, ar ne vairāk kā 2 decimālzīmēm."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "description": {
+          "required": "Ievadiet aprakstu."
+        },
+        "dueDate": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "paidOn": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "supplier": {
+          "unknown": "Izvēlieties šī uzņēmuma piegādātāju."
+        }
+      }
+    }
+  },
+  "business": {
+    "title": "Biznesa pārskats",
+    "open": "Biznesa pārskats",
+    "period": "Periods {from} – {to}",
+    "rangeLabel": "Periods",
+    "range": {
+      "this_month": "Šis mēnesis",
+      "last_month": "Iepriekšējais mēnesis",
+      "this_quarter": "Šis ceturksnis",
+      "this_year": "Šis gads",
+      "from": "No",
+      "to": "Līdz",
+      "apply": "Rādīt"
+    },
+    "empty": {
+      "title": "Šajā periodā vēl nekas nav reģistrēts",
+      "text": "Izrakstiet rēķinus, reģistrējiet maksājumus un pievienojiet izdevumus — skaitļi un grafiki šeit tiek aprēķināti no tiem. Nekas netiek novērtēts aptuveni.",
+      "noFinance": "Jūsu lomā nav finanšu rādītāju. Saites augstāk ved uz sadaļām, ar kurām strādājat."
+    },
+    "figuresIn": "Rādītāji {currency}",
+    "chartsIn": "Grafiki {currency}",
+    "kpi": {
+      "revenue": "Ieņēmumi",
+      "expenses": "Izdevumi",
+      "result": "Rezultāts",
+      "grossProfit": "Bruto peļņa",
+      "cashIn": "Ienākošā nauda",
+      "netCash": "Neto naudas plūsma"
+    },
+    "margin": "marža {percent} %",
+    "noComparison": "Iepriekšējā periodā rādītāja nav",
+    "vsPrevious": "pret iepriekšējo periodu",
+    "openItems": "Atvērtās pozīcijas šodien",
+    "receivables": "Debitoru parādi",
+    "invoicesOpen": "{count, plural, zero {# neapmaksāti rēķini} one {# neapmaksāts rēķins} other {# neapmaksāti rēķini}}",
+    "overdue": "kavēti {count}: {amount}",
+    "noOverdue": "Nekas nav kavēts",
+    "payables": "Kreditoru parādi",
+    "expensesUnpaid": "{count, plural, zero {# neapmaksāti izdevumi} one {# neapmaksāts izdevums} other {# neapmaksāti izdevumi}}",
+    "payablesOverdue": "kavēti {count}: {amount}",
+    "invoiceStatus": {
+      "title": "Periodā izrakstītie rēķini",
+      "paid": "Apmaksāti",
+      "partiallyPaid": "Daļēji apmaksāti",
+      "unpaid": "Neapmaksāti",
+      "overdue": "Kavēti"
+    },
+    "toInvoices": "Visi rēķini",
+    "stockValue": "Krājumu vērtība",
+    "stockValueNote": "Atlikums × iepirkuma cena",
+    "noExpenses": "Šajā periodā izdevumu nav.",
+    "chart": {
+      "revenueVsExpenses": "Ieņēmumi un izdevumi ({currency})",
+      "cash": "Uzkrātā neto naudas plūsma ({currency})",
+      "cashSeries": "Neto naudas plūsma",
+      "categories": "Izdevumi pa kategorijām ({currency})",
+      "table": "Rādīt tabulā",
+      "day": "Diena",
+      "month": "Mēnesis"
+    },
+    "activity": {
+      "title": "Pēdējās darbības",
+      "none": "Darbību vēl nav.",
+      "other": "Cita izmaiņa",
+      "actions": {
+        "company": {
+          "created": "Uzņēmums izveidots",
+          "profile_updated": "Uzņēmuma profils mainīts"
+        },
+        "counterparty": {
+          "created": "Pievienots klients vai piegādātājs",
+          "updated": "Mainīts klients vai piegādātājs",
+          "archived": "Klients vai piegādātājs arhivēts"
+        },
+        "document": {
+          "draft_created": "Izveidots dokumenta melnraksts",
+          "draft_updated": "Melnraksts saglabāts",
+          "draft_deleted": "Melnraksts dzēsts",
+          "issued": "Dokuments izrakstīts",
+          "emailed": "Dokuments nosūtīts pa e-pastu",
+          "credit_note_draft_created": "Sākts kredītrēķins"
+        },
+        "payment": {
+          "recorded": "Reģistrēts maksājums",
+          "voided": "Maksājums anulēts"
+        },
+        "expense": {
+          "created": "Pievienots izdevums",
+          "updated": "Izdevums mainīts",
+          "deleted": "Izdevums dzēsts"
+        },
+        "product": {
+          "created": "Pievienota prece",
+          "updated": "Prece mainīta",
+          "archived": "Prece arhivēta",
+          "restored": "Prece atjaunota"
+        },
+        "member": {
+          "invited": "Uzaicināts dalībnieks",
+          "updated": "Dalība mainīta"
+        },
+        "billing": {
+          "checkoutStarted": "Sākta abonementa apmaksa",
+          "statusChanged": "Mainījies abonementa statuss",
+          "paymentFailed": "Abonementa maksājums neizdevās",
+          "renewalCancelled": "Abonementa atjaunošana atcelta",
+          "renewalResumed": "Abonementa atjaunošana atsākta"
+        },
+        "costing": {
+          "saved": "Pašizmaksas aprēķins saglabāts",
+          "deleted": "Pašizmaksas aprēķins dzēsts"
+        },
+        "production": {
+          "order_created": "Izveidots ražošanas pasūtījums"
+        },
+        "payroll": {
+          "run_created": "Izveidots algu aprēķins"
+        }
+      }
+    },
+    "definitions": {
+      "title": "Kā šie rādītāji tiek aprēķināti",
+      "revenue": {
+        "term": "Ieņēmumi",
+        "text": "Periodā izrakstīto rēķinu summas bez nodokļa, atskaitot izrakstītos kredītrēķinus."
+      },
+      "expenses": {
+        "term": "Izdevumi",
+        "text": "Periodā reģistrētie izdevumi pēc izmaksām: summa bez nodokļa, plus nodoklis tikai tad, ja tas nav atgūstams."
+      },
+      "grossProfit": {
+        "term": "Bruto peļņa",
+        "text": "Ieņēmumi, atskaitot izdevumus kategorijās “Materiāli” un “Preces pārdošanai”."
+      },
+      "result": {
+        "term": "Rezultāts un marža",
+        "text": "Ieņēmumi, atskaitot visus reģistrētos izdevumus, pirms ienākuma nodokļa; marža = rezultāts ÷ ieņēmumi. Tā nav grāmatvedības neto peļņa."
+      },
+      "cash": {
+        "term": "Ienākošā nauda un neto naudas plūsma",
+        "text": "Rēķiniem reģistrētie maksājumi un apmaksātie izdevumi (ar nodokli) pēc samaksas datuma. Bankas atlikumi netiek nolasīti."
+      },
+      "receivables": {
+        "term": "Debitoru parādi",
+        "text": "Visu izrakstīto rēķinu neapmaksātie atlikumi šodien; kavēts = pēc apmaksas termiņa."
+      },
+      "payables": {
+        "term": "Kreditoru parādi",
+        "text": "Neapmaksātie reģistrētie izdevumi (ar nodokli); kavēts = pēc to apmaksas termiņa."
+      },
+      "previous": {
+        "term": "Iepriekšējais periods",
+        "text": "Tikpat dienu tieši pirms izvēlētā perioda."
+      },
+      "note": "Rādītāji tiek aprēķināti no ALVOXIS Flow reģistrētajiem datiem. Tie palīdz pieņemt lēmumus, bet neaizstāj grāmatvedību un nodokļu konsultācijas."
+    },
+    "actions": {
+      "title": "Ātrās darbības",
+      "invoice": "Izveidot rēķinu",
+      "product": "Pievienot preci",
+      "costing": "Aprēķināt pašizmaksu",
+      "expense": "Pievienot izdevumu",
+      "customer": "Pievienot klientu",
+      "ai": "Jautāt MI asistentam",
+      "overdue": "Kavētie rēķini",
+      "report": "Atskaites"
+    }
+  },
+  "costing": {
+    "title": "Pašizmaksas kalkulators",
+    "description": "Partijas pilnā pašizmaksa: iepirkums, piegāde, apdrošināšana, muitas nodokļi, iepakojums, materiāli, darbs, gabaldarbs un pieskaitāmās izmaksas.",
+    "taxNote": "Ievadiet summas bez atgūstamā PVN. Muitas un nodokļu likmes nekad netiek aizpildītas automātiski: ievadiet likmi, kas attiecas uz jūsu precēm, valsti un datumu, un atzīmējiet to kā pārbaudītu pēc salīdzināšanas ar oficiālu avotu (piem., TARIC).",
+    "readOnly": "Kalkulatoru var izmantot; jūsu loma neļauj saglabāt aprēķinus.",
+    "editing": "Saglabāta aprēķina labošana",
+    "newCalculation": "Jauns aprēķins",
+    "noProduct": "Nav saistīts ar preci",
+    "quantityHint": "Vienības šajā partijā",
+    "salePriceHint": "Plānotā pārdošanas cena par vienību bez nodokļa",
+    "piecesPlaceholder": "Gabali (tukšs: partijas apjoms)",
+    "verified": "Likme pārbaudīta",
+    "perUnitShort": "{amount} par vienību",
+    "needsVerification": "Jāpārbauda",
+    "removeLine": "Noņemt rindu",
+    "scenarios": "Scenāriji",
+    "addScenario": "Pievienot scenāriju",
+    "removeScenario": "Noņemt scenāriju",
+    "result": "Rezultāts",
+    "invalid": "Pārbaudiet vērtības: daudzums lielāks par nulli, summas — skaitļi ar ne vairāk kā 6 decimālzīmēm.",
+    "totalCost": "Partijas pašizmaksa",
+    "unitCost": "Vienības pašizmaksa",
+    "breakdown": "Izmaksu sadalījums",
+    "profitPerUnit": "Peļņa par vienību",
+    "margin": "Bruto marža",
+    "markup": "Uzcenojums",
+    "expectedProfit": "Paredzamā peļņa",
+    "noPrice": "Ievadiet pārdošanas cenu, lai redzētu maržu, uzcenojumu un peļņu.",
+    "priceForMargin": "Cena {percent} % maržai: {price}",
+    "warning": {
+      "unverified_rate": "Procentu likme nav atzīmēta kā pārbaudīta — pārbaudiet to oficiālā avotā, pirms paļaujaties uz rezultātu.",
+      "percent_without_customs_value": "Procentu rindai nav iepirkuma, piegādes vai apdrošināšanas summas, kurai to piemērot."
+    },
+    "save": "Saglabāt aprēķinu",
+    "saveChanges": "Saglabāt izmaiņas",
+    "new": "Jauns aprēķins",
+    "nameNeeded": "Nosauciet aprēķinu, lai to saglabātu.",
+    "saved": "Aprēķins saglabāts. Skaitļi pārrēķināti serverī.",
+    "deleted": "Aprēķins dzēsts.",
+    "savedTitle": "Saglabātie aprēķini",
+    "savedEmpty": "Saglabātu aprēķinu vēl nav.",
+    "savedFigures": "{quantity} vien. · {unit} par vienību",
+    "open": "Atvērt",
+    "exportCsv": "Eksportēt CSV",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst šo aprēķinu?",
+    "deleteText": "“{name}” tiks neatgriezeniski dzēsts.",
+    "cancel": "Atcelt",
+    "fields": {
+      "name": "Nosaukums",
+      "product": "Prece",
+      "quantity": "Daudzums",
+      "currency": "Valūta",
+      "category": "Izmaksu veids",
+      "basis": "Aprēķina veids",
+      "percent": "Likme procentos",
+      "rate": "Likme par gabalu",
+      "amount": "Summa",
+      "label": "Apraksts (nav obligāts)",
+      "pieces": "Gabali",
+      "salePrice": "Pārdošanas cena par vienību ({currency})",
+      "targetMargin": "Mērķa marža, %",
+      "scenarioLabel": "Scenārijs",
+      "price": "Cena"
+    },
+    "basis": {
+      "total": "Kopā par partiju",
+      "per_unit": "Par vienību",
+      "piecework": "Gabali × likme",
+      "percent": "% no muitas vērtības"
+    },
+    "category": {
+      "purchase": "Iepirkuma cena",
+      "delivery": "Piegāde",
+      "insurance": "Apdrošināšana",
+      "customs_duty": "Muitas nodoklis",
+      "non_recoverable_tax": "Neatgūstamie nodokļi un nodevas",
+      "packaging": "Iepakojums",
+      "materials": "Materiāli",
+      "labor": "Tiešais darbs",
+      "piecework": "Gabaldarba samaksa",
+      "overhead": "Pieskaitāmās izmaksas",
+      "other": "Citas izmaksas"
+    }
+  },
+  "assistant": {
+    "title": "MI biznesa asistents",
+    "description": "Jautājiet par uzņēmuma rādītājiem. Atbildes balstās tikai uz ALVOXIS Flow reģistrētajiem datiem.",
+    "notConfigured": "MI asistents šajā vietnē vēl nav iestatīts. Viss pārējais darbojas kā parasti.",
+    "readOnly": "Asistentam nepieciešams aktīvs abonements.",
+    "toBilling": "Atvērt abonementu",
+    "noPermission": "Jūsu lomā nav MI asistenta. Ja tas nepieciešams, vērsieties pie īpašnieka vai administratora.",
+    "privacy": "Lai atbildētu, attiecīgie šī uzņēmuma rādītāji (bez parolēm un bankas piekļuves datiem) tiek nosūtīti Anthropic Claude API, kas tos apstrādā ALVOXIS Flow vajadzībām. ALVOXIS Flow neglabā jautājumus un atbildes. Asistents nevar mainīt ierakstus, sūtīt dokumentus vai veikt maksājumus. Tā nav nodokļu vai juridiska konsultācija.",
+    "suggestionsTitle": "Piemēram:",
+    "suggestions": {
+      "profitLastMonth": "Kāds bija mans rezultāts iepriekšējā mēnesī?",
+      "expensesIncreased": "Kuri izdevumi pieauga visvairāk?",
+      "highestMargin": "Kurām precēm ir augstākā marža?",
+      "overdue": "Kuri rēķini ir kavēti?",
+      "inflows30": "Cik daudz naudas sagaidāms nākamajās 30 dienās?",
+      "reduceCosts": "Kuras izmaksas varētu samazināt?",
+      "underpriced": "Kuras preces, iespējams, ir pārdotas par lētu?",
+      "risks": "Kādus finanšu riskus vajadzētu pārskatīt?",
+      "profitChange": "Kāpēc mans rezultāts mainījās salīdzinājumā ar iepriekšējo mēnesi?"
+    },
+    "refused": "Asistents atteicās atbildēt uz šo jautājumu. Mēģiniet pajautāt par saviem rādītājiem citādi.",
+    "empty": "Atbilde netika saņemta.",
+    "incomplete": "Atbilde var būt nepilnīga",
+    "basedOn": "Balstīts uz:",
+    "noData": "Šai atbildei uzņēmuma dati netika izmantoti.",
+    "tools": {
+      "get_period_summary": "perioda rādītājiem",
+      "list_open_invoices": "neapmaksātajiem rēķiniem",
+      "expected_inflows": "rēķinu apmaksas termiņiem",
+      "expense_breakdown": "izdevumiem pa kategorijām",
+      "product_price_margins": "kataloga cenām",
+      "saved_cost_calculations": "saglabātajiem pašizmaksas aprēķiniem"
+    },
+    "working": "Skatos jūsu rādītājus…",
+    "questionLabel": "Jūsu jautājums",
+    "placeholder": "Jautājiet par ieņēmumiem, izdevumiem, rēķiniem, precēm vai izmaksām…",
+    "remaining": "{count, plural, zero {šomēnes atlikuši # jautājumi} one {šomēnes atlicis # jautājums} other {šomēnes atlikuši # jautājumi}}",
+    "ask": "Jautāt",
+    "error": {
+      "rate": "Pārāk daudz jautājumu īsā laikā. Pagaidiet minūti un mēģiniet vēlreiz.",
+      "budget": "Šī uzņēmuma asistenta jautājumi šim mēnesim ir izlietoti.",
+      "subscription": "Asistentam nepieciešams aktīvs abonements.",
+      "timeout": "Atbilde aizņēma pārāk ilgu laiku. Uzdodiet šaurāku jautājumu.",
+      "invalid": "Uzrakstiet jautājumu līdz 2000 rakstzīmēm.",
+      "failed": "Asistents pašlaik nav pieejams. Mēģiniet vēlāk."
+    }
+  },
+  "reports": {
+    "title": "Atskaites",
+    "period": "Periods {from} – {to}",
+    "none": "Jūsu lomā nav atskaišu.",
+    "choose": "Atskaite",
+    "to": "Līdz",
+    "apply": "Rādīt",
+    "csv": "Eksportēt CSV",
+    "empty": "Šai atskaitei un periodam nekas nav reģistrēts.",
+    "name": {
+      "pnl": "Peļņa un zaudējumi",
+      "receivables": "Debitoru parādi",
+      "expenses": "Izdevumi pa kategorijām",
+      "vat": "PVN kopsavilkums",
+      "margins": "Preču maržas",
+      "stock": "Krājumi"
+    },
+    "range": {
+      "this_month": "Šis mēnesis",
+      "last_month": "Iepriekšējais mēnesis",
+      "this_quarter": "Šis ceturksnis",
+      "this_year": "Šis gads"
+    },
+    "note": {
+      "pnl": "Ieņēmumi (bez nodokļa, no izrakstītajiem rēķiniem un kredītrēķiniem) un izdevumi pēc izmaksām pa mēnešiem vai dienām, ar ienākošo un izejošo naudu. Rezultāts ir pirms ienākuma nodokļa.",
+      "receivables": "Izrakstīto rēķinu neapmaksātie atlikumi šodien, vispirms visvairāk kavētie, ar sadalījumu pa termiņiem. Ņemti vērā ALVOXIS Flow reģistrētie maksājumi.",
+      "expenses": "Izdevumi pēc izmaksām pa kategorijām, salīdzinot ar tikpat garu iepriekšējo periodu.",
+      "vat": "Aprēķinātais nodoklis no izrakstītajiem rēķiniem un kredītrēķiniem un atgūstamais priekšnodoklis no reģistrētajiem izdevumiem. Kopsavilkums deklarācijas sagatavošanai — nevis deklarācija; pārbaudiet to pēc savas valsts noteikumiem vai ar grāmatvedi.",
+      "margins": "Aktīvo preču kataloga pārdošanas un iepirkuma cenas. Tās ir cenrāža cenas, nevis faktiskie rezultāti.",
+      "stock": "Atlikums pa precēm un noliktavām, novērtēts pēc iepirkuma cenas."
+    },
+    "col": {
+      "period": "Periods",
+      "currency": "Valūta",
+      "revenue": "Ieņēmumi",
+      "expenses": "Izdevumi",
+      "result": "Rezultāts",
+      "cashIn": "Ienākošā nauda",
+      "cashOut": "Izejošā nauda",
+      "number": "Numurs",
+      "customer": "Klients",
+      "issueDate": "Izrakstīts",
+      "dueDate": "Termiņš",
+      "gross": "Summa",
+      "paid": "Samaksāts",
+      "balance": "Atlikums",
+      "daysOverdue": "Kavētās dienas",
+      "ageing": "Parāda vecums",
+      "category": "Kategorija",
+      "count": "Ieraksti",
+      "cost": "Izmaksas",
+      "previousCost": "Iepriekšējais periods",
+      "change": "Izmaiņas",
+      "changePercent": "Izmaiņas, %",
+      "direction": "Virziens",
+      "code": "Kods",
+      "treatment": "Režīms",
+      "ratePercent": "Likme, %",
+      "taxable": "Apliekamā summa",
+      "tax": "Nodoklis",
+      "product": "Prece",
+      "sku": "Artikuls",
+      "salePrice": "Pārdošanas cena",
+      "purchasePrice": "Iepirkuma cena",
+      "profitPerUnit": "Peļņa par vienību",
+      "marginPercent": "Marža, %",
+      "markupPercent": "Uzcenojums, %",
+      "warehouse": "Noliktava",
+      "quantity": "Daudzums",
+      "unit": "Mērv.",
+      "value": "Vērtība"
+    },
+    "ageing": {
+      "current": "Termiņš nav iestājies",
+      "1_30": "1–30 dienas",
+      "31_60": "31–60 dienas",
+      "61_90": "61–90 dienas",
+      "over_90": "Vairāk nekā 90 dienas"
+    },
+    "row": {
+      "total": "Kopā",
+      "balance": "Aprēķinātais − priekšnodoklis"
+    },
+    "direction": {
+      "output": "Aprēķinātais nodoklis",
+      "input": "Priekšnodoklis"
+    },
+    "treatment": {
+      "standard": "Standarta",
+      "zero_rated": "Nulles likme",
+      "exempt": "Atbrīvots",
+      "reverse_charge": "Apgrieztā maksāšana",
+      "outside_scope": "Ārpus nodokļa piemērošanas",
+      "recorded_expenses": "Reģistrētie izdevumi"
+    },
+    "from": "No"
+  },
+  "admin": {
+    "title": "Operatora sadaļa",
+    "description": "ALVOXIS Flow kā pakalpojums: konti, uzņēmumi, abonementi, MI lietojums un sistēmas stāvoklis. Katra darbība šeit tiek reģistrēta žurnālā.",
+    "users": "Konti",
+    "usersNote": "apstiprināti {verified} · jauni 30 dienās {new30}",
+    "companies": "Uzņēmumi",
+    "new30": "jauni 30 dienās: {count}",
+    "activeSubscriptions": "Aktīvie abonementi",
+    "subscriptionsNote": "kavēti {pastDue} · atcelti {canceled} · neizdevušies maksājumi 30 dienās {failures}",
+    "listPriceMrr": "Mēnesī pēc cenrāža",
+    "listPriceNote": "Aktīvie abonementi × €9.99 (novērtējums). Faktiskie ieņēmumi ir Stripe.",
+    "aiRequests": "MI jautājumi šomēnes",
+    "aiNote": "uzņēmumi {companies} · neizdevušies vai atteikti {errors}",
+    "aiCost": "MI izmaksas šomēnes (novērtējums)",
+    "aiCostNote": "{input} ievades / {output} izvades marķieri pēc cenrāža",
+    "health": "Stāvoklis un iestatījumi",
+    "db": "Datubāze {ms} ms",
+    "stripe": "Stripe",
+    "webhook": "Stripe tīmekļa āķis",
+    "enforcement": "Ierobežojums bez abonementa",
+    "ai": "MI asistents",
+    "email": "E-pasts: {transport}",
+    "on": "iesl.",
+    "off": "izsl.",
+    "search": "Meklēt uzņēmumus",
+    "archived": "arhivēts",
+    "until": "iekšēja piekļuve līdz {date}",
+    "grant": "Piešķirt iekšēju piekļuvi",
+    "revoke": "Atsaukt iekšēju piekļuvi",
+    "days": "Dienas",
+    "reason": "Iemesls / pieteikums",
+    "confirmGrant": "Piešķirt",
+    "failed": "Nav saglabāts.",
+    "events": "Pēdējie sistēmas notikumi",
+    "noEvents": "Notikumu vēl nav.",
+    "col": {
+      "name": "Uzņēmums",
+      "country": "Valsts",
+      "created": "Izveidots",
+      "members": "Dalībnieki",
+      "subscription": "Abonements",
+      "access": "Iekšēja piekļuve"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow sākums",
+      "label": "Vietne",
+      "features": "Iespējas",
+      "pricing": "Cena",
+      "faq": "Jautājumi",
+      "about": "Par produktu",
+      "contact": "Kontakti",
+      "signIn": "Pieteikties",
+      "start": "Sākt",
+      "menu": "Izvēlne"
+    },
+    "footer": {
+      "tagline": "Biznesa vadība nelieliem uzņēmumiem Latvijā, Lietuvā, Igaunijā un Polijā.",
+      "product": "Produkts",
+      "legal": "Juridiskā informācija",
+      "account": "Konts",
+      "links": {
+        "privacy": "Privātuma politika",
+        "terms": "Lietošanas noteikumi",
+        "subscription": "Abonēšanas noteikumi",
+        "cookies": "Sīkdatnes"
+      },
+      "note": "ALVOXIS Flow palīdz rēķināt un sakārtot. Tas neaizstāj grāmatvedi vai nodokļu konsultantu."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — rēķini, izmaksas, finanses un MI mazajam biznesam",
+        "description": "Rēķini, maksājumi, izdevumi, pašizmaksa, krājumi un MI asistents vienā lietotnē uzņēmumiem Latvijā, Lietuvā, Igaunijā un Polijā. €9.99 mēnesī."
+      },
+      "features": {
+        "title": "Iespējas",
+        "description": "Biznesa pārskats, rēķini un kredītrēķini, maksājumi un izdevumi, preces un krājumi, pašizmaksas kalkulators, ražošana, MI asistents un komandas lomas."
+      },
+      "pricing": {
+        "title": "Cena",
+        "description": "Viens plāns ar visiem moduļiem: €9.99 par uzņēmumu mēnesī. Bez līmeņiem, atcelt var jebkurā laikā."
+      },
+      "about": {
+        "title": "Par produktu",
+        "description": "Kas ir ALVOXIS Flow un uz kādiem principiem tas veidots."
+      },
+      "contact": {
+        "title": "Kontakti",
+        "description": "Kā sazināties ar ALVOXIS Flow komandu."
+      },
+      "faq": {
+        "title": "Biežāk uzdotie jautājumi",
+        "description": "Atbildes par cenu, datiem, nodokļiem, MI asistentu un drošību."
+      },
+      "privacy": {
+        "title": "Privātuma politika",
+        "description": "Kā ALVOXIS Flow apstrādā personas datus."
+      },
+      "terms": {
+        "title": "Lietošanas noteikumi",
+        "description": "ALVOXIS Flow lietošanas noteikumi."
+      },
+      "subscription": {
+        "title": "Abonēšanas noteikumi",
+        "description": "Cena, atjaunošana, atcelšana un kas notiek ar jūsu datiem."
+      },
+      "cookies": {
+        "title": "Sīkdatnes",
+        "description": "Kādas sīkdatnes un pārlūka krātuvi izmanto ALVOXIS Flow."
+      }
+    },
+    "hero": {
+      "eyebrow": "Mazajam biznesam LV · LT · EE · PL",
+      "title": "Ziniet savus skaitļus. Rēķini, izmaksas un plānošana vienuviet.",
+      "subtitle": "ALVOXIS Flow apvieno rēķinus, maksājumus, izdevumus, preču pašizmaksu, krājumus un MI asistentu — viss tiek aprēķināts no jūsu pašu ierakstiem, nevis minējumiem.",
+      "primary": "Sākt par €9.99 / mēnesī",
+      "secondary": "Apskatīt iespējas",
+      "note": "Viens plāns ar visiem moduļiem. Atcelt var jebkurā laikā."
+    },
+    "preview": {
+      "aria": "Biznesa pārskata ilustrācija",
+      "label": "Ilustratīvs piemērs — nav reāli dati",
+      "revenue": "Ieņēmumi",
+      "expenses": "Izdevumi",
+      "result": "Rezultāts",
+      "receivables": "Debitori",
+      "chart": "Ieņēmumi un izdevumi"
+    },
+    "features": {
+      "title": "Viss, ar ko strādā neliels uzņēmums",
+      "subtitle": "Viena saistīta darba vide: izrakstīts rēķins nonāk debitoros, reģistrēts maksājums maina naudas plūsmu, izdevums samazina rezultātu.",
+      "items": {
+        "dashboard": {
+          "title": "Biznesa pārskats",
+          "text": "Ieņēmumi, izdevumi, rezultāts, naudas plūsma, debitoru un kreditoru parādi jebkuram periodam, ar grafikiem."
+        },
+        "documents": {
+          "title": "Rēķini un dokumenti",
+          "text": "Melnraksti, numurēti rēķini, kredītrēķini, PDF un nosūtīšana pa e-pastu."
+        },
+        "finance": {
+          "title": "Maksājumi un izdevumi",
+          "text": "Reģistrējiet maksājumus, redziet, kas ir neapmaksāts vai kavēts, uzskaitiet izdevumus pa kategorijām un eksportējiet tos."
+        },
+        "catalog": {
+          "title": "Klienti, preces, krājumi",
+          "text": "Klienti un piegādātāji, preču katalogs, noliktavas un nemaināms krājumu kustības žurnāls."
+        },
+        "costing": {
+          "title": "Pašizmaksas kalkulators",
+          "text": "Pilna vienības pašizmaksa ar piegādi, muitu, iepakojumu, darbu, gabaldarbu un pieskaitāmajām izmaksām."
+        },
+        "production": {
+          "title": "Ražošana un algu palīgrīks",
+          "text": "Specifikācijas, ražošanas pasūtījumi un algu aprēķina palīgrīks."
+        },
+        "ai": {
+          "title": "MI asistents",
+          "text": "Jautājiet par peļņu, kavētiem rēķiniem vai maržām; atbildes balstās uz jūsu skaitļiem."
+        },
+        "team": {
+          "title": "Komanda un lomas",
+          "text": "Uzaiciniet dalībniekus ar lomām; katra būtiska darbība tiek pārbaudīta serverī un reģistrēta."
+        }
+      }
+    },
+    "costing": {
+      "title": "Katras vienības patiesās izmaksas",
+      "text": "Pievienojiet iepirkuma cenu, piegādi, apdrošināšanu, muitas nodokli, iepakojumu, materiālus, darbu un pieskaitāmās izmaksas un redziet vienības pašizmaksu, maržu un uzcenojumu — un kā tos maina lielāka partija.",
+      "points": {
+        "1": "Marža un uzcenojums tiek aprēķināti atsevišķi, tāpēc 40 % uzcenojumu nevar sajaukt ar 40 % maržu.",
+        "2": "Muitas un nodokļu likmes ievadāt jūs, un tās tiek atzīmētas līdz pārbaudei; nekas netiek aizpildīts no izdomātām likmēm.",
+        "3": "Atgūstamais PVN netiek iekļauts izmaksās, tāpēc tas nekad netiek uzskaitīts divreiz.",
+        "4": "Saglabājiet aprēķinus, piesaistiet tos precēm un eksportējiet CSV formātā."
+      }
+    },
+    "invoices": {
+      "title": "Rēķini, kas paliek pareizi",
+      "text": "Izrakstītie rēķini tiek fiksēti kopā ar summām un nodokļu kopsavilkumu; labojumi notiek ar kredītrēķiniem. Reģistrētie maksājumi rāda, kas ir apmaksāts, neapmaksāts un kavēts.",
+      "points": {
+        "1": "Automātiska numerācija pa sērijām un gadiem.",
+        "2": "PDF piecās valodās, nosūtīšana pa e-pastu, ja tā iestatīta.",
+        "3": "Daļēji maksājumi, kavējuma dienas un debitoru sadalījums pa termiņiem.",
+        "4": "Izdevumi ar atgūstamu vai neatgūstamu nodokli un PVN kopsavilkums deklarāciju sagatavošanai."
+      }
+    },
+    "ai": {
+      "title": "Asistents, kas zina jūsu skaitļus",
+      "text": "Jautājiet vienkāršiem vārdiem — “Kuri rēķini ir kavēti?” vai “Kāpēc mainījās rezultāts?” Asistents lasa tikai to, ko drīkst redzēt jūsu loma, ar fiksētām tikai lasīšanas funkcijām, un pasaka, ja datu trūkst.",
+      "points": {
+        "1": "Skaitļus aprēķina lietotne, nevis valodas modelis.",
+        "2": "Katra atbilde nošķir reģistrētos datus, novērtējumus un ieteikumus.",
+        "3": "Tas nevar mainīt ierakstus, sūtīt dokumentus vai veikt maksājumus.",
+        "4": "Jautājumi un atbildes netiek glabāti; lietošanas limiti padara izmaksas paredzamas."
+      }
+    },
+    "countries": {
+      "title": "Veidots Baltijai un Polijai",
+      "text": "Uzņēmumi tiek iestatīti pa valstīm, EUR un PLN netiek jaukti. Nodokļu kategorijas iestata katrs uzņēmums; ALVOXIS Flow nepieņem, ka viena likme der visām precēm.",
+      "list": {
+        "LV": "Latvija",
+        "LT": "Lietuva",
+        "EE": "Igaunija",
+        "PL": "Polija"
+      },
+      "languages": "Lietotne un dokumenti ir pieejami angļu, krievu, latviešu, lietuviešu un igauņu valodā."
+    },
+    "pricing": {
+      "title": "Viens plāns. Viss iekļauts.",
+      "subtitle": "Bez līmeņiem un papildinājumiem: katrs uzņēmums saņem visus moduļus.",
+      "only": "Vienīgais plāns",
+      "perCompany": "Par uzņēmumu, maksa katru mēnesi. Nodokļi, ja tādi piemērojami, tiek parādīti apmaksas laikā.",
+      "cta": "Izveidot kontu",
+      "terms": {
+        "1": "Bez bezmaksas izmēģinājuma: abonements sākas, kad pirmais maksājums ir veiksmīgs.",
+        "2": "Atjaunojas katru mēnesi; atcelt var jebkurā laikā, piekļuve saglabājas līdz apmaksātā mēneša beigām.",
+        "3": "Bez aktīva abonementa uzņēmums ir pieejams tikai lasīšanai — nekas netiek dzēsts.",
+        "4": "Maksājumus apstrādā Stripe; kartes dati nenonāk ALVOXIS Flow."
+      },
+      "detailsTitle": "Kā notiek apmaksa",
+      "details": {
+        "1": "Kontu un uzņēmumu izveidojat bez maksas, pēc tam abonējat uzņēmuma abonementa lapā. Katram uzņēmumam ir savs abonements.",
+        "2": "Cena ir €9.99 mēnesī. Vai tiek pievienots PVN, atkarīgs no jūsu atrašanās vietas un statusa; Stripe to parāda pirms apmaksas.",
+        "3": "Ja maksājums neizdodas, Stripe mēģina vēlreiz, un piekļuve saglabājas. Ja tas joprojām neizdodas, uzņēmums kļūst pieejams tikai lasīšanai, līdz maksājums izdodas.",
+        "4": "Atjaunošanu varat atcelt pats jebkurā laikā. Piekļuve saglabājas līdz apmaksātā perioda beigām; dati paliek pieejami skatīšanai un eksportam.",
+        "5": "MI asistents ir iekļauts ar saprātīgiem limitiem uzņēmumam mēnesī, lai izmaksas būtu paredzamas."
+      },
+      "termsLink": "Pilnie abonēšanas noteikumi"
+    },
+    "faq": {
+      "title": "Jautājumi un atbildes",
+      "more": "Visi jautājumi",
+      "items": {
+        "what": {
+          "q": "Kas ir ALVOXIS Flow?",
+          "a": "Tīmekļa lietotne neliela uzņēmuma vadībai: rēķini un kredītrēķini, maksājumi un izdevumi, klienti un preces, krājumi, ražošana, pašizmaksas aprēķins, atskaites un MI asistents."
+        },
+        "who": {
+          "q": "Kam tas paredzēts?",
+          "a": "Mazajiem uzņēmumiem, ražotājiem un uzņēmējiem, kas reģistrēti Latvijā, Lietuvā, Igaunijā vai Polijā."
+        },
+        "price": {
+          "q": "Cik tas maksā?",
+          "a": "€9.99 par uzņēmumu mēnesī — viens plāns ar visiem moduļiem. Nodokļi, ja tādi piemērojami, tiek parādīti apmaksas laikā."
+        },
+        "trial": {
+          "q": "Vai ir bezmaksas izmēģinājums?",
+          "a": "Nē. Kontu un uzņēmumu var izveidot pirms apmaksas; abonements sākas, kad pirmais maksājums ir veiksmīgs."
+        },
+        "cancel": {
+          "q": "Kā atcelt?",
+          "a": "Uzņēmuma abonementa lapā, jebkurā laikā. Abonements beidzas kopā ar apmaksāto periodu, un dati tiek saglabāti."
+        },
+        "data": {
+          "q": "Kas notiek ar datiem, ja pārstāju maksāt?",
+          "a": "Uzņēmums kļūst pieejams tikai lasīšanai: visu joprojām var skatīt un eksportēt. Abonementa beigu dēļ nekas netiek dzēsts."
+        },
+        "tax": {
+          "q": "Vai ALVOXIS Flow aprēķina nodokļus manā vietā?",
+          "a": "Tas piemēro jūsu uzņēmuma iestatītās nodokļu kategorijas un apkopo reģistrēto PVN. Tas nenosaka, kura likme uz jums attiecas, un nav nodokļu konsultācija — pārbaudiet likmes un rēķinu prasības oficiālos avotos vai pie grāmatveža."
+        },
+        "ai": {
+          "q": "Kādus datus izmanto MI asistents?",
+          "a": "Tikai rādītājus, ko drīkst redzēt jūsu loma, kas tiek nolasīti ar fiksētām funkcijām, kad uzdodat jautājumu. Tie tiek nosūtīti Anthropic Claude API, lai sagatavotu atbildi; ALVOXIS Flow neglabā jautājumus un atbildes."
+        },
+        "bank": {
+          "q": "Vai tas savienojas ar manu banku?",
+          "a": "Vēl nē. Maksājumi un izdevumi tiek ievadīti manuāli, un lietotne to norāda; automātiskas sinhronizācijas ar banku nav."
+        },
+        "languages": {
+          "q": "Kuras valodas tiek atbalstītas?",
+          "a": "Angļu, krievu, latviešu, lietuviešu un igauņu — lietotnei un dokumentiem."
+        },
+        "security": {
+          "q": "Kā tiek aizsargāti mani dati?",
+          "a": "Šifrēti savienojumi, jaukti paroļu kodi, divfaktoru autentifikācija (obligāta īpašniekiem un administratoriem), stingra uzņēmumu nošķiršana un būtisku darbību žurnāls."
+        },
+        "export": {
+          "q": "Vai varu eksportēt savus datus?",
+          "a": "Jā. Dokumentus PDF formātā, bet izdevumus, atskaites, algu aprēķinus un pašizmaksas aprēķinus CSV formātā."
+        }
+      }
+    },
+    "cta": {
+      "title": "Vadiet uzņēmumu pēc reāliem skaitļiem",
+      "text": "Izveidojiet kontu, iestatiet uzņēmumu un redziet pirmos rādītājus dažās minūtēs.",
+      "button": "Sākt"
+    },
+    "featuresPage": {
+      "title": "Iespējas",
+      "intro": "Visi moduļi strādā ar tiem pašiem uzņēmuma datiem un tām pašām atļaujām. Lūk, ko katrs dara — un ko nedara.",
+      "details": {
+        "dashboard": "Ieņēmumi, izdevumi, bruto peļņa, rezultāts un marža pa valūtām šim vai iepriekšējam mēnesim, ceturksnim, gadam vai jebkuram periodam, salīdzinot ar iepriekšējo. Debitori un kreditori šodien, rēķinu apmaksas statuss, krājumu vērtība, pēdējās darbības un ātrās darbības. Katram rādītājam ir apraksts; nekas netiek novērtēts aptuveni.",
+        "documents": "Rēķini, avansa rēķini, pavadzīmes un kredītrēķini ar uzņēmuma numerāciju. Izrakstītos dokumentus nevar mainīt; labojumi ir kredītrēķini. PDF piecās valodās, PDF imports pārbaudei, nosūtīšana pa e-pastu.",
+        "finance": "Maksājumi pret izrakstītiem rēķiniem ar daļējiem maksājumiem, anulēšanu un dublikātu aizsardzību. Izdevumi ar kategorijām, piegādātājiem, atgūstamu vai neatgūstamu nodokli, termiņiem un atkārtošanu. Meklēšana, filtri, CSV eksports.",
+        "catalog": "Klienti un piegādātāji ar apmaksas noteikumiem; preces un pakalpojumi ar artikuliem, cenām un noklusētajām nodokļu kategorijām; noliktavas un nemaināms krājumu žurnāls ar pieņemšanu, izsniegšanu, pārvietošanu un inventarizāciju.",
+        "costing": "Partijas un vienības pašizmaksa no visiem izmaksu veidiem, marža un uzcenojums, cena mērķa maržai un scenāriji citiem apjomiem. Muitas likmes vienmēr ievadāt un pārbaudāt jūs.",
+        "production": "Specifikācijas un ražošanas pasūtījumi, kas vienā solī noraksta komponentes un pievieno gatavo produkciju. Algu aprēķina palīgrīks ar jūsu likmēm — nav rīks deklarāciju iesniegšanai.",
+        "ai": "Claude balstīts asistents, kas atbild pēc lietotnes aprēķinātiem skaitļiem ar jūsu lomas atļaujām un pasaka, ja datu trūkst. Tas neko nevar mainīt.",
+        "team": "Uzaicinājumi pa e-pastu, sešas lomas ar atļaujām, obligāta divfaktoru autentifikācija īpašniekiem un administratoriem un būtisku darbību žurnāls."
+      },
+      "limits": "Pašlaik nav iekļauts: automātiska sinhronizācija ar banku, e-rēķinu tīkli, nodokļu deklarāciju iesniegšana un obligātās algu atskaites."
+    },
+    "about": {
+      "title": "Par ALVOXIS Flow",
+      "intro": "ALVOXIS Flow ir biznesa vadības programmatūra nelieliem uzņēmumiem Latvijā, Lietuvā, Igaunijā un Polijā. Tā parāda īpašniekiem, no kurienes nauda nāk un kur tā aiziet, — izmantojot tikai to, ko viņi ir reģistrējuši.",
+      "principles": {
+        "1": {
+          "title": "Reāli ieraksti, bez minējumiem",
+          "text": "Pārskati, atskaites un asistents izmanto jūsu datus. Ja kaut kā trūkst, lietotne to pasaka, nevis aizpilda tukšumu."
+        },
+        "2": {
+          "title": "Precīza aritmētika",
+          "text": "Nauda tiek rēķināta precīzos decimālskaitļos, valūtas netiek jauktas, izrakstīti dokumenti nemainās."
+        },
+        "3": {
+          "title": "Jūsu uzņēmums paliek jūsu",
+          "text": "Katrs pieprasījums tiek pārbaudīts serverī pēc jūsu dalības un lomas. Uzņēmumi nekad neredz cits cita datus."
+        },
+        "4": {
+          "title": "Godīgi par robežām",
+          "text": "Nodokļu likmes un tiesību prasības ir atkarīgas no jūsu situācijas. Lietotne palīdz tās piemērot, bet neaizstāj grāmatvedi."
+        }
+      },
+      "status": "ALVOXIS Flow gatavojas palaišanai. Operatora rekvizīti un kontakti šeit tiks publicēti pirms komerciālas lietošanas."
+    },
+    "contact": {
+      "title": "Kontakti",
+      "text": "Labprāt atbildēsim uz jautājumiem par ALVOXIS Flow, jūsu kontu vai abonementu.",
+      "emailLabel": "E-pasts:",
+      "notPublished": "Kontaktinformācija šeit tiks publicēta pirms komerciālās palaišanas.",
+      "customers": "Jau lietojat? Piesakieties, lai pārvaldītu abonementu un datus.",
+      "signIn": "Pieteikties"
+    },
+    "legal": {
+      "draftNotice": "Projekts pārskatīšanai: šis dokuments apraksta, kā ALVOXIS Flow darbojas šodien, bet to vēl nav pārskatījis jurists. Ar [jāaizpilda] atzīmētās ziņas operatoram jāpievieno pirms komerciālās palaišanas.",
+      "other": "Citi juridiskie dokumenti",
+      "privacy": {
+        "title": "Privātuma politika",
+        "intro": "Šī politika skaidro, kādus personas datus apstrādā ALVOXIS Flow, kāpēc un kādas ir jūsu tiesības.",
+        "s1": {
+          "title": "Kas ir atbildīgs",
+          "body": "Kontu datu pārzinis ir ALVOXIS Flow operators: [nosaukums, reģistrācijas numurs, adrese un kontakta e-pasts — jāaizpilda]. Biznesa datiem, ko uzņēmumi ievada par saviem klientiem, piegādātājiem un darbiniekiem, pārzinis ir uzņēmums, un ALVOXIS Flow tos apstrādā tā uzdevumā."
+        },
+        "s2": {
+          "title": "Ko mēs apstrādājam",
+          "body": "Konta dati (e-pasta adrese, vārds, valoda, paroles jaucējkods, šifrēti divfaktoru noslēpumi); drošības dati (sesijas, IP adrese un pārlūka informācija, būtisku darbību žurnāls); jūsu ievadītie biznesa dati (uzņēmumi, klienti, piegādātāji, preces, dokumenti, maksājumi, izdevumi, krājumi, algu aprēķini); abonementa dati (Stripe klienta un abonementa identifikatori un statuss — kartes datus apstrādā tikai Stripe); MI lietojuma ieraksti (laiks, marķieru skaits, iznākums — ne jūsu jautājumi vai atbildes)."
+        },
+        "s3": {
+          "title": "Kāpēc un uz kāda pamata",
+          "body": "Lai sniegtu pakalpojumu, kuram reģistrējāties (līguma izpilde), uzturētu tā drošību un novērstu ļaunprātīgu izmantošanu (leģitīmās intereses), iekasētu abonementa maksu (līgums) un izpildītu tiesību aktu prasības, piemēram, grāmatvedības noteikumus mūsu pašu rēķiniem."
+        },
+        "s4": {
+          "title": "Dati, ko ievadāt par citiem",
+          "body": "Reģistrējot klientus, piegādātājus vai darbiniekus, jūs atbildat par tiesiska pamata esamību. Datu apstrādes līgums biznesa klientiem [jāaizpilda] apraksta, kā ALVOXIS Flow apstrādā šos datus pēc jūsu norādījumiem."
+        },
+        "s5": {
+          "title": "Pakalpojumu sniedzēji",
+          "body": "Mitināšanas un datubāzes pakalpojumu sniedzēji [jāapstiprina: piem., Vercel, Neon], maksājumi — Stripe, e-pasta piegāde — iestatītais e-pasta pakalpojumu sniedzējs, un — tikai izmantojot asistentu — Anthropic (Claude API), kas saņem atbildei nepieciešamos rādītājus. Ja dati tiek nodoti ārpus EEZ, piemēro atbilstošas garantijas, piemēram, līguma standartklauzulas [jāapstiprina katram sniedzējam]."
+        },
+        "s6": {
+          "title": "Cik ilgi glabājam datus",
+          "body": "Konta un biznesa datus — kamēr pastāv konts vai uzņēmums; izrakstītos dokumentus un darbību žurnālu — tik ilgi, cik prasa grāmatvedības vai tiesību normas [termiņi jāaizpilda]; drošības žurnālus — ierobežotu laiku."
+        },
+        "s7": {
+          "title": "Drošība",
+          "body": "Šifrēti savienojumi, paroļu jaukšana, divfaktoru autentifikācija (obligāta īpašniekiem un administratoriem), servera puses atļauju pārbaude katram uzņēmumam, nemaināmi darbību un krājumu žurnāli, noslēpumi netiek nodoti pārlūkam."
+        },
+        "s8": {
+          "title": "Jūsu tiesības",
+          "body": "Jūs varat pieprasīt piekļuvi, labošanu, dzēšanu, apstrādes ierobežošanu, datu pārnesamību (eksports ir iebūvēts) un iebilst pret apstrādi. Jūs varat iesniegt sūdzību datu aizsardzības iestādei: Datu valsts inspekcija (Latvija), Valstybinė duomenų apsaugos inspekcija (Lietuva), Andmekaitse Inspektsioon (Igaunija) vai Prezes Urzędu Ochrony Danych Osobowych (Polija)."
+        },
+        "s9": {
+          "title": "Kontakti un izmaiņas",
+          "body": "Sazinieties ar operatoru: [kontakta e-pasts — jāaizpilda]. Par būtiskām šīs politikas izmaiņām tiks paziņots lietotnē pirms to stāšanās spēkā."
+        }
+      },
+      "terms": {
+        "title": "Lietošanas noteikumi",
+        "intro": "Šie noteikumi attiecas uz ALVOXIS Flow lietošanu uzņēmumiem un to dalībniekiem.",
+        "s1": {
+          "title": "Pakalpojums",
+          "body": "ALVOXIS Flow ir tīmekļa lietotne rēķiniem, maksājumiem, izdevumiem, precēm, krājumiem, ražošanai, pašizmaksas aprēķinam, atskaitēm un MI asistentam. Iespējas var mainīties, produktam attīstoties."
+        },
+        "s2": {
+          "title": "Konti",
+          "body": "Nepieciešama apstiprināta e-pasta adrese. Glabājiet paroli un otro faktoru drošībā; jūs atbildat par darbībām savā kontā. Īpašnieki izlemj, kas pievienojas uzņēmumam un ar kādu lomu."
+        },
+        "s3": {
+          "title": "Abonements un maksājumi",
+          "body": "Uzņēmuma biznesa funkciju izmantošanai nepieciešams aktīvs abonements saskaņā ar abonēšanas noteikumiem. Maksājumus apstrādā Stripe."
+        },
+        "s4": {
+          "title": "Pieļaujamā lietošana",
+          "body": "Neizmantojiet pakalpojumu ļaunprātīgi: nekāda nelikumīga satura, mēģinājumu piekļūt citu uzņēmumu datiem, uzbrukumu pakalpojumam un lietošanas, kas pārkāpj nodokļu, grāmatvedības vai datu aizsardzības tiesības."
+        },
+        "s5": {
+          "title": "Jūsu dati",
+          "body": "Jūsu uzņēmuma dati paliek jūsu. Tos var eksportēt jebkurā laikā, un tie netiek dzēsti abonementa beigu dēļ. ALVOXIS Flow tos izmanto tikai pakalpojuma sniegšanai."
+        },
+        "s6": {
+          "title": "Aprēķini nav konsultācija",
+          "body": "Lietotne rēķina pēc tā, ko jūs reģistrējat, un pēc jūsu iestatītajām nodokļu kategorijām. Tā nenosaka, kādi nodokļi uz jums attiecas, un neaizstāj grāmatvedi, nodokļu konsultantu vai sertificētu grāmatvedības sistēmu. Jūs atbildat par savu dokumentu pareizību un atbilstību tiesību aktiem."
+        },
+        "s7": {
+          "title": "MI asistents",
+          "body": "Asistents var kļūdīties. Tas atzīmē datus, novērtējumus un ieteikumus, taču svarīgas atbildes ieteicams pārbaudīt. Tas nevar mainīt datus vai rīkoties jūsu vārdā."
+        },
+        "s8": {
+          "title": "Pieejamība un atbildība",
+          "body": "Mēs tiecamies uz augstu pieejamību, bet nevaram garantēt nepārtrauktu darbību. Atbildības noteikumi [jāaizpilda pēc juridiskas pārskatīšanas]."
+        },
+        "s9": {
+          "title": "Izmaiņas un piemērojamās tiesības",
+          "body": "Par būtiskām izmaiņām paziņosim iepriekš. Piemērojamās tiesības un piekritība [jāaizpilda]."
+        }
+      },
+      "subscription": {
+        "title": "Abonēšanas noteikumi",
+        "intro": "ALVOXIS Flow ir viens abonements katram uzņēmumam.",
+        "s1": {
+          "title": "Plāns un cena",
+          "body": "ALVOXIS Flow plāns maksā €9.99 par uzņēmumu mēnesī un ietver visus moduļus un MI asistentu ar saprātīgiem limitiem. Vai tiek pievienots PVN vai citi nodokļi, tiek parādīts apmaksas laikā."
+        },
+        "s2": {
+          "title": "Sākums",
+          "body": "Bezmaksas izmēģinājuma nav. Abonements sākas, kad pirmais maksājums ir veiksmīgs; atcelta vai nepabeigta apmaksa neizveido abonementu un neko neiekasē."
+        },
+        "s3": {
+          "title": "Atjaunošana",
+          "body": "Abonements automātiski atjaunojas katru mēnesi, līdz to atceļ. Atjaunošanas datums redzams uzņēmuma abonementa lapā."
+        },
+        "s4": {
+          "title": "Atcelšana",
+          "body": "Īpašnieki var atcelt atjaunošanu jebkurā laikā abonementa lapā vai Stripe klientu portālā. Abonements paliek aktīvs līdz apmaksātā mēneša beigām un tad beidzas. Atmaksas: [noteikumi jāaizpilda]; likumā noteiktās patērētāju tiesības, kur tās piemērojamas, netiek ierobežotas."
+        },
+        "s5": {
+          "title": "Neizdevušies maksājumi",
+          "body": "Ja maksājums neizdodas, Stripe mēģina vēlreiz, un piekļuve tikmēr saglabājas. Ja maksu nevar iekasēt, abonements tiek apturēts vai beidzas, un uzņēmums kļūst pieejams tikai lasīšanai, līdz maksājums izdodas."
+        },
+        "s6": {
+          "title": "Tikai lasīšana un jūsu dati",
+          "body": "Bez aktīva abonementa jūs joprojām varat pieteikties, skatīt, drukāt un eksportēt visus uzņēmuma datus un pārvaldīt dalībniekus un apmaksu. Ierakstu izveide un maiņa un MI asistents nav pieejami. Apmaksas dēļ dati netiek dzēsti."
+        },
+        "s7": {
+          "title": "Cenas izmaiņas",
+          "body": "Par cenas izmaiņām paziņo vismaz 30 dienas iepriekš, un tās stājas spēkā no nākamā norēķinu perioda; līdz tam abonementu var atcelt."
+        }
+      },
+      "cookies": {
+        "title": "Sīkdatnes un pārlūka krātuve",
+        "intro": "ALVOXIS Flow izmanto tikai to, kas nepieciešams pakalpojuma darbībai.",
+        "s1": {
+          "title": "Nepieciešamās sīkdatnes",
+          "body": "Sesijas sīkdatne uztur pieteikšanos, zināmas ierīces sīkdatne palīdz pamanīt pieteikšanos no jaunām ierīcēm, bet valodas sīkdatne atceras valodu. Tās ir nepieciešamas pakalpojuma darbībai un nav atslēdzamas."
+        },
+        "s2": {
+          "title": "Motīva izvēle",
+          "body": "Jūsu izvēlētais gaišais vai tumšais motīvs tiek saglabāts nelielā iestatījumu sīkdatnē uz vienu gadu. To izmanto tikai jūsu pārlūks, lai parādītu pareizo motīvu; pakalpojums to nelasa un neglabā."
+        },
+        "s3": {
+          "title": "Bez izsekošanas",
+          "body": "Nav analītikas, reklāmas vai sociālo tīklu sīkdatņu. Tā kā tiek izmantotas tikai nepieciešamās sīkdatnes, piekrišana nav vajadzīga; ja kādreiz tiks pievienotas neobligātas sīkdatnes, vispirms jums jautāsim, un izvēli varēs mainīt jebkurā laikā."
+        },
+        "s4": {
+          "title": "Maksājumu lapas",
+          "body": "Stripe apmaksas lapas un klientu portāls darbojas Stripe domēnā un iestata savas sīkdatnes saskaņā ar Stripe privātuma politiku."
+        }
       }
     }
   }

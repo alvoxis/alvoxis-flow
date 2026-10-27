@@ -152,7 +152,7 @@ test("each company has its own card with its real figures, on every screen size"
     "href",
     `/en/companies/${beta}/documents/new`,
   );
-  await expect(page.getByTestId("overview-notes")).toContainText("Payments are not tracked yet");
+  await expect(page.getByTestId("overview-notes")).toContainText("business overview");
   await expect(a.getByText("Invoiced, net of credit notes")).toBeVisible();
 
   // No accessibility violations on the dashboard (WCAG 2.1 A/AA rules).

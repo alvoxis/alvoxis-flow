@@ -6,6 +6,18 @@ export class ForbiddenError extends Error {
   }
 }
 
+/**
+ * The action needs an active subscription and the company's is inactive (read-only mode). A
+ * ForbiddenError, so every caller that hides forbidden things keeps doing so; the HTTP boundary
+ * maps it to 402 subscription_required.
+ */
+export class SubscriptionRequiredError extends ForbiddenError {
+  constructor() {
+    super("An active subscription is required for this action");
+    this.name = "SubscriptionRequiredError";
+  }
+}
+
 export class TwoFactorRequiredError extends Error {
   constructor() {
     super("Two-factor authentication is required for this role");

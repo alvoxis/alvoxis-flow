@@ -155,6 +155,34 @@
       "when": 1792757091637,
       "tag": "0021_company_billing",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1793058141465,
+      "tag": "0022_billing_single_plan",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1793058142474,
+      "tag": "0023_grant_finance_permissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1793058776101,
+      "tag": "0024_finance",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1793060333400,
+      "tag": "0025_costing_and_ai_usage",
+      "breakpoints": true
     }
   ]
 }

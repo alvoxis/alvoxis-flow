@@ -209,7 +209,7 @@ export const companyBilling = pgTable(
       .references(() => companies.id, { onDelete: "cascade" }),
     stripeCustomerId: text("stripe_customer_id").notNull(),
     stripeSubscriptionId: text("stripe_subscription_id"),
-    /** basic | pro | business; null without a subscription. */
+    /** flow (the one plan); basic | pro | business on rows of the earlier pricing; null without one. */
     plan: text("plan"),
     /** Stripe subscription status (trialing, active, past_due, canceled, …); null without one. */
     status: text("status"),
@@ -224,10 +224,59 @@ export const companyBilling = pgTable(
     uniqueIndex("company_billing_customer_uq").on(t.stripeCustomerId),
     check(
       "company_billing_plan_ck",
-      sql`${t.plan} is null or ${t.plan} in ('basic', 'pro', 'business')`,
+      sql`${t.plan} is null or ${t.plan} in ('flow', 'basic', 'pro', 'business')`,
     ),
   ],
 );
+
+/**
+ * Stripe webhook events already handled (idempotency). An event id is inserted in the same
+ * transaction that applies it, so a redelivered or concurrent duplicate does nothing, and an event
+ * whose processing failed is not recorded and is retried by Stripe. Only ids and types are kept.
+ */
+export const billingEvents = pgTable(
+  "billing_events",
+  {
+    id: text("id").primaryKey(),
+    type: text("type").notNull(),
+    /** Company the event was matched to (null: unknown customer, ignored). */
+    companyId: uuid("company_id").references(() => companies.id, { onDelete: "set null" }),
+    receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("billing_events_company_idx").on(t.companyId, t.receivedAt)],
+);
+
+/**
+ * Time-limited internal access without a subscription, granted by an operator (testing, support).
+ * One per company; granting again replaces it. Every grant and revocation is audited.
+ */
+export const companyAccessGrants = pgTable(
+  "company_access_grants",
+  {
+    companyId: uuid("company_id")
+      .primaryKey()
+      .references(() => companies.id, { onDelete: "cascade" }),
+    reason: text("reason").notNull(),
+    grantedByUserId: uuid("granted_by_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [check("company_access_grants_reason_ck", sql`length(trim(${t.reason})) >= 5`)],
+);
+
+/**
+ * Operators of the SaaS (not company roles). Granted and revoked only by the operator script
+ * `pnpm admin:grant` (never through the web application), and every change is audited.
+ */
+export const platformAdmins = pgTable("platform_admins", {
+  userId: uuid("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  grantedBy: text("granted_by").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 /**
  * Append-only audit trail. UPDATE and DELETE are blocked by a database trigger

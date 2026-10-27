@@ -29,7 +29,7 @@ Better Auth, next-intl (en, ru, lv, lt, et). Details: [README](README.md),
   (integration; its schema is dropped), `alvoxis_flow_e2e` (e2e; recreate freely). New databases
   are empty: `pnpm db:migrate && pnpm db:seed` when needed.
 - `.env` is git-ignored (local placeholders); `DATABASE_URL`/`TEST_DATABASE_URL` point to localhost.
-- E2E browser: `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium-1194/chrome-linux/chrome`.
+- E2E browser: `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`.
 - E2E like CI: `E2E_DATABASE_URL=<…/alvoxis_flow_e2e> CI=1`, after `pnpm db:migrate && pnpm db:seed`.
 
 ## Commands

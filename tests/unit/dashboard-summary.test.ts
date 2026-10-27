@@ -74,6 +74,9 @@ describe("main navigation", () => {
 
   // Company modules: active on their entry page and on any company's pages of that module.
   const COMPANY_MODULES = [
+    "finance",
+    "costing",
+    "assistant",
     "customers",
     "suppliers",
     "products",

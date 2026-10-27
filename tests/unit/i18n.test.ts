@@ -59,10 +59,10 @@ describe("message catalogs", () => {
         "bankAccounts.fields.bic",
         "documentPdf.lineNo",
         "documentPdf.taxKind.standard",
-        // Subscription plan names are product names, the same in every language.
-        "billing.plans.basic.name",
-        "billing.plans.pro.name",
-        "billing.plans.business.name",
+        // The subscription's name is the product name, the same in every language.
+        "billing.planName",
+        // The payment provider's brand name.
+        "admin.stripe",
         // Month names that are spelled the same in some languages (e.g. Estonian).
         ...Array.from({ length: 12 }, (_, i) => `analytics.month.${i + 1}`),
       ]);

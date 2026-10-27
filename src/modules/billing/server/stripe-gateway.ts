@@ -15,6 +15,27 @@ export interface StripeSubscriptionSnapshot {
   created: Date;
 }
 
+export interface StripePrice {
+  id: string;
+  /** Amount in the currency's minor unit (cents). */
+  unitAmount: number | null;
+  currency: string;
+  interval: string | null;
+}
+
+/** A Stripe invoice of the customer (billing history); amounts in minor units. */
+export interface StripeInvoiceSnapshot {
+  id: string;
+  number: string | null;
+  status: string | null;
+  amountDue: number;
+  amountPaid: number;
+  currency: string;
+  created: Date;
+  hostedInvoiceUrl: string | null;
+  invoicePdf: string | null;
+}
+
 export interface StripeGateway {
   createCustomer(input: {
     name: string;
@@ -22,7 +43,7 @@ export interface StripeGateway {
     companyId: string;
   }): Promise<{ id: string }>;
   /** The active price with this lookup key, or null. */
-  findPrice(lookupKey: string): Promise<{ id: string } | null>;
+  findPrice(lookupKey: string): Promise<StripePrice | null>;
   createCheckoutSession(input: {
     customerId: string;
     priceId: string;
@@ -30,10 +51,12 @@ export interface StripeGateway {
     successUrl: string;
     cancelUrl: string;
     locale: string;
-    trialDays: number | null;
   }): Promise<{ url: string }>;
   createPortalSession(input: { customerId: string; returnUrl: string }): Promise<{ url: string }>;
   listSubscriptions(customerId: string): Promise<StripeSubscriptionSnapshot[]>;
+  listInvoices(customerId: string): Promise<StripeInvoiceSnapshot[]>;
+  /** Stops (true) or resumes (false) the renewal at the end of the paid period. */
+  setCancelAtPeriodEnd(subscriptionId: string, cancel: boolean): Promise<void>;
 }
 
 export class StripeRequestError extends Error {
@@ -117,17 +140,18 @@ export function createStripeGateway(
         limit: 1,
       });
       const first = (list.data as Json[] | undefined)?.[0];
-      return first ? { id: String(first.id) } : null;
+      if (!first) return null;
+      const recurring = (first.recurring ?? null) as Json | null;
+      return {
+        id: String(first.id),
+        unitAmount: typeof first.unit_amount === "number" ? first.unit_amount : null,
+        currency: String(first.currency ?? ""),
+        interval: recurring && typeof recurring.interval === "string" ? recurring.interval : null,
+      };
     },
     async createCheckoutSession(input) {
-      const trial = input.trialDays
-        ? {
-            trial_period_days: input.trialDays,
-            // No card is asked for during the trial; without one the subscription ends instead
-            // of becoming paid, so nobody is charged without adding a payment method themselves.
-            trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
-          }
-        : {};
+      // No trial: the subscription starts with the first successful payment. Card details are
+      // entered on Stripe's page only.
       const s = await call("POST", "/checkout/sessions", {
         mode: "subscription",
         customer: input.customerId,
@@ -136,8 +160,7 @@ export function createStripeGateway(
         success_url: input.successUrl,
         cancel_url: input.cancelUrl,
         locale: input.locale,
-        ...(input.trialDays ? { payment_method_collection: "if_required" } : {}),
-        subscription_data: { metadata: { company_id: input.companyId }, ...trial },
+        subscription_data: { metadata: { company_id: input.companyId } },
       });
       return { url: String(s.url) };
     },
@@ -167,6 +190,26 @@ export function createStripeGateway(
           cancelAtPeriodEnd: sub.cancel_at_period_end === true,
           created: seconds(sub.created) ?? new Date(0),
         };
+      });
+    },
+    async listInvoices(customerId) {
+      const list = await call("GET", "/invoices", { customer: customerId, limit: 24 });
+      return ((list.data as Json[] | undefined) ?? []).map((inv) => ({
+        id: String(inv.id),
+        number: typeof inv.number === "string" ? inv.number : null,
+        status: typeof inv.status === "string" ? inv.status : null,
+        amountDue: typeof inv.amount_due === "number" ? inv.amount_due : 0,
+        amountPaid: typeof inv.amount_paid === "number" ? inv.amount_paid : 0,
+        currency: String(inv.currency ?? ""),
+        created: seconds(inv.created) ?? new Date(0),
+        hostedInvoiceUrl:
+          typeof inv.hosted_invoice_url === "string" ? inv.hosted_invoice_url : null,
+        invoicePdf: typeof inv.invoice_pdf === "string" ? inv.invoice_pdf : null,
+      }));
+    },
+    async setCancelAtPeriodEnd(subscriptionId, cancel) {
+      await call("POST", `/subscriptions/${encodeURIComponent(subscriptionId)}`, {
+        cancel_at_period_end: cancel ? "true" : "false",
       });
     },
   };

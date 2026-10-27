@@ -21,6 +21,7 @@ export function CompanyOverviewCard({ company: c }: { company: Company }) {
   const tCat = useTranslations("taxCategories");
   const tBank = useTranslations("bankAccounts");
   const t = useTranslations("dashboard.documents");
+  const tBiz = useTranslations("business");
 
   return (
     <li
@@ -77,6 +78,13 @@ export function CompanyOverviewCard({ company: c }: { company: Company }) {
       )}
 
       <div className="mt-auto flex flex-wrap gap-2">
+        <Link
+          href={`/companies/${c.id}/dashboard`}
+          className="inline-flex min-h-10 items-center rounded-full bg-accent-strong px-3.5 text-sm font-medium text-white transition-transform hover:-translate-y-px"
+          data-testid="company-dashboard-link"
+        >
+          {tBiz("open")}
+        </Link>
         <Link
           href={`/companies/${c.id}/documents`}
           className={quickLink}

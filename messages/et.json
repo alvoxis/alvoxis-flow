@@ -17,14 +17,18 @@
     "settings": "Seaded",
     "soon": "Tulekul",
     "openMenu": "Ava menüü",
-    "closeMenu": "Sulge menüü"
+    "closeMenu": "Sulge menüü",
+    "finance": "Rahandus",
+    "costing": "Omahinna kalkulaator",
+    "assistant": "Tehisintellekti assistent"
   },
   "topbar": {
     "noCompany": "Ettevõtet veel pole",
     "language": "Keel",
     "account": "Konto",
     "notSignedIn": "Pole sisse logitud",
-    "currentCompany": "Praegune ettevõte"
+    "currentCompany": "Praegune ettevõte",
+    "theme": "Vaheta heledat ja tumedat teemat"
   },
   "environment": {
     "label": "Testkeskkond",
@@ -43,7 +47,7 @@
       "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta.",
       "loadError": "Dokumentide näitajaid ei õnnestunud praegu laadida. Dokumente see ei mõjuta; proovige hiljem uuesti.",
       "createFirst": "Loo esimene dokument",
-      "paymentsNotTracked": "Makseid veel ei arvestata, seega ei näe siin, mis on tasutud, tasumata või tähtaja ületanud."
+      "paymentsNotTracked": "Tasutud, avatud ja tähtaja ületanud summad on iga ettevõtte äri ülevaates."
     }
   },
   "documentType": {
@@ -1140,7 +1144,8 @@
       "twoFactor": "Teie roll nõuab selle toimingu jaoks kaheastmelist autentimist.",
       "forbidden": "Teil pole selleks toiminguks õigust või ettevõte pole enam aktiivne.",
       "notFound": "Seda kirjet enam ei ole.",
-      "error": "Midagi läks valesti. Palun proovige uuesti."
+      "error": "Midagi läks valesti. Palun proovige uuesti.",
+      "subscription": "Selleks on vaja aktiivset tellimust. Kuni tellimus pole aktiivne, on ettevõte ainult vaatamiseks."
     },
     "reload": "Laadi uuesti"
   },
@@ -1641,57 +1646,1151 @@
   },
   "billing": {
     "title": "Tellimus",
-    "description": "Ettevõtte pakett ja maksed. Makseid töötleb Stripe.",
+    "description": "Ettevõtte tellimus ja maksed. Makseid töötleb Stripe.",
     "back": "Seadetesse",
     "notConfigured": "Tellimused pole sellel saidil veel saadaval.",
     "checkout": {
-      "success": "Aitäh! Tellimust seadistatakse; selle olek ilmub siia hetke pärast.",
+      "success": "Aitäh! Stripe kinnitab makset; allolev olek uueneb kohe, kui Stripe sellest teatab.",
       "cancelled": "Makse tühistati. Midagi ei võetud."
     },
-    "current": "Praegune pakett",
-    "none": "Tellimust veel pole.",
-    "manage": "Halda tellimust",
-    "history": "Arved ja makseviisid",
-    "choose": "Valige pakett",
-    "trialInfo": "Esimesed {days} päeva on tasuta ja kaarti pole vaja. Seejärel tellimus lõpeb, kui te makseviisi ei lisa.",
+    "current": "Praegune tellimus",
+    "planName": "ALVOXIS Flow",
+    "planText": "Üks pakett kõigi moodulitega ühele ettevõttele.",
     "perMonth": "/ kuus",
-    "startTrial": "Proovi {days} päeva tasuta",
-    "subscribe": "Telli",
-    "pricesNote": "Hinnad ettevõtte kohta kuus, EUR. Kaardiandmed sisestatakse Stripe'i lehel ega jõua ALVOXIS Flow'sse. Tühistada saab igal ajal.",
-    "trialEnds": "Tasuta periood kuni {date}.",
+    "subscribeTitle": "Telli",
+    "subscribe": "Telli hinnaga €{price} / kuus",
+    "manage": "Makseviis ja arved",
+    "history": "Maksete ajalugu",
+    "historyEmpty": "Arveid veel pole.",
+    "historyUnavailable": "Maksete ajalugu ei õnnestunud praegu laadida.",
+    "viewInvoice": "Vaata arvet",
+    "pricesNote": "Hind ettevõtte kohta kuus, EUR; maksud, kui neid kohaldatakse, kuvatakse maksmisel. Kaardiandmed sisestatakse Stripe'i lehel ega jõua ALVOXIS Flow'sse. Tühistada saab igal ajal; tellimus lõpeb koos makstud perioodiga.",
     "renewsOn": "Pikeneb {date}.",
-    "endsOn": "Lõpeb {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Dokumendid, kliendid ja tooted väikeettevõttele."
+    "endsOn": "Pikendamine tühistatud — juurdepääs lõpeb {date}.",
+    "readOnly": "Ettevõte on ainult vaatamiseks: kõike saab vaadata ja eksportida, kuid kirjeid ei saa luua ega muuta ega tehisintellekti assistenti kasutada. Andmed säilivad.",
+    "grantUntil": "Operaatori antud sisemine juurdepääs kuni {date}.",
+    "renewal": {
+      "cancel": "Tühista pikendamine",
+      "resume": "Jätka pikendamist",
+      "saved": "Salvestatud. Allpool on Stripe'i praegune olek.",
+      "confirmTitle": "Tühistada pikendamine?",
+      "confirmText": "Tellimus jääb aktiivseks kuni {date} ja lõpeb siis. Midagi ei kustutata; ettevõte muutub ainult vaatamiseks ja uuesti tellida saab igal ajal.",
+      "keep": "Jäta tellimus alles",
+      "confirm": "Tühista pikendamine"
+    },
+    "phase": {
+      "active": {
+        "label": "Aktiivne",
+        "text": "Kõik on saadaval."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Kõik Basicust ja tehisintellekti assistent, kui see ilmub."
+      "past_due": {
+        "label": "Makse hilineb",
+        "text": "Viimane makse ebaõnnestus. Stripe proovib uuesti; juurdepääsu säilitamiseks uuendage makseviisi."
       },
-      "business": {
-        "name": "Business",
-        "text": "Kõik moodulid: ladu, tootmine, palgad ja analüütika."
+      "awaiting_payment": {
+        "label": "Ootab makset",
+        "text": "Esimest makset pole veel kinnitatud. Kuni Stripe selle kinnitab, on ettevõte ainult vaatamiseks."
+      },
+      "payment_required": {
+        "label": "Makse vajalik",
+        "text": "Maksed ebaõnnestusid ja tellimus on peatatud. Juurdepääsu taastamiseks uuendage makseviisi."
+      },
+      "ended": {
+        "label": "Lõppenud",
+        "text": "Tellimus on lõppenud. Andmed on säilinud; töö jätkamiseks tellige uuesti."
+      },
+      "none": {
+        "label": "Tellimus puudub",
+        "text": "Ettevõttel pole veel tellimust."
       }
     },
-    "status": {
-      "trialing": "Tasuta periood",
-      "active": "Aktiivne",
-      "past_due": "Makse hilineb",
-      "unpaid": "Maksmata",
-      "incomplete": "Ootab makset",
-      "paused": "Peatatud",
-      "canceled": "Tühistatud",
-      "incomplete_expired": "Aegunud"
+    "invoiceStatus": {
+      "paid": "Makstud",
+      "open": "Avatud",
+      "void": "Tühistatud",
+      "uncollectible": "Sissenõudmatu"
+    },
+    "banner": {
+      "readOnly": "Ainult vaatamiseks: ettevõttel pole aktiivset tellimust. Vaatamine ja eksport töötavad.",
+      "pastDue": "Viimane tellimusmakse ebaõnnestus. Juurdepääsu säilitamiseks uuendage makseviisi.",
+      "open": "Tellimus"
     },
     "state": {
       "billing": {
         "failed": "Makseteenus ei vastanud. Proovige hetke pärast uuesti.",
         "notConfigured": "Tellimused pole sellel saidil veel saadaval.",
-        "alreadySubscribed": "Ettevõttel on juba tellimus; muutke seda jaotises „Halda tellimust“.",
-        "priceMissing": "See pakett pole praegu saadaval.",
-        "noCustomer": "Hallatavat tellimust veel pole."
+        "alreadySubscribed": "Ettevõttel on juba tellimus; hallake seda jaotises „Makseviis ja arved“.",
+        "priceMissing": "Tellimust ei saa praegu pakkuda (hind pole seadistatud).",
+        "priceMismatch": "Tellimust ei saa praegu pakkuda (hind on valesti seadistatud). Midagi ei võetud.",
+        "noCustomer": "Hallatavat tellimust veel pole.",
+        "noSubscription": "Muudetavat aktiivset tellimust pole."
+      }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Ärikokkuvõte ja aruanded",
+      "documents": "Arved, kreeditarved ja PDF-id",
+      "finance": "Maksed, nõuded ja kulud",
+      "catalog": "Kliendid, tarnijad, tooted ja laoseis",
+      "costing": "Omahinna kalkulaator, tootmine ja palgaarvestuse abivahend",
+      "ai": "Tehisintellektil põhinev äriassistent (mõistlikud piirangud)",
+      "team": "Meeskonnaliikmed rollidega",
+      "languages": "Inglise, vene, läti, leedu, eesti"
+    }
+  },
+  "payments": {
+    "title": "Maksed",
+    "status": {
+      "unpaid": "Tasumata",
+      "partially_paid": "Osaliselt tasutud",
+      "paid": "Tasutud",
+      "credited": "Krediteeritud"
+    },
+    "overdueDays": "{days, plural, one {# päev üle tähtaja} other {# päeva üle tähtaja}}",
+    "summary": {
+      "gross": "Arve summa",
+      "credited": "Kreeditarved",
+      "paid": "Tasutud",
+      "balance": "Jääk"
+    },
+    "dueOn": "Maksetähtaeg {date}.",
+    "none": "Makseid pole veel registreeritud.",
+    "record": "Registreeri makse",
+    "recorded": "Makse registreeritud.",
+    "voided": "Makse tühistati. See jääb ajalukku ega lähe enam arvesse.",
+    "void": "Tühista",
+    "voidedBadge": "Tühistatud",
+    "voidTitle": "Tühistada see makse?",
+    "voidText": "Makse summas {amount} jääb ajalukku, kuid seda ei arvestata enam arve tasumisel.",
+    "keep": "Jäta alles",
+    "referenceTaken": "Selle viitega makse on sellele arvele juba registreeritud.",
+    "manualNote": "Maksed sisestatakse käsitsi; pangast ei loeta midagi automaatselt. Arve ise ei muutu kunagi.",
+    "method": {
+      "bank_transfer": "Pangaülekanne",
+      "card": "Kaart",
+      "cash": "Sularaha",
+      "other": "Muu"
+    },
+    "fields": {
+      "amount": "Summa ({currency})",
+      "paidOn": "Makse kuupäev",
+      "method": "Viis",
+      "reference": "Viide (nt ülekande ID)",
+      "note": "Märkus"
+    },
+    "issue": {
+      "invalid": "Kontrollige seda väärtust.",
+      "payment": {
+        "amount": {
+          "invalid": "Sisestage nullist suurem summa, kuni 2 komakohta.",
+          "exceedsBalance": "Summa on jäägist suurem."
+        },
+        "paidOn": {
+          "invalid": "Sisestage kehtiv kuupäev.",
+          "future": "Kuupäev ei saa olla tulevikus."
+        }
+      }
+    },
+    "state": {
+      "failed": "Makset ei õnnestunud salvestada. Laadige leht uuesti ja proovige veel.",
+      "payments": {
+        "notIssuedInvoice": "Makseid saab registreerida ainult väljastatud arvetele.",
+        "alreadyVoided": "See makse on juba tühistatud."
+      }
+    }
+  },
+  "finance": {
+    "title": "Rahandus",
+    "description": "Ettevõtte kulud, sisestatud käsitsi. Saadud maksed registreeritakse iga arve juures.",
+    "toReports": "Aruanded",
+    "readOnly": "Saate kulusid vaadata ja eksportida; teie roll ei luba neid muuta.",
+    "search": "Otsing",
+    "searchPlaceholder": "Kirjeldus, tarnija või viide",
+    "all": "Kõik",
+    "from": "Alates",
+    "to": "Kuni",
+    "apply": "Rakenda",
+    "reset": "Lähtesta",
+    "export": "Ekspordi CSV",
+    "add": "Lisa kulu",
+    "edit": "Muuda",
+    "delete": "Kustuta",
+    "deleteTitle": "Kustutada see kulu?",
+    "deleteText": "„{description}“ kustutatakse jäädavalt. Seda ei saa tagasi võtta.",
+    "cancel": "Loobu",
+    "save": "Salvesta",
+    "count": "{count, plural, one {# kulu} other {# kulu}}",
+    "empty": "Kulusid veel pole. Lisage esimene, et näha ülevaates kulusid ja kasumit.",
+    "noMatches": "Nende filtritega kulusid ei leitud.",
+    "costShort": "kulu {amount}",
+    "dueOn": "tähtaeg {date}",
+    "taxNotRecoverable": "Maks pole tagastatav",
+    "recordNext": "Registreeri järgmine",
+    "pagination": "Lehed",
+    "previous": "Eelmine",
+    "next": "Järgmine",
+    "pageOf": "Leht {page}/{pages}",
+    "supplierNone": "Tarnija kirjeta",
+    "taxHint": "Käibemaks või sarnane maks, nagu tarnija arvel.",
+    "paidOnHint": "Tühi: kulu kuupäev.",
+    "status": {
+      "paid": "Tasutud",
+      "unpaid": "Tasumata",
+      "overdue": "Üle tähtaja"
+    },
+    "recurrence": {
+      "none": "Ühekordne",
+      "monthly": "Igakuine",
+      "quarterly": "Kord kvartalis",
+      "yearly": "Iga-aastane"
+    },
+    "source": {
+      "manual": "Sisestatud käsitsi",
+      "imported": "Imporditud"
+    },
+    "sort": {
+      "label": "Järjesta",
+      "date_desc": "Uuemad eespool",
+      "date_asc": "Vanemad eespool",
+      "amount_desc": "Suuremad eespool",
+      "amount_asc": "Väiksemad eespool"
+    },
+    "category": {
+      "materials": "Materjalid",
+      "goods_for_resale": "Edasimüügiks kaubad",
+      "rent": "Üür",
+      "utilities": "Kommunaalteenused",
+      "salaries": "Palgad",
+      "taxes_fees": "Maksud ja tasud",
+      "transport": "Transpordikulud",
+      "marketing": "Turundus",
+      "software": "Tarkvara",
+      "professional_services": "Erialased teenused",
+      "equipment": "Seadmed",
+      "travel": "Lähetused",
+      "bank_fees": "Pangatasud",
+      "other": "Muu"
+    },
+    "method": {
+      "bank_transfer": "Pangaülekanne",
+      "card": "Kaart",
+      "cash": "Sularaha",
+      "other": "Muu"
+    },
+    "fields": {
+      "category": "Kategooria",
+      "status": "Olek",
+      "description": "Kirjeldus",
+      "date": "Kuupäev",
+      "supplier": "Tarnija",
+      "supplierName": "Tarnija (tekstina)",
+      "currency": "Valuuta",
+      "net": "Summa ilma maksuta",
+      "tax": "Maksu summa",
+      "taxRecoverable": "Maks on tagastatav (mahaarvatav sisendkäibemaks)",
+      "paidOn": "Makse kuupäev",
+      "dueDate": "Maksetähtaeg",
+      "method": "Makseviis",
+      "reference": "Viide",
+      "recurrence": "Kordub",
+      "notes": "Märkused"
+    },
+    "done": {
+      "created": "Kulu lisatud.",
+      "updated": "Kulu salvestatud.",
+      "deleted": "Kulu kustutatud."
+    },
+    "issue": {
+      "invalid": "Kontrollige seda väärtust.",
+      "expense": {
+        "amount": {
+          "invalid": "Sisestage summa alates nullist, kuni 2 komakohta."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "description": {
+          "required": "Sisestage kirjeldus."
+        },
+        "dueDate": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "paidOn": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "supplier": {
+          "unknown": "Valige selle ettevõtte tarnija."
+        }
+      }
+    }
+  },
+  "business": {
+    "title": "Äri ülevaade",
+    "open": "Äri ülevaade",
+    "period": "Periood {from} – {to}",
+    "rangeLabel": "Periood",
+    "range": {
+      "this_month": "See kuu",
+      "last_month": "Eelmine kuu",
+      "this_quarter": "See kvartal",
+      "this_year": "See aasta",
+      "from": "Alates",
+      "to": "Kuni",
+      "apply": "Näita"
+    },
+    "empty": {
+      "title": "Selles perioodis pole veel midagi registreeritud",
+      "text": "Väljastage arveid, registreerige makseid ja lisage kulusid — siinsed arvud ja graafikud arvutatakse nende põhjal. Midagi ei hinnata ligikaudu.",
+      "noFinance": "Teie roll ei hõlma finantsnäitajaid. Ülalolevad lingid viivad osadesse, millega töötate."
+    },
+    "figuresIn": "Näitajad valuutas {currency}",
+    "chartsIn": "Graafikud valuutas {currency}",
+    "kpi": {
+      "revenue": "Tulu",
+      "expenses": "Kulud",
+      "result": "Tulemus",
+      "grossProfit": "Brutokasum",
+      "cashIn": "Laekumised",
+      "netCash": "Neto rahavoog"
+    },
+    "margin": "marginaal {percent} %",
+    "noComparison": "Eelmises perioodis näitaja puudub",
+    "vsPrevious": "võrreldes eelmise perioodiga",
+    "openItems": "Avatud kirjed täna",
+    "receivables": "Nõuded",
+    "invoicesOpen": "{count, plural, one {# tasumata arve} other {# tasumata arvet}}",
+    "overdue": "üle tähtaja {count}: {amount}",
+    "noOverdue": "Midagi pole üle tähtaja",
+    "payables": "Kohustused",
+    "expensesUnpaid": "{count, plural, one {# tasumata kulu} other {# tasumata kulu}}",
+    "payablesOverdue": "üle tähtaja {count}: {amount}",
+    "invoiceStatus": {
+      "title": "Perioodis väljastatud arved",
+      "paid": "Tasutud",
+      "partiallyPaid": "Osaliselt tasutud",
+      "unpaid": "Tasumata",
+      "overdue": "Üle tähtaja"
+    },
+    "toInvoices": "Kõik arved",
+    "stockValue": "Laovaru väärtus",
+    "stockValueNote": "Laoseis × ostuhind",
+    "noExpenses": "Selles perioodis kulusid pole.",
+    "chart": {
+      "revenueVsExpenses": "Tulu ja kulud ({currency})",
+      "cash": "Kumulatiivne neto rahavoog ({currency})",
+      "cashSeries": "Neto rahavoog",
+      "categories": "Kulud kategooriate kaupa ({currency})",
+      "table": "Näita tabelina",
+      "day": "Päev",
+      "month": "Kuu"
+    },
+    "activity": {
+      "title": "Viimased tegevused",
+      "none": "Tegevusi veel pole.",
+      "other": "Muu muudatus",
+      "actions": {
+        "company": {
+          "created": "Ettevõte loodud",
+          "profile_updated": "Ettevõtte profiili muudeti"
+        },
+        "counterparty": {
+          "created": "Lisati klient või tarnija",
+          "updated": "Muudeti klienti või tarnijat",
+          "archived": "Klient või tarnija arhiveeriti"
+        },
+        "document": {
+          "draft_created": "Loodi dokumendi mustand",
+          "draft_updated": "Mustand salvestati",
+          "draft_deleted": "Mustand kustutati",
+          "issued": "Dokument väljastati",
+          "emailed": "Dokument saadeti e-postiga",
+          "credit_note_draft_created": "Alustati kreeditarvet"
+        },
+        "payment": {
+          "recorded": "Makse registreeriti",
+          "voided": "Makse tühistati"
+        },
+        "expense": {
+          "created": "Kulu lisati",
+          "updated": "Kulu muudeti",
+          "deleted": "Kulu kustutati"
+        },
+        "product": {
+          "created": "Toode lisati",
+          "updated": "Toodet muudeti",
+          "archived": "Toode arhiveeriti",
+          "restored": "Toode taastati"
+        },
+        "member": {
+          "invited": "Liige kutsuti",
+          "updated": "Liikmesust muudeti"
+        },
+        "billing": {
+          "checkoutStarted": "Alustati tellimuse eest maksmist",
+          "statusChanged": "Tellimuse olek muutus",
+          "paymentFailed": "Tellimusmakse ebaõnnestus",
+          "renewalCancelled": "Tellimuse pikendamine tühistati",
+          "renewalResumed": "Tellimuse pikendamist jätkati"
+        },
+        "costing": {
+          "saved": "Omahinna arvutus salvestati",
+          "deleted": "Omahinna arvutus kustutati"
+        },
+        "production": {
+          "order_created": "Loodi tootmistellimus"
+        },
+        "payroll": {
+          "run_created": "Loodi palgaarvestus"
+        }
+      }
+    },
+    "definitions": {
+      "title": "Kuidas neid näitajaid arvutatakse",
+      "revenue": {
+        "term": "Tulu",
+        "text": "Perioodis väljastatud arvete summad ilma maksuta, millest on lahutatud väljastatud kreeditarved."
+      },
+      "expenses": {
+        "term": "Kulud",
+        "text": "Perioodis registreeritud kulud omahinnas: summa ilma maksuta, millele lisandub maks ainult siis, kui see pole tagastatav."
+      },
+      "grossProfit": {
+        "term": "Brutokasum",
+        "text": "Tulu miinus kulud kategooriates „Materjalid“ ja „Edasimüügiks kaubad“."
+      },
+      "result": {
+        "term": "Tulemus ja marginaal",
+        "text": "Tulu miinus kõik registreeritud kulud, enne tulumaksu; marginaal = tulemus ÷ tulu. See pole raamatupidamislik puhaskasum."
+      },
+      "cash": {
+        "term": "Laekumised ja neto rahavoog",
+        "text": "Arvetele registreeritud maksed ja tasutud kulud (koos maksuga) makse kuupäeva järgi. Pangakontode saldosid ei loeta."
+      },
+      "receivables": {
+        "term": "Nõuded",
+        "text": "Kõigi väljastatud arvete tasumata jäägid täna; üle tähtaja = pärast maksetähtaega."
+      },
+      "payables": {
+        "term": "Kohustused",
+        "text": "Tasumata registreeritud kulud (koos maksuga); üle tähtaja = pärast nende maksetähtaega."
+      },
+      "previous": {
+        "term": "Eelmine periood",
+        "text": "Sama arv päevi vahetult enne valitud perioodi."
+      },
+      "note": "Näitajad arvutatakse ALVOXIS Flow's registreeritud andmetest. Need toetavad otsuseid, kuid ei asenda raamatupidamist ega maksunõu."
+    },
+    "actions": {
+      "title": "Kiirtoimingud",
+      "invoice": "Loo arve",
+      "product": "Lisa toode",
+      "costing": "Arvuta omahind",
+      "expense": "Lisa kulu",
+      "customer": "Lisa klient",
+      "ai": "Küsi tehisintellekti assistendilt",
+      "overdue": "Tähtaja ületanud arved",
+      "report": "Aruanded"
+    }
+  },
+  "costing": {
+    "title": "Omahinna kalkulaator",
+    "description": "Partii täielik omahind: ost, tarne, kindlustus, tollimaksud, pakend, materjalid, töö, tükitöö ja üldkulud.",
+    "taxNote": "Sisestage summad ilma tagastatava käibemaksuta. Tolli- ja maksumäärasid ei täideta kunagi automaatselt: sisestage teie kaupadele, riigile ja kuupäevale kehtiv määr ning märkige see kontrollituks, kui olete selle ametlikust allikast (nt TARIC) üle kontrollinud.",
+    "readOnly": "Kalkulaatorit saate kasutada; teie roll ei luba arvutusi salvestada.",
+    "editing": "Salvestatud arvutuse muutmine",
+    "newCalculation": "Uus arvutus",
+    "noProduct": "Tootega sidumata",
+    "quantityHint": "Ühikuid selles partiis",
+    "salePriceHint": "Kavandatav müügihind ühiku kohta ilma maksuta",
+    "piecesPlaceholder": "Tükid (tühi: partii kogus)",
+    "verified": "Määr kontrollitud",
+    "perUnitShort": "{amount} ühiku kohta",
+    "needsVerification": "Vajab kontrollimist",
+    "removeLine": "Eemalda rida",
+    "scenarios": "Stsenaariumid",
+    "addScenario": "Lisa stsenaarium",
+    "removeScenario": "Eemalda stsenaarium",
+    "result": "Tulemus",
+    "invalid": "Kontrollige väärtusi: kogus nullist suurem, summad arvudena kuni 6 komakohaga.",
+    "totalCost": "Partii omahind",
+    "unitCost": "Ühiku omahind",
+    "breakdown": "Kulude jaotus",
+    "profitPerUnit": "Kasum ühiku kohta",
+    "margin": "Brutomarginaal",
+    "markup": "Juurdehindlus",
+    "expectedProfit": "Oodatav kasum",
+    "noPrice": "Sisestage müügihind, et näha marginaali, juurdehindlust ja kasumit.",
+    "priceForMargin": "Hind {percent} % marginaali jaoks: {price}",
+    "warning": {
+      "unverified_rate": "Protsendimäär pole märgitud kontrollituks — kontrollige seda ametlikust allikast enne, kui tulemusele toetute.",
+      "percent_without_customs_value": "Protsendireal pole ostu-, tarne- ega kindlustussummat, millele seda rakendada."
+    },
+    "save": "Salvesta arvutus",
+    "saveChanges": "Salvesta muudatused",
+    "new": "Uus arvutus",
+    "nameNeeded": "Salvestamiseks andke arvutusele nimi.",
+    "saved": "Arvutus salvestatud. Arvud arvutati serveris uuesti.",
+    "deleted": "Arvutus kustutatud.",
+    "savedTitle": "Salvestatud arvutused",
+    "savedEmpty": "Salvestatud arvutusi veel pole.",
+    "savedFigures": "{quantity} ühikut · {unit} ühiku kohta",
+    "open": "Ava",
+    "exportCsv": "Ekspordi CSV",
+    "delete": "Kustuta",
+    "deleteTitle": "Kustutada see arvutus?",
+    "deleteText": "„{name}“ kustutatakse jäädavalt.",
+    "cancel": "Loobu",
+    "fields": {
+      "name": "Nimi",
+      "product": "Toode",
+      "quantity": "Kogus",
+      "currency": "Valuuta",
+      "category": "Kulu liik",
+      "basis": "Arvestusviis",
+      "percent": "Määr protsentides",
+      "rate": "Määr tüki kohta",
+      "amount": "Summa",
+      "label": "Kirjeldus (valikuline)",
+      "pieces": "Tükid",
+      "salePrice": "Müügihind ühiku kohta ({currency})",
+      "targetMargin": "Sihtmarginaal, %",
+      "scenarioLabel": "Stsenaarium",
+      "price": "Hind"
+    },
+    "basis": {
+      "total": "Kokku partii kohta",
+      "per_unit": "Ühiku kohta",
+      "piecework": "Tükid × määr",
+      "percent": "% tolliväärtusest"
+    },
+    "category": {
+      "purchase": "Ostuhind",
+      "delivery": "Tarne",
+      "insurance": "Kindlustus",
+      "customs_duty": "Tollimaks",
+      "non_recoverable_tax": "Tagastamatud maksud ja tasud",
+      "packaging": "Pakend",
+      "materials": "Materjalid",
+      "labor": "Otsene töö",
+      "piecework": "Tükitöötasu",
+      "overhead": "Üldkulud",
+      "other": "Muu kulu"
+    }
+  },
+  "assistant": {
+    "title": "Tehisintellektil põhinev äriassistent",
+    "description": "Küsige ettevõtte näitajate kohta. Vastused põhinevad ainult ALVOXIS Flow's registreeritud andmetel.",
+    "notConfigured": "Tehisintellekti assistent pole sellel saidil veel seadistatud. Kõik muu töötab tavapäraselt.",
+    "readOnly": "Assistent vajab aktiivset tellimust.",
+    "toBilling": "Ava tellimus",
+    "noPermission": "Teie roll ei hõlma tehisintellekti assistenti. Vajadusel pöörduge omaniku või administraatori poole.",
+    "privacy": "Vastamiseks saadetakse selle ettevõtte asjakohased näitajad (ilma paroolide ja panga ligipääsuandmeteta) Anthropicu Claude API-le, mis töötleb neid ALVOXIS Flow jaoks. ALVOXIS Flow ei salvesta küsimusi ega vastuseid. Assistent ei saa kirjeid muuta, dokumente saata ega makseid teha. See pole maksu- ega õigusnõu.",
+    "suggestionsTitle": "Näiteks:",
+    "suggestions": {
+      "profitLastMonth": "Milline oli minu eelmise kuu tulemus?",
+      "expensesIncreased": "Millised kulud kasvasid kõige rohkem?",
+      "highestMargin": "Millistel toodetel on suurim marginaal?",
+      "overdue": "Millised arved on üle tähtaja?",
+      "inflows30": "Kui palju raha on oodata järgmise 30 päeva jooksul?",
+      "reduceCosts": "Milliseid kulusid saaks vähendada?",
+      "underpriced": "Millised tooted võivad olla liiga odavad?",
+      "risks": "Milliseid finantsriske peaksin üle vaatama?",
+      "profitChange": "Miks mu tulemus eelmise kuuga võrreldes muutus?"
+    },
+    "refused": "Assistent keeldus sellele küsimusele vastamast. Proovige oma näitajate kohta teisiti küsida.",
+    "empty": "Vastust ei saadud.",
+    "incomplete": "Vastus võib olla puudulik",
+    "basedOn": "Alus:",
+    "noData": "Selle vastuse jaoks ettevõtte andmeid ei kasutatud.",
+    "tools": {
+      "get_period_summary": "perioodi näitajad",
+      "list_open_invoices": "tasumata arved",
+      "expected_inflows": "arvete maksetähtajad",
+      "expense_breakdown": "kulud kategooriate kaupa",
+      "product_price_margins": "kataloogihinnad",
+      "saved_cost_calculations": "salvestatud omahinna arvutused"
+    },
+    "working": "Vaatan teie näitajaid…",
+    "questionLabel": "Teie küsimus",
+    "placeholder": "Küsige tulu, kulude, arvete, toodete või kulude kohta…",
+    "remaining": "{count, plural, one {sel kuul jäänud # küsimus} other {sel kuul jäänud # küsimust}}",
+    "ask": "Küsi",
+    "error": {
+      "rate": "Liiga palju küsimusi lühikese aja jooksul. Oodake minut ja proovige uuesti.",
+      "budget": "Selle ettevõtte assistendi küsimused selleks kuuks on otsas.",
+      "subscription": "Assistent vajab aktiivset tellimust.",
+      "timeout": "Vastamine võttis liiga kaua aega. Esitage kitsam küsimus.",
+      "invalid": "Kirjutage kuni 2000 tähemärgi pikkune küsimus.",
+      "failed": "Assistent pole praegu saadaval. Proovige hiljem."
+    }
+  },
+  "reports": {
+    "title": "Aruanded",
+    "period": "Periood {from} – {to}",
+    "none": "Teie roll ei hõlma aruandeid.",
+    "choose": "Aruanne",
+    "to": "Kuni",
+    "apply": "Näita",
+    "csv": "Ekspordi CSV",
+    "empty": "Selle aruande ja perioodi kohta pole midagi registreeritud.",
+    "name": {
+      "pnl": "Kasum ja kahjum",
+      "receivables": "Nõuded",
+      "expenses": "Kulud kategooriate kaupa",
+      "vat": "Käibemaksu kokkuvõte",
+      "margins": "Toodete marginaalid",
+      "stock": "Laovarud"
+    },
+    "range": {
+      "this_month": "See kuu",
+      "last_month": "Eelmine kuu",
+      "this_quarter": "See kvartal",
+      "this_year": "See aasta"
+    },
+    "note": {
+      "pnl": "Tulu (ilma maksuta, väljastatud arvete ja kreeditarvete järgi) ja kulud omahinnas kuude või päevade kaupa koos laekumiste ja väljamaksetega. Tulemus on enne tulumaksu.",
+      "receivables": "Väljastatud arvete tasumata jäägid täna, kõige kauem üle tähtaja olevad eespool, vanuse järgi. Arvesse lähevad ALVOXIS Flow's registreeritud maksed.",
+      "expenses": "Kulud omahinnas kategooriate kaupa võrreldes sama pika eelmise perioodiga.",
+      "vat": "Väljastatud arvete ja kreeditarvete käibemaks ning registreeritud kulude mahaarvatav sisendkäibemaks. Kokkuvõte deklaratsiooni ettevalmistamiseks, mitte deklaratsioon; kontrollige seda oma riigi reeglite järgi või raamatupidajaga.",
+      "margins": "Aktiivsete toodete kataloogi müügi- ja ostuhinnad. Need on hinnakirja hinnad, mitte tegelikud tulemused.",
+      "stock": "Laoseis toodete ja ladude kaupa, hinnatud ostuhinnaga."
+    },
+    "col": {
+      "period": "Periood",
+      "currency": "Valuuta",
+      "revenue": "Tulu",
+      "expenses": "Kulud",
+      "result": "Tulemus",
+      "cashIn": "Laekumised",
+      "cashOut": "Väljamaksed",
+      "number": "Arve nr",
+      "customer": "Klient",
+      "issueDate": "Väljastatud",
+      "dueDate": "Tähtaeg",
+      "gross": "Summa",
+      "paid": "Tasutud",
+      "balance": "Jääk",
+      "daysOverdue": "Päevi üle tähtaja",
+      "ageing": "Vanus",
+      "category": "Kategooria",
+      "count": "Kirjed",
+      "cost": "Kulu",
+      "previousCost": "Eelmine periood",
+      "change": "Muutus",
+      "changePercent": "Muutus, %",
+      "direction": "Suund",
+      "code": "Kood",
+      "treatment": "Režiim",
+      "ratePercent": "Määr, %",
+      "taxable": "Maksustatav summa",
+      "tax": "Maks",
+      "product": "Toode",
+      "sku": "Tootekood",
+      "salePrice": "Müügihind",
+      "purchasePrice": "Ostuhind",
+      "profitPerUnit": "Kasum ühiku kohta",
+      "marginPercent": "Marginaal, %",
+      "markupPercent": "Juurdehindlus, %",
+      "warehouse": "Ladu",
+      "quantity": "Kogus",
+      "unit": "Ühik",
+      "value": "Väärtus"
+    },
+    "ageing": {
+      "current": "Tähtaeg pole saabunud",
+      "1_30": "1–30 päeva",
+      "31_60": "31–60 päeva",
+      "61_90": "61–90 päeva",
+      "over_90": "Üle 90 päeva"
+    },
+    "row": {
+      "total": "Kokku",
+      "balance": "Käibemaks − sisendkäibemaks"
+    },
+    "direction": {
+      "output": "Käibemaks",
+      "input": "Sisendkäibemaks"
+    },
+    "treatment": {
+      "standard": "Tavamäär",
+      "zero_rated": "Nullmäär",
+      "exempt": "Maksuvaba",
+      "reverse_charge": "Pöördmaksustamine",
+      "outside_scope": "Väljaspool maksustamist",
+      "recorded_expenses": "Registreeritud kulud"
+    },
+    "from": "Alates"
+  },
+  "admin": {
+    "title": "Operaatori ala",
+    "description": "ALVOXIS Flow teenusena: kontod, ettevõtted, tellimused, tehisintellekti kasutus ja süsteemi seisund. Iga siinne toiming logitakse.",
+    "users": "Kontod",
+    "usersNote": "kinnitatud {verified} · uusi 30 päevaga {new30}",
+    "companies": "Ettevõtted",
+    "new30": "uusi 30 päevaga: {count}",
+    "activeSubscriptions": "Aktiivsed tellimused",
+    "subscriptionsNote": "hilinenud {pastDue} · tühistatud {canceled} · ebaõnnestunud makseid 30 päevaga {failures}",
+    "listPriceMrr": "Kuus hinnakirja järgi",
+    "listPriceNote": "Aktiivsed tellimused × €9.99 (hinnang). Tegelik arveldatud tulu on Stripe'is.",
+    "aiRequests": "Tehisintellekti küsimused sel kuul",
+    "aiNote": "ettevõtteid {companies} · ebaõnnestunud või keeldutud {errors}",
+    "aiCost": "Tehisintellekti kulu sel kuul (hinnang)",
+    "aiCostNote": "{input} sisend- / {output} väljundmärki hinnakirja järgi",
+    "health": "Seisund ja seadistus",
+    "db": "Andmebaas {ms} ms",
+    "stripe": "Stripe",
+    "webhook": "Stripe'i veebihaak",
+    "enforcement": "Piirang ilma tellimuseta",
+    "ai": "Tehisintellekti assistent",
+    "email": "E-post: {transport}",
+    "on": "sees",
+    "off": "väljas",
+    "search": "Otsi ettevõtteid",
+    "archived": "arhiveeritud",
+    "until": "sisemine juurdepääs kuni {date}",
+    "grant": "Anna sisemine juurdepääs",
+    "revoke": "Tühista sisemine juurdepääs",
+    "days": "Päevad",
+    "reason": "Põhjus / pilet",
+    "confirmGrant": "Anna",
+    "failed": "Ei salvestatud.",
+    "events": "Viimased süsteemisündmused",
+    "noEvents": "Sündmusi veel pole.",
+    "col": {
+      "name": "Ettevõte",
+      "country": "Riik",
+      "created": "Loodud",
+      "members": "Liikmed",
+      "subscription": "Tellimus",
+      "access": "Sisemine juurdepääs"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow avaleht",
+      "label": "Veebisait",
+      "features": "Võimalused",
+      "pricing": "Hind",
+      "faq": "KKK",
+      "about": "Toote kohta",
+      "contact": "Kontakt",
+      "signIn": "Logi sisse",
+      "start": "Alusta",
+      "menu": "Menüü"
+    },
+    "footer": {
+      "tagline": "Ärijuhtimine väikeettevõtetele Lätis, Leedus, Eestis ja Poolas.",
+      "product": "Toode",
+      "legal": "Õigusteave",
+      "account": "Konto",
+      "links": {
+        "privacy": "Privaatsuspoliitika",
+        "terms": "Kasutustingimused",
+        "subscription": "Tellimustingimused",
+        "cookies": "Küpsised"
+      },
+      "note": "ALVOXIS Flow aitab arvutada ja korrastada. See ei asenda raamatupidajat ega maksunõustajat."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — arved, kulud, rahandus ja tehisintellekt väikeettevõttele",
+        "description": "Arved, maksed, kulud, omahind, laoseis ja tehisintellekti assistent ühes rakenduses ettevõtetele Lätis, Leedus, Eestis ja Poolas. €9.99 kuus."
+      },
+      "features": {
+        "title": "Võimalused",
+        "description": "Äri ülevaade, arved ja kreeditarved, maksed ja kulud, tooted ja laoseis, omahinna kalkulaator, tootmine, tehisintellekti assistent ja meeskonna rollid."
+      },
+      "pricing": {
+        "title": "Hind",
+        "description": "Üks pakett kõigi moodulitega: €9.99 ettevõtte kohta kuus. Ilma tasemeteta, tühistada saab igal ajal."
+      },
+      "about": {
+        "title": "Toote kohta",
+        "description": "Mis on ALVOXIS Flow ja millistel põhimõtetel see põhineb."
+      },
+      "contact": {
+        "title": "Kontakt",
+        "description": "Kuidas võtta ühendust ALVOXIS Flow meeskonnaga."
+      },
+      "faq": {
+        "title": "Korduma kippuvad küsimused",
+        "description": "Vastused hinna, andmete, maksude, tehisintellekti assistendi ja turvalisuse kohta."
+      },
+      "privacy": {
+        "title": "Privaatsuspoliitika",
+        "description": "Kuidas ALVOXIS Flow isikuandmeid töötleb."
+      },
+      "terms": {
+        "title": "Kasutustingimused",
+        "description": "ALVOXIS Flow kasutamise tingimused."
+      },
+      "subscription": {
+        "title": "Tellimustingimused",
+        "description": "Hind, pikendamine, tühistamine ja mis juhtub teie andmetega."
+      },
+      "cookies": {
+        "title": "Küpsised",
+        "description": "Milliseid küpsiseid ja brauserimälu ALVOXIS Flow kasutab."
+      }
+    },
+    "hero": {
+      "eyebrow": "Väikeettevõtetele LV · LT · EE · PL",
+      "title": "Teadke oma numbreid. Arved, omahind ja planeerimine ühes kohas.",
+      "subtitle": "ALVOXIS Flow toob kokku arved, maksed, kulud, toodete omahinna, laoseisu ja tehisintellekti assistendi — kõik arvutatakse teie enda kirjetest, mitte oletustest.",
+      "primary": "Alusta hinnaga €9.99 / kuus",
+      "secondary": "Vaata võimalusi",
+      "note": "Üks pakett kõigi moodulitega. Tühistada saab igal ajal."
+    },
+    "preview": {
+      "aria": "Äri ülevaate illustratsioon",
+      "label": "Illustratiivne näide — mitte päris andmed",
+      "revenue": "Tulu",
+      "expenses": "Kulud",
+      "result": "Tulemus",
+      "receivables": "Nõuded",
+      "chart": "Tulu ja kulud"
+    },
+    "features": {
+      "title": "Kõik, millel väike ettevõte töötab",
+      "subtitle": "Üks seotud tööruum: väljastatud arve jõuab nõuetesse, registreeritud makse muudab rahavoogu, kulu vähendab tulemust.",
+      "items": {
+        "dashboard": {
+          "title": "Äri ülevaade",
+          "text": "Tulu, kulud, tulemus, rahavoog, nõuded ja kohustused mis tahes perioodi kohta, koos graafikutega."
+        },
+        "documents": {
+          "title": "Arved ja dokumendid",
+          "text": "Mustandid, nummerdatud arved, kreeditarved, PDF-id ja saatmine e-postiga."
+        },
+        "finance": {
+          "title": "Maksed ja kulud",
+          "text": "Registreerige makseid, vaadake, mis on tasumata või üle tähtaja, jälgige kulusid kategooriate kaupa ja eksportige neid."
+        },
+        "catalog": {
+          "title": "Kliendid, tooted, laoseis",
+          "text": "Kliendid ja tarnijad, tootekataloog, laod ja muutumatu laoliikumiste register."
+        },
+        "costing": {
+          "title": "Omahinna kalkulaator",
+          "text": "Ühiku täielik omahind koos tarne, tolli, pakendi, töö, tükitöö ja üldkuludega."
+        },
+        "production": {
+          "title": "Tootmine ja palgaarvestuse abi",
+          "text": "Koosteloendid, tootmistellimused ja palgaarvestuse abivahend."
+        },
+        "ai": {
+          "title": "Tehisintellekti assistent",
+          "text": "Küsige kasumi, tähtaja ületanud arvete või marginaalide kohta; vastused põhinevad teie numbritel."
+        },
+        "team": {
+          "title": "Meeskond ja rollid",
+          "text": "Kutsuge liikmeid rollidega; iga oluline toiming kontrollitakse serveris ja logitakse."
+        }
+      }
+    },
+    "costing": {
+      "title": "Iga ühiku tegelik kulu",
+      "text": "Lisage ostuhind, tarne, kindlustus, tollimaks, pakend, materjalid, töö ja üldkulud ning näete ühiku omahinda, marginaali ja juurdehindlust — ja seda, kuidas suurem partii neid muudab.",
+      "points": {
+        "1": "Marginaal ja juurdehindlus arvutatakse eraldi, nii et 40 % juurdehindlust ei aeta segi 40 % marginaaliga.",
+        "2": "Tolli- ja maksumäärad sisestate teie ning need märgitakse kuni kontrollimiseni; midagi ei täideta väljamõeldud määradega.",
+        "3": "Tagastatav käibemaks jäetakse omahinnast välja, nii et seda ei arvestata kunagi kaks korda.",
+        "4": "Salvestage arvutusi, siduge need toodetega ja eksportige CSV-vormingus."
+      }
+    },
+    "invoices": {
+      "title": "Arved, mis jäävad õigeks",
+      "text": "Väljastatud arved külmutatakse koos summade ja maksukokkuvõttega; parandused tehakse kreeditarvetega. Registreeritud maksed näitavad, mis on tasutud, tasumata ja üle tähtaja.",
+      "points": {
+        "1": "Automaatne nummerdamine seeriate ja aastate kaupa.",
+        "2": "PDF-id viies keeles, saatmine e-postiga, kui see on seadistatud.",
+        "3": "Osamaksed, tähtaja ületamise päevad ja nõuete jaotus vanuse järgi.",
+        "4": "Kulud tagastatava või tagastamatu maksuga ning käibemaksu kokkuvõte deklaratsioonide ettevalmistamiseks."
+      }
+    },
+    "ai": {
+      "title": "Assistent, kes tunneb teie numbreid",
+      "text": "Küsige lihtsas keeles — „Millised arved on üle tähtaja?“ või „Miks tulemus muutus?“ Assistent loeb ainult seda, mida teie roll tohib näha, kindlate ainult lugemiseks mõeldud funktsioonide kaudu ja ütleb, kui andmeid napib.",
+      "points": {
+        "1": "Numbrid arvutab rakendus, mitte keelemudel.",
+        "2": "Iga vastus eristab registreeritud andmeid, hinnanguid ja soovitusi.",
+        "3": "See ei saa kirjeid muuta, dokumente saata ega makseid teha.",
+        "4": "Küsimusi ja vastuseid ei salvestata; kasutuspiirangud hoiavad kulud ettearvatavad."
+      }
+    },
+    "countries": {
+      "title": "Loodud Baltimaade ja Poola jaoks",
+      "text": "Ettevõtted seadistatakse riigi kaupa, EUR ja PLN hoitakse lahus. Maksukategooriad seadistab iga ettevõte ise; ALVOXIS Flow ei eelda, et üks määr sobib kõigile toodetele.",
+      "list": {
+        "LV": "Läti",
+        "LT": "Leedu",
+        "EE": "Eesti",
+        "PL": "Poola"
+      },
+      "languages": "Rakendus ja dokumendid on saadaval inglise, vene, läti, leedu ja eesti keeles."
+    },
+    "pricing": {
+      "title": "Üks pakett. Kõik on hinnas.",
+      "subtitle": "Ilma tasemete ja lisadeta: iga ettevõte saab kõik moodulid.",
+      "only": "Ainus pakett",
+      "perCompany": "Ettevõtte kohta, arveldus igakuiselt. Maksud, kui neid kohaldatakse, kuvatakse maksmisel.",
+      "cta": "Loo konto",
+      "terms": {
+        "1": "Tasuta prooviperioodi pole: tellimus algab, kui esimene makse õnnestub.",
+        "2": "Pikeneb igakuiselt; tühistada saab igal ajal, juurdepääs jääb makstud kuu lõpuni.",
+        "3": "Ilma aktiivse tellimuseta on ettevõte ainult vaatamiseks — midagi ei kustutata.",
+        "4": "Makseid töötleb Stripe; kaardiandmed ei jõua ALVOXIS Flow'sse."
+      },
+      "detailsTitle": "Kuidas arveldamine toimib",
+      "details": {
+        "1": "Konto ja ettevõtte loote tasuta, seejärel tellite ettevõtte tellimuse lehelt. Igal ettevõttel on oma tellimus.",
+        "2": "Hind on €9.99 kuus. Kas lisandub käibemaks, sõltub teie asukohast ja staatusest; Stripe näitab seda enne maksmist.",
+        "3": "Kui makse ebaõnnestub, proovib Stripe uuesti ja juurdepääs säilib. Kui see ikka ei õnnestu, muutub ettevõte ainult vaatamiseks, kuni makse õnnestub.",
+        "4": "Pikendamise saate ise igal ajal tühistada. Juurdepääs jääb makstud perioodi lõpuni; andmed jäävad vaatamiseks ja eksportimiseks kättesaadavaks.",
+        "5": "Tehisintellekti assistent on hinnas mõistlike piirangutega ettevõtte ja kuu kohta, et kulud jääksid ettearvatavaks."
+      },
+      "termsLink": "Loe täielikke tellimustingimusi"
+    },
+    "faq": {
+      "title": "Küsimused ja vastused",
+      "more": "Kõik küsimused",
+      "items": {
+        "what": {
+          "q": "Mis on ALVOXIS Flow?",
+          "a": "Veebirakendus väikeettevõtte juhtimiseks: arved ja kreeditarved, maksed ja kulud, kliendid ja tooted, laoseis, tootmine, omahinna arvutamine, aruanded ja tehisintellekti assistent."
+        },
+        "who": {
+          "q": "Kellele see on mõeldud?",
+          "a": "Väikeettevõtetele, tootjatele ja ettevõtjatele, kes on registreeritud Lätis, Leedus, Eestis või Poolas."
+        },
+        "price": {
+          "q": "Mis see maksab?",
+          "a": "€9.99 ettevõtte kohta kuus — üks pakett kõigi moodulitega. Maksud, kui neid kohaldatakse, kuvatakse maksmisel."
+        },
+        "trial": {
+          "q": "Kas on tasuta prooviperiood?",
+          "a": "Ei. Konto ja ettevõtte saab luua enne maksmist; tellimus algab, kui esimene makse õnnestub."
+        },
+        "cancel": {
+          "q": "Kuidas tühistada?",
+          "a": "Ettevõtte tellimuse lehel, igal ajal. Tellimus lõpeb koos makstud perioodiga ja andmed säilivad."
+        },
+        "data": {
+          "q": "Mis juhtub mu andmetega, kui ma enam ei maksa?",
+          "a": "Ettevõte muutub ainult vaatamiseks: kõike saab endiselt vaadata ja eksportida. Tellimuse lõppemise tõttu ei kustutata midagi."
+        },
+        "tax": {
+          "q": "Kas ALVOXIS Flow arvutab minu eest maksud?",
+          "a": "See rakendab teie ettevõtte seadistatud maksukategooriaid ja võtab kokku registreeritud käibemaksu. See ei otsusta, milline määr teile kehtib, ega ole maksunõu — kontrollige määrasid ja arvenõudeid ametlikest allikatest või raamatupidajalt."
+        },
+        "ai": {
+          "q": "Milliseid andmeid tehisintellekti assistent kasutab?",
+          "a": "Ainult näitajaid, mida teie roll tohib näha ja mis loetakse kindlate funktsioonidega, kui esitate küsimuse. Need saadetakse vastuse koostamiseks Anthropicu Claude API-le; ALVOXIS Flow ei salvesta küsimusi ega vastuseid."
+        },
+        "bank": {
+          "q": "Kas see ühendub minu pangaga?",
+          "a": "Veel mitte. Maksed ja kulud sisestatakse käsitsi ja rakendus ütleb seda; automaatset pangaga sünkroonimist pole."
+        },
+        "languages": {
+          "q": "Milliseid keeli toetatakse?",
+          "a": "Inglise, vene, läti, leedu ja eesti keelt — nii rakenduses kui ka dokumentides."
+        },
+        "security": {
+          "q": "Kuidas mu andmeid kaitstakse?",
+          "a": "Krüpteeritud ühendused, räsitud paroolid, kaheastmeline autentimine (kohustuslik omanikele ja administraatoritele), ettevõtete range eraldamine ja oluliste toimingute logi."
+        },
+        "export": {
+          "q": "Kas saan oma andmeid eksportida?",
+          "a": "Jah. Dokumendid PDF-ina ning kulud, aruanded, palgaarvestused ja omahinna arvutused CSV-vormingus."
+        }
+      }
+    },
+    "cta": {
+      "title": "Juhtige ettevõtet päris numbrite järgi",
+      "text": "Looge konto, seadistage ettevõte ja näete esimesi näitajaid mõne minutiga.",
+      "button": "Alusta"
+    },
+    "featuresPage": {
+      "title": "Võimalused",
+      "intro": "Kõik moodulid töötavad samade ettevõtteandmete ja samade õigustega. Siin on, mida igaüks teeb — ja mida mitte.",
+      "details": {
+        "dashboard": "Tulu, kulud, brutokasum, tulemus ja marginaal valuutade kaupa selle või eelmise kuu, kvartali, aasta või mis tahes perioodi kohta, võrreldes eelmisega. Nõuded ja kohustused täna, arvete tasumise olek, laovaru väärtus, viimased tegevused ja kiirtoimingud. Igal näitajal on kirjeldus; midagi ei hinnata ligikaudu.",
+        "documents": "Arved, ettemaksuarved, saatelehed ja kreeditarved ettevõtte nummerdusega. Väljastatud dokumente ei saa muuta; parandused on kreeditarved. PDF viies keeles, PDF-i import ülevaatamiseks, saatmine e-postiga.",
+        "finance": "Maksed väljastatud arvetele osamaksete, tühistamise ja topeltkirjete kaitsega. Kulud kategooriate, tarnijate, tagastatava või tagastamatu maksu, tähtaegade ja kordumisega. Otsing, filtrid, CSV eksport.",
+        "catalog": "Kliendid ja tarnijad maksetingimustega; tooted ja teenused tootekoodide, hindade ja vaikimisi maksukategooriatega; laod ja muutumatu laoregister vastuvõtu, väljastuse, ülekande ja inventuuriga.",
+        "costing": "Partii ja ühiku omahind kõigist kululiikidest, marginaal ja juurdehindlus, hind sihtmarginaali jaoks ja stsenaariumid teiste koguste jaoks. Tollimäärad sisestate ja kontrollite alati teie.",
+        "production": "Koosteloendid ja tootmistellimused, mis kannavad ühe sammuga maha komponendid ja lisavad valmistoodangu. Palgaarvestuse abivahend teie määradega — mitte deklaratsioonide esitamise tööriist.",
+        "ai": "Claude'il põhinev assistent, mis vastab rakenduse arvutatud numbrite põhjal teie rolli õigustega ja ütleb, kui andmeid napib. See ei saa midagi muuta.",
+        "team": "Kutsed e-postiga, kuus õigustega rolli, kohustuslik kaheastmeline autentimine omanikele ja administraatoritele ning oluliste toimingute logi."
+      },
+      "limits": "Praegu ei sisaldu: automaatne pangaga sünkroonimine, e-arvete võrgud, maksudeklaratsioonide ja kohustuslike palgaaruannete esitamine."
+    },
+    "about": {
+      "title": "ALVOXIS Flow kohta",
+      "intro": "ALVOXIS Flow on ärijuhtimise tarkvara väikeettevõtetele Lätis, Leedus, Eestis ja Poolas. See näitab omanikele, kust raha tuleb ja kuhu see läheb, — kasutades ainult seda, mida nad on registreerinud.",
+      "principles": {
+        "1": {
+          "title": "Päris kirjed, mitte oletused",
+          "text": "Ülevaated, aruanded ja assistent kasutavad teie andmeid. Kui midagi puudub, ütleb rakendus seda, mitte ei täida lünka."
+        },
+        "2": {
+          "title": "Täpne aritmeetika",
+          "text": "Raha arvutatakse täpsete kümnendarvudega, valuutasid ei segata ja väljastatud dokumendid ei muutu."
+        },
+        "3": {
+          "title": "Teie ettevõte jääb teie omaks",
+          "text": "Iga päringut kontrollitakse serveris teie liikmesuse ja rolli järgi. Ettevõtted ei näe kunagi üksteise andmeid."
+        },
+        "4": {
+          "title": "Aus piiride osas",
+          "text": "Maksumäärad ja õigusnõuded sõltuvad teie olukorrast. Rakendus aitab neid rakendada, kuid ei asenda raamatupidajat."
+        }
+      },
+      "status": "ALVOXIS Flow valmistub käivitamiseks. Operaatori andmed ja kontaktid avaldatakse siin enne ärilist kasutamist."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "text": "Ootame küsimusi ALVOXIS Flow, teie konto või tellimuse kohta.",
+      "emailLabel": "E-post:",
+      "notPublished": "Kontaktandmed avaldatakse siin enne ärilist käivitamist.",
+      "customers": "Juba kasutate? Logige sisse, et hallata tellimust ja andmeid.",
+      "signIn": "Logi sisse"
+    },
+    "legal": {
+      "draftNotice": "Mustand ülevaatamiseks: see dokument kirjeldab, kuidas ALVOXIS Flow täna töötab, kuid jurist pole seda veel üle vaadanud. Märkega [täita] andmed peab operaator lisama enne ärilist käivitamist.",
+      "other": "Muud õigusdokumendid",
+      "privacy": {
+        "title": "Privaatsuspoliitika",
+        "intro": "See poliitika selgitab, milliseid isikuandmeid ALVOXIS Flow töötleb, miks ja millised õigused teil on.",
+        "s1": {
+          "title": "Kes vastutab",
+          "body": "Kontoandmete vastutav töötleja on ALVOXIS Flow operaator: [nimi, registrikood, aadress ja kontaktaadress — täita]. Äriandmete puhul, mida ettevõtted sisestavad oma klientide, tarnijate ja töötajate kohta, on vastutav töötleja ettevõte ning ALVOXIS Flow töötleb neid andmeid tema nimel."
+        },
+        "s2": {
+          "title": "Mida me töötleme",
+          "body": "Kontoandmed (e-posti aadress, nimi, keel, parooli räsi, krüpteeritud kaheastmelise autentimise saladused); turvaandmed (seansid, IP-aadress ja brauseri teave, oluliste toimingute logi); teie sisestatud äriandmed (ettevõtted, kliendid, tarnijad, tooted, dokumendid, maksed, kulud, laoseis, palgaarvestused); tellimuse andmed (Stripe'i kliendi ja tellimuse tunnused ning olek — kaardiandmeid töötleb ainult Stripe); tehisintellekti kasutuskirjed (aeg, märkide arv, tulemus — mitte teie küsimused ega vastused)."
+        },
+        "s3": {
+          "title": "Miks ja mis alusel",
+          "body": "Selleks, et osutada teenust, millega liitusite (lepingu täitmine), hoida see turvalisena ja vältida kuritarvitamist (õigustatud huvi), esitada tellimuse eest arveid (leping) ja täita seadusest tulenevaid kohustusi, näiteks meie enda arvete raamatupidamisreegleid."
+        },
+        "s4": {
+          "title": "Andmed, mida sisestate teiste kohta",
+          "body": "Kliente, tarnijaid või töötajaid registreerides vastutate selle eest, et teil on selleks õiguslik alus. Andmetöötlusleping ärikliendile [täita] kirjeldab, kuidas ALVOXIS Flow neid andmeid teie juhiste järgi töötleb."
+        },
+        "s5": {
+          "title": "Teenusepakkujad",
+          "body": "Majutus- ja andmebaasiteenuse pakkujad [kinnitada: nt Vercel, Neon], maksed — Stripe, e-kirjade edastamine — seadistatud e-posti teenusepakkuja ning ainult assistendi kasutamisel Anthropic (Claude API), kes saab vastuseks vajalikud näitajad. Kui andmeid edastatakse väljapoole EMP-d, kohaldatakse asjakohaseid kaitsemeetmeid, näiteks lepingu tüüptingimusi [kinnitada iga teenusepakkuja puhul]."
+        },
+        "s6": {
+          "title": "Kui kaua andmeid säilitame",
+          "body": "Konto- ja äriandmeid seni, kuni konto või ettevõte on olemas; väljastatud dokumente ja toimingute logi nii kaua, kui raamatupidamis- või õigusnormid nõuavad [tähtajad täita]; turvalogisid piiratud aja."
+        },
+        "s7": {
+          "title": "Turvalisus",
+          "body": "Krüpteeritud ühendused, paroolide räsimine, kaheastmeline autentimine (kohustuslik omanikele ja administraatoritele), õiguste kontroll serveris iga ettevõtte puhul, muutumatud toimingute ja laoregistrid ning saladused ei jõua brauserisse."
+        },
+        "s8": {
+          "title": "Teie õigused",
+          "body": "Võite taotleda juurdepääsu, parandamist, kustutamist, töötlemise piiramist, andmete ülekandmist (eksport on sisse ehitatud) ja esitada töötlemisele vastuväiteid. Võite esitada kaebuse andmekaitseasutusele: Datu valsts inspekcija (Läti), Valstybinė duomenų apsaugos inspekcija (Leedu), Andmekaitse Inspektsioon (Eesti) või Prezes Urzędu Ochrony Danych Osobowych (Poola)."
+        },
+        "s9": {
+          "title": "Kontakt ja muudatused",
+          "body": "Võtke operaatoriga ühendust aadressil [kontaktaadress — täita]. Selle poliitika olulistest muudatustest teatatakse rakenduses enne nende jõustumist."
+        }
+      },
+      "terms": {
+        "title": "Kasutustingimused",
+        "intro": "Need tingimused kehtivad ALVOXIS Flow kasutamisel ettevõtete ja nende liikmete poolt.",
+        "s1": {
+          "title": "Teenus",
+          "body": "ALVOXIS Flow on veebirakendus arvete, maksete, kulude, toodete, laoseisu, tootmise, omahinna arvutamise, aruannete ja tehisintellekti assistendi jaoks. Võimalused võivad toote arenedes muutuda."
+        },
+        "s2": {
+          "title": "Kontod",
+          "body": "Vaja on kinnitatud e-posti aadressi. Hoidke parool ja teine tegur turvaliselt; vastutate oma kontol toimuva eest. Omanikud otsustavad, kes ettevõttega liitub ja millise rolliga."
+        },
+        "s3": {
+          "title": "Tellimus ja maksed",
+          "body": "Ettevõtte ärifunktsioonide kasutamiseks on vaja aktiivset tellimust tellimustingimuste alusel. Makseid töötleb Stripe."
+        },
+        "s4": {
+          "title": "Lubatud kasutus",
+          "body": "Ärge kuritarvitage teenust: ei mingit ebaseaduslikku sisu, katseid pääseda teiste ettevõtete andmetele, rünnakuid teenuse vastu ega kasutust, mis rikub maksu-, raamatupidamis- või andmekaitseõigust."
+        },
+        "s5": {
+          "title": "Teie andmed",
+          "body": "Teie ettevõtte andmed jäävad teie omaks. Neid saab igal ajal eksportida ja neid ei kustutata tellimuse lõppemise tõttu. ALVOXIS Flow kasutab neid ainult teenuse osutamiseks."
+        },
+        "s6": {
+          "title": "Arvutused pole nõuanne",
+          "body": "Rakendus arvutab selle põhjal, mida registreerite, ja teie seadistatud maksukategooriate järgi. See ei määra, millised maksud teile kehtivad, ega asenda raamatupidajat, maksunõustajat ega sertifitseeritud raamatupidamissüsteemi. Vastutate oma dokumentide õigsuse ja õigusaktidele vastavuse eest."
+        },
+        "s7": {
+          "title": "Tehisintellekti assistent",
+          "body": "Assistent võib eksida. See märgistab andmed, hinnangud ja soovitused, kuid olulisi vastuseid tasub kontrollida. See ei saa andmeid muuta ega teie nimel tegutseda."
+        },
+        "s8": {
+          "title": "Kättesaadavus ja vastutus",
+          "body": "Püüame tagada kõrge kättesaadavuse, kuid ei saa tagada katkematut teenust. Vastutuse sätted [täita pärast juriidilist ülevaatust]."
+        },
+        "s9": {
+          "title": "Muudatused ja kohaldatav õigus",
+          "body": "Olulistest muudatustest teatame ette. Kohaldatav õigus ja kohtualluvus [täita]."
+        }
+      },
+      "subscription": {
+        "title": "Tellimustingimused",
+        "intro": "ALVOXIS Flow's on üks tellimus ettevõtte kohta.",
+        "s1": {
+          "title": "Pakett ja hind",
+          "body": "ALVOXIS Flow pakett maksab €9.99 ettevõtte kohta kuus ning sisaldab kõiki mooduleid ja tehisintellekti assistenti mõistlike piirangutega. Kas lisandub käibemaks või muud maksud, kuvatakse maksmisel."
+        },
+        "s2": {
+          "title": "Algus",
+          "body": "Tasuta prooviperioodi pole. Tellimus algab, kui esimene makse õnnestub; tühistatud või lõpetamata makse ei loo tellimust ega võta raha."
+        },
+        "s3": {
+          "title": "Pikendamine",
+          "body": "Tellimus pikeneb automaatselt iga kuu, kuni see tühistatakse. Pikendamise kuupäev on näha ettevõtte tellimuse lehel."
+        },
+        "s4": {
+          "title": "Tühistamine",
+          "body": "Omanikud saavad pikendamise igal ajal tühistada tellimuse lehel või Stripe'i kliendiportaalis. Tellimus jääb aktiivseks makstud kuu lõpuni ja lõpeb siis. Tagasimaksed: [reeglid täita]; seadusest tulenevad tarbija õigused, kus need kehtivad, ei ole piiratud."
+        },
+        "s5": {
+          "title": "Ebaõnnestunud maksed",
+          "body": "Kui makse ebaõnnestub, proovib Stripe uuesti ja juurdepääs vahepeal säilib. Kui makset ei õnnestu sisse nõuda, tellimus peatatakse või lõpeb ning ettevõte muutub ainult vaatamiseks, kuni makse õnnestub."
+        },
+        "s6": {
+          "title": "Ainult vaatamine ja teie andmed",
+          "body": "Ilma aktiivse tellimuseta saate endiselt sisse logida, vaadata, printida ja eksportida kõiki ettevõtte andmeid ning hallata liikmeid ja arveldust. Kirjete loomine ja muutmine ning tehisintellekti assistent pole saadaval. Arvelduse tõttu andmeid ei kustutata."
+        },
+        "s7": {
+          "title": "Hinnamuudatused",
+          "body": "Hinnamuudatustest teatatakse vähemalt 30 päeva ette ja need kehtivad järgmisest arveldusperioodist; enne seda saab tellimuse tühistada."
+        }
+      },
+      "cookies": {
+        "title": "Küpsised ja brauserimälu",
+        "intro": "ALVOXIS Flow kasutab ainult seda, mis on teenuse toimimiseks vajalik.",
+        "s1": {
+          "title": "Vajalikud küpsised",
+          "body": "Seansiküpsis hoiab teid sisselogituna, tuntud seadme küpsis aitab märgata sisselogimisi uutest seadmetest ja keeleküpsis jätab meelde teie keele. Need on teenuseks vajalikud ja neid ei saa välja lülitada."
+        },
+        "s2": {
+          "title": "Teema valik",
+          "body": "Teie valitud hele või tume teema salvestatakse üheks aastaks väikesesse eelistuste küpsisesse. Seda kasutab ainult teie brauser õige teema näitamiseks; teenus seda ei loe ega salvesta."
+        },
+        "s3": {
+          "title": "Jälgimiseta",
+          "body": "Analüütika-, reklaami- ega sotsiaalmeedia küpsiseid pole. Kuna kasutatakse ainult vajalikke küpsiseid, pole nõusolekut vaja; kui kunagi lisatakse valikulisi küpsiseid, küsime kõigepealt teilt ja valikut saab igal ajal muuta."
+        },
+        "s4": {
+          "title": "Makselehed",
+          "body": "Stripe'i makseleht ja kliendiportaal töötavad Stripe'i enda domeenil ning seavad oma küpsised Stripe'i privaatsuspoliitika alusel."
+        }
       }
     }
   }
