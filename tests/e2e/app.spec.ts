@@ -9,8 +9,12 @@ const TITLES = {
   et: "Ülevaade",
 } as const;
 
-test("root redirects unauthenticated visitors to the localized sign-in page", async ({ page }) => {
+test("visitors without a session see the public landing page at the root", async ({ page }) => {
   await page.goto("/");
+  await expect(page).toHaveURL(/\/en$/);
+  await expect(page.getByTestId("landing")).toBeVisible();
+  // The footer link is visible on every screen size.
+  await page.getByRole("contentinfo").getByRole("link", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/en\/sign-in$/);
   await expect(page.getByRole("heading", { level: 1, name: "Sign in" })).toBeVisible();
 });

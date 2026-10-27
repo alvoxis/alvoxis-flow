@@ -27,7 +27,8 @@
     "language": "Kalba",
     "account": "Paskyra",
     "notSignedIn": "Neprisijungta",
-    "currentCompany": "Dabartinė įmonė"
+    "currentCompany": "Dabartinė įmonė",
+    "theme": "Perjungti šviesią ir tamsią temą"
   },
   "environment": {
     "label": "Bandomoji aplinka",
@@ -2363,6 +2364,434 @@
       "members": "Nariai",
       "subscription": "Prenumerata",
       "access": "Vidinė prieiga"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow pradžia",
+      "label": "Svetainė",
+      "features": "Galimybės",
+      "pricing": "Kaina",
+      "faq": "Klausimai",
+      "about": "Apie produktą",
+      "contact": "Kontaktai",
+      "signIn": "Prisijungti",
+      "start": "Pradėti",
+      "menu": "Meniu"
+    },
+    "footer": {
+      "tagline": "Verslo valdymas nedidelėms įmonėms Latvijoje, Lietuvoje, Estijoje ir Lenkijoje.",
+      "product": "Produktas",
+      "legal": "Teisinė informacija",
+      "account": "Paskyra",
+      "links": {
+        "privacy": "Privatumo politika",
+        "terms": "Naudojimo sąlygos",
+        "subscription": "Prenumeratos sąlygos",
+        "cookies": "Slapukai"
+      },
+      "note": "ALVOXIS Flow padeda skaičiuoti ir tvarkytis. Jis nepakeičia buhalterio ar mokesčių konsultanto."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — sąskaitos, savikaina, finansai ir DI smulkiam verslui",
+        "description": "Sąskaitos, mokėjimai, išlaidos, savikaina, atsargos ir DI asistentas vienoje programėlėje įmonėms Latvijoje, Lietuvoje, Estijoje ir Lenkijoje. €9.99 per mėnesį."
+      },
+      "features": {
+        "title": "Galimybės",
+        "description": "Verslo apžvalga, sąskaitos ir kreditinės sąskaitos, mokėjimai ir išlaidos, prekės ir atsargos, savikainos skaičiuoklė, gamyba, DI asistentas ir komandos rolės."
+      },
+      "pricing": {
+        "title": "Kaina",
+        "description": "Vienas planas su visais moduliais: €9.99 už įmonę per mėnesį. Be lygių, atšaukti galima bet kada."
+      },
+      "about": {
+        "title": "Apie produktą",
+        "description": "Kas yra ALVOXIS Flow ir kokiais principais jis grindžiamas."
+      },
+      "contact": {
+        "title": "Kontaktai",
+        "description": "Kaip susisiekti su ALVOXIS Flow komanda."
+      },
+      "faq": {
+        "title": "Dažniausi klausimai",
+        "description": "Atsakymai apie kainą, duomenis, mokesčius, DI asistentą ir saugumą."
+      },
+      "privacy": {
+        "title": "Privatumo politika",
+        "description": "Kaip ALVOXIS Flow tvarko asmens duomenis."
+      },
+      "terms": {
+        "title": "Naudojimo sąlygos",
+        "description": "ALVOXIS Flow naudojimo sąlygos."
+      },
+      "subscription": {
+        "title": "Prenumeratos sąlygos",
+        "description": "Kaina, pratęsimas, atšaukimas ir kas nutinka jūsų duomenims."
+      },
+      "cookies": {
+        "title": "Slapukai",
+        "description": "Kokius slapukus ir naršyklės saugyklą naudoja ALVOXIS Flow."
+      }
+    },
+    "hero": {
+      "eyebrow": "Smulkiam verslui LV · LT · EE · PL",
+      "title": "Žinokite savo skaičius. Sąskaitos, savikaina ir planavimas vienoje vietoje.",
+      "subtitle": "ALVOXIS Flow sujungia sąskaitas, mokėjimus, išlaidas, prekių savikainą, atsargas ir DI asistentą — viskas skaičiuojama pagal jūsų pačių įrašus, o ne spėjimus.",
+      "primary": "Pradėti už €9.99 / mėn.",
+      "secondary": "Peržiūrėti galimybes",
+      "note": "Vienas planas su visais moduliais. Atšaukti galima bet kada."
+    },
+    "preview": {
+      "aria": "Verslo apžvalgos iliustracija",
+      "label": "Iliustracinis pavyzdys — ne tikri duomenys",
+      "revenue": "Pajamos",
+      "expenses": "Išlaidos",
+      "result": "Rezultatas",
+      "receivables": "Gautinos sumos",
+      "chart": "Pajamos ir išlaidos"
+    },
+    "features": {
+      "title": "Viskas, kuo dirba nedidelė įmonė",
+      "subtitle": "Viena susieta darbo erdvė: išrašyta sąskaita patenka į gautinas sumas, užregistruotas mokėjimas keičia pinigų srautą, išlaidos mažina rezultatą.",
+      "items": {
+        "dashboard": {
+          "title": "Verslo apžvalga",
+          "text": "Pajamos, išlaidos, rezultatas, pinigų srautas, gautinos ir mokėtinos sumos bet kuriam laikotarpiui, su diagramomis."
+        },
+        "documents": {
+          "title": "Sąskaitos ir dokumentai",
+          "text": "Juodraščiai, sunumeruotos sąskaitos, kreditinės sąskaitos, PDF ir siuntimas el. paštu."
+        },
+        "finance": {
+          "title": "Mokėjimai ir išlaidos",
+          "text": "Registruokite mokėjimus, matykite, kas neapmokėta ar vėluoja, sekite išlaidas pagal kategorijas ir eksportuokite jas."
+        },
+        "catalog": {
+          "title": "Klientai, prekės, atsargos",
+          "text": "Klientai ir tiekėjai, prekių katalogas, sandėliai ir nekeičiamas atsargų judėjimo žurnalas."
+        },
+        "costing": {
+          "title": "Savikainos skaičiuoklė",
+          "text": "Visa vieneto savikaina su pristatymu, muitais, pakuote, darbu, vienetiniu atlygiu ir pridėtinėmis išlaidomis."
+        },
+        "production": {
+          "title": "Gamyba ir darbo užmokesčio pagalba",
+          "text": "Specifikacijos, gamybos užsakymai ir darbo užmokesčio skaičiavimo pagalbinė priemonė."
+        },
+        "ai": {
+          "title": "DI asistentas",
+          "text": "Klauskite apie pelną, vėluojančias sąskaitas ar maržas; atsakymai remiasi jūsų skaičiais."
+        },
+        "team": {
+          "title": "Komanda ir rolės",
+          "text": "Kvieskite narius su rolėmis; kiekvienas svarbus veiksmas tikrinamas serveryje ir registruojamas."
+        }
+      }
+    },
+    "costing": {
+      "title": "Tikroji kiekvieno vieneto kaina",
+      "text": "Pridėkite pirkimo kainą, pristatymą, draudimą, muitą, pakuotę, medžiagas, darbą ir pridėtines išlaidas ir matykite vieneto savikainą, maržą ir antkainį — bei kaip juos keičia didesnė partija.",
+      "points": {
+        "1": "Marža ir antkainis skaičiuojami atskirai, todėl 40 % antkainio nesupainiosite su 40 % marža.",
+        "2": "Muitų ir mokesčių tarifus įvedate jūs, ir jie žymimi, kol nepatikrinti; niekas neįrašoma iš išgalvotų tarifų.",
+        "3": "Atgaunamas PVM neįtraukiamas į savikainą, todėl niekada neskaičiuojamas du kartus.",
+        "4": "Išsaugokite skaičiavimus, susiekite juos su prekėmis ir eksportuokite CSV formatu."
+      }
+    },
+    "invoices": {
+      "title": "Sąskaitos, kurios lieka teisingos",
+      "text": "Išrašytos sąskaitos užfiksuojamos su sumomis ir mokesčių suvestine; taisymai atliekami kreditinėmis sąskaitomis. Užregistruoti mokėjimai rodo, kas apmokėta, neapmokėta ir vėluoja.",
+      "points": {
+        "1": "Automatinis numeravimas pagal serijas ir metus.",
+        "2": "PDF penkiomis kalbomis, siuntimas el. paštu, kai jis sukonfigūruotas.",
+        "3": "Daliniai mokėjimai, vėlavimo dienos ir gautinų sumų skirstymas pagal terminus.",
+        "4": "Išlaidos su atgaunamu ar neatgaunamu mokesčiu ir PVM suvestinė deklaracijoms parengti."
+      }
+    },
+    "ai": {
+      "title": "Asistentas, kuris žino jūsų skaičius",
+      "text": "Klauskite paprastais žodžiais — „Kurios sąskaitos vėluoja?“ ar „Kodėl pasikeitė rezultatas?“ Asistentas skaito tik tai, ką gali matyti jūsų rolė, per fiksuotas tik skaitymo funkcijas, ir pasako, kai duomenų trūksta.",
+      "points": {
+        "1": "Skaičius apskaičiuoja programėlė, o ne kalbos modelis.",
+        "2": "Kiekvienas atsakymas atskiria užregistruotus duomenis, įverčius ir rekomendacijas.",
+        "3": "Jis negali keisti įrašų, siųsti dokumentų ar atlikti mokėjimų.",
+        "4": "Klausimai ir atsakymai nesaugomi; naudojimo limitai daro sąnaudas nuspėjamas."
+      }
+    },
+    "countries": {
+      "title": "Sukurta Baltijos šalims ir Lenkijai",
+      "text": "Įmonės nustatomos pagal šalį, EUR ir PLN niekada nemaišomi. Mokesčių kategorijas nustato kiekviena įmonė; ALVOXIS Flow nemano, kad vienas tarifas tinka visoms prekėms.",
+      "list": {
+        "LV": "Latvija",
+        "LT": "Lietuva",
+        "EE": "Estija",
+        "PL": "Lenkija"
+      },
+      "languages": "Programėlė ir dokumentai prieinami anglų, rusų, latvių, lietuvių ir estų kalbomis."
+    },
+    "pricing": {
+      "title": "Vienas planas. Viskas įskaičiuota.",
+      "subtitle": "Be lygių ir priedų: kiekviena įmonė gauna visus modulius.",
+      "only": "Vienintelis planas",
+      "perCompany": "Už įmonę, mokama kas mėnesį. Mokesčiai, jei taikomi, rodomi apmokant.",
+      "cta": "Sukurti paskyrą",
+      "terms": {
+        "1": "Be nemokamo bandomojo laikotarpio: prenumerata prasideda, kai pirmasis mokėjimas pavyksta.",
+        "2": "Pratęsiama kas mėnesį; atšaukti galima bet kada, prieiga lieka iki apmokėto mėnesio pabaigos.",
+        "3": "Be aktyvios prenumeratos įmonė prieinama tik peržiūrai — niekas neištrinama.",
+        "4": "Mokėjimus tvarko Stripe; kortelės duomenys nepatenka į ALVOXIS Flow."
+      },
+      "detailsTitle": "Kaip vyksta atsiskaitymas",
+      "details": {
+        "1": "Paskyrą ir įmonę sukuriate nemokamai, tada užsiprenumeruojate įmonės prenumeratos puslapyje. Kiekviena įmonė turi savo prenumeratą.",
+        "2": "Kaina — €9.99 per mėnesį. Ar pridedamas PVM, priklauso nuo jūsų buvimo vietos ir statuso; Stripe tai parodo prieš apmokant.",
+        "3": "Jei mokėjimas nepavyksta, Stripe bando dar kartą, ir prieiga išlieka. Jei vis tiek nepavyksta, įmonė tampa prieinama tik peržiūrai, kol mokėjimas pavyks.",
+        "4": "Pratęsimą galite atšaukti patys bet kada. Prieiga lieka iki apmokėto laikotarpio pabaigos; duomenys lieka prieinami peržiūrai ir eksportui.",
+        "5": "DI asistentas įskaičiuotas su protingais limitais įmonei per mėnesį, kad sąnaudos būtų nuspėjamos."
+      },
+      "termsLink": "Visos prenumeratos sąlygos"
+    },
+    "faq": {
+      "title": "Klausimai ir atsakymai",
+      "more": "Visi klausimai",
+      "items": {
+        "what": {
+          "q": "Kas yra ALVOXIS Flow?",
+          "a": "Žiniatinklio programėlė nedidelei įmonei valdyti: sąskaitos ir kreditinės sąskaitos, mokėjimai ir išlaidos, klientai ir prekės, atsargos, gamyba, savikainos skaičiavimas, ataskaitos ir DI asistentas."
+        },
+        "who": {
+          "q": "Kam jis skirtas?",
+          "a": "Smulkiam verslui, gamintojams ir verslininkams, registruotiems Latvijoje, Lietuvoje, Estijoje ar Lenkijoje."
+        },
+        "price": {
+          "q": "Kiek tai kainuoja?",
+          "a": "€9.99 už įmonę per mėnesį — vienas planas su visais moduliais. Mokesčiai, jei taikomi, rodomi apmokant."
+        },
+        "trial": {
+          "q": "Ar yra nemokamas bandomasis laikotarpis?",
+          "a": "Ne. Paskyrą ir įmonę galima sukurti prieš mokant; prenumerata prasideda, kai pirmasis mokėjimas pavyksta."
+        },
+        "cancel": {
+          "q": "Kaip atšaukti?",
+          "a": "Įmonės prenumeratos puslapyje, bet kada. Prenumerata baigiasi kartu su apmokėtu laikotarpiu, o duomenys išsaugomi."
+        },
+        "data": {
+          "q": "Kas nutiks duomenims, jei nustosiu mokėti?",
+          "a": "Įmonė taps prieinama tik peržiūrai: viską vis tiek galėsite peržiūrėti ir eksportuoti. Dėl pasibaigusios prenumeratos niekas neištrinama."
+        },
+        "tax": {
+          "q": "Ar ALVOXIS Flow apskaičiuoja mokesčius už mane?",
+          "a": "Jis taiko jūsų įmonės nustatytas mokesčių kategorijas ir apibendrina užregistruotą PVM. Jis nesprendžia, kuris tarifas jums taikomas, ir nėra mokesčių konsultacija — tarifus ir sąskaitų reikalavimus tikrinkite oficialiuose šaltiniuose ar pas buhalterį."
+        },
+        "ai": {
+          "q": "Kokius duomenis naudoja DI asistentas?",
+          "a": "Tik rodiklius, kuriuos gali matyti jūsų rolė, nuskaitomus fiksuotomis funkcijomis, kai užduodate klausimą. Jie siunčiami į Anthropic Claude API atsakymui parengti; ALVOXIS Flow nesaugo klausimų ir atsakymų."
+        },
+        "bank": {
+          "q": "Ar jis jungiasi prie mano banko?",
+          "a": "Kol kas ne. Mokėjimai ir išlaidos įvedami rankiniu būdu, ir programėlė tai nurodo; automatinio sinchronizavimo su banku nėra."
+        },
+        "languages": {
+          "q": "Kokios kalbos palaikomos?",
+          "a": "Anglų, rusų, latvių, lietuvių ir estų — programėlei ir dokumentams."
+        },
+        "security": {
+          "q": "Kaip apsaugoti mano duomenys?",
+          "a": "Šifruoti ryšiai, maišos būdu saugomi slaptažodžiai, dviejų veiksnių autentifikavimas (privalomas savininkams ir administratoriams), griežtas įmonių atskyrimas ir svarbių veiksmų žurnalas."
+        },
+        "export": {
+          "q": "Ar galiu eksportuoti duomenis?",
+          "a": "Taip. Dokumentus — PDF, o išlaidas, ataskaitas, darbo užmokesčio ir savikainos skaičiavimus — CSV formatu."
+        }
+      }
+    },
+    "cta": {
+      "title": "Valdykite įmonę pagal tikrus skaičius",
+      "text": "Sukurkite paskyrą, nustatykite įmonę ir pirmuosius rodiklius pamatysite per kelias minutes.",
+      "button": "Pradėti"
+    },
+    "featuresPage": {
+      "title": "Galimybės",
+      "intro": "Visi moduliai dirba su tais pačiais įmonės duomenimis ir tomis pačiomis teisėmis. Štai ką kiekvienas daro — ir ko nedaro.",
+      "details": {
+        "dashboard": "Pajamos, išlaidos, bendrasis pelnas, rezultatas ir marža pagal valiutas šiam ar praėjusiam mėnesiui, ketvirčiui, metams ar bet kuriam laikotarpiui, palyginti su ankstesniu. Gautinos ir mokėtinos sumos šiandien, sąskaitų apmokėjimo būsena, atsargų vertė, naujausi ir greiti veiksmai. Kiekvienas rodiklis turi aprašymą; niekas nevertinama apytiksliai.",
+        "documents": "Sąskaitos, išankstinės sąskaitos, važtaraščiai ir kreditinės sąskaitos su įmonės numeracija. Išrašytų dokumentų keisti negalima; taisymai — kreditinės sąskaitos. PDF penkiomis kalbomis, PDF importas peržiūrai, siuntimas el. paštu.",
+        "finance": "Mokėjimai pagal išrašytas sąskaitas su daliniais mokėjimais, anuliavimu ir apsauga nuo dublikatų. Išlaidos su kategorijomis, tiekėjais, atgaunamu ar neatgaunamu mokesčiu, terminais ir kartojimu. Paieška, filtrai, CSV eksportas.",
+        "catalog": "Klientai ir tiekėjai su mokėjimo sąlygomis; prekės ir paslaugos su kodais, kainomis ir numatytosiomis mokesčių kategorijomis; sandėliai ir nekeičiamas atsargų žurnalas su priėmimu, išdavimu, perkėlimu ir inventorizacija.",
+        "costing": "Partijos ir vieneto savikaina iš visų išlaidų rūšių, marža ir antkainis, kaina tikslinei maržai ir scenarijai kitiems kiekiams. Muitų tarifus visada įvedate ir tikrinate jūs.",
+        "production": "Specifikacijos ir gamybos užsakymai, kurie vienu žingsniu nurašo komponentus ir prideda gatavą produkciją. Darbo užmokesčio skaičiavimo pagalbinė priemonė su jūsų tarifais — ne deklaracijų teikimo įrankis.",
+        "ai": "Claude pagrindu veikiantis asistentas, atsakantis pagal programėlės apskaičiuotus skaičius su jūsų rolės teisėmis ir pasakantis, kai duomenų trūksta. Jis nieko negali pakeisti.",
+        "team": "Kvietimai el. paštu, šešios rolės su teisėmis, privalomas dviejų veiksnių autentifikavimas savininkams ir administratoriams ir svarbių veiksmų žurnalas."
+      },
+      "limits": "Šiuo metu neįtraukta: automatinis sinchronizavimas su banku, e. sąskaitų tinklai, mokesčių deklaracijų ir privalomų darbo užmokesčio ataskaitų teikimas."
+    },
+    "about": {
+      "title": "Apie ALVOXIS Flow",
+      "intro": "ALVOXIS Flow — verslo valdymo programinė įranga nedidelėms įmonėms Latvijoje, Lietuvoje, Estijoje ir Lenkijoje. Ji parodo savininkams, iš kur ateina pinigai ir kur jie dingsta, — naudodama tik tai, ką jie užregistravo.",
+      "principles": {
+        "1": {
+          "title": "Tikri įrašai, be spėjimų",
+          "text": "Apžvalgos, ataskaitos ir asistentas naudoja jūsų duomenis. Jei ko nors trūksta, programėlė tai pasako, o ne užpildo spragą."
+        },
+        "2": {
+          "title": "Tiksli aritmetika",
+          "text": "Pinigai skaičiuojami tiksliais dešimtainiais skaičiais, valiutos nemaišomos, išrašyti dokumentai nesikeičia."
+        },
+        "3": {
+          "title": "Jūsų įmonė lieka jūsų",
+          "text": "Kiekviena užklausa serveryje tikrinama pagal jūsų narystę ir rolę. Įmonės niekada nemato viena kitos duomenų."
+        },
+        "4": {
+          "title": "Sąžiningai apie ribas",
+          "text": "Mokesčių tarifai ir teisės reikalavimai priklauso nuo jūsų situacijos. Programėlė padeda juos taikyti, bet nepakeičia buhalterio."
+        }
+      },
+      "status": "ALVOXIS Flow ruošiamas paleidimui. Operatoriaus rekvizitai ir kontaktai čia bus paskelbti prieš komercinį naudojimą."
+    },
+    "contact": {
+      "title": "Kontaktai",
+      "text": "Mielai atsakysime į klausimus apie ALVOXIS Flow, jūsų paskyrą ar prenumeratą.",
+      "emailLabel": "El. paštas:",
+      "notPublished": "Kontaktiniai duomenys čia bus paskelbti prieš komercinį paleidimą.",
+      "customers": "Jau naudojate? Prisijunkite ir valdykite prenumeratą bei duomenis.",
+      "signIn": "Prisijungti"
+    },
+    "legal": {
+      "draftNotice": "Projektas peržiūrai: šis dokumentas aprašo, kaip ALVOXIS Flow veikia šiandien, tačiau jo dar neperžiūrėjo teisininkas. Žyma [užpildyti] pažymėtus duomenis operatorius turi pridėti prieš komercinį paleidimą.",
+      "other": "Kiti teisiniai dokumentai",
+      "privacy": {
+        "title": "Privatumo politika",
+        "intro": "Ši politika paaiškina, kokius asmens duomenis tvarko ALVOXIS Flow, kodėl ir kokias teises turite.",
+        "s1": {
+          "title": "Kas atsakingas",
+          "body": "Paskyrų duomenų valdytojas yra ALVOXIS Flow operatorius: [pavadinimas, registracijos numeris, adresas ir kontaktinis el. paštas — užpildyti]. Verslo duomenų, kuriuos įmonės įveda apie savo klientus, tiekėjus ir darbuotojus, valdytoja yra įmonė, o ALVOXIS Flow juos tvarko jos pavedimu."
+        },
+        "s2": {
+          "title": "Ką tvarkome",
+          "body": "Paskyros duomenys (el. pašto adresas, vardas, kalba, slaptažodžio maiša, šifruotos dviejų veiksnių paslaptys); saugumo duomenys (sesijos, IP adresas ir naršyklės informacija, svarbių veiksmų žurnalas); jūsų įvedami verslo duomenys (įmonės, klientai, tiekėjai, prekės, dokumentai, mokėjimai, išlaidos, atsargos, darbo užmokesčio skaičiavimai); prenumeratos duomenys (Stripe kliento ir prenumeratos identifikatoriai ir būsena — kortelės duomenis tvarko tik Stripe); DI naudojimo įrašai (laikas, žetonų skaičius, rezultatas — ne jūsų klausimai ir atsakymai)."
+        },
+        "s3": {
+          "title": "Kodėl ir kokiu pagrindu",
+          "body": "Kad teiktume paslaugą, kuriai užsiregistravote (sutarties vykdymas), užtikrintume jos saugumą ir užkirstume kelią piktnaudžiavimui (teisėti interesai), apmokestintume prenumeratą (sutartis) ir vykdytume teisės aktų reikalavimus, pavyzdžiui, mūsų pačių sąskaitų apskaitos taisykles."
+        },
+        "s4": {
+          "title": "Duomenys apie kitus asmenis",
+          "body": "Registruodami klientus, tiekėjus ar darbuotojus, jūs atsakote už teisėto pagrindo buvimą. Duomenų tvarkymo sutartis verslo klientams [užpildyti] aprašo, kaip ALVOXIS Flow tvarko šiuos duomenis pagal jūsų nurodymus."
+        },
+        "s5": {
+          "title": "Paslaugų teikėjai",
+          "body": "Prieglobos ir duomenų bazės teikėjai [patvirtinti: pvz., Vercel, Neon], mokėjimai — Stripe, el. laiškų pristatymas — sukonfigūruotas el. pašto paslaugų teikėjas, o naudojant asistentą — Anthropic (Claude API), gaunanti atsakymui reikalingus rodiklius. Jei duomenys perduodami už EEE ribų, taikomos tinkamos garantijos, pavyzdžiui, standartinės sutarčių sąlygos [patvirtinti kiekvienam teikėjui]."
+        },
+        "s6": {
+          "title": "Kiek laiko saugome duomenis",
+          "body": "Paskyros ir verslo duomenis — kol egzistuoja paskyra ar įmonė; išrašytus dokumentus ir veiksmų žurnalą — tiek, kiek reikalauja apskaitos ar teisės normos [terminus užpildyti]; saugumo žurnalus — ribotą laiką."
+        },
+        "s7": {
+          "title": "Saugumas",
+          "body": "Šifruoti ryšiai, slaptažodžių maiša, dviejų veiksnių autentifikavimas (privalomas savininkams ir administratoriams), teisių tikrinimas serveryje kiekvienai įmonei, nekeičiami veiksmų ir atsargų žurnalai, paslaptys nepatenka į naršyklę."
+        },
+        "s8": {
+          "title": "Jūsų teisės",
+          "body": "Galite prašyti susipažinti su duomenimis, juos ištaisyti, ištrinti, apriboti tvarkymą, perkelti (eksportas integruotas) ir nesutikti su tvarkymu. Galite pateikti skundą duomenų apsaugos institucijai: Datu valsts inspekcija (Latvija), Valstybinė duomenų apsaugos inspekcija (Lietuva), Andmekaitse Inspektsioon (Estija) arba Prezes Urzędu Ochrony Danych Osobowych (Lenkija)."
+        },
+        "s9": {
+          "title": "Kontaktai ir pakeitimai",
+          "body": "Susisiekite su operatoriumi [kontaktinis el. paštas — užpildyti]. Apie esminius šios politikos pakeitimus bus pranešta programėlėje prieš jiems įsigaliojant."
+        }
+      },
+      "terms": {
+        "title": "Naudojimo sąlygos",
+        "intro": "Šios sąlygos taikomos įmonėms ir jų nariams naudojantis ALVOXIS Flow.",
+        "s1": {
+          "title": "Paslauga",
+          "body": "ALVOXIS Flow — žiniatinklio programėlė sąskaitoms, mokėjimams, išlaidoms, prekėms, atsargoms, gamybai, savikainos skaičiavimui, ataskaitoms ir DI asistentui. Galimybės gali keistis tobulėjant produktui."
+        },
+        "s2": {
+          "title": "Paskyros",
+          "body": "Reikia patvirtinto el. pašto adreso. Saugokite slaptažodį ir antrąjį veiksnį; jūs atsakote už veiksmus savo paskyroje. Savininkai sprendžia, kas prisijungia prie įmonės ir su kokia role."
+        },
+        "s3": {
+          "title": "Prenumerata ir mokėjimai",
+          "body": "Įmonės verslo funkcijoms naudoti reikia aktyvios prenumeratos pagal prenumeratos sąlygas. Mokėjimus tvarko Stripe."
+        },
+        "s4": {
+          "title": "Leistinas naudojimas",
+          "body": "Nepiktnaudžiaukite paslauga: jokio neteisėto turinio, bandymų pasiekti kitų įmonių duomenis, atakų prieš paslaugą ir naudojimo, pažeidžiančio mokesčių, apskaitos ar duomenų apsaugos teisę."
+        },
+        "s5": {
+          "title": "Jūsų duomenys",
+          "body": "Jūsų įmonės duomenys lieka jūsų. Juos galima eksportuoti bet kada, ir jie neištrinami dėl pasibaigusios prenumeratos. ALVOXIS Flow juos naudoja tik paslaugai teikti."
+        },
+        "s6": {
+          "title": "Skaičiavimai nėra konsultacija",
+          "body": "Programėlė skaičiuoja pagal tai, ką užregistruojate, ir pagal jūsų nustatytas mokesčių kategorijas. Ji nenustato, kokie mokesčiai jums taikomi, ir nepakeičia buhalterio, mokesčių konsultanto ar sertifikuotos apskaitos sistemos. Jūs atsakote už savo dokumentų teisingumą ir atitiktį teisės aktams."
+        },
+        "s7": {
+          "title": "DI asistentas",
+          "body": "Asistentas gali klysti. Jis žymi duomenis, įverčius ir rekomendacijas, tačiau svarbius atsakymus verta patikrinti. Jis negali keisti duomenų ar veikti jūsų vardu."
+        },
+        "s8": {
+          "title": "Prieinamumas ir atsakomybė",
+          "body": "Siekiame didelio prieinamumo, tačiau negalime garantuoti nepertraukiamo veikimo. Atsakomybės nuostatos [užpildyti po teisinės peržiūros]."
+        },
+        "s9": {
+          "title": "Pakeitimai ir taikoma teisė",
+          "body": "Apie esminius pakeitimus pranešime iš anksto. Taikoma teisė ir jurisdikcija [užpildyti]."
+        }
+      },
+      "subscription": {
+        "title": "Prenumeratos sąlygos",
+        "intro": "ALVOXIS Flow turi vieną prenumeratą kiekvienai įmonei.",
+        "s1": {
+          "title": "Planas ir kaina",
+          "body": "ALVOXIS Flow planas kainuoja €9.99 už įmonę per mėnesį ir apima visus modulius bei DI asistentą su protingais limitais. Ar pridedamas PVM ar kiti mokesčiai, rodoma apmokant."
+        },
+        "s2": {
+          "title": "Pradžia",
+          "body": "Nemokamo bandomojo laikotarpio nėra. Prenumerata prasideda, kai pirmasis mokėjimas pavyksta; atšauktas ar neužbaigtas apmokėjimas nesukuria prenumeratos ir nieko nenuskaičiuoja."
+        },
+        "s3": {
+          "title": "Pratęsimas",
+          "body": "Prenumerata automatiškai pratęsiama kas mėnesį, kol bus atšaukta. Pratęsimo data rodoma įmonės prenumeratos puslapyje."
+        },
+        "s4": {
+          "title": "Atšaukimas",
+          "body": "Savininkai gali atšaukti pratęsimą bet kada prenumeratos puslapyje arba Stripe klientų portale. Prenumerata galioja iki apmokėto mėnesio pabaigos, tada baigiasi. Grąžinimai: [taisyklės — užpildyti]; įstatymų nustatytos vartotojų teisės, kai jos taikomos, neribojamos."
+        },
+        "s5": {
+          "title": "Nepavykę mokėjimai",
+          "body": "Jei mokėjimas nepavyksta, Stripe bando dar kartą, o prieiga tuo metu išlieka. Jei mokėjimo nepavyksta gauti, prenumerata sustabdoma arba baigiasi, ir įmonė tampa prieinama tik peržiūrai, kol mokėjimas pavyks."
+        },
+        "s6": {
+          "title": "Tik peržiūra ir jūsų duomenys",
+          "body": "Be aktyvios prenumeratos vis tiek galite prisijungti, peržiūrėti, spausdinti ir eksportuoti visus įmonės duomenis bei valdyti narius ir atsiskaitymą. Įrašų kūrimas ir keitimas bei DI asistentas neprieinami. Dėl atsiskaitymo duomenys neištrinami."
+        },
+        "s7": {
+          "title": "Kainos pakeitimai",
+          "body": "Apie kainos pakeitimus pranešama ne vėliau kaip prieš 30 dienų; jie taikomi nuo kito atsiskaitymo laikotarpio, o iki tol prenumeratą galima atšaukti."
+        }
+      },
+      "cookies": {
+        "title": "Slapukai ir naršyklės saugykla",
+        "intro": "ALVOXIS Flow naudoja tik tai, kas būtina paslaugai veikti.",
+        "s1": {
+          "title": "Būtinieji slapukai",
+          "body": "Sesijos slapukas palaiko prisijungimą, žinomo įrenginio slapukas padeda pastebėti prisijungimus iš naujų įrenginių, o kalbos slapukas įsimena kalbą. Jie būtini paslaugai veikti ir negali būti išjungti."
+        },
+        "s2": {
+          "title": "Naršyklės saugykla",
+          "body": "Jūsų pasirinkta šviesi ar tamsi tema saugoma naršyklės vietinėje saugykloje ir niekada nepalieka jūsų įrenginio."
+        },
+        "s3": {
+          "title": "Be sekimo",
+          "body": "Nėra analitikos, reklamos ar socialinių tinklų slapukų. Kadangi naudojami tik būtinieji slapukai, sutikimo nereikia; jei kada nors bus pridėti neprivalomi slapukai, pirmiausia jūsų paklausime, o pasirinkimą bus galima bet kada pakeisti."
+        },
+        "s4": {
+          "title": "Mokėjimo puslapiai",
+          "body": "Stripe apmokėjimo puslapiai ir klientų portalas veikia Stripe domene ir nustato savo slapukus pagal Stripe privatumo politiką."
+        }
+      }
     }
   }
 }

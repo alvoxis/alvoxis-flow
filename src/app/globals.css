@@ -24,6 +24,72 @@
   color-scheme: dark;
 }
 
+/* Light theme: the same tokens with light values (text contrast ≥ 4.5:1 on every surface; chart
+   series validated for colour-vision deficiencies on white). Chosen with the theme switch and kept
+   in localStorage; an inline script sets data-theme before the first paint. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f6f5fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0edf8;
+  --color-border: #dcd6ea;
+  --color-text: #17141f;
+  --color-muted: #59536b;
+  --color-accent: #6d28d9;
+  --color-accent-strong: #6d28d9;
+  --color-accent-soft: #ede9fe;
+  --color-success: #047857;
+  --color-warning: #b45309;
+  --color-danger: #b91c1c;
+  --color-series-1: #6250d6;
+  --color-series-2: #eb6834;
+}
+
+/* Utilities that hard-code dark-theme colours, re-pointed for the light theme (unlayered rules
+   win over Tailwind's utility layer). */
+:root[data-theme="light"]
+  :is(.text-violet-100, .text-violet-200, .text-violet-200\/90, .text-violet-300) {
+  color: var(--color-accent-strong);
+}
+:root[data-theme="light"] .hover\:text-violet-200:hover,
+:root[data-theme="light"] .hover\:text-violet-300:hover,
+:root[data-theme="light"] .hover\:text-violet-100:hover {
+  color: #5b21b6;
+}
+:root[data-theme="light"] .hover\:bg-violet-700:hover {
+  background-color: #5b21b6;
+}
+:root[data-theme="light"] :is(.text-amber-100, .text-emerald-200, .text-red-200, .text-red-300) {
+  color: var(--color-text);
+}
+:root[data-theme="light"] :is(.bg-emerald-950\/40, .bg-emerald-950\/60) {
+  background-color: #ecfdf5;
+}
+:root[data-theme="light"] :is(.bg-amber-950\/40, .bg-amber-950\/60, .bg-amber-950) {
+  background-color: #fffbeb;
+}
+:root[data-theme="light"] :is(.bg-red-950\/40, .bg-red-950\/60, .bg-red-950\/70) {
+  background-color: #fef2f2;
+}
+:root[data-theme="light"] :is(.border-emerald-800\/60, .ring-emerald-800\/60) {
+  border-color: #a7f3d0;
+  --tw-ring-color: #a7f3d0;
+}
+:root[data-theme="light"] :is(.border-amber-800\/60, .ring-amber-800\/60) {
+  border-color: #fcd34d;
+  --tw-ring-color: #fcd34d;
+}
+:root[data-theme="light"] :is(.border-red-800\/60, .ring-red-800\/60) {
+  border-color: #fca5a5;
+  --tw-ring-color: #fca5a5;
+}
+:root[data-theme="light"] .bg-warning.text-black {
+  color: #ffffff;
+}
+:root[data-theme="light"] .bg-black\/60 {
+  background-color: rgb(23 20 31 / 0.4);
+}
+
 html,
 body {
   background-color: var(--color-bg);
@@ -123,6 +189,19 @@ body {
   }
 }
 
+/* Lighter elevation in the light theme. */
+:root[data-theme="light"] .surface-raised {
+  box-shadow:
+    0 1px 2px 0 rgb(23 20 31 / 0.06),
+    0 12px 32px -18px rgb(23 20 31 / 0.25),
+    0 8px 28px -18px color-mix(in oklab, var(--color-accent-strong) 30%, transparent);
+}
+/* Theme switch icons: only the one for the other theme is shown. */
+:root[data-theme="light"] .theme-icon-light,
+:root:not([data-theme="light"]) .theme-icon-dark {
+  display: none;
+}
+
 /* Soft accent glow behind a key figure. */
 @utility glow-accent {
   text-shadow: 0 0 28px color-mix(in oklab, var(--color-accent) 45%, transparent);
@@ -180,6 +259,13 @@ body {
 }
 .intro-skip {
   animation: intro-fade 0.4s ease-out 0.6s both;
+}
+:root[data-theme="light"] .intro-logo {
+  color: #4c1d95;
+  text-shadow:
+    0 1px 0 #c4b5fd,
+    0 2px 0 #a78bfa,
+    0 3px 0 #8b5cf6;
 }
 .intro-skipped .intro-logo,
 .intro-skipped .intro-glow,

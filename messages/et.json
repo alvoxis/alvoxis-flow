@@ -27,7 +27,8 @@
     "language": "Keel",
     "account": "Konto",
     "notSignedIn": "Pole sisse logitud",
-    "currentCompany": "Praegune ettevõte"
+    "currentCompany": "Praegune ettevõte",
+    "theme": "Vaheta heledat ja tumedat teemat"
   },
   "environment": {
     "label": "Testkeskkond",
@@ -2363,6 +2364,434 @@
       "members": "Liikmed",
       "subscription": "Tellimus",
       "access": "Sisemine juurdepääs"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow avaleht",
+      "label": "Veebisait",
+      "features": "Võimalused",
+      "pricing": "Hind",
+      "faq": "KKK",
+      "about": "Toote kohta",
+      "contact": "Kontakt",
+      "signIn": "Logi sisse",
+      "start": "Alusta",
+      "menu": "Menüü"
+    },
+    "footer": {
+      "tagline": "Ärijuhtimine väikeettevõtetele Lätis, Leedus, Eestis ja Poolas.",
+      "product": "Toode",
+      "legal": "Õigusteave",
+      "account": "Konto",
+      "links": {
+        "privacy": "Privaatsuspoliitika",
+        "terms": "Kasutustingimused",
+        "subscription": "Tellimustingimused",
+        "cookies": "Küpsised"
+      },
+      "note": "ALVOXIS Flow aitab arvutada ja korrastada. See ei asenda raamatupidajat ega maksunõustajat."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — arved, kulud, rahandus ja tehisintellekt väikeettevõttele",
+        "description": "Arved, maksed, kulud, omahind, laoseis ja tehisintellekti assistent ühes rakenduses ettevõtetele Lätis, Leedus, Eestis ja Poolas. €9.99 kuus."
+      },
+      "features": {
+        "title": "Võimalused",
+        "description": "Äri ülevaade, arved ja kreeditarved, maksed ja kulud, tooted ja laoseis, omahinna kalkulaator, tootmine, tehisintellekti assistent ja meeskonna rollid."
+      },
+      "pricing": {
+        "title": "Hind",
+        "description": "Üks pakett kõigi moodulitega: €9.99 ettevõtte kohta kuus. Ilma tasemeteta, tühistada saab igal ajal."
+      },
+      "about": {
+        "title": "Toote kohta",
+        "description": "Mis on ALVOXIS Flow ja millistel põhimõtetel see põhineb."
+      },
+      "contact": {
+        "title": "Kontakt",
+        "description": "Kuidas võtta ühendust ALVOXIS Flow meeskonnaga."
+      },
+      "faq": {
+        "title": "Korduma kippuvad küsimused",
+        "description": "Vastused hinna, andmete, maksude, tehisintellekti assistendi ja turvalisuse kohta."
+      },
+      "privacy": {
+        "title": "Privaatsuspoliitika",
+        "description": "Kuidas ALVOXIS Flow isikuandmeid töötleb."
+      },
+      "terms": {
+        "title": "Kasutustingimused",
+        "description": "ALVOXIS Flow kasutamise tingimused."
+      },
+      "subscription": {
+        "title": "Tellimustingimused",
+        "description": "Hind, pikendamine, tühistamine ja mis juhtub teie andmetega."
+      },
+      "cookies": {
+        "title": "Küpsised",
+        "description": "Milliseid küpsiseid ja brauserimälu ALVOXIS Flow kasutab."
+      }
+    },
+    "hero": {
+      "eyebrow": "Väikeettevõtetele LV · LT · EE · PL",
+      "title": "Teadke oma numbreid. Arved, omahind ja planeerimine ühes kohas.",
+      "subtitle": "ALVOXIS Flow toob kokku arved, maksed, kulud, toodete omahinna, laoseisu ja tehisintellekti assistendi — kõik arvutatakse teie enda kirjetest, mitte oletustest.",
+      "primary": "Alusta hinnaga €9.99 / kuus",
+      "secondary": "Vaata võimalusi",
+      "note": "Üks pakett kõigi moodulitega. Tühistada saab igal ajal."
+    },
+    "preview": {
+      "aria": "Äri ülevaate illustratsioon",
+      "label": "Illustratiivne näide — mitte päris andmed",
+      "revenue": "Tulu",
+      "expenses": "Kulud",
+      "result": "Tulemus",
+      "receivables": "Nõuded",
+      "chart": "Tulu ja kulud"
+    },
+    "features": {
+      "title": "Kõik, millel väike ettevõte töötab",
+      "subtitle": "Üks seotud tööruum: väljastatud arve jõuab nõuetesse, registreeritud makse muudab rahavoogu, kulu vähendab tulemust.",
+      "items": {
+        "dashboard": {
+          "title": "Äri ülevaade",
+          "text": "Tulu, kulud, tulemus, rahavoog, nõuded ja kohustused mis tahes perioodi kohta, koos graafikutega."
+        },
+        "documents": {
+          "title": "Arved ja dokumendid",
+          "text": "Mustandid, nummerdatud arved, kreeditarved, PDF-id ja saatmine e-postiga."
+        },
+        "finance": {
+          "title": "Maksed ja kulud",
+          "text": "Registreerige makseid, vaadake, mis on tasumata või üle tähtaja, jälgige kulusid kategooriate kaupa ja eksportige neid."
+        },
+        "catalog": {
+          "title": "Kliendid, tooted, laoseis",
+          "text": "Kliendid ja tarnijad, tootekataloog, laod ja muutumatu laoliikumiste register."
+        },
+        "costing": {
+          "title": "Omahinna kalkulaator",
+          "text": "Ühiku täielik omahind koos tarne, tolli, pakendi, töö, tükitöö ja üldkuludega."
+        },
+        "production": {
+          "title": "Tootmine ja palgaarvestuse abi",
+          "text": "Koosteloendid, tootmistellimused ja palgaarvestuse abivahend."
+        },
+        "ai": {
+          "title": "Tehisintellekti assistent",
+          "text": "Küsige kasumi, tähtaja ületanud arvete või marginaalide kohta; vastused põhinevad teie numbritel."
+        },
+        "team": {
+          "title": "Meeskond ja rollid",
+          "text": "Kutsuge liikmeid rollidega; iga oluline toiming kontrollitakse serveris ja logitakse."
+        }
+      }
+    },
+    "costing": {
+      "title": "Iga ühiku tegelik kulu",
+      "text": "Lisage ostuhind, tarne, kindlustus, tollimaks, pakend, materjalid, töö ja üldkulud ning näete ühiku omahinda, marginaali ja juurdehindlust — ja seda, kuidas suurem partii neid muudab.",
+      "points": {
+        "1": "Marginaal ja juurdehindlus arvutatakse eraldi, nii et 40 % juurdehindlust ei aeta segi 40 % marginaaliga.",
+        "2": "Tolli- ja maksumäärad sisestate teie ning need märgitakse kuni kontrollimiseni; midagi ei täideta väljamõeldud määradega.",
+        "3": "Tagastatav käibemaks jäetakse omahinnast välja, nii et seda ei arvestata kunagi kaks korda.",
+        "4": "Salvestage arvutusi, siduge need toodetega ja eksportige CSV-vormingus."
+      }
+    },
+    "invoices": {
+      "title": "Arved, mis jäävad õigeks",
+      "text": "Väljastatud arved külmutatakse koos summade ja maksukokkuvõttega; parandused tehakse kreeditarvetega. Registreeritud maksed näitavad, mis on tasutud, tasumata ja üle tähtaja.",
+      "points": {
+        "1": "Automaatne nummerdamine seeriate ja aastate kaupa.",
+        "2": "PDF-id viies keeles, saatmine e-postiga, kui see on seadistatud.",
+        "3": "Osamaksed, tähtaja ületamise päevad ja nõuete jaotus vanuse järgi.",
+        "4": "Kulud tagastatava või tagastamatu maksuga ning käibemaksu kokkuvõte deklaratsioonide ettevalmistamiseks."
+      }
+    },
+    "ai": {
+      "title": "Assistent, kes tunneb teie numbreid",
+      "text": "Küsige lihtsas keeles — „Millised arved on üle tähtaja?“ või „Miks tulemus muutus?“ Assistent loeb ainult seda, mida teie roll tohib näha, kindlate ainult lugemiseks mõeldud funktsioonide kaudu ja ütleb, kui andmeid napib.",
+      "points": {
+        "1": "Numbrid arvutab rakendus, mitte keelemudel.",
+        "2": "Iga vastus eristab registreeritud andmeid, hinnanguid ja soovitusi.",
+        "3": "See ei saa kirjeid muuta, dokumente saata ega makseid teha.",
+        "4": "Küsimusi ja vastuseid ei salvestata; kasutuspiirangud hoiavad kulud ettearvatavad."
+      }
+    },
+    "countries": {
+      "title": "Loodud Baltimaade ja Poola jaoks",
+      "text": "Ettevõtted seadistatakse riigi kaupa, EUR ja PLN hoitakse lahus. Maksukategooriad seadistab iga ettevõte ise; ALVOXIS Flow ei eelda, et üks määr sobib kõigile toodetele.",
+      "list": {
+        "LV": "Läti",
+        "LT": "Leedu",
+        "EE": "Eesti",
+        "PL": "Poola"
+      },
+      "languages": "Rakendus ja dokumendid on saadaval inglise, vene, läti, leedu ja eesti keeles."
+    },
+    "pricing": {
+      "title": "Üks pakett. Kõik on hinnas.",
+      "subtitle": "Ilma tasemete ja lisadeta: iga ettevõte saab kõik moodulid.",
+      "only": "Ainus pakett",
+      "perCompany": "Ettevõtte kohta, arveldus igakuiselt. Maksud, kui neid kohaldatakse, kuvatakse maksmisel.",
+      "cta": "Loo konto",
+      "terms": {
+        "1": "Tasuta prooviperioodi pole: tellimus algab, kui esimene makse õnnestub.",
+        "2": "Pikeneb igakuiselt; tühistada saab igal ajal, juurdepääs jääb makstud kuu lõpuni.",
+        "3": "Ilma aktiivse tellimuseta on ettevõte ainult vaatamiseks — midagi ei kustutata.",
+        "4": "Makseid töötleb Stripe; kaardiandmed ei jõua ALVOXIS Flow'sse."
+      },
+      "detailsTitle": "Kuidas arveldamine toimib",
+      "details": {
+        "1": "Konto ja ettevõtte loote tasuta, seejärel tellite ettevõtte tellimuse lehelt. Igal ettevõttel on oma tellimus.",
+        "2": "Hind on €9.99 kuus. Kas lisandub käibemaks, sõltub teie asukohast ja staatusest; Stripe näitab seda enne maksmist.",
+        "3": "Kui makse ebaõnnestub, proovib Stripe uuesti ja juurdepääs säilib. Kui see ikka ei õnnestu, muutub ettevõte ainult vaatamiseks, kuni makse õnnestub.",
+        "4": "Pikendamise saate ise igal ajal tühistada. Juurdepääs jääb makstud perioodi lõpuni; andmed jäävad vaatamiseks ja eksportimiseks kättesaadavaks.",
+        "5": "Tehisintellekti assistent on hinnas mõistlike piirangutega ettevõtte ja kuu kohta, et kulud jääksid ettearvatavaks."
+      },
+      "termsLink": "Loe täielikke tellimustingimusi"
+    },
+    "faq": {
+      "title": "Küsimused ja vastused",
+      "more": "Kõik küsimused",
+      "items": {
+        "what": {
+          "q": "Mis on ALVOXIS Flow?",
+          "a": "Veebirakendus väikeettevõtte juhtimiseks: arved ja kreeditarved, maksed ja kulud, kliendid ja tooted, laoseis, tootmine, omahinna arvutamine, aruanded ja tehisintellekti assistent."
+        },
+        "who": {
+          "q": "Kellele see on mõeldud?",
+          "a": "Väikeettevõtetele, tootjatele ja ettevõtjatele, kes on registreeritud Lätis, Leedus, Eestis või Poolas."
+        },
+        "price": {
+          "q": "Mis see maksab?",
+          "a": "€9.99 ettevõtte kohta kuus — üks pakett kõigi moodulitega. Maksud, kui neid kohaldatakse, kuvatakse maksmisel."
+        },
+        "trial": {
+          "q": "Kas on tasuta prooviperiood?",
+          "a": "Ei. Konto ja ettevõtte saab luua enne maksmist; tellimus algab, kui esimene makse õnnestub."
+        },
+        "cancel": {
+          "q": "Kuidas tühistada?",
+          "a": "Ettevõtte tellimuse lehel, igal ajal. Tellimus lõpeb koos makstud perioodiga ja andmed säilivad."
+        },
+        "data": {
+          "q": "Mis juhtub mu andmetega, kui ma enam ei maksa?",
+          "a": "Ettevõte muutub ainult vaatamiseks: kõike saab endiselt vaadata ja eksportida. Tellimuse lõppemise tõttu ei kustutata midagi."
+        },
+        "tax": {
+          "q": "Kas ALVOXIS Flow arvutab minu eest maksud?",
+          "a": "See rakendab teie ettevõtte seadistatud maksukategooriaid ja võtab kokku registreeritud käibemaksu. See ei otsusta, milline määr teile kehtib, ega ole maksunõu — kontrollige määrasid ja arvenõudeid ametlikest allikatest või raamatupidajalt."
+        },
+        "ai": {
+          "q": "Milliseid andmeid tehisintellekti assistent kasutab?",
+          "a": "Ainult näitajaid, mida teie roll tohib näha ja mis loetakse kindlate funktsioonidega, kui esitate küsimuse. Need saadetakse vastuse koostamiseks Anthropicu Claude API-le; ALVOXIS Flow ei salvesta küsimusi ega vastuseid."
+        },
+        "bank": {
+          "q": "Kas see ühendub minu pangaga?",
+          "a": "Veel mitte. Maksed ja kulud sisestatakse käsitsi ja rakendus ütleb seda; automaatset pangaga sünkroonimist pole."
+        },
+        "languages": {
+          "q": "Milliseid keeli toetatakse?",
+          "a": "Inglise, vene, läti, leedu ja eesti keelt — nii rakenduses kui ka dokumentides."
+        },
+        "security": {
+          "q": "Kuidas mu andmeid kaitstakse?",
+          "a": "Krüpteeritud ühendused, räsitud paroolid, kaheastmeline autentimine (kohustuslik omanikele ja administraatoritele), ettevõtete range eraldamine ja oluliste toimingute logi."
+        },
+        "export": {
+          "q": "Kas saan oma andmeid eksportida?",
+          "a": "Jah. Dokumendid PDF-ina ning kulud, aruanded, palgaarvestused ja omahinna arvutused CSV-vormingus."
+        }
+      }
+    },
+    "cta": {
+      "title": "Juhtige ettevõtet päris numbrite järgi",
+      "text": "Looge konto, seadistage ettevõte ja näete esimesi näitajaid mõne minutiga.",
+      "button": "Alusta"
+    },
+    "featuresPage": {
+      "title": "Võimalused",
+      "intro": "Kõik moodulid töötavad samade ettevõtteandmete ja samade õigustega. Siin on, mida igaüks teeb — ja mida mitte.",
+      "details": {
+        "dashboard": "Tulu, kulud, brutokasum, tulemus ja marginaal valuutade kaupa selle või eelmise kuu, kvartali, aasta või mis tahes perioodi kohta, võrreldes eelmisega. Nõuded ja kohustused täna, arvete tasumise olek, laovaru väärtus, viimased tegevused ja kiirtoimingud. Igal näitajal on kirjeldus; midagi ei hinnata ligikaudu.",
+        "documents": "Arved, ettemaksuarved, saatelehed ja kreeditarved ettevõtte nummerdusega. Väljastatud dokumente ei saa muuta; parandused on kreeditarved. PDF viies keeles, PDF-i import ülevaatamiseks, saatmine e-postiga.",
+        "finance": "Maksed väljastatud arvetele osamaksete, tühistamise ja topeltkirjete kaitsega. Kulud kategooriate, tarnijate, tagastatava või tagastamatu maksu, tähtaegade ja kordumisega. Otsing, filtrid, CSV eksport.",
+        "catalog": "Kliendid ja tarnijad maksetingimustega; tooted ja teenused tootekoodide, hindade ja vaikimisi maksukategooriatega; laod ja muutumatu laoregister vastuvõtu, väljastuse, ülekande ja inventuuriga.",
+        "costing": "Partii ja ühiku omahind kõigist kululiikidest, marginaal ja juurdehindlus, hind sihtmarginaali jaoks ja stsenaariumid teiste koguste jaoks. Tollimäärad sisestate ja kontrollite alati teie.",
+        "production": "Koosteloendid ja tootmistellimused, mis kannavad ühe sammuga maha komponendid ja lisavad valmistoodangu. Palgaarvestuse abivahend teie määradega — mitte deklaratsioonide esitamise tööriist.",
+        "ai": "Claude'il põhinev assistent, mis vastab rakenduse arvutatud numbrite põhjal teie rolli õigustega ja ütleb, kui andmeid napib. See ei saa midagi muuta.",
+        "team": "Kutsed e-postiga, kuus õigustega rolli, kohustuslik kaheastmeline autentimine omanikele ja administraatoritele ning oluliste toimingute logi."
+      },
+      "limits": "Praegu ei sisaldu: automaatne pangaga sünkroonimine, e-arvete võrgud, maksudeklaratsioonide ja kohustuslike palgaaruannete esitamine."
+    },
+    "about": {
+      "title": "ALVOXIS Flow kohta",
+      "intro": "ALVOXIS Flow on ärijuhtimise tarkvara väikeettevõtetele Lätis, Leedus, Eestis ja Poolas. See näitab omanikele, kust raha tuleb ja kuhu see läheb, — kasutades ainult seda, mida nad on registreerinud.",
+      "principles": {
+        "1": {
+          "title": "Päris kirjed, mitte oletused",
+          "text": "Ülevaated, aruanded ja assistent kasutavad teie andmeid. Kui midagi puudub, ütleb rakendus seda, mitte ei täida lünka."
+        },
+        "2": {
+          "title": "Täpne aritmeetika",
+          "text": "Raha arvutatakse täpsete kümnendarvudega, valuutasid ei segata ja väljastatud dokumendid ei muutu."
+        },
+        "3": {
+          "title": "Teie ettevõte jääb teie omaks",
+          "text": "Iga päringut kontrollitakse serveris teie liikmesuse ja rolli järgi. Ettevõtted ei näe kunagi üksteise andmeid."
+        },
+        "4": {
+          "title": "Aus piiride osas",
+          "text": "Maksumäärad ja õigusnõuded sõltuvad teie olukorrast. Rakendus aitab neid rakendada, kuid ei asenda raamatupidajat."
+        }
+      },
+      "status": "ALVOXIS Flow valmistub käivitamiseks. Operaatori andmed ja kontaktid avaldatakse siin enne ärilist kasutamist."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "text": "Ootame küsimusi ALVOXIS Flow, teie konto või tellimuse kohta.",
+      "emailLabel": "E-post:",
+      "notPublished": "Kontaktandmed avaldatakse siin enne ärilist käivitamist.",
+      "customers": "Juba kasutate? Logige sisse, et hallata tellimust ja andmeid.",
+      "signIn": "Logi sisse"
+    },
+    "legal": {
+      "draftNotice": "Mustand ülevaatamiseks: see dokument kirjeldab, kuidas ALVOXIS Flow täna töötab, kuid jurist pole seda veel üle vaadanud. Märkega [täita] andmed peab operaator lisama enne ärilist käivitamist.",
+      "other": "Muud õigusdokumendid",
+      "privacy": {
+        "title": "Privaatsuspoliitika",
+        "intro": "See poliitika selgitab, milliseid isikuandmeid ALVOXIS Flow töötleb, miks ja millised õigused teil on.",
+        "s1": {
+          "title": "Kes vastutab",
+          "body": "Kontoandmete vastutav töötleja on ALVOXIS Flow operaator: [nimi, registrikood, aadress ja kontaktaadress — täita]. Äriandmete puhul, mida ettevõtted sisestavad oma klientide, tarnijate ja töötajate kohta, on vastutav töötleja ettevõte ning ALVOXIS Flow töötleb neid andmeid tema nimel."
+        },
+        "s2": {
+          "title": "Mida me töötleme",
+          "body": "Kontoandmed (e-posti aadress, nimi, keel, parooli räsi, krüpteeritud kaheastmelise autentimise saladused); turvaandmed (seansid, IP-aadress ja brauseri teave, oluliste toimingute logi); teie sisestatud äriandmed (ettevõtted, kliendid, tarnijad, tooted, dokumendid, maksed, kulud, laoseis, palgaarvestused); tellimuse andmed (Stripe'i kliendi ja tellimuse tunnused ning olek — kaardiandmeid töötleb ainult Stripe); tehisintellekti kasutuskirjed (aeg, märkide arv, tulemus — mitte teie küsimused ega vastused)."
+        },
+        "s3": {
+          "title": "Miks ja mis alusel",
+          "body": "Selleks, et osutada teenust, millega liitusite (lepingu täitmine), hoida see turvalisena ja vältida kuritarvitamist (õigustatud huvi), esitada tellimuse eest arveid (leping) ja täita seadusest tulenevaid kohustusi, näiteks meie enda arvete raamatupidamisreegleid."
+        },
+        "s4": {
+          "title": "Andmed, mida sisestate teiste kohta",
+          "body": "Kliente, tarnijaid või töötajaid registreerides vastutate selle eest, et teil on selleks õiguslik alus. Andmetöötlusleping ärikliendile [täita] kirjeldab, kuidas ALVOXIS Flow neid andmeid teie juhiste järgi töötleb."
+        },
+        "s5": {
+          "title": "Teenusepakkujad",
+          "body": "Majutus- ja andmebaasiteenuse pakkujad [kinnitada: nt Vercel, Neon], maksed — Stripe, e-kirjade edastamine — seadistatud e-posti teenusepakkuja ning ainult assistendi kasutamisel Anthropic (Claude API), kes saab vastuseks vajalikud näitajad. Kui andmeid edastatakse väljapoole EMP-d, kohaldatakse asjakohaseid kaitsemeetmeid, näiteks lepingu tüüptingimusi [kinnitada iga teenusepakkuja puhul]."
+        },
+        "s6": {
+          "title": "Kui kaua andmeid säilitame",
+          "body": "Konto- ja äriandmeid seni, kuni konto või ettevõte on olemas; väljastatud dokumente ja toimingute logi nii kaua, kui raamatupidamis- või õigusnormid nõuavad [tähtajad täita]; turvalogisid piiratud aja."
+        },
+        "s7": {
+          "title": "Turvalisus",
+          "body": "Krüpteeritud ühendused, paroolide räsimine, kaheastmeline autentimine (kohustuslik omanikele ja administraatoritele), õiguste kontroll serveris iga ettevõtte puhul, muutumatud toimingute ja laoregistrid ning saladused ei jõua brauserisse."
+        },
+        "s8": {
+          "title": "Teie õigused",
+          "body": "Võite taotleda juurdepääsu, parandamist, kustutamist, töötlemise piiramist, andmete ülekandmist (eksport on sisse ehitatud) ja esitada töötlemisele vastuväiteid. Võite esitada kaebuse andmekaitseasutusele: Datu valsts inspekcija (Läti), Valstybinė duomenų apsaugos inspekcija (Leedu), Andmekaitse Inspektsioon (Eesti) või Prezes Urzędu Ochrony Danych Osobowych (Poola)."
+        },
+        "s9": {
+          "title": "Kontakt ja muudatused",
+          "body": "Võtke operaatoriga ühendust aadressil [kontaktaadress — täita]. Selle poliitika olulistest muudatustest teatatakse rakenduses enne nende jõustumist."
+        }
+      },
+      "terms": {
+        "title": "Kasutustingimused",
+        "intro": "Need tingimused kehtivad ALVOXIS Flow kasutamisel ettevõtete ja nende liikmete poolt.",
+        "s1": {
+          "title": "Teenus",
+          "body": "ALVOXIS Flow on veebirakendus arvete, maksete, kulude, toodete, laoseisu, tootmise, omahinna arvutamise, aruannete ja tehisintellekti assistendi jaoks. Võimalused võivad toote arenedes muutuda."
+        },
+        "s2": {
+          "title": "Kontod",
+          "body": "Vaja on kinnitatud e-posti aadressi. Hoidke parool ja teine tegur turvaliselt; vastutate oma kontol toimuva eest. Omanikud otsustavad, kes ettevõttega liitub ja millise rolliga."
+        },
+        "s3": {
+          "title": "Tellimus ja maksed",
+          "body": "Ettevõtte ärifunktsioonide kasutamiseks on vaja aktiivset tellimust tellimustingimuste alusel. Makseid töötleb Stripe."
+        },
+        "s4": {
+          "title": "Lubatud kasutus",
+          "body": "Ärge kuritarvitage teenust: ei mingit ebaseaduslikku sisu, katseid pääseda teiste ettevõtete andmetele, rünnakuid teenuse vastu ega kasutust, mis rikub maksu-, raamatupidamis- või andmekaitseõigust."
+        },
+        "s5": {
+          "title": "Teie andmed",
+          "body": "Teie ettevõtte andmed jäävad teie omaks. Neid saab igal ajal eksportida ja neid ei kustutata tellimuse lõppemise tõttu. ALVOXIS Flow kasutab neid ainult teenuse osutamiseks."
+        },
+        "s6": {
+          "title": "Arvutused pole nõuanne",
+          "body": "Rakendus arvutab selle põhjal, mida registreerite, ja teie seadistatud maksukategooriate järgi. See ei määra, millised maksud teile kehtivad, ega asenda raamatupidajat, maksunõustajat ega sertifitseeritud raamatupidamissüsteemi. Vastutate oma dokumentide õigsuse ja õigusaktidele vastavuse eest."
+        },
+        "s7": {
+          "title": "Tehisintellekti assistent",
+          "body": "Assistent võib eksida. See märgistab andmed, hinnangud ja soovitused, kuid olulisi vastuseid tasub kontrollida. See ei saa andmeid muuta ega teie nimel tegutseda."
+        },
+        "s8": {
+          "title": "Kättesaadavus ja vastutus",
+          "body": "Püüame tagada kõrge kättesaadavuse, kuid ei saa tagada katkematut teenust. Vastutuse sätted [täita pärast juriidilist ülevaatust]."
+        },
+        "s9": {
+          "title": "Muudatused ja kohaldatav õigus",
+          "body": "Olulistest muudatustest teatame ette. Kohaldatav õigus ja kohtualluvus [täita]."
+        }
+      },
+      "subscription": {
+        "title": "Tellimustingimused",
+        "intro": "ALVOXIS Flow's on üks tellimus ettevõtte kohta.",
+        "s1": {
+          "title": "Pakett ja hind",
+          "body": "ALVOXIS Flow pakett maksab €9.99 ettevõtte kohta kuus ning sisaldab kõiki mooduleid ja tehisintellekti assistenti mõistlike piirangutega. Kas lisandub käibemaks või muud maksud, kuvatakse maksmisel."
+        },
+        "s2": {
+          "title": "Algus",
+          "body": "Tasuta prooviperioodi pole. Tellimus algab, kui esimene makse õnnestub; tühistatud või lõpetamata makse ei loo tellimust ega võta raha."
+        },
+        "s3": {
+          "title": "Pikendamine",
+          "body": "Tellimus pikeneb automaatselt iga kuu, kuni see tühistatakse. Pikendamise kuupäev on näha ettevõtte tellimuse lehel."
+        },
+        "s4": {
+          "title": "Tühistamine",
+          "body": "Omanikud saavad pikendamise igal ajal tühistada tellimuse lehel või Stripe'i kliendiportaalis. Tellimus jääb aktiivseks makstud kuu lõpuni ja lõpeb siis. Tagasimaksed: [reeglid täita]; seadusest tulenevad tarbija õigused, kus need kehtivad, ei ole piiratud."
+        },
+        "s5": {
+          "title": "Ebaõnnestunud maksed",
+          "body": "Kui makse ebaõnnestub, proovib Stripe uuesti ja juurdepääs vahepeal säilib. Kui makset ei õnnestu sisse nõuda, tellimus peatatakse või lõpeb ning ettevõte muutub ainult vaatamiseks, kuni makse õnnestub."
+        },
+        "s6": {
+          "title": "Ainult vaatamine ja teie andmed",
+          "body": "Ilma aktiivse tellimuseta saate endiselt sisse logida, vaadata, printida ja eksportida kõiki ettevõtte andmeid ning hallata liikmeid ja arveldust. Kirjete loomine ja muutmine ning tehisintellekti assistent pole saadaval. Arvelduse tõttu andmeid ei kustutata."
+        },
+        "s7": {
+          "title": "Hinnamuudatused",
+          "body": "Hinnamuudatustest teatatakse vähemalt 30 päeva ette ja need kehtivad järgmisest arveldusperioodist; enne seda saab tellimuse tühistada."
+        }
+      },
+      "cookies": {
+        "title": "Küpsised ja brauserimälu",
+        "intro": "ALVOXIS Flow kasutab ainult seda, mis on teenuse toimimiseks vajalik.",
+        "s1": {
+          "title": "Vajalikud küpsised",
+          "body": "Seansiküpsis hoiab teid sisselogituna, tuntud seadme küpsis aitab märgata sisselogimisi uutest seadmetest ja keeleküpsis jätab meelde teie keele. Need on teenuseks vajalikud ja neid ei saa välja lülitada."
+        },
+        "s2": {
+          "title": "Brauserimälu",
+          "body": "Teie heleda või tumeda teema valik hoitakse brauseri kohalikus mälus. See ei lahku kunagi teie seadmest."
+        },
+        "s3": {
+          "title": "Jälgimiseta",
+          "body": "Analüütika-, reklaami- ega sotsiaalmeedia küpsiseid pole. Kuna kasutatakse ainult vajalikke küpsiseid, pole nõusolekut vaja; kui kunagi lisatakse valikulisi küpsiseid, küsime kõigepealt teilt ja valikut saab igal ajal muuta."
+        },
+        "s4": {
+          "title": "Makselehed",
+          "body": "Stripe'i makseleht ja kliendiportaal töötavad Stripe'i enda domeenil ning seavad oma küpsised Stripe'i privaatsuspoliitika alusel."
+        }
+      }
     }
   }
 }

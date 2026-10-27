@@ -27,7 +27,8 @@
     "language": "Valoda",
     "account": "Konts",
     "notSignedIn": "Nav pieteicies",
-    "currentCompany": "Pašreizējais uzņēmums"
+    "currentCompany": "Pašreizējais uzņēmums",
+    "theme": "Pārslēgt gaišo un tumšo tēmu"
   },
   "environment": {
     "label": "Testa vide",
@@ -2363,6 +2364,434 @@
       "members": "Dalībnieki",
       "subscription": "Abonements",
       "access": "Iekšēja piekļuve"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow sākums",
+      "label": "Vietne",
+      "features": "Iespējas",
+      "pricing": "Cena",
+      "faq": "Jautājumi",
+      "about": "Par produktu",
+      "contact": "Kontakti",
+      "signIn": "Pieteikties",
+      "start": "Sākt",
+      "menu": "Izvēlne"
+    },
+    "footer": {
+      "tagline": "Biznesa vadība nelieliem uzņēmumiem Latvijā, Lietuvā, Igaunijā un Polijā.",
+      "product": "Produkts",
+      "legal": "Juridiskā informācija",
+      "account": "Konts",
+      "links": {
+        "privacy": "Privātuma politika",
+        "terms": "Lietošanas noteikumi",
+        "subscription": "Abonēšanas noteikumi",
+        "cookies": "Sīkdatnes"
+      },
+      "note": "ALVOXIS Flow palīdz rēķināt un sakārtot. Tas neaizstāj grāmatvedi vai nodokļu konsultantu."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — rēķini, izmaksas, finanses un MI mazajam biznesam",
+        "description": "Rēķini, maksājumi, izdevumi, pašizmaksa, krājumi un MI asistents vienā lietotnē uzņēmumiem Latvijā, Lietuvā, Igaunijā un Polijā. €9.99 mēnesī."
+      },
+      "features": {
+        "title": "Iespējas",
+        "description": "Biznesa pārskats, rēķini un kredītrēķini, maksājumi un izdevumi, preces un krājumi, pašizmaksas kalkulators, ražošana, MI asistents un komandas lomas."
+      },
+      "pricing": {
+        "title": "Cena",
+        "description": "Viens plāns ar visiem moduļiem: €9.99 par uzņēmumu mēnesī. Bez līmeņiem, atcelt var jebkurā laikā."
+      },
+      "about": {
+        "title": "Par produktu",
+        "description": "Kas ir ALVOXIS Flow un uz kādiem principiem tas veidots."
+      },
+      "contact": {
+        "title": "Kontakti",
+        "description": "Kā sazināties ar ALVOXIS Flow komandu."
+      },
+      "faq": {
+        "title": "Biežāk uzdotie jautājumi",
+        "description": "Atbildes par cenu, datiem, nodokļiem, MI asistentu un drošību."
+      },
+      "privacy": {
+        "title": "Privātuma politika",
+        "description": "Kā ALVOXIS Flow apstrādā personas datus."
+      },
+      "terms": {
+        "title": "Lietošanas noteikumi",
+        "description": "ALVOXIS Flow lietošanas noteikumi."
+      },
+      "subscription": {
+        "title": "Abonēšanas noteikumi",
+        "description": "Cena, atjaunošana, atcelšana un kas notiek ar jūsu datiem."
+      },
+      "cookies": {
+        "title": "Sīkdatnes",
+        "description": "Kādas sīkdatnes un pārlūka krātuvi izmanto ALVOXIS Flow."
+      }
+    },
+    "hero": {
+      "eyebrow": "Mazajam biznesam LV · LT · EE · PL",
+      "title": "Ziniet savus skaitļus. Rēķini, izmaksas un plānošana vienuviet.",
+      "subtitle": "ALVOXIS Flow apvieno rēķinus, maksājumus, izdevumus, preču pašizmaksu, krājumus un MI asistentu — viss tiek aprēķināts no jūsu pašu ierakstiem, nevis minējumiem.",
+      "primary": "Sākt par €9.99 / mēnesī",
+      "secondary": "Apskatīt iespējas",
+      "note": "Viens plāns ar visiem moduļiem. Atcelt var jebkurā laikā."
+    },
+    "preview": {
+      "aria": "Biznesa pārskata ilustrācija",
+      "label": "Ilustratīvs piemērs — nav reāli dati",
+      "revenue": "Ieņēmumi",
+      "expenses": "Izdevumi",
+      "result": "Rezultāts",
+      "receivables": "Debitori",
+      "chart": "Ieņēmumi un izdevumi"
+    },
+    "features": {
+      "title": "Viss, ar ko strādā neliels uzņēmums",
+      "subtitle": "Viena saistīta darba vide: izrakstīts rēķins nonāk debitoros, reģistrēts maksājums maina naudas plūsmu, izdevums samazina rezultātu.",
+      "items": {
+        "dashboard": {
+          "title": "Biznesa pārskats",
+          "text": "Ieņēmumi, izdevumi, rezultāts, naudas plūsma, debitoru un kreditoru parādi jebkuram periodam, ar grafikiem."
+        },
+        "documents": {
+          "title": "Rēķini un dokumenti",
+          "text": "Melnraksti, numurēti rēķini, kredītrēķini, PDF un nosūtīšana pa e-pastu."
+        },
+        "finance": {
+          "title": "Maksājumi un izdevumi",
+          "text": "Reģistrējiet maksājumus, redziet, kas ir neapmaksāts vai kavēts, uzskaitiet izdevumus pa kategorijām un eksportējiet tos."
+        },
+        "catalog": {
+          "title": "Klienti, preces, krājumi",
+          "text": "Klienti un piegādātāji, preču katalogs, noliktavas un nemaināms krājumu kustības žurnāls."
+        },
+        "costing": {
+          "title": "Pašizmaksas kalkulators",
+          "text": "Pilna vienības pašizmaksa ar piegādi, muitu, iepakojumu, darbu, gabaldarbu un pieskaitāmajām izmaksām."
+        },
+        "production": {
+          "title": "Ražošana un algu palīgrīks",
+          "text": "Specifikācijas, ražošanas pasūtījumi un algu aprēķina palīgrīks."
+        },
+        "ai": {
+          "title": "MI asistents",
+          "text": "Jautājiet par peļņu, kavētiem rēķiniem vai maržām; atbildes balstās uz jūsu skaitļiem."
+        },
+        "team": {
+          "title": "Komanda un lomas",
+          "text": "Uzaiciniet dalībniekus ar lomām; katra būtiska darbība tiek pārbaudīta serverī un reģistrēta."
+        }
+      }
+    },
+    "costing": {
+      "title": "Katras vienības patiesās izmaksas",
+      "text": "Pievienojiet iepirkuma cenu, piegādi, apdrošināšanu, muitas nodokli, iepakojumu, materiālus, darbu un pieskaitāmās izmaksas un redziet vienības pašizmaksu, maržu un uzcenojumu — un kā tos maina lielāka partija.",
+      "points": {
+        "1": "Marža un uzcenojums tiek aprēķināti atsevišķi, tāpēc 40 % uzcenojumu nevar sajaukt ar 40 % maržu.",
+        "2": "Muitas un nodokļu likmes ievadāt jūs, un tās tiek atzīmētas līdz pārbaudei; nekas netiek aizpildīts no izdomātām likmēm.",
+        "3": "Atgūstamais PVN netiek iekļauts izmaksās, tāpēc tas nekad netiek uzskaitīts divreiz.",
+        "4": "Saglabājiet aprēķinus, piesaistiet tos precēm un eksportējiet CSV formātā."
+      }
+    },
+    "invoices": {
+      "title": "Rēķini, kas paliek pareizi",
+      "text": "Izrakstītie rēķini tiek fiksēti kopā ar summām un nodokļu kopsavilkumu; labojumi notiek ar kredītrēķiniem. Reģistrētie maksājumi rāda, kas ir apmaksāts, neapmaksāts un kavēts.",
+      "points": {
+        "1": "Automātiska numerācija pa sērijām un gadiem.",
+        "2": "PDF piecās valodās, nosūtīšana pa e-pastu, ja tā iestatīta.",
+        "3": "Daļēji maksājumi, kavējuma dienas un debitoru sadalījums pa termiņiem.",
+        "4": "Izdevumi ar atgūstamu vai neatgūstamu nodokli un PVN kopsavilkums deklarāciju sagatavošanai."
+      }
+    },
+    "ai": {
+      "title": "Asistents, kas zina jūsu skaitļus",
+      "text": "Jautājiet vienkāršiem vārdiem — “Kuri rēķini ir kavēti?” vai “Kāpēc mainījās rezultāts?” Asistents lasa tikai to, ko drīkst redzēt jūsu loma, ar fiksētām tikai lasīšanas funkcijām, un pasaka, ja datu trūkst.",
+      "points": {
+        "1": "Skaitļus aprēķina lietotne, nevis valodas modelis.",
+        "2": "Katra atbilde nošķir reģistrētos datus, novērtējumus un ieteikumus.",
+        "3": "Tas nevar mainīt ierakstus, sūtīt dokumentus vai veikt maksājumus.",
+        "4": "Jautājumi un atbildes netiek glabāti; lietošanas limiti padara izmaksas paredzamas."
+      }
+    },
+    "countries": {
+      "title": "Veidots Baltijai un Polijai",
+      "text": "Uzņēmumi tiek iestatīti pa valstīm, EUR un PLN netiek jaukti. Nodokļu kategorijas iestata katrs uzņēmums; ALVOXIS Flow nepieņem, ka viena likme der visām precēm.",
+      "list": {
+        "LV": "Latvija",
+        "LT": "Lietuva",
+        "EE": "Igaunija",
+        "PL": "Polija"
+      },
+      "languages": "Lietotne un dokumenti ir pieejami angļu, krievu, latviešu, lietuviešu un igauņu valodā."
+    },
+    "pricing": {
+      "title": "Viens plāns. Viss iekļauts.",
+      "subtitle": "Bez līmeņiem un papildinājumiem: katrs uzņēmums saņem visus moduļus.",
+      "only": "Vienīgais plāns",
+      "perCompany": "Par uzņēmumu, maksa katru mēnesi. Nodokļi, ja tādi piemērojami, tiek parādīti apmaksas laikā.",
+      "cta": "Izveidot kontu",
+      "terms": {
+        "1": "Bez bezmaksas izmēģinājuma: abonements sākas, kad pirmais maksājums ir veiksmīgs.",
+        "2": "Atjaunojas katru mēnesi; atcelt var jebkurā laikā, piekļuve saglabājas līdz apmaksātā mēneša beigām.",
+        "3": "Bez aktīva abonementa uzņēmums ir pieejams tikai lasīšanai — nekas netiek dzēsts.",
+        "4": "Maksājumus apstrādā Stripe; kartes dati nenonāk ALVOXIS Flow."
+      },
+      "detailsTitle": "Kā notiek apmaksa",
+      "details": {
+        "1": "Kontu un uzņēmumu izveidojat bez maksas, pēc tam abonējat uzņēmuma abonementa lapā. Katram uzņēmumam ir savs abonements.",
+        "2": "Cena ir €9.99 mēnesī. Vai tiek pievienots PVN, atkarīgs no jūsu atrašanās vietas un statusa; Stripe to parāda pirms apmaksas.",
+        "3": "Ja maksājums neizdodas, Stripe mēģina vēlreiz, un piekļuve saglabājas. Ja tas joprojām neizdodas, uzņēmums kļūst pieejams tikai lasīšanai, līdz maksājums izdodas.",
+        "4": "Atjaunošanu varat atcelt pats jebkurā laikā. Piekļuve saglabājas līdz apmaksātā perioda beigām; dati paliek pieejami skatīšanai un eksportam.",
+        "5": "MI asistents ir iekļauts ar saprātīgiem limitiem uzņēmumam mēnesī, lai izmaksas būtu paredzamas."
+      },
+      "termsLink": "Pilnie abonēšanas noteikumi"
+    },
+    "faq": {
+      "title": "Jautājumi un atbildes",
+      "more": "Visi jautājumi",
+      "items": {
+        "what": {
+          "q": "Kas ir ALVOXIS Flow?",
+          "a": "Tīmekļa lietotne neliela uzņēmuma vadībai: rēķini un kredītrēķini, maksājumi un izdevumi, klienti un preces, krājumi, ražošana, pašizmaksas aprēķins, atskaites un MI asistents."
+        },
+        "who": {
+          "q": "Kam tas paredzēts?",
+          "a": "Mazajiem uzņēmumiem, ražotājiem un uzņēmējiem, kas reģistrēti Latvijā, Lietuvā, Igaunijā vai Polijā."
+        },
+        "price": {
+          "q": "Cik tas maksā?",
+          "a": "€9.99 par uzņēmumu mēnesī — viens plāns ar visiem moduļiem. Nodokļi, ja tādi piemērojami, tiek parādīti apmaksas laikā."
+        },
+        "trial": {
+          "q": "Vai ir bezmaksas izmēģinājums?",
+          "a": "Nē. Kontu un uzņēmumu var izveidot pirms apmaksas; abonements sākas, kad pirmais maksājums ir veiksmīgs."
+        },
+        "cancel": {
+          "q": "Kā atcelt?",
+          "a": "Uzņēmuma abonementa lapā, jebkurā laikā. Abonements beidzas kopā ar apmaksāto periodu, un dati tiek saglabāti."
+        },
+        "data": {
+          "q": "Kas notiek ar datiem, ja pārstāju maksāt?",
+          "a": "Uzņēmums kļūst pieejams tikai lasīšanai: visu joprojām var skatīt un eksportēt. Abonementa beigu dēļ nekas netiek dzēsts."
+        },
+        "tax": {
+          "q": "Vai ALVOXIS Flow aprēķina nodokļus manā vietā?",
+          "a": "Tas piemēro jūsu uzņēmuma iestatītās nodokļu kategorijas un apkopo reģistrēto PVN. Tas nenosaka, kura likme uz jums attiecas, un nav nodokļu konsultācija — pārbaudiet likmes un rēķinu prasības oficiālos avotos vai pie grāmatveža."
+        },
+        "ai": {
+          "q": "Kādus datus izmanto MI asistents?",
+          "a": "Tikai rādītājus, ko drīkst redzēt jūsu loma, kas tiek nolasīti ar fiksētām funkcijām, kad uzdodat jautājumu. Tie tiek nosūtīti Anthropic Claude API, lai sagatavotu atbildi; ALVOXIS Flow neglabā jautājumus un atbildes."
+        },
+        "bank": {
+          "q": "Vai tas savienojas ar manu banku?",
+          "a": "Vēl nē. Maksājumi un izdevumi tiek ievadīti manuāli, un lietotne to norāda; automātiskas sinhronizācijas ar banku nav."
+        },
+        "languages": {
+          "q": "Kuras valodas tiek atbalstītas?",
+          "a": "Angļu, krievu, latviešu, lietuviešu un igauņu — lietotnei un dokumentiem."
+        },
+        "security": {
+          "q": "Kā tiek aizsargāti mani dati?",
+          "a": "Šifrēti savienojumi, jaukti paroļu kodi, divfaktoru autentifikācija (obligāta īpašniekiem un administratoriem), stingra uzņēmumu nošķiršana un būtisku darbību žurnāls."
+        },
+        "export": {
+          "q": "Vai varu eksportēt savus datus?",
+          "a": "Jā. Dokumentus PDF formātā, bet izdevumus, atskaites, algu aprēķinus un pašizmaksas aprēķinus CSV formātā."
+        }
+      }
+    },
+    "cta": {
+      "title": "Vadiet uzņēmumu pēc reāliem skaitļiem",
+      "text": "Izveidojiet kontu, iestatiet uzņēmumu un redziet pirmos rādītājus dažās minūtēs.",
+      "button": "Sākt"
+    },
+    "featuresPage": {
+      "title": "Iespējas",
+      "intro": "Visi moduļi strādā ar tiem pašiem uzņēmuma datiem un tām pašām atļaujām. Lūk, ko katrs dara — un ko nedara.",
+      "details": {
+        "dashboard": "Ieņēmumi, izdevumi, bruto peļņa, rezultāts un marža pa valūtām šim vai iepriekšējam mēnesim, ceturksnim, gadam vai jebkuram periodam, salīdzinot ar iepriekšējo. Debitori un kreditori šodien, rēķinu apmaksas statuss, krājumu vērtība, pēdējās darbības un ātrās darbības. Katram rādītājam ir apraksts; nekas netiek novērtēts aptuveni.",
+        "documents": "Rēķini, avansa rēķini, pavadzīmes un kredītrēķini ar uzņēmuma numerāciju. Izrakstītos dokumentus nevar mainīt; labojumi ir kredītrēķini. PDF piecās valodās, PDF imports pārbaudei, nosūtīšana pa e-pastu.",
+        "finance": "Maksājumi pret izrakstītiem rēķiniem ar daļējiem maksājumiem, anulēšanu un dublikātu aizsardzību. Izdevumi ar kategorijām, piegādātājiem, atgūstamu vai neatgūstamu nodokli, termiņiem un atkārtošanu. Meklēšana, filtri, CSV eksports.",
+        "catalog": "Klienti un piegādātāji ar apmaksas noteikumiem; preces un pakalpojumi ar artikuliem, cenām un noklusētajām nodokļu kategorijām; noliktavas un nemaināms krājumu žurnāls ar pieņemšanu, izsniegšanu, pārvietošanu un inventarizāciju.",
+        "costing": "Partijas un vienības pašizmaksa no visiem izmaksu veidiem, marža un uzcenojums, cena mērķa maržai un scenāriji citiem apjomiem. Muitas likmes vienmēr ievadāt un pārbaudāt jūs.",
+        "production": "Specifikācijas un ražošanas pasūtījumi, kas vienā solī noraksta komponentes un pievieno gatavo produkciju. Algu aprēķina palīgrīks ar jūsu likmēm — nav rīks deklarāciju iesniegšanai.",
+        "ai": "Claude balstīts asistents, kas atbild pēc lietotnes aprēķinātiem skaitļiem ar jūsu lomas atļaujām un pasaka, ja datu trūkst. Tas neko nevar mainīt.",
+        "team": "Uzaicinājumi pa e-pastu, sešas lomas ar atļaujām, obligāta divfaktoru autentifikācija īpašniekiem un administratoriem un būtisku darbību žurnāls."
+      },
+      "limits": "Pašlaik nav iekļauts: automātiska sinhronizācija ar banku, e-rēķinu tīkli, nodokļu deklarāciju iesniegšana un obligātās algu atskaites."
+    },
+    "about": {
+      "title": "Par ALVOXIS Flow",
+      "intro": "ALVOXIS Flow ir biznesa vadības programmatūra nelieliem uzņēmumiem Latvijā, Lietuvā, Igaunijā un Polijā. Tā parāda īpašniekiem, no kurienes nauda nāk un kur tā aiziet, — izmantojot tikai to, ko viņi ir reģistrējuši.",
+      "principles": {
+        "1": {
+          "title": "Reāli ieraksti, bez minējumiem",
+          "text": "Pārskati, atskaites un asistents izmanto jūsu datus. Ja kaut kā trūkst, lietotne to pasaka, nevis aizpilda tukšumu."
+        },
+        "2": {
+          "title": "Precīza aritmētika",
+          "text": "Nauda tiek rēķināta precīzos decimālskaitļos, valūtas netiek jauktas, izrakstīti dokumenti nemainās."
+        },
+        "3": {
+          "title": "Jūsu uzņēmums paliek jūsu",
+          "text": "Katrs pieprasījums tiek pārbaudīts serverī pēc jūsu dalības un lomas. Uzņēmumi nekad neredz cits cita datus."
+        },
+        "4": {
+          "title": "Godīgi par robežām",
+          "text": "Nodokļu likmes un tiesību prasības ir atkarīgas no jūsu situācijas. Lietotne palīdz tās piemērot, bet neaizstāj grāmatvedi."
+        }
+      },
+      "status": "ALVOXIS Flow gatavojas palaišanai. Operatora rekvizīti un kontakti šeit tiks publicēti pirms komerciālas lietošanas."
+    },
+    "contact": {
+      "title": "Kontakti",
+      "text": "Labprāt atbildēsim uz jautājumiem par ALVOXIS Flow, jūsu kontu vai abonementu.",
+      "emailLabel": "E-pasts:",
+      "notPublished": "Kontaktinformācija šeit tiks publicēta pirms komerciālās palaišanas.",
+      "customers": "Jau lietojat? Piesakieties, lai pārvaldītu abonementu un datus.",
+      "signIn": "Pieteikties"
+    },
+    "legal": {
+      "draftNotice": "Projekts pārskatīšanai: šis dokuments apraksta, kā ALVOXIS Flow darbojas šodien, bet to vēl nav pārskatījis jurists. Ar [jāaizpilda] atzīmētās ziņas operatoram jāpievieno pirms komerciālās palaišanas.",
+      "other": "Citi juridiskie dokumenti",
+      "privacy": {
+        "title": "Privātuma politika",
+        "intro": "Šī politika skaidro, kādus personas datus apstrādā ALVOXIS Flow, kāpēc un kādas ir jūsu tiesības.",
+        "s1": {
+          "title": "Kas ir atbildīgs",
+          "body": "Kontu datu pārzinis ir ALVOXIS Flow operators: [nosaukums, reģistrācijas numurs, adrese un kontakta e-pasts — jāaizpilda]. Biznesa datiem, ko uzņēmumi ievada par saviem klientiem, piegādātājiem un darbiniekiem, pārzinis ir uzņēmums, un ALVOXIS Flow tos apstrādā tā uzdevumā."
+        },
+        "s2": {
+          "title": "Ko mēs apstrādājam",
+          "body": "Konta dati (e-pasta adrese, vārds, valoda, paroles jaucējkods, šifrēti divfaktoru noslēpumi); drošības dati (sesijas, IP adrese un pārlūka informācija, būtisku darbību žurnāls); jūsu ievadītie biznesa dati (uzņēmumi, klienti, piegādātāji, preces, dokumenti, maksājumi, izdevumi, krājumi, algu aprēķini); abonementa dati (Stripe klienta un abonementa identifikatori un statuss — kartes datus apstrādā tikai Stripe); MI lietojuma ieraksti (laiks, marķieru skaits, iznākums — ne jūsu jautājumi vai atbildes)."
+        },
+        "s3": {
+          "title": "Kāpēc un uz kāda pamata",
+          "body": "Lai sniegtu pakalpojumu, kuram reģistrējāties (līguma izpilde), uzturētu tā drošību un novērstu ļaunprātīgu izmantošanu (leģitīmās intereses), iekasētu abonementa maksu (līgums) un izpildītu tiesību aktu prasības, piemēram, grāmatvedības noteikumus mūsu pašu rēķiniem."
+        },
+        "s4": {
+          "title": "Dati, ko ievadāt par citiem",
+          "body": "Reģistrējot klientus, piegādātājus vai darbiniekus, jūs atbildat par tiesiska pamata esamību. Datu apstrādes līgums biznesa klientiem [jāaizpilda] apraksta, kā ALVOXIS Flow apstrādā šos datus pēc jūsu norādījumiem."
+        },
+        "s5": {
+          "title": "Pakalpojumu sniedzēji",
+          "body": "Mitināšanas un datubāzes pakalpojumu sniedzēji [jāapstiprina: piem., Vercel, Neon], maksājumi — Stripe, e-pasta piegāde — iestatītais e-pasta pakalpojumu sniedzējs, un — tikai izmantojot asistentu — Anthropic (Claude API), kas saņem atbildei nepieciešamos rādītājus. Ja dati tiek nodoti ārpus EEZ, piemēro atbilstošas garantijas, piemēram, līguma standartklauzulas [jāapstiprina katram sniedzējam]."
+        },
+        "s6": {
+          "title": "Cik ilgi glabājam datus",
+          "body": "Konta un biznesa datus — kamēr pastāv konts vai uzņēmums; izrakstītos dokumentus un darbību žurnālu — tik ilgi, cik prasa grāmatvedības vai tiesību normas [termiņi jāaizpilda]; drošības žurnālus — ierobežotu laiku."
+        },
+        "s7": {
+          "title": "Drošība",
+          "body": "Šifrēti savienojumi, paroļu jaukšana, divfaktoru autentifikācija (obligāta īpašniekiem un administratoriem), servera puses atļauju pārbaude katram uzņēmumam, nemaināmi darbību un krājumu žurnāli, noslēpumi netiek nodoti pārlūkam."
+        },
+        "s8": {
+          "title": "Jūsu tiesības",
+          "body": "Jūs varat pieprasīt piekļuvi, labošanu, dzēšanu, apstrādes ierobežošanu, datu pārnesamību (eksports ir iebūvēts) un iebilst pret apstrādi. Jūs varat iesniegt sūdzību datu aizsardzības iestādei: Datu valsts inspekcija (Latvija), Valstybinė duomenų apsaugos inspekcija (Lietuva), Andmekaitse Inspektsioon (Igaunija) vai Prezes Urzędu Ochrony Danych Osobowych (Polija)."
+        },
+        "s9": {
+          "title": "Kontakti un izmaiņas",
+          "body": "Sazinieties ar operatoru: [kontakta e-pasts — jāaizpilda]. Par būtiskām šīs politikas izmaiņām tiks paziņots lietotnē pirms to stāšanās spēkā."
+        }
+      },
+      "terms": {
+        "title": "Lietošanas noteikumi",
+        "intro": "Šie noteikumi attiecas uz ALVOXIS Flow lietošanu uzņēmumiem un to dalībniekiem.",
+        "s1": {
+          "title": "Pakalpojums",
+          "body": "ALVOXIS Flow ir tīmekļa lietotne rēķiniem, maksājumiem, izdevumiem, precēm, krājumiem, ražošanai, pašizmaksas aprēķinam, atskaitēm un MI asistentam. Iespējas var mainīties, produktam attīstoties."
+        },
+        "s2": {
+          "title": "Konti",
+          "body": "Nepieciešama apstiprināta e-pasta adrese. Glabājiet paroli un otro faktoru drošībā; jūs atbildat par darbībām savā kontā. Īpašnieki izlemj, kas pievienojas uzņēmumam un ar kādu lomu."
+        },
+        "s3": {
+          "title": "Abonements un maksājumi",
+          "body": "Uzņēmuma biznesa funkciju izmantošanai nepieciešams aktīvs abonements saskaņā ar abonēšanas noteikumiem. Maksājumus apstrādā Stripe."
+        },
+        "s4": {
+          "title": "Pieļaujamā lietošana",
+          "body": "Neizmantojiet pakalpojumu ļaunprātīgi: nekāda nelikumīga satura, mēģinājumu piekļūt citu uzņēmumu datiem, uzbrukumu pakalpojumam un lietošanas, kas pārkāpj nodokļu, grāmatvedības vai datu aizsardzības tiesības."
+        },
+        "s5": {
+          "title": "Jūsu dati",
+          "body": "Jūsu uzņēmuma dati paliek jūsu. Tos var eksportēt jebkurā laikā, un tie netiek dzēsti abonementa beigu dēļ. ALVOXIS Flow tos izmanto tikai pakalpojuma sniegšanai."
+        },
+        "s6": {
+          "title": "Aprēķini nav konsultācija",
+          "body": "Lietotne rēķina pēc tā, ko jūs reģistrējat, un pēc jūsu iestatītajām nodokļu kategorijām. Tā nenosaka, kādi nodokļi uz jums attiecas, un neaizstāj grāmatvedi, nodokļu konsultantu vai sertificētu grāmatvedības sistēmu. Jūs atbildat par savu dokumentu pareizību un atbilstību tiesību aktiem."
+        },
+        "s7": {
+          "title": "MI asistents",
+          "body": "Asistents var kļūdīties. Tas atzīmē datus, novērtējumus un ieteikumus, taču svarīgas atbildes ieteicams pārbaudīt. Tas nevar mainīt datus vai rīkoties jūsu vārdā."
+        },
+        "s8": {
+          "title": "Pieejamība un atbildība",
+          "body": "Mēs tiecamies uz augstu pieejamību, bet nevaram garantēt nepārtrauktu darbību. Atbildības noteikumi [jāaizpilda pēc juridiskas pārskatīšanas]."
+        },
+        "s9": {
+          "title": "Izmaiņas un piemērojamās tiesības",
+          "body": "Par būtiskām izmaiņām paziņosim iepriekš. Piemērojamās tiesības un piekritība [jāaizpilda]."
+        }
+      },
+      "subscription": {
+        "title": "Abonēšanas noteikumi",
+        "intro": "ALVOXIS Flow ir viens abonements katram uzņēmumam.",
+        "s1": {
+          "title": "Plāns un cena",
+          "body": "ALVOXIS Flow plāns maksā €9.99 par uzņēmumu mēnesī un ietver visus moduļus un MI asistentu ar saprātīgiem limitiem. Vai tiek pievienots PVN vai citi nodokļi, tiek parādīts apmaksas laikā."
+        },
+        "s2": {
+          "title": "Sākums",
+          "body": "Bezmaksas izmēģinājuma nav. Abonements sākas, kad pirmais maksājums ir veiksmīgs; atcelta vai nepabeigta apmaksa neizveido abonementu un neko neiekasē."
+        },
+        "s3": {
+          "title": "Atjaunošana",
+          "body": "Abonements automātiski atjaunojas katru mēnesi, līdz to atceļ. Atjaunošanas datums redzams uzņēmuma abonementa lapā."
+        },
+        "s4": {
+          "title": "Atcelšana",
+          "body": "Īpašnieki var atcelt atjaunošanu jebkurā laikā abonementa lapā vai Stripe klientu portālā. Abonements paliek aktīvs līdz apmaksātā mēneša beigām un tad beidzas. Atmaksas: [noteikumi jāaizpilda]; likumā noteiktās patērētāju tiesības, kur tās piemērojamas, netiek ierobežotas."
+        },
+        "s5": {
+          "title": "Neizdevušies maksājumi",
+          "body": "Ja maksājums neizdodas, Stripe mēģina vēlreiz, un piekļuve tikmēr saglabājas. Ja maksu nevar iekasēt, abonements tiek apturēts vai beidzas, un uzņēmums kļūst pieejams tikai lasīšanai, līdz maksājums izdodas."
+        },
+        "s6": {
+          "title": "Tikai lasīšana un jūsu dati",
+          "body": "Bez aktīva abonementa jūs joprojām varat pieteikties, skatīt, drukāt un eksportēt visus uzņēmuma datus un pārvaldīt dalībniekus un apmaksu. Ierakstu izveide un maiņa un MI asistents nav pieejami. Apmaksas dēļ dati netiek dzēsti."
+        },
+        "s7": {
+          "title": "Cenas izmaiņas",
+          "body": "Par cenas izmaiņām paziņo vismaz 30 dienas iepriekš, un tās stājas spēkā no nākamā norēķinu perioda; līdz tam abonementu var atcelt."
+        }
+      },
+      "cookies": {
+        "title": "Sīkdatnes un pārlūka krātuve",
+        "intro": "ALVOXIS Flow izmanto tikai to, kas nepieciešams pakalpojuma darbībai.",
+        "s1": {
+          "title": "Nepieciešamās sīkdatnes",
+          "body": "Sesijas sīkdatne uztur pieteikšanos, zināmas ierīces sīkdatne palīdz pamanīt pieteikšanos no jaunām ierīcēm, bet valodas sīkdatne atceras valodu. Tās ir nepieciešamas pakalpojuma darbībai un nav atslēdzamas."
+        },
+        "s2": {
+          "title": "Pārlūka krātuve",
+          "body": "Jūsu izvēle starp gaišo un tumšo tēmu tiek glabāta pārlūka lokālajā krātuvē. Tā nekad nepamet jūsu ierīci."
+        },
+        "s3": {
+          "title": "Bez izsekošanas",
+          "body": "Nav analītikas, reklāmas vai sociālo tīklu sīkdatņu. Tā kā tiek izmantotas tikai nepieciešamās sīkdatnes, piekrišana nav vajadzīga; ja kādreiz tiks pievienotas neobligātas sīkdatnes, vispirms jums jautāsim, un izvēli varēs mainīt jebkurā laikā."
+        },
+        "s4": {
+          "title": "Maksājumu lapas",
+          "body": "Stripe apmaksas lapas un klientu portāls darbojas Stripe domēnā un iestata savas sīkdatnes saskaņā ar Stripe privātuma politiku."
+        }
+      }
     }
   }
 }

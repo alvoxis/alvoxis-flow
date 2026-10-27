@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { type ReactNode } from "react";
 import { EnvironmentBanner } from "@/components/layout/environment-banner";
+import { THEME_BOOT_SCRIPT } from "@/components/layout/theme-switch";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
 import { routing } from "@/i18n/routing";
 
@@ -36,8 +37,11 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0b0a10",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0b0a10" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f5fb" },
+  ],
+  colorScheme: "dark light",
   width: "device-width",
   initialScale: 1,
 };
@@ -54,7 +58,11 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    // data-theme is set by the boot script before React hydrates; the attribute may differ.
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body>
         <NextIntlClientProvider>
           {/* .root: own stacking context, so Base UI popups (portalled to <body>) stay on top. */}

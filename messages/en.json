@@ -27,7 +27,8 @@
     "language": "Language",
     "account": "Account",
     "notSignedIn": "Not signed in",
-    "currentCompany": "Current company"
+    "currentCompany": "Current company",
+    "theme": "Switch between light and dark theme"
   },
   "environment": {
     "label": "Test environment",
@@ -2363,6 +2364,434 @@
       "members": "Members",
       "subscription": "Subscription",
       "access": "Internal access"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow home",
+      "label": "Website",
+      "features": "Features",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "about": "About",
+      "contact": "Contact",
+      "signIn": "Sign in",
+      "start": "Get started",
+      "menu": "Menu"
+    },
+    "footer": {
+      "tagline": "Business management for small companies in Latvia, Lithuania, Estonia and Poland.",
+      "product": "Product",
+      "legal": "Legal",
+      "account": "Account",
+      "links": {
+        "privacy": "Privacy policy",
+        "terms": "Terms of service",
+        "subscription": "Subscription terms",
+        "cookies": "Cookies"
+      },
+      "note": "ALVOXIS Flow helps you calculate and organise. It is not a substitute for an accountant or tax adviser."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — invoices, costs, finance and AI for small businesses",
+        "description": "Invoices, payments, expenses, product costing, inventory and an AI assistant in one app for companies in Latvia, Lithuania, Estonia and Poland. €9.99 per month."
+      },
+      "features": {
+        "title": "Features",
+        "description": "Dashboard, invoices and credit notes, payments and expenses, products and inventory, cost calculator, production, AI assistant and team roles."
+      },
+      "pricing": {
+        "title": "Pricing",
+        "description": "One plan with every module: €9.99 per company per month. No tiers, cancel at any time."
+      },
+      "about": {
+        "title": "About",
+        "description": "What ALVOXIS Flow is and the principles it is built on."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "How to reach the team behind ALVOXIS Flow."
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "description": "Answers about pricing, data, taxes, the AI assistant and security."
+      },
+      "privacy": {
+        "title": "Privacy policy",
+        "description": "How ALVOXIS Flow processes personal data."
+      },
+      "terms": {
+        "title": "Terms of service",
+        "description": "The terms for using ALVOXIS Flow."
+      },
+      "subscription": {
+        "title": "Subscription terms",
+        "description": "Price, renewal, cancellation and what happens to your data."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "description": "Which cookies and browser storage ALVOXIS Flow uses."
+      }
+    },
+    "hero": {
+      "eyebrow": "For small businesses in LV · LT · EE · PL",
+      "title": "Know your numbers. Invoice, cost and plan in one place.",
+      "subtitle": "ALVOXIS Flow brings invoices, payments, expenses, product costs, stock and an AI assistant together — calculated from your own records, never from guesses.",
+      "primary": "Start for €9.99 / month",
+      "secondary": "Explore the features",
+      "note": "One plan with every module. Cancel at any time."
+    },
+    "preview": {
+      "aria": "Illustration of the business overview",
+      "label": "Illustrative example — not real data",
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "result": "Result",
+      "receivables": "Receivables",
+      "chart": "Revenue and expenses"
+    },
+    "features": {
+      "title": "Everything a small company runs on",
+      "subtitle": "One connected workspace: an invoice you issue appears in receivables, a payment you record updates cash flow, an expense lowers your result.",
+      "items": {
+        "dashboard": {
+          "title": "Business overview",
+          "text": "Revenue, expenses, result, cash flow, receivables and payables for any period, with charts."
+        },
+        "documents": {
+          "title": "Invoices and documents",
+          "text": "Drafts, numbered issued invoices, credit notes, PDFs and sending by email."
+        },
+        "finance": {
+          "title": "Payments and expenses",
+          "text": "Record payments, see what is open or overdue, track expenses by category and export them."
+        },
+        "catalog": {
+          "title": "Customers, products, stock",
+          "text": "Customers and suppliers, a product catalogue, warehouses and an append-only stock ledger."
+        },
+        "costing": {
+          "title": "Cost calculator",
+          "text": "Full cost per unit with delivery, duties, packaging, labour, piecework and overhead."
+        },
+        "production": {
+          "title": "Production and payroll aid",
+          "text": "Bills of materials, production orders and a payroll calculation aid."
+        },
+        "ai": {
+          "title": "AI assistant",
+          "text": "Ask about profit, overdue invoices or margins; answers come from your figures."
+        },
+        "team": {
+          "title": "Team and roles",
+          "text": "Invite members with roles; every sensitive action is checked on the server and logged."
+        }
+      }
+    },
+    "costing": {
+      "title": "The real cost of every unit",
+      "text": "Add purchase price, delivery, insurance, customs duty, packaging, materials, labour and overhead, and see the cost per unit, margin and markup — and how a bigger batch changes them.",
+      "points": {
+        "1": "Margin and markup are calculated separately, so a 40 % markup is never mistaken for a 40 % margin.",
+        "2": "Duty and tax rates are entered by you and flagged until verified; nothing is filled in from invented rates.",
+        "3": "Recoverable VAT is excluded from cost, so it is never counted twice.",
+        "4": "Save calculations, link them to products and export them as CSV."
+      }
+    },
+    "invoices": {
+      "title": "Invoices that stay correct",
+      "text": "Issued invoices are frozen with their totals and tax summary; corrections go through credit notes. Payments you record show what is paid, open and overdue.",
+      "points": {
+        "1": "Automatic numbering per series and year.",
+        "2": "PDFs in five languages, sent by email when configured.",
+        "3": "Partial payments, overdue days and receivables ageing.",
+        "4": "Expenses with recoverable or non-recoverable tax, and a VAT summary to prepare returns."
+      }
+    },
+    "ai": {
+      "title": "An assistant that knows your figures",
+      "text": "Ask in plain language — “Which invoices are overdue?” or “Why did my result change?” The assistant reads only what your role may see, through fixed read-only functions, and says when data is missing.",
+      "points": {
+        "1": "Figures are calculated by the application, not by the language model.",
+        "2": "Every answer separates recorded figures, estimates and recommendations.",
+        "3": "It cannot change records, send documents or make payments.",
+        "4": "Questions and answers are not stored; usage limits keep costs predictable."
+      }
+    },
+    "countries": {
+      "title": "Built for the Baltics and Poland",
+      "text": "Companies are set up per country, with EUR and PLN kept apart. Tax categories are configured by each company; ALVOXIS Flow does not assume one rate fits every product.",
+      "list": {
+        "LV": "Latvia",
+        "LT": "Lithuania",
+        "EE": "Estonia",
+        "PL": "Poland"
+      },
+      "languages": "The app and documents are available in English, Russian, Latvian, Lithuanian and Estonian."
+    },
+    "pricing": {
+      "title": "One plan. Everything included.",
+      "subtitle": "No tiers and no add-ons: every company gets every module.",
+      "only": "The only plan",
+      "perCompany": "Per company, billed monthly. Taxes, if any apply, are shown at checkout.",
+      "cta": "Create an account",
+      "terms": {
+        "1": "No free trial: the subscription starts when your first payment succeeds.",
+        "2": "Renews monthly; cancel at any time and keep access until the end of the paid month.",
+        "3": "Without an active subscription your company becomes read-only — nothing is deleted.",
+        "4": "Payments are processed by Stripe; card details never reach ALVOXIS Flow."
+      },
+      "detailsTitle": "How billing works",
+      "details": {
+        "1": "You create an account and a company for free, then subscribe from the company's subscription page. Each company has its own subscription.",
+        "2": "The price is €9.99 per month. Whether VAT is added depends on your location and status and is shown by Stripe before you pay.",
+        "3": "If a payment fails, Stripe retries it and you keep access while it does. If it still fails, the company becomes read-only until payment succeeds.",
+        "4": "You can cancel the renewal yourself at any time. Access continues until the end of the paid period; your data stays available to view and export.",
+        "5": "The AI assistant is included with fair-use limits per company and month so that costs stay predictable."
+      },
+      "termsLink": "Read the full subscription terms"
+    },
+    "faq": {
+      "title": "Questions and answers",
+      "more": "All questions",
+      "items": {
+        "what": {
+          "q": "What is ALVOXIS Flow?",
+          "a": "A web application for running a small company: invoices and credit notes, payments and expenses, customers and products, stock, production, cost calculation, reports and an AI assistant."
+        },
+        "who": {
+          "q": "Who is it for?",
+          "a": "Small businesses, manufacturers and entrepreneurs registered in Latvia, Lithuania, Estonia or Poland."
+        },
+        "price": {
+          "q": "How much does it cost?",
+          "a": "€9.99 per company per month — one plan with every module. Taxes, if any apply, are shown at checkout."
+        },
+        "trial": {
+          "q": "Is there a free trial?",
+          "a": "No. You can create an account and a company before paying; the subscription starts when the first payment succeeds."
+        },
+        "cancel": {
+          "q": "How do I cancel?",
+          "a": "On your company's subscription page, at any time. The subscription ends with the paid period and your data is kept."
+        },
+        "data": {
+          "q": "What happens to my data if I stop paying?",
+          "a": "The company becomes read-only: you can still view and export everything. Nothing is deleted because a subscription ended."
+        },
+        "tax": {
+          "q": "Does ALVOXIS Flow calculate taxes for me?",
+          "a": "It applies the tax categories your company sets up and summarises recorded VAT. It does not decide which rate applies to you and is not tax advice — check rates and invoice requirements with official sources or your accountant."
+        },
+        "ai": {
+          "q": "What data does the AI assistant use?",
+          "a": "Only figures your role may see, read through fixed functions when you ask a question. They are sent to Anthropic's Claude API to write the answer; ALVOXIS Flow does not store questions or answers."
+        },
+        "bank": {
+          "q": "Does it connect to my bank?",
+          "a": "Not yet. Payments and expenses are recorded by hand, and the app says so; there is no automatic bank synchronisation."
+        },
+        "languages": {
+          "q": "Which languages are supported?",
+          "a": "English, Russian, Latvian, Lithuanian and Estonian, for the app and for documents."
+        },
+        "security": {
+          "q": "How is my data protected?",
+          "a": "Encrypted connections, hashed passwords, two-factor authentication (required for owners and administrators), strict separation between companies and an audit log of sensitive actions."
+        },
+        "export": {
+          "q": "Can I export my data?",
+          "a": "Yes. Documents as PDF, and expenses, reports, payroll runs and cost calculations as CSV."
+        }
+      }
+    },
+    "cta": {
+      "title": "Run your company on real numbers",
+      "text": "Create your account, set up your company and see your first figures in minutes.",
+      "button": "Get started"
+    },
+    "featuresPage": {
+      "title": "Features",
+      "intro": "Every module works with the same company data and the same permissions. Here is what each one does — and what it does not do.",
+      "details": {
+        "dashboard": "Revenue, expenses, gross profit, result and margin per currency for this month, last month, the quarter, the year or any range, compared with the previous period. Receivables and payables today, invoice payment status, stock value, recent activity and quick actions. Every figure has a written definition; nothing is estimated.",
+        "documents": "Invoices, proformas, delivery notes and credit notes with company numbering. Issued documents cannot be changed; corrections are credit notes. PDF in five languages, PDF import for review, sending by email.",
+        "finance": "Payments recorded against issued invoices, with partial payments, voiding and duplicate protection. Expenses with categories, suppliers, recoverable or non-recoverable tax, due dates and recurrence. Search, filters, CSV export.",
+        "catalog": "Customers and suppliers with payment terms; products and services with SKUs, prices and default tax categories; warehouses and an append-only stock ledger with receipts, issues, transfers and counts.",
+        "costing": "Batch and unit cost from every cost type, margin and markup, the price for a target margin and scenarios for other batch sizes. Duty rates are always entered and verified by you.",
+        "production": "Bills of materials and production orders that consume components and add finished goods in one step. A payroll calculation aid with rates you set — not a payroll declaration tool.",
+        "ai": "A Claude-based assistant that answers from figures the application calculates, with your role's permissions, and tells you when data is missing. It cannot change anything.",
+        "team": "Invitations by email, six roles with permissions, required two-factor authentication for owners and administrators, and an audit trail of sensitive actions."
+      },
+      "limits": "Not included today: automatic bank synchronisation, e-invoicing networks, filing of tax returns and statutory payroll declarations."
+    },
+    "about": {
+      "title": "About ALVOXIS Flow",
+      "intro": "ALVOXIS Flow is business management software for small companies in Latvia, Lithuania, Estonia and Poland. It is built to show owners where their money comes from and where it goes — using only what they have recorded.",
+      "principles": {
+        "1": {
+          "title": "Real records, no guesses",
+          "text": "Dashboards, reports and the assistant use your data. If something is missing, the app says so instead of filling the gap."
+        },
+        "2": {
+          "title": "Correct arithmetic",
+          "text": "Money is calculated in exact decimals, currencies are never mixed, and issued documents never change."
+        },
+        "3": {
+          "title": "Your company stays yours",
+          "text": "Every request is checked on the server against your membership and role. Companies never see each other's data."
+        },
+        "4": {
+          "title": "Honest about limits",
+          "text": "Tax rates and legal requirements depend on your situation. The app helps you apply them but does not replace an accountant."
+        }
+      },
+      "status": "ALVOXIS Flow is preparing for launch. Company and contact details of the operator will be published here before commercial use."
+    },
+    "contact": {
+      "title": "Contact",
+      "text": "Questions about ALVOXIS Flow, your account or a subscription are welcome.",
+      "emailLabel": "Email:",
+      "notPublished": "Contact details will be published here before commercial launch.",
+      "customers": "Already a customer? Sign in to manage your subscription and data.",
+      "signIn": "Sign in"
+    },
+    "legal": {
+      "draftNotice": "Draft for review: this document describes how ALVOXIS Flow works today but has not yet been reviewed by a lawyer. Details marked [to be completed] must be added by the operator before commercial launch.",
+      "other": "Other legal documents",
+      "privacy": {
+        "title": "Privacy policy",
+        "intro": "This policy explains which personal data ALVOXIS Flow processes, why, and what rights you have.",
+        "s1": {
+          "title": "Who is responsible",
+          "body": "The controller for account data is the operator of ALVOXIS Flow: [legal name, registration number, address and contact email to be completed]. For business data that companies enter about their own customers, suppliers and employees, the company is the controller and ALVOXIS Flow processes that data on its behalf."
+        },
+        "s2": {
+          "title": "What we process",
+          "body": "Account data (email address, name, language, a hash of your password, encrypted two-factor secrets); security data (sessions, IP address and browser information, audit log of sensitive actions); the business data you enter (companies, customers, suppliers, products, documents, payments, expenses, stock, payroll calculations); subscription data (Stripe customer and subscription identifiers and status — card details are handled only by Stripe); and AI usage records (time, token counts, outcome — not your questions or the answers)."
+        },
+        "s3": {
+          "title": "Why and on what basis",
+          "body": "To provide the service you signed up for (performance of a contract), to keep it secure and prevent abuse (legitimate interests), to bill the subscription (contract) and to meet legal obligations such as accounting rules for our own invoices."
+        },
+        "s4": {
+          "title": "Data you enter about others",
+          "body": "When you record customers, suppliers or employees, you are responsible for having a lawful basis to do so. A data processing agreement for business customers [to be completed] describes how ALVOXIS Flow processes this data on your instructions."
+        },
+        "s5": {
+          "title": "Service providers",
+          "body": "Hosting and database providers [to be confirmed: e.g. Vercel, Neon], payments by Stripe, email delivery by the configured email provider, and — only when you use the assistant — Anthropic (Claude API), which receives the figures needed for an answer. Where data leaves the EEA, appropriate safeguards such as standard contractual clauses apply [to be confirmed per provider]."
+        },
+        "s6": {
+          "title": "How long we keep data",
+          "body": "Account and business data for as long as the account or company exists; issued documents and the audit log for as long as accounting or legal rules require [periods to be completed]; security logs for a limited time."
+        },
+        "s7": {
+          "title": "Security",
+          "body": "Encrypted connections, password hashing, two-factor authentication (required for owners and administrators), server-side permission checks for every company, append-only audit and stock records, and secrets kept out of the browser."
+        },
+        "s8": {
+          "title": "Your rights",
+          "body": "You may request access, correction, deletion, restriction, data portability (exports are built in) and object to processing. You may complain to your data protection authority: Datu valsts inspekcija (Latvia), Valstybinė duomenų apsaugos inspekcija (Lithuania), Andmekaitse Inspektsioon (Estonia) or Prezes Urzędu Ochrony Danych Osobowych (Poland)."
+        },
+        "s9": {
+          "title": "Contact and changes",
+          "body": "Contact the operator at [contact email to be completed]. Material changes to this policy will be announced in the application before they apply."
+        }
+      },
+      "terms": {
+        "title": "Terms of service",
+        "intro": "These terms apply to the use of ALVOXIS Flow by companies and their members.",
+        "s1": {
+          "title": "The service",
+          "body": "ALVOXIS Flow is a web application for invoices, payments, expenses, products, stock, production, cost calculation, reports and an AI assistant. Features may change as the product develops."
+        },
+        "s2": {
+          "title": "Accounts",
+          "body": "You need a verified email address. Keep your password and second factor safe; you are responsible for activity in your account. Owners decide who joins their company and with which role."
+        },
+        "s3": {
+          "title": "Subscription and payment",
+          "body": "Using a company's business features requires an active subscription under the subscription terms. Payments are processed by Stripe."
+        },
+        "s4": {
+          "title": "Acceptable use",
+          "body": "Do not misuse the service: no unlawful content, no attempts to access other companies' data, no attacks on the service, and no use that breaks tax, accounting or data protection law."
+        },
+        "s5": {
+          "title": "Your data",
+          "body": "Your company's data remains yours. You can export it at any time, and it is not deleted because a subscription ends. ALVOXIS Flow uses it only to provide the service."
+        },
+        "s6": {
+          "title": "Calculations are not advice",
+          "body": "The application calculates from what you record and the tax categories you configure. It does not determine which taxes apply to you and is not a substitute for an accountant, tax adviser or certified accounting system. You are responsible for the correctness and legal compliance of your documents."
+        },
+        "s7": {
+          "title": "AI assistant",
+          "body": "The assistant can make mistakes. It labels figures, estimates and recommendations, but you should check important answers. It cannot change data or act on your behalf."
+        },
+        "s8": {
+          "title": "Availability and liability",
+          "body": "We aim for high availability but cannot guarantee uninterrupted service. Liability provisions [to be completed after legal review]."
+        },
+        "s9": {
+          "title": "Changes and applicable law",
+          "body": "We will announce material changes in advance. Applicable law and place of jurisdiction [to be completed]."
+        }
+      },
+      "subscription": {
+        "title": "Subscription terms",
+        "intro": "ALVOXIS Flow has one subscription per company.",
+        "s1": {
+          "title": "Plan and price",
+          "body": "The ALVOXIS Flow plan costs €9.99 per company per month and includes every module and the AI assistant with fair-use limits. Whether VAT or other taxes are added is shown at checkout."
+        },
+        "s2": {
+          "title": "Start",
+          "body": "There is no free trial. The subscription starts when the first payment succeeds; a checkout that is cancelled or not completed creates no subscription and no charge."
+        },
+        "s3": {
+          "title": "Renewal",
+          "body": "The subscription renews automatically every month until cancelled. The renewal date is shown on the company's subscription page."
+        },
+        "s4": {
+          "title": "Cancellation",
+          "body": "Owners can cancel the renewal at any time on the subscription page or in the Stripe customer portal. The subscription stays active until the end of the paid month and then ends. Refunds: [policy to be completed]; statutory consumer rights, where they apply, are not affected."
+        },
+        "s5": {
+          "title": "Failed payments",
+          "body": "If a payment fails, Stripe retries it and access continues meanwhile. If it cannot be collected, the subscription is put on hold or ends, and the company becomes read-only until a payment succeeds."
+        },
+        "s6": {
+          "title": "Read-only access and your data",
+          "body": "Without an active subscription you can still sign in, view, print and export all company data and manage members and billing. Creating and changing records and the AI assistant are unavailable. No data is deleted because of billing."
+        },
+        "s7": {
+          "title": "Price changes",
+          "body": "Price changes are announced at least 30 days in advance and apply from the next billing period; you can cancel before they apply."
+        }
+      },
+      "cookies": {
+        "title": "Cookies and browser storage",
+        "intro": "ALVOXIS Flow uses only what is necessary for the service to work.",
+        "s1": {
+          "title": "Necessary cookies",
+          "body": "A session cookie keeps you signed in, a known-device cookie helps detect sign-ins from new devices, and a language cookie remembers your language. They are required for the service and cannot be switched off."
+        },
+        "s2": {
+          "title": "Browser storage",
+          "body": "Your choice of light or dark theme is kept in your browser's local storage. It never leaves your device."
+        },
+        "s3": {
+          "title": "No tracking",
+          "body": "There are no analytics, advertising or social-media cookies. Because only necessary cookies are used, there is nothing to consent to; if optional cookies are ever added, you will be asked first and can change your choice at any time."
+        },
+        "s4": {
+          "title": "Payment pages",
+          "body": "Stripe's checkout and customer portal run on Stripe's own domain and set their own cookies under Stripe's privacy policy."
+        }
+      }
     }
   }
 }
