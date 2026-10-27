@@ -26,7 +26,7 @@
 
 /* Light theme: the same tokens with light values (text contrast ≥ 4.5:1 on every surface; chart
    series validated for colour-vision deficiencies on white). Chosen with the theme switch and kept
-   in localStorage; an inline script sets data-theme before the first paint. */
+   in a preference cookie; an inline script sets data-theme before the first paint. */
 :root[data-theme="light"] {
   color-scheme: light;
   --color-bg: #f6f5fb;

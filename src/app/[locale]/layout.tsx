@@ -60,10 +60,11 @@ export default async function LocaleLayout({
   return (
     // data-theme is set by the boot script before React hydrates; the attribute may differ.
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
-      </head>
       <body>
+        {/* First in <body>, not in <head>: it still runs before anything paints, and React does not
+            have to match it against the tags Next.js inserts into <head> (that caused hydration
+            mismatches). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} suppressHydrationWarning />
         <NextIntlClientProvider>
           {/* .root: own stacking context, so Base UI popups (portalled to <body>) stay on top. */}
           <div className="root">

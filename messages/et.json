@@ -2780,8 +2780,8 @@
           "body": "Seansiküpsis hoiab teid sisselogituna, tuntud seadme küpsis aitab märgata sisselogimisi uutest seadmetest ja keeleküpsis jätab meelde teie keele. Need on teenuseks vajalikud ja neid ei saa välja lülitada."
         },
         "s2": {
-          "title": "Brauserimälu",
-          "body": "Teie heleda või tumeda teema valik hoitakse brauseri kohalikus mälus. See ei lahku kunagi teie seadmest."
+          "title": "Teema valik",
+          "body": "Teie valitud hele või tume teema salvestatakse üheks aastaks väikesesse eelistuste küpsisesse. Seda kasutab ainult teie brauser õige teema näitamiseks; teenus seda ei loe ega salvesta."
         },
         "s3": {
           "title": "Jälgimiseta",

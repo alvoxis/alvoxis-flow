@@ -2780,8 +2780,8 @@
           "body": "A session cookie keeps you signed in, a known-device cookie helps detect sign-ins from new devices, and a language cookie remembers your language. They are required for the service and cannot be switched off."
         },
         "s2": {
-          "title": "Browser storage",
-          "body": "Your choice of light or dark theme is kept in your browser's local storage. It never leaves your device."
+          "title": "Theme preference",
+          "body": "Your choice of light or dark theme is kept in a small preference cookie for one year. Only your browser uses it to show the right theme; the service does not read or store it."
         },
         "s3": {
           "title": "No tracking",

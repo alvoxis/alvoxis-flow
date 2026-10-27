@@ -2780,8 +2780,8 @@
           "body": "Sesijos slapukas palaiko prisijungimą, žinomo įrenginio slapukas padeda pastebėti prisijungimus iš naujų įrenginių, o kalbos slapukas įsimena kalbą. Jie būtini paslaugai veikti ir negali būti išjungti."
         },
         "s2": {
-          "title": "Naršyklės saugykla",
-          "body": "Jūsų pasirinkta šviesi ar tamsi tema saugoma naršyklės vietinėje saugykloje ir niekada nepalieka jūsų įrenginio."
+          "title": "Temos pasirinkimas",
+          "body": "Jūsų pasirinkta šviesi ar tamsi tema saugoma mažame nuostatų slapuke vienus metus. Jį naudoja tik jūsų naršyklė, kad parodytų tinkamą temą; paslauga jo neskaito ir nesaugo."
         },
         "s3": {
           "title": "Be sekimo",

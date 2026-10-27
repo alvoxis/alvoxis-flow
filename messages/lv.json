@@ -2780,8 +2780,8 @@
           "body": "Sesijas sīkdatne uztur pieteikšanos, zināmas ierīces sīkdatne palīdz pamanīt pieteikšanos no jaunām ierīcēm, bet valodas sīkdatne atceras valodu. Tās ir nepieciešamas pakalpojuma darbībai un nav atslēdzamas."
         },
         "s2": {
-          "title": "Pārlūka krātuve",
-          "body": "Jūsu izvēle starp gaišo un tumšo tēmu tiek glabāta pārlūka lokālajā krātuvē. Tā nekad nepamet jūsu ierīci."
+          "title": "Motīva izvēle",
+          "body": "Jūsu izvēlētais gaišais vai tumšais motīvs tiek saglabāts nelielā iestatījumu sīkdatnē uz vienu gadu. To izmanto tikai jūsu pārlūks, lai parādītu pareizo motīvu; pakalpojums to nelasa un neglabā."
         },
         "s3": {
           "title": "Bez izsekošanas",

@@ -2,13 +2,15 @@
 
 import { useTranslations } from "next-intl";
 
-export const THEME_STORAGE_KEY = "alvoxis-theme";
+export const THEME_COOKIE = "alvoxis-theme";
 
 /**
- * Runs before the first paint (inline in <head>): applies the stored theme so the page never
- * flashes the wrong colours. Dark is the default; storage errors (private mode) fall back to it.
+ * Runs before the first paint (inline, first in <body>): applies the saved theme so the page never
+ * flashes the wrong colours. Dark is the default. The choice is a first-party preference cookie
+ * (read only by this script, never by the server): a synchronous localStorage read here could
+ * stall the parser long enough for cached page scripts to start hydrating a half-parsed document.
  */
-export const THEME_BOOT_SCRIPT = `try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+export const THEME_BOOT_SCRIPT = `try{var m=document.cookie.match(/(?:^|; )${THEME_COOKIE}=(light|dark)(?:;|$)/);if(m)document.documentElement.dataset.theme=m[1]}catch(e){}`;
 
 /**
  * Light/dark switch. Both icons are rendered and CSS shows the right one, so the server and the
@@ -26,11 +28,9 @@ export function ThemeSwitch({ className = "inline-flex" }: { className?: string 
         const root = document.documentElement;
         const next = root.dataset.theme === "light" ? "dark" : "light";
         root.dataset.theme = next;
-        try {
-          localStorage.setItem(THEME_STORAGE_KEY, next);
-        } catch {
-          // Storage unavailable: the choice lasts for this page only.
-        }
+        document.cookie = `${THEME_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax${
+          location.protocol === "https:" ? "; secure" : ""
+        }`;
       }}
       className={`${className} size-9 shrink-0 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:text-text active:scale-95`}
     >

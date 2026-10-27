@@ -133,7 +133,7 @@ client side). Modules:
   cookie; this is presentation only, every app page still checks the session. `sitemap.ts` and
   `robots.ts` list the public pages; app pages are `noindex`.
 - Themes — dark by default with a light theme (`:root[data-theme="light"]` token overrides in
-  `globals.css`). The choice is stored in `localStorage` and applied by an inline script before
+  `globals.css`). The choice is stored in a first-party preference cookie and applied by an inline script before
   the first paint; animations are CSS only and respect `prefers-reduced-motion`.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM

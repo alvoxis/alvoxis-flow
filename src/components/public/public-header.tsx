@@ -7,7 +7,7 @@ import { Link } from "@/i18n/navigation";
 const LINKS = ["features", "pricing", "faq", "about"] as const;
 
 /**
- * Navigation of the public pages. On phones the links sit in a native <details> disclosure, so the
+ * Navigation of the public pages. Below the lg breakpoint (phones, tablets) the links sit in a native <details> disclosure, so the
  * menu works without JavaScript and is announced as expandable; the call to action stays visible.
  */
 export async function PublicHeader() {
@@ -18,7 +18,7 @@ export async function PublicHeader() {
         <Link href="/welcome" aria-label={t("home")} className="shrink-0">
           <Brand />
         </Link>
-        <nav aria-label={t("label")} className="ml-6 hidden items-center gap-1 md:flex">
+        <nav aria-label={t("label")} className="ml-6 hidden items-center gap-1 lg:flex">
           {LINKS.map((l) => (
             <Link
               key={l}
@@ -48,7 +48,7 @@ export async function PublicHeader() {
           >
             {t("start")}
           </Link>
-          <details className="group relative md:hidden">
+          <details className="group relative lg:hidden">
             <summary
               className="flex size-10 cursor-pointer list-none items-center justify-center rounded-lg border border-border text-text [&::-webkit-details-marker]:hidden"
               aria-label={t("menu")}
