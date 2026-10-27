@@ -176,6 +176,13 @@
       "when": 1793058776101,
       "tag": "0024_finance",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1793060333400,
+      "tag": "0025_costing_and_ai_usage",
+      "breakpoints": true
     }
   ]
 }

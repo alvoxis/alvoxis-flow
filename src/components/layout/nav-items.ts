@@ -5,6 +5,7 @@ export type NavKey =
   | "customers"
   | "suppliers"
   | "products"
+  | "costing"
   | "inventory"
   | "production"
   | "payroll"
@@ -63,6 +64,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     soon: false,
     alsoActiveOn: /^\/companies\/[^/]+\/products(\/|$)/,
     icon: "M21 8 12 3 3 8v8l9 5 9-5V8ZM3 8l9 5 9-5M12 13v8",
+  },
+  {
+    key: "costing",
+    href: "/costing",
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/costing(\/|$)/,
+    icon: "M5 3h14v18H5V3Zm3 3h8v3H8V6Zm0 6h2m3 0h2m-7 3h2m3 0h2m-7 3h2m3 0h2",
   },
   {
     key: "inventory",
