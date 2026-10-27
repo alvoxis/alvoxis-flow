@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "ALVOXIS Flow — business management SaaS for SMBs in Latvia, Lithuania, Estonia and Poland",
+  "description": "ALVOXIS Flow \u2014 business management SaaS for SMBs in Latvia, Lithuania, Estonia and Poland",
   "packageManager": "pnpm@10.28.0",
   "engines": {
     "node": ">=22.12.0"
@@ -28,7 +28,8 @@
     "auth:reset-2fa": "tsx --require ./scripts/support/server-only-shim.cjs scripts/reset-two-factor.ts",
     "auth:reencrypt-2fa": "tsx --require ./scripts/support/server-only-shim.cjs scripts/reencrypt-two-factor.ts",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
-    "docs:samples": "tsx scripts/render-sample-documents.ts"
+    "docs:samples": "tsx scripts/render-sample-documents.ts",
+    "admin:grant": "tsx --require ./scripts/support/server-only-shim.cjs scripts/set-platform-admin.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.3.0",

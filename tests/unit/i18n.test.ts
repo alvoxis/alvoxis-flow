@@ -61,6 +61,8 @@ describe("message catalogs", () => {
         "documentPdf.taxKind.standard",
         // The subscription's name is the product name, the same in every language.
         "billing.planName",
+        // The payment provider's brand name.
+        "admin.stripe",
         // Month names that are spelled the same in some languages (e.g. Estonian).
         ...Array.from({ length: 12 }, (_, i) => `analytics.month.${i + 1}`),
       ]);
