@@ -1,13 +1,16 @@
 export type NavKey =
   | "dashboard"
   | "documents"
+  | "finance"
   | "customers"
   | "suppliers"
   | "products"
+  | "costing"
   | "inventory"
   | "production"
   | "payroll"
   | "analytics"
+  | "assistant"
   | "settings";
 
 export interface NavItem {
@@ -36,6 +39,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: "M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h8M9 17h6",
   },
   {
+    key: "finance",
+    href: "/finance",
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/(finance|reports)(\/|$)/,
+    icon: "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
+  },
+  {
     key: "customers",
     href: "/customers",
     soon: false,
@@ -55,6 +65,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     soon: false,
     alsoActiveOn: /^\/companies\/[^/]+\/products(\/|$)/,
     icon: "M21 8 12 3 3 8v8l9 5 9-5V8ZM3 8l9 5 9-5M12 13v8",
+  },
+  {
+    key: "costing",
+    href: "/costing",
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/costing(\/|$)/,
+    icon: "M5 3h14v18H5V3Zm3 3h8v3H8V6Zm0 6h2m3 0h2m-7 3h2m3 0h2m-7 3h2m3 0h2",
   },
   {
     key: "inventory",
@@ -83,6 +100,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     soon: false,
     alsoActiveOn: /^\/companies\/[^/]+\/analytics(\/|$)/,
     icon: "M4 20V10m6 10V4m6 16v-7m4 7H2",
+  },
+  {
+    key: "assistant",
+    href: "/assistant",
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/assistant(\/|$)/,
+    icon: "M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9L12 3Zm6 11 .9 2.1L21 17l-2.1.9L18 20l-.9-2.1L15 17l2.1-.9L18 14Z",
   },
   {
     key: "settings",

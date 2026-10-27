@@ -8,6 +8,7 @@ import { DocumentStatusBadge } from "@/components/documents/document-status-badg
 import { DocumentView } from "@/components/documents/document-view";
 import { EmailDocumentDialog } from "@/components/documents/email-document-dialog";
 import { PdfLinks } from "@/components/documents/pdf-links";
+import { PaymentsPanel } from "@/components/finance/payments-panel";
 import { DocumentRelationLink, RelatedCreditNotes } from "@/components/documents/related-documents";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Alert } from "@/components/ui/form";
@@ -93,6 +94,14 @@ export default async function DocumentPage({ params, searchParams }: Props) {
             </span>
           </Alert>
           <PdfLinks companyId={companyId} documentId={document.id} draft={false} />
+          {data.payments ? (
+            <PaymentsPanel
+              companyId={companyId}
+              documentId={document.id}
+              initial={data.payments.view}
+              canRecord={data.payments.canRecord}
+            />
+          ) : null}
           {permissions.canEdit ? (
             <EmailDocumentDialog
               companyId={companyId}

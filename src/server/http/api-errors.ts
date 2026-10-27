@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { AiLimitError } from "@/modules/ai/server/errors";
 import { StripeRequestError } from "@/modules/billing/server/stripe-gateway";
 import { DocumentRuleError } from "@/modules/documents/domain/derive";
 import { ImportDecisionError } from "@/modules/documents/import/to-draft";
@@ -17,6 +18,7 @@ import {
 } from "@/modules/documents/server/errors";
 import {
   ForbiddenError,
+  SubscriptionRequiredError,
   TwoFactorChallengeRequiredError,
   TwoFactorRequiredError,
   UnauthenticatedError,
@@ -40,6 +42,7 @@ export function apiError(err: unknown): NextResponse {
   if (err instanceof TwoFactorChallengeRequiredError)
     return json(401, "two_factor_challenge_required");
   if (err instanceof TwoFactorRequiredError) return json(403, "two_factor_enrollment_required");
+  if (err instanceof SubscriptionRequiredError) return json(402, "subscription_required");
   if (err instanceof ForbiddenError) return json(403, "forbidden");
   if (err instanceof DocumentNotFoundError) return json(404, "not_found");
   if (err instanceof RecordNotFoundError) return json(404, "not_found");
@@ -47,6 +50,7 @@ export function apiError(err: unknown): NextResponse {
     console.error(`[billing] ${err.message}`);
     return json(502, "payment_provider_error");
   }
+  if (err instanceof AiLimitError) return json(429, err.code);
   if (err instanceof RecordVersionConflictError) return json(409, "version_conflict");
   if (err instanceof RecordTakenError) return json(409, err.code);
   if (err instanceof RecordStateError) return json(409, "invalid_state", { code: err.code });

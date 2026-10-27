@@ -83,15 +83,58 @@ client side). Modules:
   the token's SHA-256 hash is stored. A signed-in user whose verified email equals the invited
   address accepts it and becomes an active member; inviting an address again replaces the open
   invitation. Audit entries never carry the invited address.
-- Subscriptions (`company_billing`, migration `0021`; `src/modules/billing`) — owners
-  (`billing.manage`) choose Basic, Pro AI or Business on `/companies/[id]/billing`. Checkout and the
-  customer portal are Stripe-hosted pages, so card data never reaches the application. Prices are
-  found by lookup key (`alvoxis_flow_<plan>_monthly`), so changing an amount needs no deployment.
-  Each company gets one free trial of 2 days **without a card**. Without a payment method the trial
-  ends instead of becoming paid (`trial_settings.end_behavior.missing_payment_method=cancel`).
-  Stripe is the source of truth: the cached row is refreshed whenever the billing page loads.
-  There are no webhooks yet, and plans do not restrict features yet. Without `STRIPE_SECRET_KEY` the
-  page says subscriptions are not available; previews accept test keys only.
+- Subscriptions (`company_billing`, `billing_events`, `company_access_grants`; migrations `0021`,
+  `0022`; `src/modules/billing`) — one plan, **ALVOXIS Flow at €9.99 per month, no trial**
+  (`plans.ts`). Owners (`billing.manage`) subscribe on `/companies/[id]/billing` through Stripe
+  Checkout and manage the card in the Stripe customer portal, so card data never reaches the
+  application. The price is found by lookup key `alvoxis_flow_monthly`, and checkout refuses a
+  price that is not exactly 999 EUR cents per month. The webhook (`/api/billing/webhook`) verifies
+  the signature, records each event id once in `billing_events` in the same transaction, and
+  re-reads the subscription from Stripe, so duplicates and out-of-order events change nothing.
+  Access (`access.ts`): `active`/`trialing` and `past_due` (grace while Stripe retries) are paid;
+  anything else is **read-only** when enforcement is on — `requireCompanyAccess` withholds the
+  `PAID_PERMISSIONS` (creating and changing business records and documents, and the assistant; company,
+  member, role and billing management stay) and the API
+  answers `402 subscription_required`. Viewing, exports and billing stay available, so nobody is
+  locked out of their data. Operators can grant time-limited internal access
+  (`company_access_grants`, audited).
+- `finance` — invoice payments (`document_payments`) and expenses (`expenses`), migration `0024`,
+  permissions `finance.view` / `finance.manage` (`0023` grants them to existing roles). A payment
+  belongs to an issued invoice in its currency and may not exceed the open balance (row lock on
+  the document); voiding keeps the row. Balances and ageing buckets come from
+  `domain/receivables.ts`. Expenses carry category, supplier, net + VAT, status, due date and an
+  optional recurrence; CSV export.
+- `dashboard` — `/companies/[id]/dashboard`: revenue, expenses, result, gross profit, cash in/out,
+  receivables, payables and stock value for a period (presets or a custom range) compared with the
+  previous period of the same length, plus monthly charts and recent activity. Every figure is a
+  query over the company's own records; amounts in other currencies are listed separately, never
+  converted.
+- `costing` — the cost calculator (`domain/calculate.ts`, pure decimal arithmetic): cost lines
+  per unit or per batch (purchase, delivery, insurance, customs, packaging, materials, piecework,
+  overhead, other), quantity, sale price or target margin, scenarios; saved calculations
+  (`cost_calculations`, migration `0025`) and CSV.
+- `reports` — `/api/companies/[id]/reports/[report]` (JSON or `?format=csv`): profit and loss,
+  receivables ageing, expenses by category, VAT summary (output VAT of issued documents and input
+  VAT of expenses — a summary, not a declaration), product margins and stock.
+- `ai` — the assistant (`/companies/[id]/assistant`, permission `ai.use`). The server calls the
+  Claude API with a manual tool loop; the tools (`tools.ts`) are **read-only** and run through the
+  same services and permission checks as the user, scoped to the current company, so the model sees
+  nothing the user could not. The prompt tells it to answer only from tool results and say when data
+  is missing. Per-company monthly limits and token accounting in `ai_usage`; the content of
+  questions and answers is not stored or logged.
+- `admin` — the operator area `/[locale]/admin` (not linked, `noindex`, 404 for everyone else):
+  users, companies, subscription counts, payment failures, AI usage and estimated cost, health and
+  configuration flags, recent billing/admin events, and internal access grants. Requires a
+  `platform_admins` row (granted only with `pnpm admin:grant`), 2FA on the account and a
+  2FA-verified session. Every view and action is audited.
+- Public website (`src/app/[locale]/(public)`) — landing, features, pricing, FAQ, about, contact
+  and legal drafts (privacy, terms, subscription terms, cookies; each marked as a draft needing legal
+  review). `src/proxy.ts` shows the landing page at `/{locale}` to visitors without a session
+  cookie; this is presentation only, every app page still checks the session. `sitemap.ts` and
+  `robots.ts` list the public pages; app pages are `noindex`.
+- Themes — dark by default with a light theme (`:root[data-theme="light"]` token overrides in
+  `globals.css`). The choice is stored in a first-party preference cookie and applied by an inline script before
+  the first paint; animations are CSS only and respect `prefers-reduced-motion`.
 
 The package is an ES module (`"type": "module"`); some dependencies (React-PDF) only expose ESM
 entry points.

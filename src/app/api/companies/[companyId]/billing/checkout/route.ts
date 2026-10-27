@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 type Params = { params: Promise<{ companyId: string }> };
 
 /**
- * Starts a Stripe Checkout (billing.manage): `{ plan: basic|pro|business, locale? }` → `{ url }`.
+ * Starts a Stripe Checkout for the one plan (billing.manage): `{ locale? }` → `{ url }`.
  * Not configured, an existing subscription or a missing price → 409 invalid_state with a code.
  */
 export async function POST(request: Request, { params }: Params) {

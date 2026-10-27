@@ -1,8 +1,23 @@
 import { and, eq, isNull } from "drizzle-orm";
+import {
+  phaseOf,
+  type SubscriptionAccess,
+  subscriptionAccess,
+  subscriptionEnforced,
+  type SubscriptionPhase,
+} from "@/modules/billing/access";
 import { type DbOrTx } from "@/server/db/client";
-import { companies, memberships, rolePermissions, roles, users } from "@/server/db/schema";
-import { ForbiddenError, TwoFactorRequiredError } from "@/server/errors";
-import { isPermission, type Permission } from "./permissions";
+import {
+  companies,
+  companyAccessGrants,
+  companyBilling,
+  memberships,
+  rolePermissions,
+  roles,
+  users,
+} from "@/server/db/schema";
+import { ForbiddenError, SubscriptionRequiredError, TwoFactorRequiredError } from "@/server/errors";
+import { isPermission, PAID_PERMISSIONS, type Permission } from "./permissions";
 
 /**
  * The authenticated principal, as established by the session layer (later stage).
@@ -19,7 +34,13 @@ export interface CompanyContext {
   readonly userId: string;
   readonly membershipId: string;
   readonly roleKey: string;
+  /** Effective permissions: paid ones are withheld while the company is read-only. */
   readonly permissions: ReadonlySet<Permission>;
+  readonly subscription: {
+    readonly access: SubscriptionAccess;
+    readonly phase: SubscriptionPhase;
+    readonly enforced: boolean;
+  };
 }
 
 /**
@@ -34,6 +55,8 @@ async function loadMembership(db: DbOrTx, userId: string, companyId: string) {
       roleId: roles.id,
       roleKey: roles.key,
       requiresTwoFactor: roles.requiresTwoFactor,
+      billingStatus: companyBilling.status,
+      grantExpiresAt: companyAccessGrants.expiresAt,
     })
     .from(memberships)
     .innerJoin(
@@ -42,6 +65,8 @@ async function loadMembership(db: DbOrTx, userId: string, companyId: string) {
     )
     .innerJoin(companies, eq(companies.id, memberships.companyId))
     .innerJoin(users, eq(users.id, memberships.userId))
+    .leftJoin(companyBilling, eq(companyBilling.companyId, memberships.companyId))
+    .leftJoin(companyAccessGrants, eq(companyAccessGrants.companyId, memberships.companyId))
     .where(
       and(
         eq(memberships.userId, userId),
@@ -82,12 +107,26 @@ export async function requireCompanyAccess(
   const missing = needed.filter((p) => !granted.has(p));
   if (missing.length > 0) throw new ForbiddenError(`Missing permission: ${missing.join(", ")}`);
 
+  // Subscription state is read on every request (no cache), so a payment or a cancellation applies
+  // at once. Read-only companies keep every permission except the paid ones.
+  const enforced = subscriptionEnforced();
+  const access = subscriptionAccess({
+    enforced,
+    status: membership.billingStatus,
+    grantExpiresAt: membership.grantExpiresAt,
+  });
+  if (access === "read_only") {
+    if (needed.some((p) => PAID_PERMISSIONS.has(p))) throw new SubscriptionRequiredError();
+    for (const p of PAID_PERMISSIONS) granted.delete(p);
+  }
+
   return {
     companyId,
     userId: actor.userId,
     membershipId: membership.membershipId,
     roleKey: membership.roleKey,
     permissions: granted,
+    subscription: { access, phase: phaseOf(membership.billingStatus), enforced },
   };
 }
 

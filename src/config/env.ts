@@ -98,6 +98,32 @@ const baseSchema = z.object({
   ),
 
   /**
+   * Signing secret of the Stripe webhook endpoint (/api/billing/webhook), "whsec_…". Unset: the
+   * endpoint answers 503 and the subscription is refreshed only when the billing page loads.
+   */
+  STRIPE_WEBHOOK_SECRET: optionalNonEmpty.refine(
+    (v) => v === undefined || /^whsec_[A-Za-z0-9+/=_-]+$/.test(v),
+    "STRIPE_WEBHOOK_SECRET must be a Stripe webhook signing secret (whsec_)",
+  ),
+  /**
+   * on | off: whether companies without an active subscription are read-only. Unset: on exactly
+   * when STRIPE_SECRET_KEY is set. "off" is for explicitly authorised internal testing only.
+   */
+  SUBSCRIPTION_ENFORCEMENT: optionalNonEmpty.refine(
+    (v) => v === undefined || v === "on" || v === "off",
+    'SUBSCRIPTION_ENFORCEMENT must be "on" or "off"',
+  ),
+  /**
+   * Anthropic API key for the AI assistant (server-only). Unset: the assistant shows that it is
+   * not configured and everything else keeps working.
+   */
+  ANTHROPIC_API_KEY: optionalNonEmpty,
+  /** Model id for the assistant; defaults to the one in modules/ai/config.ts. */
+  ANTHROPIC_MODEL: optionalNonEmpty,
+  /** Monthly assistant budget per company, in requests (default 300). Protects operating costs. */
+  AI_MONTHLY_REQUESTS_PER_COMPANY: z.coerce.number().int().positive().max(100_000).default(300),
+
+  /**
    * Header that carries the client IP when running behind a trusted reverse proxy. Used for
    * rate limiting and the session device list. Leave unset when not behind a proxy.
    */

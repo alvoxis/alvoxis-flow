@@ -8,7 +8,6 @@ import { Alert } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
 import { requirePageUser } from "@/server/auth/page-session";
 import { billingPageData } from "@/server/billing/page-data";
-import { PLAN_PRICES, PLANS, TRIAL_DAYS } from "@/modules/billing/plans";
 
 type Params = { params: Promise<{ locale: Locale; companyId: string }> };
 type Props = Params & { searchParams: Promise<{ checkout?: string }> };
@@ -18,7 +17,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return { title: t("title") };
 }
 
-/** Subscription of the company (owners): plans, trial, Stripe Checkout and customer portal. */
+/** Subscription of the company (owners): the one plan, Stripe Checkout, portal and history. */
 export default async function BillingPage({ params, searchParams }: Props) {
   const { locale, companyId } = await params;
   const { checkout } = await searchParams;
@@ -48,8 +47,7 @@ export default async function BillingPage({ params, searchParams }: Props) {
         <BillingPanel
           companyId={companyId}
           billing={data.billing}
-          plans={PLANS.map((plan) => ({ plan, price: PLAN_PRICES[plan] }))}
-          trialDays={TRIAL_DAYS}
+          invoices={data.invoices}
           checkout={checkout === "success" || checkout === "cancelled" ? checkout : null}
         />
       )}

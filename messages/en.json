@@ -17,14 +17,18 @@
     "settings": "Settings",
     "soon": "Soon",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "finance": "Finance",
+    "costing": "Cost calculator",
+    "assistant": "AI assistant"
   },
   "topbar": {
     "noCompany": "No company yet",
     "language": "Language",
     "account": "Account",
     "notSignedIn": "Not signed in",
-    "currentCompany": "Current company"
+    "currentCompany": "Current company",
+    "theme": "Switch between light and dark theme"
   },
   "environment": {
     "label": "Test environment",
@@ -43,7 +47,7 @@
       "currencyNote": "Totals are shown per document currency and are never added across currencies.",
       "loadError": "The document figures could not be loaded right now. Your documents are not affected; try again later.",
       "createFirst": "Create the first document",
-      "paymentsNotTracked": "Payments are not tracked yet, so nothing here shows what is paid, outstanding or overdue."
+      "paymentsNotTracked": "Paid, open and overdue amounts are on each company's business overview."
     }
   },
   "documentType": {
@@ -1140,7 +1144,8 @@
       "twoFactor": "Your role requires two-factor authentication for this action.",
       "forbidden": "You do not have permission for this action, or the company is no longer active.",
       "notFound": "This record no longer exists.",
-      "error": "Something went wrong. Please try again."
+      "error": "Something went wrong. Please try again.",
+      "subscription": "This needs an active subscription. The company is read-only until the subscription is active again."
     },
     "reload": "Reload"
   },
@@ -1641,57 +1646,1151 @@
   },
   "billing": {
     "title": "Subscription",
-    "description": "Your company's plan and payments. Payment is handled by Stripe.",
+    "description": "Your company's subscription and payments. Payment is handled by Stripe.",
     "back": "Back to settings",
     "notConfigured": "Subscriptions are not available on this site yet.",
     "checkout": {
-      "success": "Thank you! Your subscription is being set up; its status appears here in a moment.",
+      "success": "Thank you! Stripe is confirming the payment; the status below updates as soon as Stripe reports it.",
       "cancelled": "Checkout was cancelled. Nothing was charged."
     },
-    "current": "Current plan",
-    "none": "No subscription yet.",
-    "manage": "Manage subscription",
-    "history": "Invoices and payment methods",
-    "choose": "Choose a plan",
-    "trialInfo": "The first {days} days are free and no card is needed. Afterwards the subscription ends unless you add a payment method.",
+    "current": "Current subscription",
+    "planName": "ALVOXIS Flow",
+    "planText": "One plan with every module, for one company.",
     "perMonth": "/ month",
-    "startTrial": "Try {days} days free",
-    "subscribe": "Subscribe",
-    "pricesNote": "Prices per company per month in EUR. Card details are entered on Stripe's page and never reach ALVOXIS Flow. You can cancel at any time.",
-    "trialEnds": "Free trial until {date}.",
+    "subscribeTitle": "Subscribe",
+    "subscribe": "Subscribe for €{price} / month",
+    "manage": "Payment method and invoices",
+    "history": "Billing history",
+    "historyEmpty": "No invoices yet.",
+    "historyUnavailable": "The billing history could not be loaded right now.",
+    "viewInvoice": "View invoice",
+    "pricesNote": "Price per company per month in EUR; taxes, if any apply, are shown at checkout. Card details are entered on Stripe's page and never reach ALVOXIS Flow. Cancel at any time; the subscription then ends with the paid period.",
     "renewsOn": "Renews on {date}.",
-    "endsOn": "Ends on {date}.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "text": "Documents, customers and products for a small business."
+    "endsOn": "Renewal cancelled — access ends on {date}.",
+    "readOnly": "The company is read-only: you can view and export everything, but not create or change records or use the AI assistant. Your data is kept.",
+    "grantUntil": "Internal access granted by the operator until {date}.",
+    "renewal": {
+      "cancel": "Cancel renewal",
+      "resume": "Resume renewal",
+      "saved": "Saved. Stripe's current status is shown below.",
+      "confirmTitle": "Cancel the renewal?",
+      "confirmText": "The subscription stays active until {date} and then ends. Nothing is deleted; the company becomes read-only and you can subscribe again at any time.",
+      "keep": "Keep subscription",
+      "confirm": "Cancel renewal"
+    },
+    "phase": {
+      "active": {
+        "label": "Active",
+        "text": "Everything is available."
       },
-      "pro": {
-        "name": "Pro AI",
-        "text": "Everything in Basic, plus the AI assistant when it is released."
+      "past_due": {
+        "label": "Payment overdue",
+        "text": "The last payment failed. Stripe retries it; update the payment method to keep access."
       },
-      "business": {
-        "name": "Business",
-        "text": "All modules: inventory, production, payroll and analytics."
+      "awaiting_payment": {
+        "label": "Awaiting payment",
+        "text": "The first payment is not confirmed yet. The company is read-only until Stripe confirms it."
+      },
+      "payment_required": {
+        "label": "Payment required",
+        "text": "Payments failed and the subscription is on hold. Update the payment method to restore access."
+      },
+      "ended": {
+        "label": "Ended",
+        "text": "The subscription has ended. Your data is kept; subscribe again to continue working."
+      },
+      "none": {
+        "label": "No subscription",
+        "text": "The company has no subscription yet."
       }
     },
-    "status": {
-      "trialing": "Free trial",
-      "active": "Active",
-      "past_due": "Payment overdue",
-      "unpaid": "Unpaid",
-      "incomplete": "Awaiting payment",
-      "paused": "Paused",
-      "canceled": "Cancelled",
-      "incomplete_expired": "Expired"
+    "invoiceStatus": {
+      "paid": "Paid",
+      "open": "Open",
+      "void": "Void",
+      "uncollectible": "Uncollectible"
+    },
+    "banner": {
+      "readOnly": "Read-only: this company has no active subscription. Viewing and exports still work.",
+      "pastDue": "The last subscription payment failed. Update the payment method to keep access.",
+      "open": "Subscription"
     },
     "state": {
       "billing": {
         "failed": "The payment provider did not respond. Try again in a moment.",
         "notConfigured": "Subscriptions are not available on this site yet.",
-        "alreadySubscribed": "The company already has a subscription; change it under “Manage subscription”.",
-        "priceMissing": "This plan is not available right now.",
-        "noCustomer": "There is no subscription to manage yet."
+        "alreadySubscribed": "The company already has a subscription; manage it with “Payment method and invoices”.",
+        "priceMissing": "The subscription cannot be offered right now (the price is not set up).",
+        "priceMismatch": "The subscription cannot be offered right now (the price is set up incorrectly). Nothing was charged.",
+        "noCustomer": "There is no subscription to manage yet.",
+        "noSubscription": "There is no active subscription to change."
+      }
+    }
+  },
+  "pricing": {
+    "features": {
+      "dashboard": "Business dashboard and reports",
+      "documents": "Invoices, credit notes and PDFs",
+      "finance": "Payments, receivables and expenses",
+      "catalog": "Customers, suppliers, products and stock",
+      "costing": "Cost calculator, production and payroll aid",
+      "ai": "AI business assistant (fair-use limits)",
+      "team": "Team members with roles",
+      "languages": "English, Russian, Latvian, Lithuanian, Estonian"
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "status": {
+      "unpaid": "Unpaid",
+      "partially_paid": "Partially paid",
+      "paid": "Paid",
+      "credited": "Credited"
+    },
+    "overdueDays": "{days, plural, one {# day overdue} other {# days overdue}}",
+    "summary": {
+      "gross": "Invoice total",
+      "credited": "Credit notes",
+      "paid": "Paid",
+      "balance": "Open balance"
+    },
+    "dueOn": "Due on {date}.",
+    "none": "No payments recorded yet.",
+    "record": "Record payment",
+    "recorded": "Payment recorded.",
+    "voided": "Payment voided. It stays in the history and no longer counts.",
+    "void": "Void",
+    "voidedBadge": "Voided",
+    "voidTitle": "Void this payment?",
+    "voidText": "The payment of {amount} stays in the history but no longer counts towards the invoice.",
+    "keep": "Keep",
+    "referenceTaken": "A payment with this reference is already recorded on this invoice.",
+    "manualNote": "Payments are recorded by hand; nothing is read from the bank automatically. The invoice itself never changes.",
+    "method": {
+      "bank_transfer": "Bank transfer",
+      "card": "Card",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "fields": {
+      "amount": "Amount ({currency})",
+      "paidOn": "Paid on",
+      "method": "Method",
+      "reference": "Reference (e.g. bank transfer ID)",
+      "note": "Note"
+    },
+    "issue": {
+      "invalid": "Check this value.",
+      "payment": {
+        "amount": {
+          "invalid": "Enter an amount greater than zero, with up to 2 decimals.",
+          "exceedsBalance": "The amount is larger than the open balance."
+        },
+        "paidOn": {
+          "invalid": "Enter a valid date.",
+          "future": "The date cannot be in the future."
+        }
+      }
+    },
+    "state": {
+      "failed": "The payment could not be saved. Reload and try again.",
+      "payments": {
+        "notIssuedInvoice": "Payments can be recorded on issued invoices only.",
+        "alreadyVoided": "This payment is already voided."
+      }
+    }
+  },
+  "finance": {
+    "title": "Finance",
+    "description": "Expenses of the company, entered by hand. Payments received are recorded on each invoice.",
+    "toReports": "Reports",
+    "readOnly": "You can view and export expenses; your role cannot change them.",
+    "search": "Search",
+    "searchPlaceholder": "Description, supplier or reference",
+    "all": "All",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
+    "reset": "Reset",
+    "export": "Export CSV",
+    "add": "Add expense",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete this expense?",
+    "deleteText": "“{description}” will be deleted permanently. This cannot be undone.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "count": "{count, plural, one {# expense} other {# expenses}}",
+    "empty": "No expenses yet. Add the first one to see costs and profit on the dashboard.",
+    "noMatches": "No expenses match these filters.",
+    "costShort": "cost {amount}",
+    "dueOn": "due {date}",
+    "taxNotRecoverable": "Tax not recoverable",
+    "recordNext": "Record next",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {pages}",
+    "supplierNone": "No supplier record",
+    "taxHint": "VAT or similar tax as on the supplier's invoice.",
+    "paidOnHint": "Empty: the expense date.",
+    "status": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue"
+    },
+    "recurrence": {
+      "none": "One-off",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "source": {
+      "manual": "Entered by hand",
+      "imported": "Imported"
+    },
+    "sort": {
+      "label": "Sort",
+      "date_desc": "Newest first",
+      "date_asc": "Oldest first",
+      "amount_desc": "Largest first",
+      "amount_asc": "Smallest first"
+    },
+    "category": {
+      "materials": "Materials",
+      "goods_for_resale": "Goods for resale",
+      "rent": "Rent",
+      "utilities": "Utilities",
+      "salaries": "Salaries",
+      "taxes_fees": "Taxes and fees",
+      "transport": "Transport",
+      "marketing": "Marketing",
+      "software": "Software",
+      "professional_services": "Professional services",
+      "equipment": "Equipment",
+      "travel": "Travel",
+      "bank_fees": "Bank fees",
+      "other": "Other"
+    },
+    "method": {
+      "bank_transfer": "Bank transfer",
+      "card": "Card",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "fields": {
+      "category": "Category",
+      "status": "Status",
+      "description": "Description",
+      "date": "Date",
+      "supplier": "Supplier",
+      "supplierName": "Supplier (text)",
+      "currency": "Currency",
+      "net": "Net amount",
+      "tax": "Tax amount",
+      "taxRecoverable": "Tax is recoverable (deductible input VAT)",
+      "paidOn": "Paid on",
+      "dueDate": "Due date",
+      "method": "Payment method",
+      "reference": "Reference",
+      "recurrence": "Repeats",
+      "notes": "Notes"
+    },
+    "done": {
+      "created": "Expense added.",
+      "updated": "Expense saved.",
+      "deleted": "Expense deleted."
+    },
+    "issue": {
+      "invalid": "Check this value.",
+      "expense": {
+        "amount": {
+          "invalid": "Enter an amount of zero or more, with up to 2 decimals."
+        },
+        "date": {
+          "invalid": "Enter a valid date."
+        },
+        "description": {
+          "required": "Enter a description."
+        },
+        "dueDate": {
+          "invalid": "Enter a valid date."
+        },
+        "paidOn": {
+          "invalid": "Enter a valid date."
+        },
+        "supplier": {
+          "unknown": "Choose one of the company's suppliers."
+        }
+      }
+    }
+  },
+  "business": {
+    "title": "Business overview",
+    "open": "Business overview",
+    "period": "Period {from} – {to}",
+    "rangeLabel": "Period",
+    "range": {
+      "this_month": "This month",
+      "last_month": "Last month",
+      "this_quarter": "This quarter",
+      "this_year": "This year",
+      "from": "From",
+      "to": "To",
+      "apply": "Show"
+    },
+    "empty": {
+      "title": "Nothing recorded in this period yet",
+      "text": "Issue invoices, record payments and add expenses — the figures and charts here are calculated from them. Nothing is estimated.",
+      "noFinance": "Your role does not include financial figures. The shortcuts above lead to the parts you work with."
+    },
+    "figuresIn": "Figures in {currency}",
+    "chartsIn": "Charts in {currency}",
+    "kpi": {
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "result": "Result",
+      "grossProfit": "Gross profit",
+      "cashIn": "Cash in",
+      "netCash": "Net cash flow"
+    },
+    "margin": "margin {percent} %",
+    "noComparison": "No figure in the previous period",
+    "vsPrevious": "vs previous period",
+    "openItems": "Open items today",
+    "receivables": "Receivables",
+    "invoicesOpen": "{count, plural, one {# open invoice} other {# open invoices}}",
+    "overdue": "{count, plural, one {# overdue} other {# overdue}}: {amount}",
+    "noOverdue": "Nothing overdue",
+    "payables": "Payables",
+    "expensesUnpaid": "{count, plural, one {# unpaid expense} other {# unpaid expenses}}",
+    "payablesOverdue": "{count, plural, one {# overdue} other {# overdue}}: {amount}",
+    "invoiceStatus": {
+      "title": "Invoices issued in the period",
+      "paid": "Paid",
+      "partiallyPaid": "Partially paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue"
+    },
+    "toInvoices": "All invoices",
+    "stockValue": "Stock value",
+    "stockValueNote": "Quantity on hand × purchase price",
+    "noExpenses": "No expenses in this period.",
+    "chart": {
+      "revenueVsExpenses": "Revenue and expenses ({currency})",
+      "cash": "Cumulative net cash flow ({currency})",
+      "cashSeries": "Net cash flow",
+      "categories": "Expenses by category ({currency})",
+      "table": "Show as table",
+      "day": "Day",
+      "month": "Month"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "none": "No activity yet.",
+      "other": "Other change",
+      "actions": {
+        "company": {
+          "created": "Company created",
+          "profile_updated": "Company profile updated"
+        },
+        "counterparty": {
+          "created": "Customer or supplier added",
+          "updated": "Customer or supplier changed",
+          "archived": "Customer or supplier archived"
+        },
+        "document": {
+          "draft_created": "Draft document created",
+          "draft_updated": "Draft saved",
+          "draft_deleted": "Draft deleted",
+          "issued": "Document issued",
+          "emailed": "Document sent by email",
+          "credit_note_draft_created": "Credit note started"
+        },
+        "payment": {
+          "recorded": "Payment recorded",
+          "voided": "Payment voided"
+        },
+        "expense": {
+          "created": "Expense added",
+          "updated": "Expense changed",
+          "deleted": "Expense deleted"
+        },
+        "product": {
+          "created": "Product added",
+          "updated": "Product changed",
+          "archived": "Product archived",
+          "restored": "Product restored"
+        },
+        "member": {
+          "invited": "Member invited",
+          "updated": "Membership changed"
+        },
+        "billing": {
+          "checkoutStarted": "Subscription checkout started",
+          "statusChanged": "Subscription status changed",
+          "paymentFailed": "Subscription payment failed",
+          "renewalCancelled": "Subscription renewal cancelled",
+          "renewalResumed": "Subscription renewal resumed"
+        },
+        "costing": {
+          "saved": "Cost calculation saved",
+          "deleted": "Cost calculation deleted"
+        },
+        "production": {
+          "order_created": "Production order created"
+        },
+        "payroll": {
+          "run_created": "Payroll run created"
+        }
+      }
+    },
+    "definitions": {
+      "title": "How these figures are calculated",
+      "revenue": {
+        "term": "Revenue",
+        "text": "Net amounts (without tax) of issued invoices dated in the period, minus issued credit notes."
+      },
+      "expenses": {
+        "term": "Expenses",
+        "text": "Recorded expenses dated in the period at cost: the net amount, plus tax only where it is not recoverable."
+      },
+      "grossProfit": {
+        "term": "Gross profit",
+        "text": "Revenue minus expenses in the categories “Materials” and “Goods for resale”."
+      },
+      "result": {
+        "term": "Result and margin",
+        "text": "Revenue minus all recorded expenses, before income tax; margin = result ÷ revenue. Not an accounting net profit."
+      },
+      "cash": {
+        "term": "Cash in and net cash flow",
+        "text": "Payments recorded on invoices and paid expenses (with tax), by payment date. Bank balances are not read."
+      },
+      "receivables": {
+        "term": "Receivables",
+        "text": "Open balances of all issued invoices today; overdue = past the due date."
+      },
+      "payables": {
+        "term": "Payables",
+        "text": "Unpaid recorded expenses (with tax); overdue = past their due date."
+      },
+      "previous": {
+        "term": "Previous period",
+        "text": "The same number of days immediately before the chosen period."
+      },
+      "note": "Figures are calculated from what is recorded in ALVOXIS Flow. They support decisions but are not bookkeeping or tax advice."
+    },
+    "actions": {
+      "title": "Quick actions",
+      "invoice": "Create invoice",
+      "product": "Add product",
+      "costing": "Calculate cost",
+      "expense": "Add expense",
+      "customer": "Add customer",
+      "ai": "Ask the AI assistant",
+      "overdue": "Overdue invoices",
+      "report": "Reports"
+    }
+  },
+  "costing": {
+    "title": "Cost calculator",
+    "description": "Full cost of a batch: purchase, delivery, insurance, duties, packaging, materials, labour, piecework and overhead.",
+    "taxNote": "Enter amounts without recoverable VAT. Duty and tax rates are never filled in for you: type the rate that applies to your goods, country and date, and mark it verified once checked against an official source (e.g. TARIC).",
+    "readOnly": "You can use the calculator; your role cannot save calculations.",
+    "editing": "Editing a saved calculation",
+    "newCalculation": "New calculation",
+    "noProduct": "Not linked to a product",
+    "quantityHint": "Units in this batch",
+    "salePriceHint": "Net price per unit you plan to sell at",
+    "piecesPlaceholder": "Pieces (empty: batch quantity)",
+    "verified": "Rate verified",
+    "perUnitShort": "{amount} per unit",
+    "needsVerification": "Needs verification",
+    "removeLine": "Remove line",
+    "scenarios": "Scenarios",
+    "addScenario": "Add scenario",
+    "removeScenario": "Remove scenario",
+    "result": "Result",
+    "invalid": "Check the values: quantity above zero, amounts as numbers with up to 6 decimals.",
+    "totalCost": "Total batch cost",
+    "unitCost": "Cost per unit",
+    "breakdown": "Cost breakdown",
+    "profitPerUnit": "Profit per unit",
+    "margin": "Gross margin",
+    "markup": "Markup",
+    "expectedProfit": "Expected profit",
+    "noPrice": "Enter a sale price to see margin, markup and profit.",
+    "priceForMargin": "Price for a {percent} % margin: {price}",
+    "warning": {
+      "unverified_rate": "A percentage rate is not marked verified — check it against an official source before relying on the result.",
+      "percent_without_customs_value": "A percentage line has no purchase, delivery or insurance amount to apply to."
+    },
+    "save": "Save calculation",
+    "saveChanges": "Save changes",
+    "new": "New calculation",
+    "nameNeeded": "Give the calculation a name to save it.",
+    "saved": "Calculation saved. The figures were recalculated on the server.",
+    "deleted": "Calculation deleted.",
+    "savedTitle": "Saved calculations",
+    "savedEmpty": "No saved calculations yet.",
+    "savedFigures": "{quantity} units · {unit} per unit",
+    "open": "Open",
+    "exportCsv": "Export CSV",
+    "delete": "Delete",
+    "deleteTitle": "Delete this calculation?",
+    "deleteText": "“{name}” will be deleted permanently.",
+    "cancel": "Cancel",
+    "fields": {
+      "name": "Name",
+      "product": "Product",
+      "quantity": "Quantity",
+      "currency": "Currency",
+      "category": "Cost type",
+      "basis": "Calculated as",
+      "percent": "Rate in percent",
+      "rate": "Rate per piece",
+      "amount": "Amount",
+      "label": "Description (optional)",
+      "pieces": "Pieces",
+      "salePrice": "Sale price per unit ({currency})",
+      "targetMargin": "Target margin %",
+      "scenarioLabel": "Scenario",
+      "price": "Price"
+    },
+    "basis": {
+      "total": "Total for the batch",
+      "per_unit": "Per unit",
+      "piecework": "Pieces × rate",
+      "percent": "% of customs value"
+    },
+    "category": {
+      "purchase": "Purchase price",
+      "delivery": "Delivery",
+      "insurance": "Insurance",
+      "customs_duty": "Customs duty",
+      "non_recoverable_tax": "Non-recoverable taxes and fees",
+      "packaging": "Packaging",
+      "materials": "Materials",
+      "labor": "Direct labour",
+      "piecework": "Piecework pay",
+      "overhead": "Overhead",
+      "other": "Other cost"
+    }
+  },
+  "assistant": {
+    "title": "AI business assistant",
+    "description": "Ask about your company's figures. Answers are based only on what is recorded in ALVOXIS Flow.",
+    "notConfigured": "The AI assistant is not configured on this site yet. Everything else works as usual.",
+    "readOnly": "The assistant needs an active subscription.",
+    "toBilling": "Open subscription",
+    "noPermission": "Your role does not include the AI assistant. Ask an owner or administrator if you need it.",
+    "privacy": "To answer, the relevant figures of this company (no passwords or bank credentials) are sent to Anthropic's Claude API, which processes them for ALVOXIS Flow. Questions and answers are not stored by ALVOXIS Flow. The assistant cannot change records, send documents or make payments. It is not tax or legal advice.",
+    "suggestionsTitle": "For example:",
+    "suggestions": {
+      "profitLastMonth": "What was my result last month?",
+      "expensesIncreased": "Which expenses increased the most?",
+      "highestMargin": "Which products have the highest margin?",
+      "overdue": "Which invoices are overdue?",
+      "inflows30": "How much money is expected to come in over the next 30 days?",
+      "reduceCosts": "What costs could be reduced?",
+      "underpriced": "Which products may be underpriced?",
+      "risks": "What financial risks should I review?",
+      "profitChange": "Why did my result change compared with the previous month?"
+    },
+    "refused": "The assistant declined to answer this question. Try asking about your figures in a different way.",
+    "empty": "No answer was returned.",
+    "incomplete": "Answer may be incomplete",
+    "basedOn": "Based on:",
+    "noData": "No company data was used for this answer.",
+    "tools": {
+      "get_period_summary": "period figures",
+      "list_open_invoices": "open invoices",
+      "expected_inflows": "invoice due dates",
+      "expense_breakdown": "expenses by category",
+      "product_price_margins": "catalogue prices",
+      "saved_cost_calculations": "saved cost calculations"
+    },
+    "working": "Looking at your figures…",
+    "questionLabel": "Your question",
+    "placeholder": "Ask about revenue, expenses, invoices, products or costs…",
+    "remaining": "{count, plural, one {# question left this month} other {# questions left this month}}",
+    "ask": "Ask",
+    "error": {
+      "rate": "Too many questions in a short time. Wait a minute and try again.",
+      "budget": "This company's assistant questions for this month are used up.",
+      "subscription": "The assistant needs an active subscription.",
+      "timeout": "The answer took too long. Try a narrower question.",
+      "invalid": "Write a question of up to 2,000 characters.",
+      "failed": "The assistant is not available right now. Try again later."
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "period": "Period {from} – {to}",
+    "none": "Your role does not include any reports.",
+    "choose": "Report",
+    "to": "To",
+    "apply": "Show",
+    "csv": "Export CSV",
+    "empty": "Nothing recorded for this report and period.",
+    "name": {
+      "pnl": "Profit and loss",
+      "receivables": "Receivables",
+      "expenses": "Expenses by category",
+      "vat": "VAT summary",
+      "margins": "Product margins",
+      "stock": "Inventory"
+    },
+    "range": {
+      "this_month": "This month",
+      "last_month": "Last month",
+      "this_quarter": "This quarter",
+      "this_year": "This year"
+    },
+    "note": {
+      "pnl": "Revenue (net of issued invoices and credit notes) and expenses at cost per month or day, with cash in and out. Result is before income tax.",
+      "receivables": "Open balances of issued invoices today, oldest overdue first, with ageing. Payments are those recorded in ALVOXIS Flow.",
+      "expenses": "Expenses at cost per category, compared with the previous period of the same length.",
+      "vat": "Output tax from issued invoices and credit notes and recoverable input tax from recorded expenses. A summary to help prepare a return — not a declaration; check it against your country's rules or with your accountant.",
+      "margins": "Catalogue sale and purchase prices of active products. List prices, not realised results.",
+      "stock": "Quantity on hand per product and warehouse, valued at the purchase price."
+    },
+    "col": {
+      "period": "Period",
+      "currency": "Currency",
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "result": "Result",
+      "cashIn": "Cash in",
+      "cashOut": "Cash out",
+      "number": "Number",
+      "customer": "Customer",
+      "issueDate": "Issued",
+      "dueDate": "Due",
+      "gross": "Total",
+      "paid": "Paid",
+      "balance": "Open",
+      "daysOverdue": "Days overdue",
+      "ageing": "Ageing",
+      "category": "Category",
+      "count": "Entries",
+      "cost": "Cost",
+      "previousCost": "Previous period",
+      "change": "Change",
+      "changePercent": "Change %",
+      "direction": "Direction",
+      "code": "Code",
+      "treatment": "Treatment",
+      "ratePercent": "Rate %",
+      "taxable": "Taxable amount",
+      "tax": "Tax",
+      "product": "Product",
+      "sku": "SKU",
+      "salePrice": "Sale price",
+      "purchasePrice": "Purchase price",
+      "profitPerUnit": "Profit per unit",
+      "marginPercent": "Margin %",
+      "markupPercent": "Markup %",
+      "warehouse": "Warehouse",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "value": "Value"
+    },
+    "ageing": {
+      "current": "Not yet due",
+      "1_30": "1–30 days",
+      "31_60": "31–60 days",
+      "61_90": "61–90 days",
+      "over_90": "Over 90 days"
+    },
+    "row": {
+      "total": "Total",
+      "balance": "Output − input"
+    },
+    "direction": {
+      "output": "Output tax",
+      "input": "Input tax"
+    },
+    "treatment": {
+      "standard": "Standard",
+      "zero_rated": "Zero-rated",
+      "exempt": "Exempt",
+      "reverse_charge": "Reverse charge",
+      "outside_scope": "Outside scope",
+      "recorded_expenses": "Recorded expenses"
+    },
+    "from": "From"
+  },
+  "admin": {
+    "title": "Operator area",
+    "description": "ALVOXIS Flow as a service: accounts, companies, subscriptions, AI usage and health. Every action here is audited.",
+    "users": "Accounts",
+    "usersNote": "{verified} verified · {new30} new in 30 days",
+    "companies": "Companies",
+    "new30": "{count} new in 30 days",
+    "activeSubscriptions": "Active subscriptions",
+    "subscriptionsNote": "past due {pastDue} · cancelled {canceled} · failed payments in 30 days {failures}",
+    "listPriceMrr": "Monthly at list price",
+    "listPriceNote": "Active subscriptions × €9.99 (estimate). Stripe holds the invoiced revenue.",
+    "aiRequests": "AI questions this month",
+    "aiNote": "{companies} companies · {errors} failed or refused",
+    "aiCost": "AI cost this month (estimate)",
+    "aiCostNote": "{input} input / {output} output tokens at list prices",
+    "health": "Health and configuration",
+    "db": "Database {ms} ms",
+    "stripe": "Stripe",
+    "webhook": "Stripe webhook",
+    "enforcement": "Subscription enforcement",
+    "ai": "AI assistant",
+    "email": "Email: {transport}",
+    "on": "on",
+    "off": "off",
+    "search": "Search companies",
+    "archived": "archived",
+    "until": "internal access until {date}",
+    "grant": "Grant internal access",
+    "revoke": "Revoke internal access",
+    "days": "Days",
+    "reason": "Reason / ticket",
+    "confirmGrant": "Grant",
+    "failed": "Not saved.",
+    "events": "Recent system events",
+    "noEvents": "No events yet.",
+    "col": {
+      "name": "Company",
+      "country": "Country",
+      "created": "Created",
+      "members": "Members",
+      "subscription": "Subscription",
+      "access": "Internal access"
+    }
+  },
+  "public": {
+    "nav": {
+      "home": "ALVOXIS Flow home",
+      "label": "Website",
+      "features": "Features",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "about": "About",
+      "contact": "Contact",
+      "signIn": "Sign in",
+      "start": "Get started",
+      "menu": "Menu"
+    },
+    "footer": {
+      "tagline": "Business management for small companies in Latvia, Lithuania, Estonia and Poland.",
+      "product": "Product",
+      "legal": "Legal",
+      "account": "Account",
+      "links": {
+        "privacy": "Privacy policy",
+        "terms": "Terms of service",
+        "subscription": "Subscription terms",
+        "cookies": "Cookies"
+      },
+      "note": "ALVOXIS Flow helps you calculate and organise. It is not a substitute for an accountant or tax adviser."
+    },
+    "meta": {
+      "welcome": {
+        "title": "ALVOXIS Flow — invoices, costs, finance and AI for small businesses",
+        "description": "Invoices, payments, expenses, product costing, inventory and an AI assistant in one app for companies in Latvia, Lithuania, Estonia and Poland. €9.99 per month."
+      },
+      "features": {
+        "title": "Features",
+        "description": "Dashboard, invoices and credit notes, payments and expenses, products and inventory, cost calculator, production, AI assistant and team roles."
+      },
+      "pricing": {
+        "title": "Pricing",
+        "description": "One plan with every module: €9.99 per company per month. No tiers, cancel at any time."
+      },
+      "about": {
+        "title": "About",
+        "description": "What ALVOXIS Flow is and the principles it is built on."
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "How to reach the team behind ALVOXIS Flow."
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "description": "Answers about pricing, data, taxes, the AI assistant and security."
+      },
+      "privacy": {
+        "title": "Privacy policy",
+        "description": "How ALVOXIS Flow processes personal data."
+      },
+      "terms": {
+        "title": "Terms of service",
+        "description": "The terms for using ALVOXIS Flow."
+      },
+      "subscription": {
+        "title": "Subscription terms",
+        "description": "Price, renewal, cancellation and what happens to your data."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "description": "Which cookies and browser storage ALVOXIS Flow uses."
+      }
+    },
+    "hero": {
+      "eyebrow": "For small businesses in LV · LT · EE · PL",
+      "title": "Know your numbers. Invoice, cost and plan in one place.",
+      "subtitle": "ALVOXIS Flow brings invoices, payments, expenses, product costs, stock and an AI assistant together — calculated from your own records, never from guesses.",
+      "primary": "Start for €9.99 / month",
+      "secondary": "Explore the features",
+      "note": "One plan with every module. Cancel at any time."
+    },
+    "preview": {
+      "aria": "Illustration of the business overview",
+      "label": "Illustrative example — not real data",
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "result": "Result",
+      "receivables": "Receivables",
+      "chart": "Revenue and expenses"
+    },
+    "features": {
+      "title": "Everything a small company runs on",
+      "subtitle": "One connected workspace: an invoice you issue appears in receivables, a payment you record updates cash flow, an expense lowers your result.",
+      "items": {
+        "dashboard": {
+          "title": "Business overview",
+          "text": "Revenue, expenses, result, cash flow, receivables and payables for any period, with charts."
+        },
+        "documents": {
+          "title": "Invoices and documents",
+          "text": "Drafts, numbered issued invoices, credit notes, PDFs and sending by email."
+        },
+        "finance": {
+          "title": "Payments and expenses",
+          "text": "Record payments, see what is open or overdue, track expenses by category and export them."
+        },
+        "catalog": {
+          "title": "Customers, products, stock",
+          "text": "Customers and suppliers, a product catalogue, warehouses and an append-only stock ledger."
+        },
+        "costing": {
+          "title": "Cost calculator",
+          "text": "Full cost per unit with delivery, duties, packaging, labour, piecework and overhead."
+        },
+        "production": {
+          "title": "Production and payroll aid",
+          "text": "Bills of materials, production orders and a payroll calculation aid."
+        },
+        "ai": {
+          "title": "AI assistant",
+          "text": "Ask about profit, overdue invoices or margins; answers come from your figures."
+        },
+        "team": {
+          "title": "Team and roles",
+          "text": "Invite members with roles; every sensitive action is checked on the server and logged."
+        }
+      }
+    },
+    "costing": {
+      "title": "The real cost of every unit",
+      "text": "Add purchase price, delivery, insurance, customs duty, packaging, materials, labour and overhead, and see the cost per unit, margin and markup — and how a bigger batch changes them.",
+      "points": {
+        "1": "Margin and markup are calculated separately, so a 40 % markup is never mistaken for a 40 % margin.",
+        "2": "Duty and tax rates are entered by you and flagged until verified; nothing is filled in from invented rates.",
+        "3": "Recoverable VAT is excluded from cost, so it is never counted twice.",
+        "4": "Save calculations, link them to products and export them as CSV."
+      }
+    },
+    "invoices": {
+      "title": "Invoices that stay correct",
+      "text": "Issued invoices are frozen with their totals and tax summary; corrections go through credit notes. Payments you record show what is paid, open and overdue.",
+      "points": {
+        "1": "Automatic numbering per series and year.",
+        "2": "PDFs in five languages, sent by email when configured.",
+        "3": "Partial payments, overdue days and receivables ageing.",
+        "4": "Expenses with recoverable or non-recoverable tax, and a VAT summary to prepare returns."
+      }
+    },
+    "ai": {
+      "title": "An assistant that knows your figures",
+      "text": "Ask in plain language — “Which invoices are overdue?” or “Why did my result change?” The assistant reads only what your role may see, through fixed read-only functions, and says when data is missing.",
+      "points": {
+        "1": "Figures are calculated by the application, not by the language model.",
+        "2": "Every answer separates recorded figures, estimates and recommendations.",
+        "3": "It cannot change records, send documents or make payments.",
+        "4": "Questions and answers are not stored; usage limits keep costs predictable."
+      }
+    },
+    "countries": {
+      "title": "Built for the Baltics and Poland",
+      "text": "Companies are set up per country, with EUR and PLN kept apart. Tax categories are configured by each company; ALVOXIS Flow does not assume one rate fits every product.",
+      "list": {
+        "LV": "Latvia",
+        "LT": "Lithuania",
+        "EE": "Estonia",
+        "PL": "Poland"
+      },
+      "languages": "The app and documents are available in English, Russian, Latvian, Lithuanian and Estonian."
+    },
+    "pricing": {
+      "title": "One plan. Everything included.",
+      "subtitle": "No tiers and no add-ons: every company gets every module.",
+      "only": "The only plan",
+      "perCompany": "Per company, billed monthly. Taxes, if any apply, are shown at checkout.",
+      "cta": "Create an account",
+      "terms": {
+        "1": "No free trial: the subscription starts when your first payment succeeds.",
+        "2": "Renews monthly; cancel at any time and keep access until the end of the paid month.",
+        "3": "Without an active subscription your company becomes read-only — nothing is deleted.",
+        "4": "Payments are processed by Stripe; card details never reach ALVOXIS Flow."
+      },
+      "detailsTitle": "How billing works",
+      "details": {
+        "1": "You create an account and a company for free, then subscribe from the company's subscription page. Each company has its own subscription.",
+        "2": "The price is €9.99 per month. Whether VAT is added depends on your location and status and is shown by Stripe before you pay.",
+        "3": "If a payment fails, Stripe retries it and you keep access while it does. If it still fails, the company becomes read-only until payment succeeds.",
+        "4": "You can cancel the renewal yourself at any time. Access continues until the end of the paid period; your data stays available to view and export.",
+        "5": "The AI assistant is included with fair-use limits per company and month so that costs stay predictable."
+      },
+      "termsLink": "Read the full subscription terms"
+    },
+    "faq": {
+      "title": "Questions and answers",
+      "more": "All questions",
+      "items": {
+        "what": {
+          "q": "What is ALVOXIS Flow?",
+          "a": "A web application for running a small company: invoices and credit notes, payments and expenses, customers and products, stock, production, cost calculation, reports and an AI assistant."
+        },
+        "who": {
+          "q": "Who is it for?",
+          "a": "Small businesses, manufacturers and entrepreneurs registered in Latvia, Lithuania, Estonia or Poland."
+        },
+        "price": {
+          "q": "How much does it cost?",
+          "a": "€9.99 per company per month — one plan with every module. Taxes, if any apply, are shown at checkout."
+        },
+        "trial": {
+          "q": "Is there a free trial?",
+          "a": "No. You can create an account and a company before paying; the subscription starts when the first payment succeeds."
+        },
+        "cancel": {
+          "q": "How do I cancel?",
+          "a": "On your company's subscription page, at any time. The subscription ends with the paid period and your data is kept."
+        },
+        "data": {
+          "q": "What happens to my data if I stop paying?",
+          "a": "The company becomes read-only: you can still view and export everything. Nothing is deleted because a subscription ended."
+        },
+        "tax": {
+          "q": "Does ALVOXIS Flow calculate taxes for me?",
+          "a": "It applies the tax categories your company sets up and summarises recorded VAT. It does not decide which rate applies to you and is not tax advice — check rates and invoice requirements with official sources or your accountant."
+        },
+        "ai": {
+          "q": "What data does the AI assistant use?",
+          "a": "Only figures your role may see, read through fixed functions when you ask a question. They are sent to Anthropic's Claude API to write the answer; ALVOXIS Flow does not store questions or answers."
+        },
+        "bank": {
+          "q": "Does it connect to my bank?",
+          "a": "Not yet. Payments and expenses are recorded by hand, and the app says so; there is no automatic bank synchronisation."
+        },
+        "languages": {
+          "q": "Which languages are supported?",
+          "a": "English, Russian, Latvian, Lithuanian and Estonian, for the app and for documents."
+        },
+        "security": {
+          "q": "How is my data protected?",
+          "a": "Encrypted connections, hashed passwords, two-factor authentication (required for owners and administrators), strict separation between companies and an audit log of sensitive actions."
+        },
+        "export": {
+          "q": "Can I export my data?",
+          "a": "Yes. Documents as PDF, and expenses, reports, payroll runs and cost calculations as CSV."
+        }
+      }
+    },
+    "cta": {
+      "title": "Run your company on real numbers",
+      "text": "Create your account, set up your company and see your first figures in minutes.",
+      "button": "Get started"
+    },
+    "featuresPage": {
+      "title": "Features",
+      "intro": "Every module works with the same company data and the same permissions. Here is what each one does — and what it does not do.",
+      "details": {
+        "dashboard": "Revenue, expenses, gross profit, result and margin per currency for this month, last month, the quarter, the year or any range, compared with the previous period. Receivables and payables today, invoice payment status, stock value, recent activity and quick actions. Every figure has a written definition; nothing is estimated.",
+        "documents": "Invoices, proformas, delivery notes and credit notes with company numbering. Issued documents cannot be changed; corrections are credit notes. PDF in five languages, PDF import for review, sending by email.",
+        "finance": "Payments recorded against issued invoices, with partial payments, voiding and duplicate protection. Expenses with categories, suppliers, recoverable or non-recoverable tax, due dates and recurrence. Search, filters, CSV export.",
+        "catalog": "Customers and suppliers with payment terms; products and services with SKUs, prices and default tax categories; warehouses and an append-only stock ledger with receipts, issues, transfers and counts.",
+        "costing": "Batch and unit cost from every cost type, margin and markup, the price for a target margin and scenarios for other batch sizes. Duty rates are always entered and verified by you.",
+        "production": "Bills of materials and production orders that consume components and add finished goods in one step. A payroll calculation aid with rates you set — not a payroll declaration tool.",
+        "ai": "A Claude-based assistant that answers from figures the application calculates, with your role's permissions, and tells you when data is missing. It cannot change anything.",
+        "team": "Invitations by email, six roles with permissions, required two-factor authentication for owners and administrators, and an audit trail of sensitive actions."
+      },
+      "limits": "Not included today: automatic bank synchronisation, e-invoicing networks, filing of tax returns and statutory payroll declarations."
+    },
+    "about": {
+      "title": "About ALVOXIS Flow",
+      "intro": "ALVOXIS Flow is business management software for small companies in Latvia, Lithuania, Estonia and Poland. It is built to show owners where their money comes from and where it goes — using only what they have recorded.",
+      "principles": {
+        "1": {
+          "title": "Real records, no guesses",
+          "text": "Dashboards, reports and the assistant use your data. If something is missing, the app says so instead of filling the gap."
+        },
+        "2": {
+          "title": "Correct arithmetic",
+          "text": "Money is calculated in exact decimals, currencies are never mixed, and issued documents never change."
+        },
+        "3": {
+          "title": "Your company stays yours",
+          "text": "Every request is checked on the server against your membership and role. Companies never see each other's data."
+        },
+        "4": {
+          "title": "Honest about limits",
+          "text": "Tax rates and legal requirements depend on your situation. The app helps you apply them but does not replace an accountant."
+        }
+      },
+      "status": "ALVOXIS Flow is preparing for launch. Company and contact details of the operator will be published here before commercial use."
+    },
+    "contact": {
+      "title": "Contact",
+      "text": "Questions about ALVOXIS Flow, your account or a subscription are welcome.",
+      "emailLabel": "Email:",
+      "notPublished": "Contact details will be published here before commercial launch.",
+      "customers": "Already a customer? Sign in to manage your subscription and data.",
+      "signIn": "Sign in"
+    },
+    "legal": {
+      "draftNotice": "Draft for review: this document describes how ALVOXIS Flow works today but has not yet been reviewed by a lawyer. Details marked [to be completed] must be added by the operator before commercial launch.",
+      "other": "Other legal documents",
+      "privacy": {
+        "title": "Privacy policy",
+        "intro": "This policy explains which personal data ALVOXIS Flow processes, why, and what rights you have.",
+        "s1": {
+          "title": "Who is responsible",
+          "body": "The controller for account data is the operator of ALVOXIS Flow: [legal name, registration number, address and contact email to be completed]. For business data that companies enter about their own customers, suppliers and employees, the company is the controller and ALVOXIS Flow processes that data on its behalf."
+        },
+        "s2": {
+          "title": "What we process",
+          "body": "Account data (email address, name, language, a hash of your password, encrypted two-factor secrets); security data (sessions, IP address and browser information, audit log of sensitive actions); the business data you enter (companies, customers, suppliers, products, documents, payments, expenses, stock, payroll calculations); subscription data (Stripe customer and subscription identifiers and status — card details are handled only by Stripe); and AI usage records (time, token counts, outcome — not your questions or the answers)."
+        },
+        "s3": {
+          "title": "Why and on what basis",
+          "body": "To provide the service you signed up for (performance of a contract), to keep it secure and prevent abuse (legitimate interests), to bill the subscription (contract) and to meet legal obligations such as accounting rules for our own invoices."
+        },
+        "s4": {
+          "title": "Data you enter about others",
+          "body": "When you record customers, suppliers or employees, you are responsible for having a lawful basis to do so. A data processing agreement for business customers [to be completed] describes how ALVOXIS Flow processes this data on your instructions."
+        },
+        "s5": {
+          "title": "Service providers",
+          "body": "Hosting and database providers [to be confirmed: e.g. Vercel, Neon], payments by Stripe, email delivery by the configured email provider, and — only when you use the assistant — Anthropic (Claude API), which receives the figures needed for an answer. Where data leaves the EEA, appropriate safeguards such as standard contractual clauses apply [to be confirmed per provider]."
+        },
+        "s6": {
+          "title": "How long we keep data",
+          "body": "Account and business data for as long as the account or company exists; issued documents and the audit log for as long as accounting or legal rules require [periods to be completed]; security logs for a limited time."
+        },
+        "s7": {
+          "title": "Security",
+          "body": "Encrypted connections, password hashing, two-factor authentication (required for owners and administrators), server-side permission checks for every company, append-only audit and stock records, and secrets kept out of the browser."
+        },
+        "s8": {
+          "title": "Your rights",
+          "body": "You may request access, correction, deletion, restriction, data portability (exports are built in) and object to processing. You may complain to your data protection authority: Datu valsts inspekcija (Latvia), Valstybinė duomenų apsaugos inspekcija (Lithuania), Andmekaitse Inspektsioon (Estonia) or Prezes Urzędu Ochrony Danych Osobowych (Poland)."
+        },
+        "s9": {
+          "title": "Contact and changes",
+          "body": "Contact the operator at [contact email to be completed]. Material changes to this policy will be announced in the application before they apply."
+        }
+      },
+      "terms": {
+        "title": "Terms of service",
+        "intro": "These terms apply to the use of ALVOXIS Flow by companies and their members.",
+        "s1": {
+          "title": "The service",
+          "body": "ALVOXIS Flow is a web application for invoices, payments, expenses, products, stock, production, cost calculation, reports and an AI assistant. Features may change as the product develops."
+        },
+        "s2": {
+          "title": "Accounts",
+          "body": "You need a verified email address. Keep your password and second factor safe; you are responsible for activity in your account. Owners decide who joins their company and with which role."
+        },
+        "s3": {
+          "title": "Subscription and payment",
+          "body": "Using a company's business features requires an active subscription under the subscription terms. Payments are processed by Stripe."
+        },
+        "s4": {
+          "title": "Acceptable use",
+          "body": "Do not misuse the service: no unlawful content, no attempts to access other companies' data, no attacks on the service, and no use that breaks tax, accounting or data protection law."
+        },
+        "s5": {
+          "title": "Your data",
+          "body": "Your company's data remains yours. You can export it at any time, and it is not deleted because a subscription ends. ALVOXIS Flow uses it only to provide the service."
+        },
+        "s6": {
+          "title": "Calculations are not advice",
+          "body": "The application calculates from what you record and the tax categories you configure. It does not determine which taxes apply to you and is not a substitute for an accountant, tax adviser or certified accounting system. You are responsible for the correctness and legal compliance of your documents."
+        },
+        "s7": {
+          "title": "AI assistant",
+          "body": "The assistant can make mistakes. It labels figures, estimates and recommendations, but you should check important answers. It cannot change data or act on your behalf."
+        },
+        "s8": {
+          "title": "Availability and liability",
+          "body": "We aim for high availability but cannot guarantee uninterrupted service. Liability provisions [to be completed after legal review]."
+        },
+        "s9": {
+          "title": "Changes and applicable law",
+          "body": "We will announce material changes in advance. Applicable law and place of jurisdiction [to be completed]."
+        }
+      },
+      "subscription": {
+        "title": "Subscription terms",
+        "intro": "ALVOXIS Flow has one subscription per company.",
+        "s1": {
+          "title": "Plan and price",
+          "body": "The ALVOXIS Flow plan costs €9.99 per company per month and includes every module and the AI assistant with fair-use limits. Whether VAT or other taxes are added is shown at checkout."
+        },
+        "s2": {
+          "title": "Start",
+          "body": "There is no free trial. The subscription starts when the first payment succeeds; a checkout that is cancelled or not completed creates no subscription and no charge."
+        },
+        "s3": {
+          "title": "Renewal",
+          "body": "The subscription renews automatically every month until cancelled. The renewal date is shown on the company's subscription page."
+        },
+        "s4": {
+          "title": "Cancellation",
+          "body": "Owners can cancel the renewal at any time on the subscription page or in the Stripe customer portal. The subscription stays active until the end of the paid month and then ends. Refunds: [policy to be completed]; statutory consumer rights, where they apply, are not affected."
+        },
+        "s5": {
+          "title": "Failed payments",
+          "body": "If a payment fails, Stripe retries it and access continues meanwhile. If it cannot be collected, the subscription is put on hold or ends, and the company becomes read-only until a payment succeeds."
+        },
+        "s6": {
+          "title": "Read-only access and your data",
+          "body": "Without an active subscription you can still sign in, view, print and export all company data and manage members and billing. Creating and changing records and the AI assistant are unavailable. No data is deleted because of billing."
+        },
+        "s7": {
+          "title": "Price changes",
+          "body": "Price changes are announced at least 30 days in advance and apply from the next billing period; you can cancel before they apply."
+        }
+      },
+      "cookies": {
+        "title": "Cookies and browser storage",
+        "intro": "ALVOXIS Flow uses only what is necessary for the service to work.",
+        "s1": {
+          "title": "Necessary cookies",
+          "body": "A session cookie keeps you signed in, a known-device cookie helps detect sign-ins from new devices, and a language cookie remembers your language. They are required for the service and cannot be switched off."
+        },
+        "s2": {
+          "title": "Theme preference",
+          "body": "Your choice of light or dark theme is kept in a small preference cookie for one year. Only your browser uses it to show the right theme; the service does not read or store it."
+        },
+        "s3": {
+          "title": "No tracking",
+          "body": "There are no analytics, advertising or social-media cookies. Because only necessary cookies are used, there is nothing to consent to; if optional cookies are ever added, you will be asked first and can change your choice at any time."
+        },
+        "s4": {
+          "title": "Payment pages",
+          "body": "Stripe's checkout and customer portal run on Stripe's own domain and set their own cookies under Stripe's privacy policy."
+        }
       }
     }
   }
