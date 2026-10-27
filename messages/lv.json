@@ -44,7 +44,7 @@
       "currencyNote": "Summas ir norādītas dokumentu valūtā un nekad netiek saskaitītas starp valūtām.",
       "loadError": "Dokumentu rādītājus šobrīd neizdevās ielādēt. Pašus dokumentus tas neietekmē; mēģiniet vēlāk vēlreiz.",
       "createFirst": "Izveidot pirmo dokumentu",
-      "paymentsNotTracked": "Maksājumi vēl netiek uzskaitīti, tāpēc šeit nav redzams, kas ir apmaksāts, neapmaksāts vai kavēts."
+      "paymentsNotTracked": "Apmaksātās, atvērtās un kavētās summas ir katra uzņēmuma biznesa pārskatā."
     }
   },
   "documentType": {
@@ -1920,6 +1920,174 @@
           "unknown": "Izvēlieties šī uzņēmuma piegādātāju."
         }
       }
+    }
+  },
+  "business": {
+    "title": "Biznesa pārskats",
+    "open": "Biznesa pārskats",
+    "period": "Periods {from} – {to}",
+    "rangeLabel": "Periods",
+    "range": {
+      "this_month": "Šis mēnesis",
+      "last_month": "Iepriekšējais mēnesis",
+      "this_quarter": "Šis ceturksnis",
+      "this_year": "Šis gads",
+      "from": "No",
+      "to": "Līdz",
+      "apply": "Rādīt"
+    },
+    "empty": {
+      "title": "Šajā periodā vēl nekas nav reģistrēts",
+      "text": "Izrakstiet rēķinus, reģistrējiet maksājumus un pievienojiet izdevumus — skaitļi un grafiki šeit tiek aprēķināti no tiem. Nekas netiek novērtēts aptuveni.",
+      "noFinance": "Jūsu lomā nav finanšu rādītāju. Saites augstāk ved uz sadaļām, ar kurām strādājat."
+    },
+    "figuresIn": "Rādītāji {currency}",
+    "chartsIn": "Grafiki {currency}",
+    "kpi": {
+      "revenue": "Ieņēmumi",
+      "expenses": "Izdevumi",
+      "result": "Rezultāts",
+      "grossProfit": "Bruto peļņa",
+      "cashIn": "Ienākošā nauda",
+      "netCash": "Neto naudas plūsma"
+    },
+    "margin": "marža {percent} %",
+    "noComparison": "Iepriekšējā periodā rādītāja nav",
+    "vsPrevious": "pret iepriekšējo periodu",
+    "openItems": "Atvērtās pozīcijas šodien",
+    "receivables": "Debitoru parādi",
+    "invoicesOpen": "{count, plural, zero {# neapmaksāti rēķini} one {# neapmaksāts rēķins} other {# neapmaksāti rēķini}}",
+    "overdue": "kavēti {count}: {amount}",
+    "noOverdue": "Nekas nav kavēts",
+    "payables": "Kreditoru parādi",
+    "expensesUnpaid": "{count, plural, zero {# neapmaksāti izdevumi} one {# neapmaksāts izdevums} other {# neapmaksāti izdevumi}}",
+    "payablesOverdue": "kavēti {count}: {amount}",
+    "invoiceStatus": {
+      "title": "Periodā izrakstītie rēķini",
+      "paid": "Apmaksāti",
+      "partiallyPaid": "Daļēji apmaksāti",
+      "unpaid": "Neapmaksāti",
+      "overdue": "Kavēti"
+    },
+    "toInvoices": "Visi rēķini",
+    "stockValue": "Krājumu vērtība",
+    "stockValueNote": "Atlikums × iepirkuma cena",
+    "noExpenses": "Šajā periodā izdevumu nav.",
+    "chart": {
+      "revenueVsExpenses": "Ieņēmumi un izdevumi ({currency})",
+      "cash": "Uzkrātā neto naudas plūsma ({currency})",
+      "cashSeries": "Neto naudas plūsma",
+      "categories": "Izdevumi pa kategorijām ({currency})",
+      "table": "Rādīt tabulā",
+      "day": "Diena",
+      "month": "Mēnesis"
+    },
+    "activity": {
+      "title": "Pēdējās darbības",
+      "none": "Darbību vēl nav.",
+      "other": "Cita izmaiņa",
+      "actions": {
+        "company": {
+          "created": "Uzņēmums izveidots",
+          "profile_updated": "Uzņēmuma profils mainīts"
+        },
+        "counterparty": {
+          "created": "Pievienots klients vai piegādātājs",
+          "updated": "Mainīts klients vai piegādātājs",
+          "archived": "Klients vai piegādātājs arhivēts"
+        },
+        "document": {
+          "draft_created": "Izveidots dokumenta melnraksts",
+          "draft_updated": "Melnraksts saglabāts",
+          "draft_deleted": "Melnraksts dzēsts",
+          "issued": "Dokuments izrakstīts",
+          "emailed": "Dokuments nosūtīts pa e-pastu",
+          "credit_note_draft_created": "Sākts kredītrēķins"
+        },
+        "payment": {
+          "recorded": "Reģistrēts maksājums",
+          "voided": "Maksājums anulēts"
+        },
+        "expense": {
+          "created": "Pievienots izdevums",
+          "updated": "Izdevums mainīts",
+          "deleted": "Izdevums dzēsts"
+        },
+        "product": {
+          "created": "Pievienota prece",
+          "updated": "Prece mainīta",
+          "archived": "Prece arhivēta",
+          "restored": "Prece atjaunota"
+        },
+        "member": {
+          "invited": "Uzaicināts dalībnieks",
+          "updated": "Dalība mainīta"
+        },
+        "billing": {
+          "checkoutStarted": "Sākta abonementa apmaksa",
+          "statusChanged": "Mainījies abonementa statuss",
+          "paymentFailed": "Abonementa maksājums neizdevās",
+          "renewalCancelled": "Abonementa atjaunošana atcelta",
+          "renewalResumed": "Abonementa atjaunošana atsākta"
+        },
+        "costing": {
+          "saved": "Pašizmaksas aprēķins saglabāts",
+          "deleted": "Pašizmaksas aprēķins dzēsts"
+        },
+        "production": {
+          "order_created": "Izveidots ražošanas pasūtījums"
+        },
+        "payroll": {
+          "run_created": "Izveidots algu aprēķins"
+        }
+      }
+    },
+    "definitions": {
+      "title": "Kā šie rādītāji tiek aprēķināti",
+      "revenue": {
+        "term": "Ieņēmumi",
+        "text": "Periodā izrakstīto rēķinu summas bez nodokļa, atskaitot izrakstītos kredītrēķinus."
+      },
+      "expenses": {
+        "term": "Izdevumi",
+        "text": "Periodā reģistrētie izdevumi pēc izmaksām: summa bez nodokļa, plus nodoklis tikai tad, ja tas nav atgūstams."
+      },
+      "grossProfit": {
+        "term": "Bruto peļņa",
+        "text": "Ieņēmumi, atskaitot izdevumus kategorijās “Materiāli” un “Preces pārdošanai”."
+      },
+      "result": {
+        "term": "Rezultāts un marža",
+        "text": "Ieņēmumi, atskaitot visus reģistrētos izdevumus, pirms ienākuma nodokļa; marža = rezultāts ÷ ieņēmumi. Tā nav grāmatvedības neto peļņa."
+      },
+      "cash": {
+        "term": "Ienākošā nauda un neto naudas plūsma",
+        "text": "Rēķiniem reģistrētie maksājumi un apmaksātie izdevumi (ar nodokli) pēc samaksas datuma. Bankas atlikumi netiek nolasīti."
+      },
+      "receivables": {
+        "term": "Debitoru parādi",
+        "text": "Visu izrakstīto rēķinu neapmaksātie atlikumi šodien; kavēts = pēc apmaksas termiņa."
+      },
+      "payables": {
+        "term": "Kreditoru parādi",
+        "text": "Neapmaksātie reģistrētie izdevumi (ar nodokli); kavēts = pēc to apmaksas termiņa."
+      },
+      "previous": {
+        "term": "Iepriekšējais periods",
+        "text": "Tikpat dienu tieši pirms izvēlētā perioda."
+      },
+      "note": "Rādītāji tiek aprēķināti no ALVOXIS Flow reģistrētajiem datiem. Tie palīdz pieņemt lēmumus, bet neaizstāj grāmatvedību un nodokļu konsultācijas."
+    },
+    "actions": {
+      "title": "Ātrās darbības",
+      "invoice": "Izveidot rēķinu",
+      "product": "Pievienot preci",
+      "costing": "Aprēķināt pašizmaksu",
+      "expense": "Pievienot izdevumu",
+      "customer": "Pievienot klientu",
+      "ai": "Jautāt MI asistentam",
+      "overdue": "Kavētie rēķini",
+      "report": "Atskaites"
     }
   }
 }

@@ -44,7 +44,7 @@
       "currencyNote": "Sumos rodomos dokumentų valiuta ir niekada nesumuojamos tarp valiutų.",
       "loadError": "Dokumentų rodiklių šiuo metu įkelti nepavyko. Patiems dokumentams tai neturi įtakos; bandykite vėliau.",
       "createFirst": "Sukurti pirmą dokumentą",
-      "paymentsNotTracked": "Mokėjimai dar neapskaitomi, todėl čia nerodoma, kas apmokėta, neapmokėta ar pradelsta."
+      "paymentsNotTracked": "Apmokėtos, atviros ir vėluojančios sumos — kiekvienos įmonės verslo apžvalgoje."
     }
   },
   "documentType": {
@@ -1920,6 +1920,174 @@
           "unknown": "Pasirinkite šios įmonės tiekėją."
         }
       }
+    }
+  },
+  "business": {
+    "title": "Verslo apžvalga",
+    "open": "Verslo apžvalga",
+    "period": "Laikotarpis {from} – {to}",
+    "rangeLabel": "Laikotarpis",
+    "range": {
+      "this_month": "Šis mėnuo",
+      "last_month": "Praėjęs mėnuo",
+      "this_quarter": "Šis ketvirtis",
+      "this_year": "Šie metai",
+      "from": "Nuo",
+      "to": "Iki",
+      "apply": "Rodyti"
+    },
+    "empty": {
+      "title": "Šiuo laikotarpiu dar nieko neužregistruota",
+      "text": "Išrašykite sąskaitas, registruokite mokėjimus ir pridėkite išlaidas — skaičiai ir diagramos čia skaičiuojami pagal juos. Niekas nevertinama apytiksliai.",
+      "noFinance": "Jūsų rolė neapima finansinių rodiklių. Nuorodos aukščiau veda į skiltis, su kuriomis dirbate."
+    },
+    "figuresIn": "Rodikliai {currency}",
+    "chartsIn": "Diagramos {currency}",
+    "kpi": {
+      "revenue": "Pajamos",
+      "expenses": "Išlaidos",
+      "result": "Rezultatas",
+      "grossProfit": "Bendrasis pelnas",
+      "cashIn": "Gauti pinigai",
+      "netCash": "Grynasis pinigų srautas"
+    },
+    "margin": "marža {percent} %",
+    "noComparison": "Ankstesniu laikotarpiu rodiklio nėra",
+    "vsPrevious": "palyginti su ankstesniu laikotarpiu",
+    "openItems": "Atviros pozicijos šiandien",
+    "receivables": "Gautinos sumos",
+    "invoicesOpen": "{count, plural, one {# neapmokėta sąskaita} few {# neapmokėtos sąskaitos} many {# neapmokėtos sąskaitos} other {# neapmokėtų sąskaitų}}",
+    "overdue": "vėluoja {count}: {amount}",
+    "noOverdue": "Vėluojančių nėra",
+    "payables": "Mokėtinos sumos",
+    "expensesUnpaid": "{count, plural, one {# neapmokėtos išlaidos} few {# neapmokėtų išlaidų įrašai} many {# neapmokėtų išlaidų įrašo} other {# neapmokėtų išlaidų įrašų}}",
+    "payablesOverdue": "vėluoja {count}: {amount}",
+    "invoiceStatus": {
+      "title": "Per laikotarpį išrašytos sąskaitos",
+      "paid": "Apmokėtos",
+      "partiallyPaid": "Apmokėtos iš dalies",
+      "unpaid": "Neapmokėtos",
+      "overdue": "Vėluoja"
+    },
+    "toInvoices": "Visos sąskaitos",
+    "stockValue": "Atsargų vertė",
+    "stockValueNote": "Likutis × pirkimo kaina",
+    "noExpenses": "Šiuo laikotarpiu išlaidų nėra.",
+    "chart": {
+      "revenueVsExpenses": "Pajamos ir išlaidos ({currency})",
+      "cash": "Sukauptas grynasis pinigų srautas ({currency})",
+      "cashSeries": "Grynasis pinigų srautas",
+      "categories": "Išlaidos pagal kategorijas ({currency})",
+      "table": "Rodyti lentele",
+      "day": "Diena",
+      "month": "Mėnuo"
+    },
+    "activity": {
+      "title": "Naujausi veiksmai",
+      "none": "Veiksmų dar nėra.",
+      "other": "Kitas pakeitimas",
+      "actions": {
+        "company": {
+          "created": "Įmonė sukurta",
+          "profile_updated": "Įmonės profilis pakeistas"
+        },
+        "counterparty": {
+          "created": "Pridėtas klientas ar tiekėjas",
+          "updated": "Pakeistas klientas ar tiekėjas",
+          "archived": "Klientas ar tiekėjas archyvuotas"
+        },
+        "document": {
+          "draft_created": "Sukurtas dokumento juodraštis",
+          "draft_updated": "Juodraštis išsaugotas",
+          "draft_deleted": "Juodraštis ištrintas",
+          "issued": "Dokumentas išrašytas",
+          "emailed": "Dokumentas išsiųstas el. paštu",
+          "credit_note_draft_created": "Pradėta kreditinė sąskaita"
+        },
+        "payment": {
+          "recorded": "Užregistruotas mokėjimas",
+          "voided": "Mokėjimas anuliuotas"
+        },
+        "expense": {
+          "created": "Pridėtos išlaidos",
+          "updated": "Išlaidos pakeistos",
+          "deleted": "Išlaidos ištrintos"
+        },
+        "product": {
+          "created": "Pridėta prekė",
+          "updated": "Prekė pakeista",
+          "archived": "Prekė archyvuota",
+          "restored": "Prekė atkurta"
+        },
+        "member": {
+          "invited": "Pakviestas narys",
+          "updated": "Narystė pakeista"
+        },
+        "billing": {
+          "checkoutStarted": "Pradėtas prenumeratos apmokėjimas",
+          "statusChanged": "Pasikeitė prenumeratos būsena",
+          "paymentFailed": "Prenumeratos mokėjimas nepavyko",
+          "renewalCancelled": "Prenumeratos pratęsimas atšauktas",
+          "renewalResumed": "Prenumeratos pratęsimas atnaujintas"
+        },
+        "costing": {
+          "saved": "Savikainos skaičiavimas išsaugotas",
+          "deleted": "Savikainos skaičiavimas ištrintas"
+        },
+        "production": {
+          "order_created": "Sukurtas gamybos užsakymas"
+        },
+        "payroll": {
+          "run_created": "Sukurtas darbo užmokesčio skaičiavimas"
+        }
+      }
+    },
+    "definitions": {
+      "title": "Kaip skaičiuojami šie rodikliai",
+      "revenue": {
+        "term": "Pajamos",
+        "text": "Per laikotarpį išrašytų sąskaitų sumos be mokesčio, atėmus išrašytas kreditines sąskaitas."
+      },
+      "expenses": {
+        "term": "Išlaidos",
+        "text": "Per laikotarpį užregistruotos išlaidos savikaina: suma be mokesčio, pridedant mokestį tik tada, kai jis neatgaunamas."
+      },
+      "grossProfit": {
+        "term": "Bendrasis pelnas",
+        "text": "Pajamos, atėmus išlaidas kategorijose „Medžiagos“ ir „Prekės perpardavimui“."
+      },
+      "result": {
+        "term": "Rezultatas ir marža",
+        "text": "Pajamos, atėmus visas užregistruotas išlaidas, prieš pelno mokestį; marža = rezultatas ÷ pajamos. Tai nėra apskaitos grynasis pelnas."
+      },
+      "cash": {
+        "term": "Gauti pinigai ir grynasis pinigų srautas",
+        "text": "Sąskaitoms užregistruoti mokėjimai ir apmokėtos išlaidos (su mokesčiu) pagal mokėjimo datą. Banko likučiai nenuskaitomi."
+      },
+      "receivables": {
+        "term": "Gautinos sumos",
+        "text": "Visų išrašytų sąskaitų neapmokėti likučiai šiandien; vėluoja = praėjus mokėjimo terminui."
+      },
+      "payables": {
+        "term": "Mokėtinos sumos",
+        "text": "Neapmokėtos užregistruotos išlaidos (su mokesčiu); vėluoja = praėjus jų mokėjimo terminui."
+      },
+      "previous": {
+        "term": "Ankstesnis laikotarpis",
+        "text": "Tiek pat dienų iškart prieš pasirinktą laikotarpį."
+      },
+      "note": "Rodikliai skaičiuojami pagal ALVOXIS Flow užregistruotus duomenis. Jie padeda priimti sprendimus, bet nepakeičia apskaitos ir mokesčių konsultacijų."
+    },
+    "actions": {
+      "title": "Greiti veiksmai",
+      "invoice": "Sukurti sąskaitą",
+      "product": "Pridėti prekę",
+      "costing": "Apskaičiuoti savikainą",
+      "expense": "Pridėti išlaidas",
+      "customer": "Pridėti klientą",
+      "ai": "Klausti DI asistento",
+      "overdue": "Vėluojančios sąskaitos",
+      "report": "Ataskaitos"
     }
   }
 }

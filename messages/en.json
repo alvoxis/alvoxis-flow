@@ -44,7 +44,7 @@
       "currencyNote": "Totals are shown per document currency and are never added across currencies.",
       "loadError": "The document figures could not be loaded right now. Your documents are not affected; try again later.",
       "createFirst": "Create the first document",
-      "paymentsNotTracked": "Payments are not tracked yet, so nothing here shows what is paid, outstanding or overdue."
+      "paymentsNotTracked": "Paid, open and overdue amounts are on each company's business overview."
     }
   },
   "documentType": {
@@ -1920,6 +1920,174 @@
           "unknown": "Choose one of the company's suppliers."
         }
       }
+    }
+  },
+  "business": {
+    "title": "Business overview",
+    "open": "Business overview",
+    "period": "Period {from} – {to}",
+    "rangeLabel": "Period",
+    "range": {
+      "this_month": "This month",
+      "last_month": "Last month",
+      "this_quarter": "This quarter",
+      "this_year": "This year",
+      "from": "From",
+      "to": "To",
+      "apply": "Show"
+    },
+    "empty": {
+      "title": "Nothing recorded in this period yet",
+      "text": "Issue invoices, record payments and add expenses — the figures and charts here are calculated from them. Nothing is estimated.",
+      "noFinance": "Your role does not include financial figures. The shortcuts above lead to the parts you work with."
+    },
+    "figuresIn": "Figures in {currency}",
+    "chartsIn": "Charts in {currency}",
+    "kpi": {
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "result": "Result",
+      "grossProfit": "Gross profit",
+      "cashIn": "Cash in",
+      "netCash": "Net cash flow"
+    },
+    "margin": "margin {percent} %",
+    "noComparison": "No figure in the previous period",
+    "vsPrevious": "vs previous period",
+    "openItems": "Open items today",
+    "receivables": "Receivables",
+    "invoicesOpen": "{count, plural, one {# open invoice} other {# open invoices}}",
+    "overdue": "{count, plural, one {# overdue} other {# overdue}}: {amount}",
+    "noOverdue": "Nothing overdue",
+    "payables": "Payables",
+    "expensesUnpaid": "{count, plural, one {# unpaid expense} other {# unpaid expenses}}",
+    "payablesOverdue": "{count, plural, one {# overdue} other {# overdue}}: {amount}",
+    "invoiceStatus": {
+      "title": "Invoices issued in the period",
+      "paid": "Paid",
+      "partiallyPaid": "Partially paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue"
+    },
+    "toInvoices": "All invoices",
+    "stockValue": "Stock value",
+    "stockValueNote": "Quantity on hand × purchase price",
+    "noExpenses": "No expenses in this period.",
+    "chart": {
+      "revenueVsExpenses": "Revenue and expenses ({currency})",
+      "cash": "Cumulative net cash flow ({currency})",
+      "cashSeries": "Net cash flow",
+      "categories": "Expenses by category ({currency})",
+      "table": "Show as table",
+      "day": "Day",
+      "month": "Month"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "none": "No activity yet.",
+      "other": "Other change",
+      "actions": {
+        "company": {
+          "created": "Company created",
+          "profile_updated": "Company profile updated"
+        },
+        "counterparty": {
+          "created": "Customer or supplier added",
+          "updated": "Customer or supplier changed",
+          "archived": "Customer or supplier archived"
+        },
+        "document": {
+          "draft_created": "Draft document created",
+          "draft_updated": "Draft saved",
+          "draft_deleted": "Draft deleted",
+          "issued": "Document issued",
+          "emailed": "Document sent by email",
+          "credit_note_draft_created": "Credit note started"
+        },
+        "payment": {
+          "recorded": "Payment recorded",
+          "voided": "Payment voided"
+        },
+        "expense": {
+          "created": "Expense added",
+          "updated": "Expense changed",
+          "deleted": "Expense deleted"
+        },
+        "product": {
+          "created": "Product added",
+          "updated": "Product changed",
+          "archived": "Product archived",
+          "restored": "Product restored"
+        },
+        "member": {
+          "invited": "Member invited",
+          "updated": "Membership changed"
+        },
+        "billing": {
+          "checkoutStarted": "Subscription checkout started",
+          "statusChanged": "Subscription status changed",
+          "paymentFailed": "Subscription payment failed",
+          "renewalCancelled": "Subscription renewal cancelled",
+          "renewalResumed": "Subscription renewal resumed"
+        },
+        "costing": {
+          "saved": "Cost calculation saved",
+          "deleted": "Cost calculation deleted"
+        },
+        "production": {
+          "order_created": "Production order created"
+        },
+        "payroll": {
+          "run_created": "Payroll run created"
+        }
+      }
+    },
+    "definitions": {
+      "title": "How these figures are calculated",
+      "revenue": {
+        "term": "Revenue",
+        "text": "Net amounts (without tax) of issued invoices dated in the period, minus issued credit notes."
+      },
+      "expenses": {
+        "term": "Expenses",
+        "text": "Recorded expenses dated in the period at cost: the net amount, plus tax only where it is not recoverable."
+      },
+      "grossProfit": {
+        "term": "Gross profit",
+        "text": "Revenue minus expenses in the categories “Materials” and “Goods for resale”."
+      },
+      "result": {
+        "term": "Result and margin",
+        "text": "Revenue minus all recorded expenses, before income tax; margin = result ÷ revenue. Not an accounting net profit."
+      },
+      "cash": {
+        "term": "Cash in and net cash flow",
+        "text": "Payments recorded on invoices and paid expenses (with tax), by payment date. Bank balances are not read."
+      },
+      "receivables": {
+        "term": "Receivables",
+        "text": "Open balances of all issued invoices today; overdue = past the due date."
+      },
+      "payables": {
+        "term": "Payables",
+        "text": "Unpaid recorded expenses (with tax); overdue = past their due date."
+      },
+      "previous": {
+        "term": "Previous period",
+        "text": "The same number of days immediately before the chosen period."
+      },
+      "note": "Figures are calculated from what is recorded in ALVOXIS Flow. They support decisions but are not bookkeeping or tax advice."
+    },
+    "actions": {
+      "title": "Quick actions",
+      "invoice": "Create invoice",
+      "product": "Add product",
+      "costing": "Calculate cost",
+      "expense": "Add expense",
+      "customer": "Add customer",
+      "ai": "Ask the AI assistant",
+      "overdue": "Overdue invoices",
+      "report": "Reports"
     }
   }
 }

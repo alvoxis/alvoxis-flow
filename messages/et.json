@@ -44,7 +44,7 @@
       "currencyNote": "Summad on näidatud dokumentide valuutas ja eri valuutasid kunagi kokku ei liideta.",
       "loadError": "Dokumentide näitajaid ei õnnestunud praegu laadida. Dokumente see ei mõjuta; proovige hiljem uuesti.",
       "createFirst": "Loo esimene dokument",
-      "paymentsNotTracked": "Makseid veel ei arvestata, seega ei näe siin, mis on tasutud, tasumata või tähtaja ületanud."
+      "paymentsNotTracked": "Tasutud, avatud ja tähtaja ületanud summad on iga ettevõtte äri ülevaates."
     }
   },
   "documentType": {
@@ -1920,6 +1920,174 @@
           "unknown": "Valige selle ettevõtte tarnija."
         }
       }
+    }
+  },
+  "business": {
+    "title": "Äri ülevaade",
+    "open": "Äri ülevaade",
+    "period": "Periood {from} – {to}",
+    "rangeLabel": "Periood",
+    "range": {
+      "this_month": "See kuu",
+      "last_month": "Eelmine kuu",
+      "this_quarter": "See kvartal",
+      "this_year": "See aasta",
+      "from": "Alates",
+      "to": "Kuni",
+      "apply": "Näita"
+    },
+    "empty": {
+      "title": "Selles perioodis pole veel midagi registreeritud",
+      "text": "Väljastage arveid, registreerige makseid ja lisage kulusid — siinsed arvud ja graafikud arvutatakse nende põhjal. Midagi ei hinnata ligikaudu.",
+      "noFinance": "Teie roll ei hõlma finantsnäitajaid. Ülalolevad lingid viivad osadesse, millega töötate."
+    },
+    "figuresIn": "Näitajad valuutas {currency}",
+    "chartsIn": "Graafikud valuutas {currency}",
+    "kpi": {
+      "revenue": "Tulu",
+      "expenses": "Kulud",
+      "result": "Tulemus",
+      "grossProfit": "Brutokasum",
+      "cashIn": "Laekumised",
+      "netCash": "Neto rahavoog"
+    },
+    "margin": "marginaal {percent} %",
+    "noComparison": "Eelmises perioodis näitaja puudub",
+    "vsPrevious": "võrreldes eelmise perioodiga",
+    "openItems": "Avatud kirjed täna",
+    "receivables": "Nõuded",
+    "invoicesOpen": "{count, plural, one {# tasumata arve} other {# tasumata arvet}}",
+    "overdue": "üle tähtaja {count}: {amount}",
+    "noOverdue": "Midagi pole üle tähtaja",
+    "payables": "Kohustused",
+    "expensesUnpaid": "{count, plural, one {# tasumata kulu} other {# tasumata kulu}}",
+    "payablesOverdue": "üle tähtaja {count}: {amount}",
+    "invoiceStatus": {
+      "title": "Perioodis väljastatud arved",
+      "paid": "Tasutud",
+      "partiallyPaid": "Osaliselt tasutud",
+      "unpaid": "Tasumata",
+      "overdue": "Üle tähtaja"
+    },
+    "toInvoices": "Kõik arved",
+    "stockValue": "Laovaru väärtus",
+    "stockValueNote": "Laoseis × ostuhind",
+    "noExpenses": "Selles perioodis kulusid pole.",
+    "chart": {
+      "revenueVsExpenses": "Tulu ja kulud ({currency})",
+      "cash": "Kumulatiivne neto rahavoog ({currency})",
+      "cashSeries": "Neto rahavoog",
+      "categories": "Kulud kategooriate kaupa ({currency})",
+      "table": "Näita tabelina",
+      "day": "Päev",
+      "month": "Kuu"
+    },
+    "activity": {
+      "title": "Viimased tegevused",
+      "none": "Tegevusi veel pole.",
+      "other": "Muu muudatus",
+      "actions": {
+        "company": {
+          "created": "Ettevõte loodud",
+          "profile_updated": "Ettevõtte profiili muudeti"
+        },
+        "counterparty": {
+          "created": "Lisati klient või tarnija",
+          "updated": "Muudeti klienti või tarnijat",
+          "archived": "Klient või tarnija arhiveeriti"
+        },
+        "document": {
+          "draft_created": "Loodi dokumendi mustand",
+          "draft_updated": "Mustand salvestati",
+          "draft_deleted": "Mustand kustutati",
+          "issued": "Dokument väljastati",
+          "emailed": "Dokument saadeti e-postiga",
+          "credit_note_draft_created": "Alustati kreeditarvet"
+        },
+        "payment": {
+          "recorded": "Makse registreeriti",
+          "voided": "Makse tühistati"
+        },
+        "expense": {
+          "created": "Kulu lisati",
+          "updated": "Kulu muudeti",
+          "deleted": "Kulu kustutati"
+        },
+        "product": {
+          "created": "Toode lisati",
+          "updated": "Toodet muudeti",
+          "archived": "Toode arhiveeriti",
+          "restored": "Toode taastati"
+        },
+        "member": {
+          "invited": "Liige kutsuti",
+          "updated": "Liikmesust muudeti"
+        },
+        "billing": {
+          "checkoutStarted": "Alustati tellimuse eest maksmist",
+          "statusChanged": "Tellimuse olek muutus",
+          "paymentFailed": "Tellimusmakse ebaõnnestus",
+          "renewalCancelled": "Tellimuse pikendamine tühistati",
+          "renewalResumed": "Tellimuse pikendamist jätkati"
+        },
+        "costing": {
+          "saved": "Omahinna arvutus salvestati",
+          "deleted": "Omahinna arvutus kustutati"
+        },
+        "production": {
+          "order_created": "Loodi tootmistellimus"
+        },
+        "payroll": {
+          "run_created": "Loodi palgaarvestus"
+        }
+      }
+    },
+    "definitions": {
+      "title": "Kuidas neid näitajaid arvutatakse",
+      "revenue": {
+        "term": "Tulu",
+        "text": "Perioodis väljastatud arvete summad ilma maksuta, millest on lahutatud väljastatud kreeditarved."
+      },
+      "expenses": {
+        "term": "Kulud",
+        "text": "Perioodis registreeritud kulud omahinnas: summa ilma maksuta, millele lisandub maks ainult siis, kui see pole tagastatav."
+      },
+      "grossProfit": {
+        "term": "Brutokasum",
+        "text": "Tulu miinus kulud kategooriates „Materjalid“ ja „Edasimüügiks kaubad“."
+      },
+      "result": {
+        "term": "Tulemus ja marginaal",
+        "text": "Tulu miinus kõik registreeritud kulud, enne tulumaksu; marginaal = tulemus ÷ tulu. See pole raamatupidamislik puhaskasum."
+      },
+      "cash": {
+        "term": "Laekumised ja neto rahavoog",
+        "text": "Arvetele registreeritud maksed ja tasutud kulud (koos maksuga) makse kuupäeva järgi. Pangakontode saldosid ei loeta."
+      },
+      "receivables": {
+        "term": "Nõuded",
+        "text": "Kõigi väljastatud arvete tasumata jäägid täna; üle tähtaja = pärast maksetähtaega."
+      },
+      "payables": {
+        "term": "Kohustused",
+        "text": "Tasumata registreeritud kulud (koos maksuga); üle tähtaja = pärast nende maksetähtaega."
+      },
+      "previous": {
+        "term": "Eelmine periood",
+        "text": "Sama arv päevi vahetult enne valitud perioodi."
+      },
+      "note": "Näitajad arvutatakse ALVOXIS Flow's registreeritud andmetest. Need toetavad otsuseid, kuid ei asenda raamatupidamist ega maksunõu."
+    },
+    "actions": {
+      "title": "Kiirtoimingud",
+      "invoice": "Loo arve",
+      "product": "Lisa toode",
+      "costing": "Arvuta omahind",
+      "expense": "Lisa kulu",
+      "customer": "Lisa klient",
+      "ai": "Küsi tehisintellekti assistendilt",
+      "overdue": "Tähtaja ületanud arved",
+      "report": "Aruanded"
     }
   }
 }
