@@ -70,6 +70,22 @@ body {
     0 8px 32px -16px color-mix(in oklab, var(--color-accent-strong) 35%, transparent);
 }
 
+/* Entrance of list items, cards and panels: a short rise and fade (off with reduced motion). Stagger
+   by setting animation-delay inline. Only opacity and transform animate (compositor-only). */
+@utility animate-fade-up {
+  animation: fade-up 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Soft accent glow behind a key figure. */
 @utility glow-accent {
   text-shadow: 0 0 28px color-mix(in oklab, var(--color-accent) 45%, transparent);

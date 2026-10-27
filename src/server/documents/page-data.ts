@@ -23,6 +23,10 @@ import {
   listTaxCategories,
   type TaxCategoryView,
 } from "@/modules/documents/server/tax-category-service";
+import {
+  invoicePayments,
+  type InvoicePaymentsView,
+} from "@/modules/finance/server/payment-service";
 import { hasPermission, requireCompanyAccess } from "@/server/auth/authorization";
 import { type AuthenticatedUser, toActor } from "@/server/auth/session";
 import { getDb } from "@/server/db/client";
@@ -71,6 +75,8 @@ export type DocumentPageData =
        * fails, the invoice is still shown, with a notice instead of the list.
        */
       creditNotes: { status: "ok"; items: DocumentListItem[] } | { status: "error" } | null;
+      /** Payments of an issued invoice (finance.view only; null otherwise or when unavailable). */
+      payments: { view: InvoicePaymentsView; canRecord: boolean } | null;
     }
   | Denied;
 
@@ -174,6 +180,17 @@ export async function documentPageData(
         creditNotes = { status: "error" };
       }
     }
+    let payments: Extract<DocumentPageData, { status: "ok" }>["payments"] = null;
+    if (document.status === "issued" && document.draft.type === "invoice") {
+      try {
+        const ctx = await requireCompanyAccess(getDb(), toActor(user), companyId, "finance.view");
+        const view = await invoicePayments(getDb(), toActor(user), companyId, documentId);
+        payments = { view, canRecord: hasPermission(ctx, "finance.manage") };
+      } catch (err) {
+        if (!(err instanceof ForbiddenError))
+          console.error("[documents] payments of an invoice could not be loaded", errName(err));
+      }
+    }
     return {
       status: "ok",
       document,
@@ -183,6 +200,7 @@ export async function documentPageData(
       customers,
       products,
       creditNotes,
+      payments,
     };
   } catch (err) {
     return denied(err);

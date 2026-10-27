@@ -17,7 +17,8 @@
     "settings": "Seaded",
     "soon": "Tulekul",
     "openMenu": "Ava menüü",
-    "closeMenu": "Sulge menüü"
+    "closeMenu": "Sulge menüü",
+    "finance": "Rahandus"
   },
   "topbar": {
     "noCompany": "Ettevõtet veel pole",
@@ -1733,6 +1734,192 @@
       "ai": "Tehisintellektil põhinev äriassistent (mõistlikud piirangud)",
       "team": "Meeskonnaliikmed rollidega",
       "languages": "Inglise, vene, läti, leedu, eesti"
+    }
+  },
+  "payments": {
+    "title": "Maksed",
+    "status": {
+      "unpaid": "Tasumata",
+      "partially_paid": "Osaliselt tasutud",
+      "paid": "Tasutud",
+      "credited": "Krediteeritud"
+    },
+    "overdueDays": "{days, plural, one {# päev üle tähtaja} other {# päeva üle tähtaja}}",
+    "summary": {
+      "gross": "Arve summa",
+      "credited": "Kreeditarved",
+      "paid": "Tasutud",
+      "balance": "Jääk"
+    },
+    "dueOn": "Maksetähtaeg {date}.",
+    "none": "Makseid pole veel registreeritud.",
+    "record": "Registreeri makse",
+    "recorded": "Makse registreeritud.",
+    "voided": "Makse tühistati. See jääb ajalukku ega lähe enam arvesse.",
+    "void": "Tühista",
+    "voidedBadge": "Tühistatud",
+    "voidTitle": "Tühistada see makse?",
+    "voidText": "Makse summas {amount} jääb ajalukku, kuid seda ei arvestata enam arve tasumisel.",
+    "keep": "Jäta alles",
+    "referenceTaken": "Selle viitega makse on sellele arvele juba registreeritud.",
+    "manualNote": "Maksed sisestatakse käsitsi; pangast ei loeta midagi automaatselt. Arve ise ei muutu kunagi.",
+    "method": {
+      "bank_transfer": "Pangaülekanne",
+      "card": "Kaart",
+      "cash": "Sularaha",
+      "other": "Muu"
+    },
+    "fields": {
+      "amount": "Summa ({currency})",
+      "paidOn": "Makse kuupäev",
+      "method": "Viis",
+      "reference": "Viide (nt ülekande ID)",
+      "note": "Märkus"
+    },
+    "issue": {
+      "invalid": "Kontrollige seda väärtust.",
+      "payment": {
+        "amount": {
+          "invalid": "Sisestage nullist suurem summa, kuni 2 komakohta.",
+          "exceedsBalance": "Summa on jäägist suurem."
+        },
+        "paidOn": {
+          "invalid": "Sisestage kehtiv kuupäev.",
+          "future": "Kuupäev ei saa olla tulevikus."
+        }
+      }
+    },
+    "state": {
+      "failed": "Makset ei õnnestunud salvestada. Laadige leht uuesti ja proovige veel.",
+      "payments": {
+        "notIssuedInvoice": "Makseid saab registreerida ainult väljastatud arvetele.",
+        "alreadyVoided": "See makse on juba tühistatud."
+      }
+    }
+  },
+  "finance": {
+    "title": "Rahandus",
+    "description": "Ettevõtte kulud, sisestatud käsitsi. Saadud maksed registreeritakse iga arve juures.",
+    "toReports": "Aruanded",
+    "readOnly": "Saate kulusid vaadata ja eksportida; teie roll ei luba neid muuta.",
+    "search": "Otsing",
+    "searchPlaceholder": "Kirjeldus, tarnija või viide",
+    "all": "Kõik",
+    "from": "Alates",
+    "to": "Kuni",
+    "apply": "Rakenda",
+    "reset": "Lähtesta",
+    "export": "Ekspordi CSV",
+    "add": "Lisa kulu",
+    "edit": "Muuda",
+    "delete": "Kustuta",
+    "deleteTitle": "Kustutada see kulu?",
+    "deleteText": "„{description}“ kustutatakse jäädavalt. Seda ei saa tagasi võtta.",
+    "cancel": "Loobu",
+    "save": "Salvesta",
+    "count": "{count, plural, one {# kulu} other {# kulu}}",
+    "empty": "Kulusid veel pole. Lisage esimene, et näha ülevaates kulusid ja kasumit.",
+    "noMatches": "Nende filtritega kulusid ei leitud.",
+    "costShort": "kulu {amount}",
+    "dueOn": "tähtaeg {date}",
+    "taxNotRecoverable": "Maks pole tagastatav",
+    "recordNext": "Registreeri järgmine",
+    "pagination": "Lehed",
+    "previous": "Eelmine",
+    "next": "Järgmine",
+    "pageOf": "Leht {page}/{pages}",
+    "supplierNone": "Tarnija kirjeta",
+    "taxHint": "Käibemaks või sarnane maks, nagu tarnija arvel.",
+    "paidOnHint": "Tühi: kulu kuupäev.",
+    "status": {
+      "paid": "Tasutud",
+      "unpaid": "Tasumata",
+      "overdue": "Üle tähtaja"
+    },
+    "recurrence": {
+      "none": "Ühekordne",
+      "monthly": "Igakuine",
+      "quarterly": "Kord kvartalis",
+      "yearly": "Iga-aastane"
+    },
+    "source": {
+      "manual": "Sisestatud käsitsi",
+      "imported": "Imporditud"
+    },
+    "sort": {
+      "label": "Järjesta",
+      "date_desc": "Uuemad eespool",
+      "date_asc": "Vanemad eespool",
+      "amount_desc": "Suuremad eespool",
+      "amount_asc": "Väiksemad eespool"
+    },
+    "category": {
+      "materials": "Materjalid",
+      "goods_for_resale": "Edasimüügiks kaubad",
+      "rent": "Üür",
+      "utilities": "Kommunaalteenused",
+      "salaries": "Palgad",
+      "taxes_fees": "Maksud ja tasud",
+      "transport": "Transpordikulud",
+      "marketing": "Turundus",
+      "software": "Tarkvara",
+      "professional_services": "Erialased teenused",
+      "equipment": "Seadmed",
+      "travel": "Lähetused",
+      "bank_fees": "Pangatasud",
+      "other": "Muu"
+    },
+    "method": {
+      "bank_transfer": "Pangaülekanne",
+      "card": "Kaart",
+      "cash": "Sularaha",
+      "other": "Muu"
+    },
+    "fields": {
+      "category": "Kategooria",
+      "status": "Olek",
+      "description": "Kirjeldus",
+      "date": "Kuupäev",
+      "supplier": "Tarnija",
+      "supplierName": "Tarnija (tekstina)",
+      "currency": "Valuuta",
+      "net": "Summa ilma maksuta",
+      "tax": "Maksu summa",
+      "taxRecoverable": "Maks on tagastatav (mahaarvatav sisendkäibemaks)",
+      "paidOn": "Makse kuupäev",
+      "dueDate": "Maksetähtaeg",
+      "method": "Makseviis",
+      "reference": "Viide",
+      "recurrence": "Kordub",
+      "notes": "Märkused"
+    },
+    "done": {
+      "created": "Kulu lisatud.",
+      "updated": "Kulu salvestatud.",
+      "deleted": "Kulu kustutatud."
+    },
+    "issue": {
+      "invalid": "Kontrollige seda väärtust.",
+      "expense": {
+        "amount": {
+          "invalid": "Sisestage summa alates nullist, kuni 2 komakohta."
+        },
+        "date": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "description": {
+          "required": "Sisestage kirjeldus."
+        },
+        "dueDate": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "paidOn": {
+          "invalid": "Sisestage kehtiv kuupäev."
+        },
+        "supplier": {
+          "unknown": "Valige selle ettevõtte tarnija."
+        }
+      }
     }
   }
 }

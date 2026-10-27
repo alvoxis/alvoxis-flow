@@ -17,7 +17,8 @@
     "settings": "Iestatījumi",
     "soon": "Drīzumā",
     "openMenu": "Atvērt izvēlni",
-    "closeMenu": "Aizvērt izvēlni"
+    "closeMenu": "Aizvērt izvēlni",
+    "finance": "Finanses"
   },
   "topbar": {
     "noCompany": "Uzņēmuma vēl nav",
@@ -1733,6 +1734,192 @@
       "ai": "MI biznesa asistents (saprātīgi limiti)",
       "team": "Komandas locekļi ar lomām",
       "languages": "Angļu, krievu, latviešu, lietuviešu, igauņu"
+    }
+  },
+  "payments": {
+    "title": "Maksājumi",
+    "status": {
+      "unpaid": "Neapmaksāts",
+      "partially_paid": "Daļēji apmaksāts",
+      "paid": "Apmaksāts",
+      "credited": "Kreditēts"
+    },
+    "overdueDays": "{days, plural, zero {kavēts # dienas} one {kavēts # dienu} other {kavēts # dienas}}",
+    "summary": {
+      "gross": "Rēķina summa",
+      "credited": "Kredītrēķini",
+      "paid": "Samaksāts",
+      "balance": "Atlikums"
+    },
+    "dueOn": "Apmaksas termiņš: {date}.",
+    "none": "Maksājumi vēl nav reģistrēti.",
+    "record": "Reģistrēt maksājumu",
+    "recorded": "Maksājums reģistrēts.",
+    "voided": "Maksājums anulēts. Tas paliek vēsturē un vairs netiek ieskaitīts.",
+    "void": "Anulēt",
+    "voidedBadge": "Anulēts",
+    "voidTitle": "Anulēt šo maksājumu?",
+    "voidText": "Maksājums {amount} apmērā paliks vēsturē, bet vairs netiks ieskaitīts rēķinā.",
+    "keep": "Paturēt",
+    "referenceTaken": "Maksājums ar šo atsauci šim rēķinam jau ir reģistrēts.",
+    "manualNote": "Maksājumi tiek ievadīti manuāli; no bankas nekas netiek nolasīts automātiski. Pats rēķins nekad nemainās.",
+    "method": {
+      "bank_transfer": "Bankas pārskaitījums",
+      "card": "Karte",
+      "cash": "Skaidra nauda",
+      "other": "Cits"
+    },
+    "fields": {
+      "amount": "Summa ({currency})",
+      "paidOn": "Samaksas datums",
+      "method": "Veids",
+      "reference": "Atsauce (piem., pārskaitījuma ID)",
+      "note": "Piezīme"
+    },
+    "issue": {
+      "invalid": "Pārbaudiet šo vērtību.",
+      "payment": {
+        "amount": {
+          "invalid": "Ievadiet summu, kas lielāka par nulli, ar ne vairāk kā 2 decimālzīmēm.",
+          "exceedsBalance": "Summa ir lielāka par atlikumu."
+        },
+        "paidOn": {
+          "invalid": "Ievadiet derīgu datumu.",
+          "future": "Datums nevar būt nākotnē."
+        }
+      }
+    },
+    "state": {
+      "failed": "Maksājumu neizdevās saglabāt. Pārlādējiet lapu un mēģiniet vēlreiz.",
+      "payments": {
+        "notIssuedInvoice": "Maksājumus var reģistrēt tikai izrakstītiem rēķiniem.",
+        "alreadyVoided": "Šis maksājums jau ir anulēts."
+      }
+    }
+  },
+  "finance": {
+    "title": "Finanses",
+    "description": "Uzņēmuma izdevumi, ievadīti manuāli. Saņemtie maksājumi tiek reģistrēti katrā rēķinā.",
+    "toReports": "Atskaites",
+    "readOnly": "Jūs varat skatīt un eksportēt izdevumus; jūsu loma neļauj tos mainīt.",
+    "search": "Meklēt",
+    "searchPlaceholder": "Apraksts, piegādātājs vai atsauce",
+    "all": "Visi",
+    "from": "No",
+    "to": "Līdz",
+    "apply": "Lietot",
+    "reset": "Atiestatīt",
+    "export": "Eksportēt CSV",
+    "add": "Pievienot izdevumu",
+    "edit": "Labot",
+    "delete": "Dzēst",
+    "deleteTitle": "Dzēst šo izdevumu?",
+    "deleteText": "“{description}” tiks neatgriezeniski dzēsts. To nevar atsaukt.",
+    "cancel": "Atcelt",
+    "save": "Saglabāt",
+    "count": "{count, plural, zero {# izdevumi} one {# izdevums} other {# izdevumi}}",
+    "empty": "Izdevumu vēl nav. Pievienojiet pirmo, lai pārskatā redzētu izmaksas un peļņu.",
+    "noMatches": "Neviens izdevums neatbilst šiem filtriem.",
+    "costShort": "izmaksas {amount}",
+    "dueOn": "termiņš {date}",
+    "taxNotRecoverable": "Nodoklis nav atgūstams",
+    "recordNext": "Reģistrēt nākamo",
+    "pagination": "Lapas",
+    "previous": "Iepriekšējā",
+    "next": "Nākamā",
+    "pageOf": "Lapa {page} no {pages}",
+    "supplierNone": "Bez piegādātāja ieraksta",
+    "taxHint": "PVN vai līdzīgs nodoklis, kā piegādātāja rēķinā.",
+    "paidOnHint": "Tukšs: izdevuma datums.",
+    "status": {
+      "paid": "Apmaksāts",
+      "unpaid": "Neapmaksāts",
+      "overdue": "Kavēts"
+    },
+    "recurrence": {
+      "none": "Vienreizējs",
+      "monthly": "Katru mēnesi",
+      "quarterly": "Katru ceturksni",
+      "yearly": "Katru gadu"
+    },
+    "source": {
+      "manual": "Ievadīts manuāli",
+      "imported": "Importēts"
+    },
+    "sort": {
+      "label": "Kārtot",
+      "date_desc": "Jaunākie vispirms",
+      "date_asc": "Vecākie vispirms",
+      "amount_desc": "Lielākie vispirms",
+      "amount_asc": "Mazākie vispirms"
+    },
+    "category": {
+      "materials": "Materiāli",
+      "goods_for_resale": "Preces pārdošanai",
+      "rent": "Īre",
+      "utilities": "Komunālie pakalpojumi",
+      "salaries": "Algas",
+      "taxes_fees": "Nodokļi un nodevas",
+      "transport": "Transports",
+      "marketing": "Mārketings",
+      "software": "Programmatūra",
+      "professional_services": "Profesionālie pakalpojumi",
+      "equipment": "Iekārtas",
+      "travel": "Komandējumi",
+      "bank_fees": "Bankas komisijas",
+      "other": "Cits"
+    },
+    "method": {
+      "bank_transfer": "Bankas pārskaitījums",
+      "card": "Karte",
+      "cash": "Skaidra nauda",
+      "other": "Cits"
+    },
+    "fields": {
+      "category": "Kategorija",
+      "status": "Statuss",
+      "description": "Apraksts",
+      "date": "Datums",
+      "supplier": "Piegādātājs",
+      "supplierName": "Piegādātājs (teksts)",
+      "currency": "Valūta",
+      "net": "Summa bez nodokļa",
+      "tax": "Nodokļa summa",
+      "taxRecoverable": "Nodoklis ir atgūstams (atskaitāmais priekšnodoklis)",
+      "paidOn": "Samaksas datums",
+      "dueDate": "Apmaksas termiņš",
+      "method": "Maksājuma veids",
+      "reference": "Atsauce",
+      "recurrence": "Atkārtojas",
+      "notes": "Piezīmes"
+    },
+    "done": {
+      "created": "Izdevums pievienots.",
+      "updated": "Izdevums saglabāts.",
+      "deleted": "Izdevums dzēsts."
+    },
+    "issue": {
+      "invalid": "Pārbaudiet šo vērtību.",
+      "expense": {
+        "amount": {
+          "invalid": "Ievadiet summu no nulles, ar ne vairāk kā 2 decimālzīmēm."
+        },
+        "date": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "description": {
+          "required": "Ievadiet aprakstu."
+        },
+        "dueDate": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "paidOn": {
+          "invalid": "Ievadiet derīgu datumu."
+        },
+        "supplier": {
+          "unknown": "Izvēlieties šī uzņēmuma piegādātāju."
+        }
+      }
     }
   }
 }

@@ -17,7 +17,8 @@
     "settings": "Nustatymai",
     "soon": "Netrukus",
     "openMenu": "Atidaryti meniu",
-    "closeMenu": "Uždaryti meniu"
+    "closeMenu": "Uždaryti meniu",
+    "finance": "Finansai"
   },
   "topbar": {
     "noCompany": "Įmonės dar nėra",
@@ -1733,6 +1734,192 @@
       "ai": "DI verslo asistentas (protingi limitai)",
       "team": "Komandos nariai su rolėmis",
       "languages": "Anglų, rusų, latvių, lietuvių, estų"
+    }
+  },
+  "payments": {
+    "title": "Mokėjimai",
+    "status": {
+      "unpaid": "Neapmokėta",
+      "partially_paid": "Apmokėta iš dalies",
+      "paid": "Apmokėta",
+      "credited": "Kredituota"
+    },
+    "overdueDays": "{days, plural, one {vėluoja # dieną} few {vėluoja # dienas} many {vėluoja # dienos} other {vėluoja # dienų}}",
+    "summary": {
+      "gross": "Sąskaitos suma",
+      "credited": "Kreditinės sąskaitos",
+      "paid": "Sumokėta",
+      "balance": "Likutis"
+    },
+    "dueOn": "Apmokėti iki {date}.",
+    "none": "Mokėjimų dar neužregistruota.",
+    "record": "Registruoti mokėjimą",
+    "recorded": "Mokėjimas užregistruotas.",
+    "voided": "Mokėjimas anuliuotas. Jis lieka istorijoje ir nebeskaičiuojamas.",
+    "void": "Anuliuoti",
+    "voidedBadge": "Anuliuota",
+    "voidTitle": "Anuliuoti šį mokėjimą?",
+    "voidText": "{amount} mokėjimas liks istorijoje, bet nebebus įskaičiuojamas į sąskaitą.",
+    "keep": "Palikti",
+    "referenceTaken": "Mokėjimas su šia nuoroda šiai sąskaitai jau užregistruotas.",
+    "manualNote": "Mokėjimai įvedami rankiniu būdu; iš banko niekas nenuskaitoma automatiškai. Pati sąskaita niekada nesikeičia.",
+    "method": {
+      "bank_transfer": "Banko pavedimas",
+      "card": "Kortelė",
+      "cash": "Grynieji",
+      "other": "Kita"
+    },
+    "fields": {
+      "amount": "Suma ({currency})",
+      "paidOn": "Sumokėta",
+      "method": "Būdas",
+      "reference": "Nuoroda (pvz., pavedimo ID)",
+      "note": "Pastaba"
+    },
+    "issue": {
+      "invalid": "Patikrinkite šią reikšmę.",
+      "payment": {
+        "amount": {
+          "invalid": "Įveskite didesnę už nulį sumą, ne daugiau kaip 2 skaitmenys po kablelio.",
+          "exceedsBalance": "Suma didesnė už likutį."
+        },
+        "paidOn": {
+          "invalid": "Įveskite teisingą datą.",
+          "future": "Data negali būti ateityje."
+        }
+      }
+    },
+    "state": {
+      "failed": "Mokėjimo išsaugoti nepavyko. Perkraukite puslapį ir bandykite dar kartą.",
+      "payments": {
+        "notIssuedInvoice": "Mokėjimus galima registruoti tik išrašytoms sąskaitoms.",
+        "alreadyVoided": "Šis mokėjimas jau anuliuotas."
+      }
+    }
+  },
+  "finance": {
+    "title": "Finansai",
+    "description": "Įmonės išlaidos, įvestos rankiniu būdu. Gauti mokėjimai registruojami kiekvienoje sąskaitoje.",
+    "toReports": "Ataskaitos",
+    "readOnly": "Galite peržiūrėti ir eksportuoti išlaidas; jūsų rolė neleidžia jų keisti.",
+    "search": "Paieška",
+    "searchPlaceholder": "Aprašymas, tiekėjas arba nuoroda",
+    "all": "Visi",
+    "from": "Nuo",
+    "to": "Iki",
+    "apply": "Taikyti",
+    "reset": "Atstatyti",
+    "export": "Eksportuoti CSV",
+    "add": "Pridėti išlaidas",
+    "edit": "Redaguoti",
+    "delete": "Ištrinti",
+    "deleteTitle": "Ištrinti šias išlaidas?",
+    "deleteText": "„{description}“ bus ištrinta visam laikui. To atšaukti negalima.",
+    "cancel": "Atšaukti",
+    "save": "Išsaugoti",
+    "count": "{count, plural, one {# išlaidų įrašas} few {# išlaidų įrašai} many {# išlaidų įrašo} other {# išlaidų įrašų}}",
+    "empty": "Išlaidų dar nėra. Pridėkite pirmąsias, kad apžvalgoje matytumėte sąnaudas ir pelną.",
+    "noMatches": "Pagal šiuos filtrus išlaidų nėra.",
+    "costShort": "sąnaudos {amount}",
+    "dueOn": "terminas {date}",
+    "taxNotRecoverable": "Mokestis neatgaunamas",
+    "recordNext": "Registruoti kitą",
+    "pagination": "Puslapiai",
+    "previous": "Ankstesnis",
+    "next": "Kitas",
+    "pageOf": "Puslapis {page} iš {pages}",
+    "supplierNone": "Be tiekėjo įrašo",
+    "taxHint": "PVM ar panašus mokestis, kaip tiekėjo sąskaitoje.",
+    "paidOnHint": "Tuščia: išlaidų data.",
+    "status": {
+      "paid": "Apmokėta",
+      "unpaid": "Neapmokėta",
+      "overdue": "Vėluoja"
+    },
+    "recurrence": {
+      "none": "Vienkartinės",
+      "monthly": "Kas mėnesį",
+      "quarterly": "Kas ketvirtį",
+      "yearly": "Kas metus"
+    },
+    "source": {
+      "manual": "Įvesta rankiniu būdu",
+      "imported": "Importuota"
+    },
+    "sort": {
+      "label": "Rikiuoti",
+      "date_desc": "Naujausios pirma",
+      "date_asc": "Seniausios pirma",
+      "amount_desc": "Didžiausios pirma",
+      "amount_asc": "Mažiausios pirma"
+    },
+    "category": {
+      "materials": "Medžiagos",
+      "goods_for_resale": "Prekės perpardavimui",
+      "rent": "Nuoma",
+      "utilities": "Komunalinės paslaugos",
+      "salaries": "Darbo užmokestis",
+      "taxes_fees": "Mokesčiai ir rinkliavos",
+      "transport": "Transportas",
+      "marketing": "Rinkodara",
+      "software": "Programinė įranga",
+      "professional_services": "Profesionalios paslaugos",
+      "equipment": "Įranga",
+      "travel": "Komandiruotės",
+      "bank_fees": "Banko mokesčiai",
+      "other": "Kita"
+    },
+    "method": {
+      "bank_transfer": "Banko pavedimas",
+      "card": "Kortelė",
+      "cash": "Grynieji",
+      "other": "Kita"
+    },
+    "fields": {
+      "category": "Kategorija",
+      "status": "Būsena",
+      "description": "Aprašymas",
+      "date": "Data",
+      "supplier": "Tiekėjas",
+      "supplierName": "Tiekėjas (tekstu)",
+      "currency": "Valiuta",
+      "net": "Suma be mokesčio",
+      "tax": "Mokesčio suma",
+      "taxRecoverable": "Mokestis atgaunamas (atskaitomas pirkimo PVM)",
+      "paidOn": "Sumokėta",
+      "dueDate": "Mokėjimo terminas",
+      "method": "Mokėjimo būdas",
+      "reference": "Nuoroda",
+      "recurrence": "Kartojasi",
+      "notes": "Pastabos"
+    },
+    "done": {
+      "created": "Išlaidos pridėtos.",
+      "updated": "Išlaidos išsaugotos.",
+      "deleted": "Išlaidos ištrintos."
+    },
+    "issue": {
+      "invalid": "Patikrinkite šią reikšmę.",
+      "expense": {
+        "amount": {
+          "invalid": "Įveskite sumą nuo nulio, ne daugiau kaip 2 skaitmenys po kablelio."
+        },
+        "date": {
+          "invalid": "Įveskite teisingą datą."
+        },
+        "description": {
+          "required": "Įveskite aprašymą."
+        },
+        "dueDate": {
+          "invalid": "Įveskite teisingą datą."
+        },
+        "paidOn": {
+          "invalid": "Įveskite teisingą datą."
+        },
+        "supplier": {
+          "unknown": "Pasirinkite šios įmonės tiekėją."
+        }
+      }
     }
   }
 }

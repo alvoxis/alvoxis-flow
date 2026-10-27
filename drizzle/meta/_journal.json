@@ -169,6 +169,13 @@
       "when": 1793058142474,
       "tag": "0023_grant_finance_permissions",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1793058776101,
+      "tag": "0024_finance",
+      "breakpoints": true
     }
   ]
 }

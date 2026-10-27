@@ -17,7 +17,8 @@
     "settings": "Settings",
     "soon": "Soon",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "finance": "Finance"
   },
   "topbar": {
     "noCompany": "No company yet",
@@ -1733,6 +1734,192 @@
       "ai": "AI business assistant (fair-use limits)",
       "team": "Team members with roles",
       "languages": "English, Russian, Latvian, Lithuanian, Estonian"
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "status": {
+      "unpaid": "Unpaid",
+      "partially_paid": "Partially paid",
+      "paid": "Paid",
+      "credited": "Credited"
+    },
+    "overdueDays": "{days, plural, one {# day overdue} other {# days overdue}}",
+    "summary": {
+      "gross": "Invoice total",
+      "credited": "Credit notes",
+      "paid": "Paid",
+      "balance": "Open balance"
+    },
+    "dueOn": "Due on {date}.",
+    "none": "No payments recorded yet.",
+    "record": "Record payment",
+    "recorded": "Payment recorded.",
+    "voided": "Payment voided. It stays in the history and no longer counts.",
+    "void": "Void",
+    "voidedBadge": "Voided",
+    "voidTitle": "Void this payment?",
+    "voidText": "The payment of {amount} stays in the history but no longer counts towards the invoice.",
+    "keep": "Keep",
+    "referenceTaken": "A payment with this reference is already recorded on this invoice.",
+    "manualNote": "Payments are recorded by hand; nothing is read from the bank automatically. The invoice itself never changes.",
+    "method": {
+      "bank_transfer": "Bank transfer",
+      "card": "Card",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "fields": {
+      "amount": "Amount ({currency})",
+      "paidOn": "Paid on",
+      "method": "Method",
+      "reference": "Reference (e.g. bank transfer ID)",
+      "note": "Note"
+    },
+    "issue": {
+      "invalid": "Check this value.",
+      "payment": {
+        "amount": {
+          "invalid": "Enter an amount greater than zero, with up to 2 decimals.",
+          "exceedsBalance": "The amount is larger than the open balance."
+        },
+        "paidOn": {
+          "invalid": "Enter a valid date.",
+          "future": "The date cannot be in the future."
+        }
+      }
+    },
+    "state": {
+      "failed": "The payment could not be saved. Reload and try again.",
+      "payments": {
+        "notIssuedInvoice": "Payments can be recorded on issued invoices only.",
+        "alreadyVoided": "This payment is already voided."
+      }
+    }
+  },
+  "finance": {
+    "title": "Finance",
+    "description": "Expenses of the company, entered by hand. Payments received are recorded on each invoice.",
+    "toReports": "Reports",
+    "readOnly": "You can view and export expenses; your role cannot change them.",
+    "search": "Search",
+    "searchPlaceholder": "Description, supplier or reference",
+    "all": "All",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
+    "reset": "Reset",
+    "export": "Export CSV",
+    "add": "Add expense",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteTitle": "Delete this expense?",
+    "deleteText": "“{description}” will be deleted permanently. This cannot be undone.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "count": "{count, plural, one {# expense} other {# expenses}}",
+    "empty": "No expenses yet. Add the first one to see costs and profit on the dashboard.",
+    "noMatches": "No expenses match these filters.",
+    "costShort": "cost {amount}",
+    "dueOn": "due {date}",
+    "taxNotRecoverable": "Tax not recoverable",
+    "recordNext": "Record next",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {pages}",
+    "supplierNone": "No supplier record",
+    "taxHint": "VAT or similar tax as on the supplier's invoice.",
+    "paidOnHint": "Empty: the expense date.",
+    "status": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue"
+    },
+    "recurrence": {
+      "none": "One-off",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "source": {
+      "manual": "Entered by hand",
+      "imported": "Imported"
+    },
+    "sort": {
+      "label": "Sort",
+      "date_desc": "Newest first",
+      "date_asc": "Oldest first",
+      "amount_desc": "Largest first",
+      "amount_asc": "Smallest first"
+    },
+    "category": {
+      "materials": "Materials",
+      "goods_for_resale": "Goods for resale",
+      "rent": "Rent",
+      "utilities": "Utilities",
+      "salaries": "Salaries",
+      "taxes_fees": "Taxes and fees",
+      "transport": "Transport",
+      "marketing": "Marketing",
+      "software": "Software",
+      "professional_services": "Professional services",
+      "equipment": "Equipment",
+      "travel": "Travel",
+      "bank_fees": "Bank fees",
+      "other": "Other"
+    },
+    "method": {
+      "bank_transfer": "Bank transfer",
+      "card": "Card",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "fields": {
+      "category": "Category",
+      "status": "Status",
+      "description": "Description",
+      "date": "Date",
+      "supplier": "Supplier",
+      "supplierName": "Supplier (text)",
+      "currency": "Currency",
+      "net": "Net amount",
+      "tax": "Tax amount",
+      "taxRecoverable": "Tax is recoverable (deductible input VAT)",
+      "paidOn": "Paid on",
+      "dueDate": "Due date",
+      "method": "Payment method",
+      "reference": "Reference",
+      "recurrence": "Repeats",
+      "notes": "Notes"
+    },
+    "done": {
+      "created": "Expense added.",
+      "updated": "Expense saved.",
+      "deleted": "Expense deleted."
+    },
+    "issue": {
+      "invalid": "Check this value.",
+      "expense": {
+        "amount": {
+          "invalid": "Enter an amount of zero or more, with up to 2 decimals."
+        },
+        "date": {
+          "invalid": "Enter a valid date."
+        },
+        "description": {
+          "required": "Enter a description."
+        },
+        "dueDate": {
+          "invalid": "Enter a valid date."
+        },
+        "paidOn": {
+          "invalid": "Enter a valid date."
+        },
+        "supplier": {
+          "unknown": "Choose one of the company's suppliers."
+        }
+      }
     }
   }
 }

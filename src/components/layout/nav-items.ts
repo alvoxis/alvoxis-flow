@@ -1,6 +1,7 @@
 export type NavKey =
   | "dashboard"
   | "documents"
+  | "finance"
   | "customers"
   | "suppliers"
   | "products"
@@ -34,6 +35,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     soon: false,
     alsoActiveOn: /^\/companies\/[^/]+\/documents(\/|$)/,
     icon: "M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h8M9 17h6",
+  },
+  {
+    key: "finance",
+    href: "/finance",
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/(finance|reports)(\/|$)/,
+    icon: "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
   },
   {
     key: "customers",
