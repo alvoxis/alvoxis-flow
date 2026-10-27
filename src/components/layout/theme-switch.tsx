@@ -14,7 +14,7 @@ export const THEME_BOOT_SCRIPT = `try{var t=localStorage.getItem("${THEME_STORAG
  * Light/dark switch. Both icons are rendered and CSS shows the right one, so the server and the
  * browser render the same markup (no hydration mismatch). The choice is stored per browser only.
  */
-export function ThemeSwitch() {
+export function ThemeSwitch({ className = "inline-flex" }: { className?: string }) {
   const t = useTranslations("topbar");
   return (
     <button
@@ -32,7 +32,7 @@ export function ThemeSwitch() {
           // Storage unavailable: the choice lasts for this page only.
         }
       }}
-      className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:text-text active:scale-95"
+      className={`${className} size-9 shrink-0 items-center justify-center rounded-lg border border-border text-muted transition-colors hover:text-text active:scale-95`}
     >
       {/* Sun: offered while dark. */}
       <svg

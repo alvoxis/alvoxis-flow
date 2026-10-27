@@ -43,7 +43,8 @@ export async function AppShell({
           <CompanyContext companies={companies} />
           <div className="ml-auto flex shrink-0 items-center gap-3" data-testid="topbar-actions">
             <LocaleSwitcher />
-            <ThemeSwitch />
+            {/* On phones the switch lives in the menu drawer, so the bar fits 320 px. */}
+            <ThemeSwitch className="hidden sm:inline-flex" />
             <div className="flex items-center gap-2 text-sm text-muted" title={t("topbar.account")}>
               <Link
                 href="/account/security"

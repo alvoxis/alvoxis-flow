@@ -37,9 +37,30 @@ can also build the repository directly.
 - `EMAIL_TRANSPORT=smtp` with `EMAIL_FROM` and `SMTP_*`; optionally `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`.
   Details and the operator 2FA-reset procedure: [auth/AUTHENTICATION.md](auth/AUTHENTICATION.md).
 - `STRIPE_SECRET_KEY` for subscriptions: a **restricted key** (`rk_live_…`) is enough. It needs
-  write access to Customers, Checkout Sessions and Customer portal, and read access to Prices and
-  Subscriptions. The prices with the lookup keys `alvoxis_flow_basic_monthly`, `…_pro_monthly` and
-  `…_business_monthly` and a customer-portal configuration must exist in the same Stripe mode.
+  write access to Customers, Checkout Sessions, Customer portal and Subscriptions (cancel at period
+  end / resume), and read access to Prices and Invoices. In the same Stripe mode create:
+  - one recurring price with the lookup key **`alvoxis_flow_monthly`**: **€9.99 per month** (999
+    EUR cents, monthly, no trial). Checkout refuses a price with any other amount, currency or
+    interval, so a misconfigured price never charges a customer;
+  - a customer-portal configuration;
+  - a webhook endpoint `https://<APP_URL host>/api/billing/webhook` with the events
+    `checkout.session.completed`, `customer.subscription.created`, `…updated`, `…deleted`,
+    `…paused`, `…resumed`, `invoice.paid`, `invoice.payment_failed` and
+    `invoice.payment_action_required`. Its signing secret goes into `STRIPE_WEBHOOK_SECRET`.
+    Events are verified (HMAC, 5-minute tolerance), stored once in `billing_events` (idempotent)
+    and the subscription is re-read from Stripe, so retries and out-of-order delivery are safe.
+- `SUBSCRIPTION_ENFORCEMENT` — defaults to on whenever `STRIPE_SECRET_KEY` is set: companies
+  without an active (or past-due) subscription become read-only (API answers `402`). Set `off` to
+  keep everything open, e.g. on a preview without Stripe.
+- `ANTHROPIC_API_KEY` for the AI assistant (optional `ANTHROPIC_MODEL`, default `claude-opus-5-5`;
+  `AI_MONTHLY_REQUESTS_PER_COMPANY`, default 300). Without the key the assistant says it is not
+  configured. Requests and token counts are recorded in `ai_usage`; questions and answers are not.
+- `CONTACT_EMAIL` — the address shown on the public contact page (no address is invented when it is
+  unset). The legal pages are **drafts** and must be reviewed by a lawyer before launch.
+- Operator access: `pnpm admin:grant --email <email> --operator "<name>" --reason "<ticket>"`
+  (run with the production `DATABASE_URL`; `--revoke` removes it). The operator area
+  `/[locale]/admin` also requires 2FA on the account and a 2FA-verified session; all actions are
+  audited.
 - Secrets are stored in the hosting platform's secret manager, never in the repository.
 
 ## Release procedure (target)

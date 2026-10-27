@@ -6,13 +6,18 @@ invoicing, customers & suppliers, products, inventory, production, payroll and a
 > **Status: closed beta preparation — not yet for real customers.** Working today: accounts with
 > email verification, Google sign-in, sessions and TOTP 2FA; companies, roles, member invitations;
 > documents (drafts, issue with numbering, credit notes, PDF, PDF import, sending by email);
-> customers and suppliers; products; inventory (append-only stock ledger); production (bills of
-> materials, production orders); payroll as a **calculation aid**; basic analytics.
+> invoice payments and receivables; expenses; a business dashboard with KPIs and charts; a cost
+> calculator; reports with CSV export (P&L, receivables ageing, expenses, VAT summary, margins,
+> stock); customers and suppliers; products; inventory (append-only stock ledger); production
+> (bills of materials, production orders); payroll as a **calculation aid**; an AI assistant
+> (Claude API, read-only tools); one subscription (€9.99/month, Stripe, webhooks); an operator
+> area; a public website with light and dark themes.
 >
 > **Not ready for real use yet:** verified country tax rules and mandatory invoice content
-> (LV/LT/EE/PL), legal documents (privacy policy, terms, cookie notice, GDPR processes), payments and
-> subscriptions, monitoring and alerting, documented restore drills, PostgreSQL RLS. The full list
-> and order is in [docs/ROADMAP.md](docs/ROADMAP.md#before-real-customers).
+> (LV/LT/EE/PL), **lawyer-reviewed** legal documents (the public pages are drafts), GDPR processes,
+> an end-to-end check of Stripe with the owner's keys, monitoring and alerting, documented restore
+> drills, PostgreSQL RLS. The full list and order is in
+> [docs/ROADMAP.md](docs/ROADMAP.md#before-real-customers).
 
 ## Stack
 
@@ -66,6 +71,11 @@ fast with a list of problems (values are never echoed).
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | optional                             | Enables Google sign-in (both or neither).                                             |
 | `EMAIL_TRANSPORT` (+ `EMAIL_*`, `SMTP_*`)   | no (default `disabled`)              | `file` writes mails to `tmp/mail` for local development; `smtp` for real delivery.    |
 | `STRIPE_SECRET_KEY`                         | for subscriptions                    | Stripe secret or restricted key; unset hides subscriptions. Previews: test keys only. |
+| `STRIPE_WEBHOOK_SECRET`                     | with Stripe                          | Signing secret (`whsec_…`) of the `/api/billing/webhook` endpoint.                    |
+| `SUBSCRIPTION_ENFORCEMENT`                  | no (default: on when Stripe is set)  | `on`/`off`: companies without a subscription are read-only.                           |
+| `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL`     | for the AI assistant                 | Claude API key; unset hides the assistant. Model defaults to `claude-opus-5-5`.       |
+| `AI_MONTHLY_REQUESTS_PER_COMPANY`           | no (default `300`)                   | Assistant requests per company per calendar month.                                    |
+| `CONTACT_EMAIL`                             | no                                   | Shown on the public contact page; unset shows no address.                             |
 
 Setup steps for Google OAuth and SMTP: [docs/auth/AUTHENTICATION.md](docs/auth/AUTHENTICATION.md).
 All secrets are server-only variables and never use the `NEXT_PUBLIC_` prefix. With

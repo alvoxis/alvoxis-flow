@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "@/i18n/navigation";
 import { Brand } from "./brand";
 import { NavList } from "./nav-list";
+import { ThemeSwitch } from "./theme-switch";
 
 /** The breakpoint from which the sidebar is shown and the drawer is not needed (Tailwind `lg`). */
 const DESKTOP_QUERY = "(min-width: 1024px)";
@@ -71,6 +72,7 @@ export function MobileNav() {
         >
           <div className="mb-6 flex shrink-0 items-center justify-between gap-3">
             <Brand />
+            <ThemeSwitch className="ml-auto inline-flex sm:hidden" />
             <Dialog.Close
               aria-label={t("closeMenu")}
               data-testid="mobile-nav-close"
