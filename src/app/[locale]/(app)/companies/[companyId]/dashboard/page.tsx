@@ -13,7 +13,6 @@ import { type AppLocale, LOCALE_FORMAT_TAGS } from "@/i18n/config";
 import { Link } from "@/i18n/navigation";
 import { formatDate, formatMoney } from "@/lib/format";
 import { type CurrencyCode } from "@/lib/money";
-import { type PeriodFigures } from "@/modules/dashboard/server/business-dashboard";
 import { requirePageUser } from "@/server/auth/page-session";
 import { businessDashboardPageData } from "@/server/dashboard/page-data";
 
