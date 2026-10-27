@@ -2223,5 +2223,102 @@
       "invalid": "Uzrakstiet jautājumu līdz 2000 rakstzīmēm.",
       "failed": "Asistents pašlaik nav pieejams. Mēģiniet vēlāk."
     }
+  },
+  "reports": {
+    "title": "Atskaites",
+    "period": "Periods {from} – {to}",
+    "none": "Jūsu lomā nav atskaišu.",
+    "choose": "Atskaite",
+    "to": "Līdz",
+    "apply": "Rādīt",
+    "csv": "Eksportēt CSV",
+    "empty": "Šai atskaitei un periodam nekas nav reģistrēts.",
+    "name": {
+      "pnl": "Peļņa un zaudējumi",
+      "receivables": "Debitoru parādi",
+      "expenses": "Izdevumi pa kategorijām",
+      "vat": "PVN kopsavilkums",
+      "margins": "Preču maržas",
+      "stock": "Krājumi"
+    },
+    "range": {
+      "this_month": "Šis mēnesis",
+      "last_month": "Iepriekšējais mēnesis",
+      "this_quarter": "Šis ceturksnis",
+      "this_year": "Šis gads"
+    },
+    "note": {
+      "pnl": "Ieņēmumi (bez nodokļa, no izrakstītajiem rēķiniem un kredītrēķiniem) un izdevumi pēc izmaksām pa mēnešiem vai dienām, ar ienākošo un izejošo naudu. Rezultāts ir pirms ienākuma nodokļa.",
+      "receivables": "Izrakstīto rēķinu neapmaksātie atlikumi šodien, vispirms visvairāk kavētie, ar sadalījumu pa termiņiem. Ņemti vērā ALVOXIS Flow reģistrētie maksājumi.",
+      "expenses": "Izdevumi pēc izmaksām pa kategorijām, salīdzinot ar tikpat garu iepriekšējo periodu.",
+      "vat": "Aprēķinātais nodoklis no izrakstītajiem rēķiniem un kredītrēķiniem un atgūstamais priekšnodoklis no reģistrētajiem izdevumiem. Kopsavilkums deklarācijas sagatavošanai — nevis deklarācija; pārbaudiet to pēc savas valsts noteikumiem vai ar grāmatvedi.",
+      "margins": "Aktīvo preču kataloga pārdošanas un iepirkuma cenas. Tās ir cenrāža cenas, nevis faktiskie rezultāti.",
+      "stock": "Atlikums pa precēm un noliktavām, novērtēts pēc iepirkuma cenas."
+    },
+    "col": {
+      "period": "Periods",
+      "currency": "Valūta",
+      "revenue": "Ieņēmumi",
+      "expenses": "Izdevumi",
+      "result": "Rezultāts",
+      "cashIn": "Ienākošā nauda",
+      "cashOut": "Izejošā nauda",
+      "number": "Numurs",
+      "customer": "Klients",
+      "issueDate": "Izrakstīts",
+      "dueDate": "Termiņš",
+      "gross": "Summa",
+      "paid": "Samaksāts",
+      "balance": "Atlikums",
+      "daysOverdue": "Kavētās dienas",
+      "ageing": "Parāda vecums",
+      "category": "Kategorija",
+      "count": "Ieraksti",
+      "cost": "Izmaksas",
+      "previousCost": "Iepriekšējais periods",
+      "change": "Izmaiņas",
+      "changePercent": "Izmaiņas, %",
+      "direction": "Virziens",
+      "code": "Kods",
+      "treatment": "Režīms",
+      "ratePercent": "Likme, %",
+      "taxable": "Apliekamā summa",
+      "tax": "Nodoklis",
+      "product": "Prece",
+      "sku": "Artikuls",
+      "salePrice": "Pārdošanas cena",
+      "purchasePrice": "Iepirkuma cena",
+      "profitPerUnit": "Peļņa par vienību",
+      "marginPercent": "Marža, %",
+      "markupPercent": "Uzcenojums, %",
+      "warehouse": "Noliktava",
+      "quantity": "Daudzums",
+      "unit": "Mērv.",
+      "value": "Vērtība"
+    },
+    "ageing": {
+      "current": "Termiņš nav iestājies",
+      "1_30": "1–30 dienas",
+      "31_60": "31–60 dienas",
+      "61_90": "61–90 dienas",
+      "over_90": "Vairāk nekā 90 dienas"
+    },
+    "row": {
+      "total": "Kopā",
+      "balance": "Aprēķinātais − priekšnodoklis"
+    },
+    "direction": {
+      "output": "Aprēķinātais nodoklis",
+      "input": "Priekšnodoklis"
+    },
+    "treatment": {
+      "standard": "Standarta",
+      "zero_rated": "Nulles likme",
+      "exempt": "Atbrīvots",
+      "reverse_charge": "Apgrieztā maksāšana",
+      "outside_scope": "Ārpus nodokļa piemērošanas",
+      "recorded_expenses": "Reģistrētie izdevumi"
+    },
+    "from": "No"
   }
 }

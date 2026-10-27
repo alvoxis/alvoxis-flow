@@ -2223,5 +2223,102 @@
       "invalid": "Write a question of up to 2,000 characters.",
       "failed": "The assistant is not available right now. Try again later."
     }
+  },
+  "reports": {
+    "title": "Reports",
+    "period": "Period {from} – {to}",
+    "none": "Your role does not include any reports.",
+    "choose": "Report",
+    "to": "To",
+    "apply": "Show",
+    "csv": "Export CSV",
+    "empty": "Nothing recorded for this report and period.",
+    "name": {
+      "pnl": "Profit and loss",
+      "receivables": "Receivables",
+      "expenses": "Expenses by category",
+      "vat": "VAT summary",
+      "margins": "Product margins",
+      "stock": "Inventory"
+    },
+    "range": {
+      "this_month": "This month",
+      "last_month": "Last month",
+      "this_quarter": "This quarter",
+      "this_year": "This year"
+    },
+    "note": {
+      "pnl": "Revenue (net of issued invoices and credit notes) and expenses at cost per month or day, with cash in and out. Result is before income tax.",
+      "receivables": "Open balances of issued invoices today, oldest overdue first, with ageing. Payments are those recorded in ALVOXIS Flow.",
+      "expenses": "Expenses at cost per category, compared with the previous period of the same length.",
+      "vat": "Output tax from issued invoices and credit notes and recoverable input tax from recorded expenses. A summary to help prepare a return — not a declaration; check it against your country's rules or with your accountant.",
+      "margins": "Catalogue sale and purchase prices of active products. List prices, not realised results.",
+      "stock": "Quantity on hand per product and warehouse, valued at the purchase price."
+    },
+    "col": {
+      "period": "Period",
+      "currency": "Currency",
+      "revenue": "Revenue",
+      "expenses": "Expenses",
+      "result": "Result",
+      "cashIn": "Cash in",
+      "cashOut": "Cash out",
+      "number": "Number",
+      "customer": "Customer",
+      "issueDate": "Issued",
+      "dueDate": "Due",
+      "gross": "Total",
+      "paid": "Paid",
+      "balance": "Open",
+      "daysOverdue": "Days overdue",
+      "ageing": "Ageing",
+      "category": "Category",
+      "count": "Entries",
+      "cost": "Cost",
+      "previousCost": "Previous period",
+      "change": "Change",
+      "changePercent": "Change %",
+      "direction": "Direction",
+      "code": "Code",
+      "treatment": "Treatment",
+      "ratePercent": "Rate %",
+      "taxable": "Taxable amount",
+      "tax": "Tax",
+      "product": "Product",
+      "sku": "SKU",
+      "salePrice": "Sale price",
+      "purchasePrice": "Purchase price",
+      "profitPerUnit": "Profit per unit",
+      "marginPercent": "Margin %",
+      "markupPercent": "Markup %",
+      "warehouse": "Warehouse",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "value": "Value"
+    },
+    "ageing": {
+      "current": "Not yet due",
+      "1_30": "1–30 days",
+      "31_60": "31–60 days",
+      "61_90": "61–90 days",
+      "over_90": "Over 90 days"
+    },
+    "row": {
+      "total": "Total",
+      "balance": "Output − input"
+    },
+    "direction": {
+      "output": "Output tax",
+      "input": "Input tax"
+    },
+    "treatment": {
+      "standard": "Standard",
+      "zero_rated": "Zero-rated",
+      "exempt": "Exempt",
+      "reverse_charge": "Reverse charge",
+      "outside_scope": "Outside scope",
+      "recorded_expenses": "Recorded expenses"
+    },
+    "from": "From"
   }
 }

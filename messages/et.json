@@ -2223,5 +2223,102 @@
       "invalid": "Kirjutage kuni 2000 tähemärgi pikkune küsimus.",
       "failed": "Assistent pole praegu saadaval. Proovige hiljem."
     }
+  },
+  "reports": {
+    "title": "Aruanded",
+    "period": "Periood {from} – {to}",
+    "none": "Teie roll ei hõlma aruandeid.",
+    "choose": "Aruanne",
+    "to": "Kuni",
+    "apply": "Näita",
+    "csv": "Ekspordi CSV",
+    "empty": "Selle aruande ja perioodi kohta pole midagi registreeritud.",
+    "name": {
+      "pnl": "Kasum ja kahjum",
+      "receivables": "Nõuded",
+      "expenses": "Kulud kategooriate kaupa",
+      "vat": "Käibemaksu kokkuvõte",
+      "margins": "Toodete marginaalid",
+      "stock": "Laovarud"
+    },
+    "range": {
+      "this_month": "See kuu",
+      "last_month": "Eelmine kuu",
+      "this_quarter": "See kvartal",
+      "this_year": "See aasta"
+    },
+    "note": {
+      "pnl": "Tulu (ilma maksuta, väljastatud arvete ja kreeditarvete järgi) ja kulud omahinnas kuude või päevade kaupa koos laekumiste ja väljamaksetega. Tulemus on enne tulumaksu.",
+      "receivables": "Väljastatud arvete tasumata jäägid täna, kõige kauem üle tähtaja olevad eespool, vanuse järgi. Arvesse lähevad ALVOXIS Flow's registreeritud maksed.",
+      "expenses": "Kulud omahinnas kategooriate kaupa võrreldes sama pika eelmise perioodiga.",
+      "vat": "Väljastatud arvete ja kreeditarvete käibemaks ning registreeritud kulude mahaarvatav sisendkäibemaks. Kokkuvõte deklaratsiooni ettevalmistamiseks, mitte deklaratsioon; kontrollige seda oma riigi reeglite järgi või raamatupidajaga.",
+      "margins": "Aktiivsete toodete kataloogi müügi- ja ostuhinnad. Need on hinnakirja hinnad, mitte tegelikud tulemused.",
+      "stock": "Laoseis toodete ja ladude kaupa, hinnatud ostuhinnaga."
+    },
+    "col": {
+      "period": "Periood",
+      "currency": "Valuuta",
+      "revenue": "Tulu",
+      "expenses": "Kulud",
+      "result": "Tulemus",
+      "cashIn": "Laekumised",
+      "cashOut": "Väljamaksed",
+      "number": "Arve nr",
+      "customer": "Klient",
+      "issueDate": "Väljastatud",
+      "dueDate": "Tähtaeg",
+      "gross": "Summa",
+      "paid": "Tasutud",
+      "balance": "Jääk",
+      "daysOverdue": "Päevi üle tähtaja",
+      "ageing": "Vanus",
+      "category": "Kategooria",
+      "count": "Kirjed",
+      "cost": "Kulu",
+      "previousCost": "Eelmine periood",
+      "change": "Muutus",
+      "changePercent": "Muutus, %",
+      "direction": "Suund",
+      "code": "Kood",
+      "treatment": "Režiim",
+      "ratePercent": "Määr, %",
+      "taxable": "Maksustatav summa",
+      "tax": "Maks",
+      "product": "Toode",
+      "sku": "Tootekood",
+      "salePrice": "Müügihind",
+      "purchasePrice": "Ostuhind",
+      "profitPerUnit": "Kasum ühiku kohta",
+      "marginPercent": "Marginaal, %",
+      "markupPercent": "Juurdehindlus, %",
+      "warehouse": "Ladu",
+      "quantity": "Kogus",
+      "unit": "Ühik",
+      "value": "Väärtus"
+    },
+    "ageing": {
+      "current": "Tähtaeg pole saabunud",
+      "1_30": "1–30 päeva",
+      "31_60": "31–60 päeva",
+      "61_90": "61–90 päeva",
+      "over_90": "Üle 90 päeva"
+    },
+    "row": {
+      "total": "Kokku",
+      "balance": "Käibemaks − sisendkäibemaks"
+    },
+    "direction": {
+      "output": "Käibemaks",
+      "input": "Sisendkäibemaks"
+    },
+    "treatment": {
+      "standard": "Tavamäär",
+      "zero_rated": "Nullmäär",
+      "exempt": "Maksuvaba",
+      "reverse_charge": "Pöördmaksustamine",
+      "outside_scope": "Väljaspool maksustamist",
+      "recorded_expenses": "Registreeritud kulud"
+    },
+    "from": "Alates"
   }
 }

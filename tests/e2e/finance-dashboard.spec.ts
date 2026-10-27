@@ -65,4 +65,9 @@ test("payments, expenses and the business overview work together", async ({ page
 
   await page.getByTestId("quick-expense").click();
   await expect(page).toHaveURL(new RegExp(`/en/companies/${companyId}/finance$`));
+
+  await page.goto(`/en/companies/${companyId}/reports?view=receivables`);
+  await expect(page.getByTestId("report-table")).toContainText("Kredīta Pircējs SIA");
+  await expect(page.getByTestId("report-table")).toContainText("1,000.00");
+  await expect(page.getByTestId("report-csv")).toHaveAttribute("href", /format=csv/);
 });

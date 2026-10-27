@@ -2223,5 +2223,102 @@
       "invalid": "Parašykite iki 2000 simbolių klausimą.",
       "failed": "Asistentas šiuo metu nepasiekiamas. Bandykite vėliau."
     }
+  },
+  "reports": {
+    "title": "Ataskaitos",
+    "period": "Laikotarpis {from} – {to}",
+    "none": "Jūsų rolė neapima ataskaitų.",
+    "choose": "Ataskaita",
+    "to": "Iki",
+    "apply": "Rodyti",
+    "csv": "Eksportuoti CSV",
+    "empty": "Šiai ataskaitai ir laikotarpiui nieko neužregistruota.",
+    "name": {
+      "pnl": "Pelnas ir nuostoliai",
+      "receivables": "Gautinos sumos",
+      "expenses": "Išlaidos pagal kategorijas",
+      "vat": "PVM suvestinė",
+      "margins": "Prekių maržos",
+      "stock": "Atsargos"
+    },
+    "range": {
+      "this_month": "Šis mėnuo",
+      "last_month": "Praėjęs mėnuo",
+      "this_quarter": "Šis ketvirtis",
+      "this_year": "Šie metai"
+    },
+    "note": {
+      "pnl": "Pajamos (be mokesčio, pagal išrašytas sąskaitas ir kreditines sąskaitas) ir išlaidos savikaina pagal mėnesius ar dienas, su gautais ir išmokėtais pinigais. Rezultatas — prieš pelno mokestį.",
+      "receivables": "Išrašytų sąskaitų neapmokėti likučiai šiandien, pirmiausia labiausiai vėluojančios, su suskirstymu pagal terminus. Įskaitomi ALVOXIS Flow užregistruoti mokėjimai.",
+      "expenses": "Išlaidos savikaina pagal kategorijas, palyginti su tokio pat ilgio ankstesniu laikotarpiu.",
+      "vat": "Pardavimo PVM iš išrašytų sąskaitų ir kreditinių sąskaitų bei atskaitomas pirkimo PVM iš užregistruotų išlaidų. Suvestinė deklaracijai parengti — ne pati deklaracija; patikrinkite ją pagal savo šalies taisykles arba su buhalteriu.",
+      "margins": "Aktyvių prekių katalogo pardavimo ir pirkimo kainos. Tai kainoraščio kainos, o ne faktiniai rezultatai.",
+      "stock": "Likutis pagal prekes ir sandėlius, įvertintas pirkimo kaina."
+    },
+    "col": {
+      "period": "Laikotarpis",
+      "currency": "Valiuta",
+      "revenue": "Pajamos",
+      "expenses": "Išlaidos",
+      "result": "Rezultatas",
+      "cashIn": "Gauta",
+      "cashOut": "Išmokėta",
+      "number": "Numeris",
+      "customer": "Klientas",
+      "issueDate": "Išrašyta",
+      "dueDate": "Terminas",
+      "gross": "Suma",
+      "paid": "Sumokėta",
+      "balance": "Likutis",
+      "daysOverdue": "Vėlavimo dienos",
+      "ageing": "Įsiskolinimo senumas",
+      "category": "Kategorija",
+      "count": "Įrašai",
+      "cost": "Sąnaudos",
+      "previousCost": "Ankstesnis laikotarpis",
+      "change": "Pokytis",
+      "changePercent": "Pokytis, %",
+      "direction": "Kryptis",
+      "code": "Kodas",
+      "treatment": "Režimas",
+      "ratePercent": "Tarifas, %",
+      "taxable": "Apmokestinamoji suma",
+      "tax": "Mokestis",
+      "product": "Prekė",
+      "sku": "Kodas (SKU)",
+      "salePrice": "Pardavimo kaina",
+      "purchasePrice": "Pirkimo kaina",
+      "profitPerUnit": "Pelnas vienetui",
+      "marginPercent": "Marža, %",
+      "markupPercent": "Antkainis, %",
+      "warehouse": "Sandėlis",
+      "quantity": "Kiekis",
+      "unit": "Mat. vnt.",
+      "value": "Vertė"
+    },
+    "ageing": {
+      "current": "Terminas dar nesuėjo",
+      "1_30": "1–30 dienų",
+      "31_60": "31–60 dienų",
+      "61_90": "61–90 dienų",
+      "over_90": "Daugiau nei 90 dienų"
+    },
+    "row": {
+      "total": "Iš viso",
+      "balance": "Pardavimo − pirkimo"
+    },
+    "direction": {
+      "output": "Pardavimo PVM",
+      "input": "Pirkimo PVM"
+    },
+    "treatment": {
+      "standard": "Standartinis",
+      "zero_rated": "Nulinis tarifas",
+      "exempt": "Neapmokestinama",
+      "reverse_charge": "Atvirkštinis apmokestinimas",
+      "outside_scope": "Ne PVM objektas",
+      "recorded_expenses": "Užregistruotos išlaidos"
+    },
+    "from": "Nuo"
   }
 }
