@@ -19,7 +19,8 @@
     "openMenu": "Atvērt izvēlni",
     "closeMenu": "Aizvērt izvēlni",
     "finance": "Finanses",
-    "costing": "Pašizmaksas kalkulators"
+    "costing": "Pašizmaksas kalkulators",
+    "assistant": "MI asistents"
   },
   "topbar": {
     "noCompany": "Uzņēmuma vēl nav",
@@ -2174,6 +2175,53 @@
       "piecework": "Gabaldarba samaksa",
       "overhead": "Pieskaitāmās izmaksas",
       "other": "Citas izmaksas"
+    }
+  },
+  "assistant": {
+    "title": "MI biznesa asistents",
+    "description": "Jautājiet par uzņēmuma rādītājiem. Atbildes balstās tikai uz ALVOXIS Flow reģistrētajiem datiem.",
+    "notConfigured": "MI asistents šajā vietnē vēl nav iestatīts. Viss pārējais darbojas kā parasti.",
+    "readOnly": "Asistentam nepieciešams aktīvs abonements.",
+    "toBilling": "Atvērt abonementu",
+    "noPermission": "Jūsu lomā nav MI asistenta. Ja tas nepieciešams, vērsieties pie īpašnieka vai administratora.",
+    "privacy": "Lai atbildētu, attiecīgie šī uzņēmuma rādītāji (bez parolēm un bankas piekļuves datiem) tiek nosūtīti Anthropic Claude API, kas tos apstrādā ALVOXIS Flow vajadzībām. ALVOXIS Flow neglabā jautājumus un atbildes. Asistents nevar mainīt ierakstus, sūtīt dokumentus vai veikt maksājumus. Tā nav nodokļu vai juridiska konsultācija.",
+    "suggestionsTitle": "Piemēram:",
+    "suggestions": {
+      "profitLastMonth": "Kāds bija mans rezultāts iepriekšējā mēnesī?",
+      "expensesIncreased": "Kuri izdevumi pieauga visvairāk?",
+      "highestMargin": "Kurām precēm ir augstākā marža?",
+      "overdue": "Kuri rēķini ir kavēti?",
+      "inflows30": "Cik daudz naudas sagaidāms nākamajās 30 dienās?",
+      "reduceCosts": "Kuras izmaksas varētu samazināt?",
+      "underpriced": "Kuras preces, iespējams, ir pārdotas par lētu?",
+      "risks": "Kādus finanšu riskus vajadzētu pārskatīt?",
+      "profitChange": "Kāpēc mans rezultāts mainījās salīdzinājumā ar iepriekšējo mēnesi?"
+    },
+    "refused": "Asistents atteicās atbildēt uz šo jautājumu. Mēģiniet pajautāt par saviem rādītājiem citādi.",
+    "empty": "Atbilde netika saņemta.",
+    "incomplete": "Atbilde var būt nepilnīga",
+    "basedOn": "Balstīts uz:",
+    "noData": "Šai atbildei uzņēmuma dati netika izmantoti.",
+    "tools": {
+      "get_period_summary": "perioda rādītājiem",
+      "list_open_invoices": "neapmaksātajiem rēķiniem",
+      "expected_inflows": "rēķinu apmaksas termiņiem",
+      "expense_breakdown": "izdevumiem pa kategorijām",
+      "product_price_margins": "kataloga cenām",
+      "saved_cost_calculations": "saglabātajiem pašizmaksas aprēķiniem"
+    },
+    "working": "Skatos jūsu rādītājus…",
+    "questionLabel": "Jūsu jautājums",
+    "placeholder": "Jautājiet par ieņēmumiem, izdevumiem, rēķiniem, precēm vai izmaksām…",
+    "remaining": "{count, plural, zero {šomēnes atlikuši # jautājumi} one {šomēnes atlicis # jautājums} other {šomēnes atlikuši # jautājumi}}",
+    "ask": "Jautāt",
+    "error": {
+      "rate": "Pārāk daudz jautājumu īsā laikā. Pagaidiet minūti un mēģiniet vēlreiz.",
+      "budget": "Šī uzņēmuma asistenta jautājumi šim mēnesim ir izlietoti.",
+      "subscription": "Asistentam nepieciešams aktīvs abonements.",
+      "timeout": "Atbilde aizņēma pārāk ilgu laiku. Uzdodiet šaurāku jautājumu.",
+      "invalid": "Uzrakstiet jautājumu līdz 2000 rakstzīmēm.",
+      "failed": "Asistents pašlaik nav pieejams. Mēģiniet vēlāk."
     }
   }
 }

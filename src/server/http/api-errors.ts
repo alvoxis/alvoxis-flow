@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import { AiLimitError } from "@/modules/ai/server/errors";
 import { StripeRequestError } from "@/modules/billing/server/stripe-gateway";
 import { DocumentRuleError } from "@/modules/documents/domain/derive";
 import { ImportDecisionError } from "@/modules/documents/import/to-draft";
@@ -49,6 +50,7 @@ export function apiError(err: unknown): NextResponse {
     console.error(`[billing] ${err.message}`);
     return json(502, "payment_provider_error");
   }
+  if (err instanceof AiLimitError) return json(429, err.code);
   if (err instanceof RecordVersionConflictError) return json(409, "version_conflict");
   if (err instanceof RecordTakenError) return json(409, err.code);
   if (err instanceof RecordStateError) return json(409, "invalid_state", { code: err.code });

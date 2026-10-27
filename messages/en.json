@@ -19,7 +19,8 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "finance": "Finance",
-    "costing": "Cost calculator"
+    "costing": "Cost calculator",
+    "assistant": "AI assistant"
   },
   "topbar": {
     "noCompany": "No company yet",
@@ -2174,6 +2175,53 @@
       "piecework": "Piecework pay",
       "overhead": "Overhead",
       "other": "Other cost"
+    }
+  },
+  "assistant": {
+    "title": "AI business assistant",
+    "description": "Ask about your company's figures. Answers are based only on what is recorded in ALVOXIS Flow.",
+    "notConfigured": "The AI assistant is not configured on this site yet. Everything else works as usual.",
+    "readOnly": "The assistant needs an active subscription.",
+    "toBilling": "Open subscription",
+    "noPermission": "Your role does not include the AI assistant. Ask an owner or administrator if you need it.",
+    "privacy": "To answer, the relevant figures of this company (no passwords or bank credentials) are sent to Anthropic's Claude API, which processes them for ALVOXIS Flow. Questions and answers are not stored by ALVOXIS Flow. The assistant cannot change records, send documents or make payments. It is not tax or legal advice.",
+    "suggestionsTitle": "For example:",
+    "suggestions": {
+      "profitLastMonth": "What was my result last month?",
+      "expensesIncreased": "Which expenses increased the most?",
+      "highestMargin": "Which products have the highest margin?",
+      "overdue": "Which invoices are overdue?",
+      "inflows30": "How much money is expected to come in over the next 30 days?",
+      "reduceCosts": "What costs could be reduced?",
+      "underpriced": "Which products may be underpriced?",
+      "risks": "What financial risks should I review?",
+      "profitChange": "Why did my result change compared with the previous month?"
+    },
+    "refused": "The assistant declined to answer this question. Try asking about your figures in a different way.",
+    "empty": "No answer was returned.",
+    "incomplete": "Answer may be incomplete",
+    "basedOn": "Based on:",
+    "noData": "No company data was used for this answer.",
+    "tools": {
+      "get_period_summary": "period figures",
+      "list_open_invoices": "open invoices",
+      "expected_inflows": "invoice due dates",
+      "expense_breakdown": "expenses by category",
+      "product_price_margins": "catalogue prices",
+      "saved_cost_calculations": "saved cost calculations"
+    },
+    "working": "Looking at your figures…",
+    "questionLabel": "Your question",
+    "placeholder": "Ask about revenue, expenses, invoices, products or costs…",
+    "remaining": "{count, plural, one {# question left this month} other {# questions left this month}}",
+    "ask": "Ask",
+    "error": {
+      "rate": "Too many questions in a short time. Wait a minute and try again.",
+      "budget": "This company's assistant questions for this month are used up.",
+      "subscription": "The assistant needs an active subscription.",
+      "timeout": "The answer took too long. Try a narrower question.",
+      "invalid": "Write a question of up to 2,000 characters.",
+      "failed": "The assistant is not available right now. Try again later."
     }
   }
 }

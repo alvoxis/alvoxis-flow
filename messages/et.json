@@ -19,7 +19,8 @@
     "openMenu": "Ava menüü",
     "closeMenu": "Sulge menüü",
     "finance": "Rahandus",
-    "costing": "Omahinna kalkulaator"
+    "costing": "Omahinna kalkulaator",
+    "assistant": "Tehisintellekti assistent"
   },
   "topbar": {
     "noCompany": "Ettevõtet veel pole",
@@ -2174,6 +2175,53 @@
       "piecework": "Tükitöötasu",
       "overhead": "Üldkulud",
       "other": "Muu kulu"
+    }
+  },
+  "assistant": {
+    "title": "Tehisintellektil põhinev äriassistent",
+    "description": "Küsige ettevõtte näitajate kohta. Vastused põhinevad ainult ALVOXIS Flow's registreeritud andmetel.",
+    "notConfigured": "Tehisintellekti assistent pole sellel saidil veel seadistatud. Kõik muu töötab tavapäraselt.",
+    "readOnly": "Assistent vajab aktiivset tellimust.",
+    "toBilling": "Ava tellimus",
+    "noPermission": "Teie roll ei hõlma tehisintellekti assistenti. Vajadusel pöörduge omaniku või administraatori poole.",
+    "privacy": "Vastamiseks saadetakse selle ettevõtte asjakohased näitajad (ilma paroolide ja panga ligipääsuandmeteta) Anthropicu Claude API-le, mis töötleb neid ALVOXIS Flow jaoks. ALVOXIS Flow ei salvesta küsimusi ega vastuseid. Assistent ei saa kirjeid muuta, dokumente saata ega makseid teha. See pole maksu- ega õigusnõu.",
+    "suggestionsTitle": "Näiteks:",
+    "suggestions": {
+      "profitLastMonth": "Milline oli minu eelmise kuu tulemus?",
+      "expensesIncreased": "Millised kulud kasvasid kõige rohkem?",
+      "highestMargin": "Millistel toodetel on suurim marginaal?",
+      "overdue": "Millised arved on üle tähtaja?",
+      "inflows30": "Kui palju raha on oodata järgmise 30 päeva jooksul?",
+      "reduceCosts": "Milliseid kulusid saaks vähendada?",
+      "underpriced": "Millised tooted võivad olla liiga odavad?",
+      "risks": "Milliseid finantsriske peaksin üle vaatama?",
+      "profitChange": "Miks mu tulemus eelmise kuuga võrreldes muutus?"
+    },
+    "refused": "Assistent keeldus sellele küsimusele vastamast. Proovige oma näitajate kohta teisiti küsida.",
+    "empty": "Vastust ei saadud.",
+    "incomplete": "Vastus võib olla puudulik",
+    "basedOn": "Alus:",
+    "noData": "Selle vastuse jaoks ettevõtte andmeid ei kasutatud.",
+    "tools": {
+      "get_period_summary": "perioodi näitajad",
+      "list_open_invoices": "tasumata arved",
+      "expected_inflows": "arvete maksetähtajad",
+      "expense_breakdown": "kulud kategooriate kaupa",
+      "product_price_margins": "kataloogihinnad",
+      "saved_cost_calculations": "salvestatud omahinna arvutused"
+    },
+    "working": "Vaatan teie näitajaid…",
+    "questionLabel": "Teie küsimus",
+    "placeholder": "Küsige tulu, kulude, arvete, toodete või kulude kohta…",
+    "remaining": "{count, plural, one {sel kuul jäänud # küsimus} other {sel kuul jäänud # küsimust}}",
+    "ask": "Küsi",
+    "error": {
+      "rate": "Liiga palju küsimusi lühikese aja jooksul. Oodake minut ja proovige uuesti.",
+      "budget": "Selle ettevõtte assistendi küsimused selleks kuuks on otsas.",
+      "subscription": "Assistent vajab aktiivset tellimust.",
+      "timeout": "Vastamine võttis liiga kaua aega. Esitage kitsam küsimus.",
+      "invalid": "Kirjutage kuni 2000 tähemärgi pikkune küsimus.",
+      "failed": "Assistent pole praegu saadaval. Proovige hiljem."
     }
   }
 }

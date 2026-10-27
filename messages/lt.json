@@ -19,7 +19,8 @@
     "openMenu": "Atidaryti meniu",
     "closeMenu": "Uždaryti meniu",
     "finance": "Finansai",
-    "costing": "Savikainos skaičiuoklė"
+    "costing": "Savikainos skaičiuoklė",
+    "assistant": "DI asistentas"
   },
   "topbar": {
     "noCompany": "Įmonės dar nėra",
@@ -2174,6 +2175,53 @@
       "piecework": "Vienetinis atlygis",
       "overhead": "Pridėtinės išlaidos",
       "other": "Kitos išlaidos"
+    }
+  },
+  "assistant": {
+    "title": "DI verslo asistentas",
+    "description": "Klauskite apie įmonės rodiklius. Atsakymai grindžiami tik ALVOXIS Flow užregistruotais duomenimis.",
+    "notConfigured": "DI asistentas šioje svetainėje dar nesukonfigūruotas. Visa kita veikia įprastai.",
+    "readOnly": "Asistentui reikia aktyvios prenumeratos.",
+    "toBilling": "Atidaryti prenumeratą",
+    "noPermission": "Jūsų rolė neapima DI asistento. Jei jo reikia, kreipkitės į savininką ar administratorių.",
+    "privacy": "Kad atsakytų, reikiami šios įmonės rodikliai (be slaptažodžių ir banko prisijungimo duomenų) siunčiami į Anthropic Claude API, kuri juos apdoroja ALVOXIS Flow vardu. ALVOXIS Flow nesaugo klausimų ir atsakymų. Asistentas negali keisti įrašų, siųsti dokumentų ar atlikti mokėjimų. Tai nėra mokesčių ar teisinė konsultacija.",
+    "suggestionsTitle": "Pavyzdžiui:",
+    "suggestions": {
+      "profitLastMonth": "Koks buvo mano rezultatas praėjusį mėnesį?",
+      "expensesIncreased": "Kurios išlaidos padidėjo labiausiai?",
+      "highestMargin": "Kurių prekių marža didžiausia?",
+      "overdue": "Kurios sąskaitos vėluoja?",
+      "inflows30": "Kiek pinigų tikimasi gauti per artimiausias 30 dienų?",
+      "reduceCosts": "Kurias sąnaudas būtų galima sumažinti?",
+      "underpriced": "Kurios prekės galbūt parduodamos per pigiai?",
+      "risks": "Kokias finansines rizikas verta peržiūrėti?",
+      "profitChange": "Kodėl mano rezultatas pasikeitė, palyginti su praėjusiu mėnesiu?"
+    },
+    "refused": "Asistentas atsisakė atsakyti į šį klausimą. Pabandykite paklausti apie savo rodiklius kitaip.",
+    "empty": "Atsakymas negautas.",
+    "incomplete": "Atsakymas gali būti neišsamus",
+    "basedOn": "Remiantis:",
+    "noData": "Šiam atsakymui įmonės duomenys nenaudoti.",
+    "tools": {
+      "get_period_summary": "laikotarpio rodikliais",
+      "list_open_invoices": "neapmokėtomis sąskaitomis",
+      "expected_inflows": "sąskaitų mokėjimo terminais",
+      "expense_breakdown": "išlaidomis pagal kategorijas",
+      "product_price_margins": "katalogo kainomis",
+      "saved_cost_calculations": "išsaugotais savikainos skaičiavimais"
+    },
+    "working": "Peržiūriu jūsų rodiklius…",
+    "questionLabel": "Jūsų klausimas",
+    "placeholder": "Klauskite apie pajamas, išlaidas, sąskaitas, prekes ar sąnaudas…",
+    "remaining": "{count, plural, one {šį mėnesį liko # klausimas} few {šį mėnesį liko # klausimai} many {šį mėnesį liko # klausimo} other {šį mėnesį liko # klausimų}}",
+    "ask": "Klausti",
+    "error": {
+      "rate": "Per daug klausimų per trumpą laiką. Palaukite minutę ir bandykite dar kartą.",
+      "budget": "Šios įmonės asistento klausimai šiam mėnesiui išnaudoti.",
+      "subscription": "Asistentui reikia aktyvios prenumeratos.",
+      "timeout": "Atsakymas užtruko per ilgai. Užduokite siauresnį klausimą.",
+      "invalid": "Parašykite iki 2000 simbolių klausimą.",
+      "failed": "Asistentas šiuo metu nepasiekiamas. Bandykite vėliau."
     }
   }
 }

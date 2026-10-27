@@ -10,6 +10,7 @@ export type NavKey =
   | "production"
   | "payroll"
   | "analytics"
+  | "assistant"
   | "settings";
 
 export interface NavItem {
@@ -99,6 +100,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     soon: false,
     alsoActiveOn: /^\/companies\/[^/]+\/analytics(\/|$)/,
     icon: "M4 20V10m6 10V4m6 16v-7m4 7H2",
+  },
+  {
+    key: "assistant",
+    href: "/assistant",
+    soon: false,
+    alsoActiveOn: /^\/companies\/[^/]+\/assistant(\/|$)/,
+    icon: "M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9L12 3Zm6 11 .9 2.1L21 17l-2.1.9L18 20l-.9-2.1L15 17l2.1-.9L18 14Z",
   },
   {
     key: "settings",
